@@ -1,0 +1,27 @@
+
+-Main root run file is:
+diffXSecResAcc.C
+
+-it uses:
+selections.h
+systematics.h
+ _unfoldData.h
+
+-all systematic numbers are in: 
+systematics.h
+
+-Response Matrix for each Unfolding are in:
+_unfoldData.h
+
+
+
+
+- In case, I printed out Stattistic error for each stage in the log file:
+Zpt_Numbers_PRINT.log
+
+Here you can see Stat numbers after each stage:
+selection
+bkg subtraction
+Effi application
+Detector Unfolding
+FSR unfolding
