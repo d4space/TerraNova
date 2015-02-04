@@ -16,7 +16,7 @@ double aex[13] = {3.25,2.5,2.5,3.25,3,5,5,10,20,20,20,30,175};
 
 void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGraphErrors* iH4,TGraphAsymmErrors* iH5,TH1* StatErrBand,TGraphErrors* iH6){
   std::string lName = std::string(iH0->GetName());
-  TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),nBins-1,WptLogBins);// lHDiff->Sumw2();
+  TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),nBins-1,WptLogBins);
   TH1F *lXHDiff1 = new TH1F((lName+"XDiff1").c_str(),(lName+"XDiff1").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax());
   int i1 = 0;
   lXHDiff1->SetLineWidth(2); lXHDiff1->SetLineColor(kBlack); //lXHDiff1->SetLineStyle(2);
@@ -114,24 +114,24 @@ int theoryStudy_separate(const TString BaseName)
 
   if (BaseName=="WpToMuNu")
   {
-    f_Fewz = new TFile("../../RstFEWZ/Wp_Mu_NNLO.root");
+    f_Fewz = new TFile("../../RstFEWZ/WpToMuNu_13bin_dynamic_NNLO.root");
   }
   if (BaseName=="WmToMuNu")
   {
-    f_Fewz = new TFile("../../RstFEWZ/Wm_Mu_NNLO.root");
+    f_Fewz = new TFile("../../RstFEWZ/WmToMuNu_13bin_dynamic_NNLO.root");
   }
   if (BaseName=="WpToEleNu")
   {
-    f_Fewz = new TFile("../../RstFEWZ/Wp_Ele_NNLO.root");
+    f_Fewz = new TFile("../../RstFEWZ/WpToEleNu_13bin_dynamic_NNLO.root");
   }
   if (BaseName=="WmToEleNu")
   {
-    f_Fewz = new TFile("../../RstFEWZ/Wm_Ele_NNLO.root");
+    f_Fewz = new TFile("../../RstFEWZ/WmToEleNu_13bin_dynamic_NNLO.root");
   }
 
 
-  TH1D *hWptBins_LinScale   = new TH1D("hWptBins_LinScale","hWptBins_LinScale",nBins-1,WptBins);hWptBins_LinScale->Sumw2();
-  TH1D *hWptBins_LogScale   = new TH1D("hWptBins_LogScale","hWptBins_LogScale",nBins-1,WptLogBins);hWptBins_LogScale->Sumw2();
+  TH1D *hWptBins_LinScale   = new TH1D("hWptBins_LinScale","hWptBins_LinScale",nBins-1,WptBins);
+  TH1D *hWptBins_LogScale   = new TH1D("hWptBins_LogScale","hWptBins_LogScale",nBins-1,WptLogBins);
   
 
   ///=============Reading related stat, syst errors starts here==============
@@ -156,7 +156,7 @@ int theoryStudy_separate(const TString BaseName)
   TH1D* hData_IDIsoBkgrShapeSystErr	 = (TH1D*)f_Data_PowhegErr->Get("h_idisobck")->Clone("hData_IDIsoBkgrShapeSystErr");
  
   
-  TH1D *hData_TotalSystErr   = new TH1D("hData_TotalSystErr","hData_TotalSystErr",nBins-1,WptBins);hData_TotalSystErr->Sumw2();
+  TH1D *hData_TotalSystErr   = new TH1D("hData_TotalSystErr","hData_TotalSystErr",nBins-1,WptBins);
   
   if(BaseName== "WpToMuNu" || BaseName== "WmToMuNu")
   {
@@ -167,8 +167,23 @@ int theoryStudy_separate(const TString BaseName)
     //// Calculate total syst for muon
     for( int ipt(1);ipt<=nBins-1;ipt++)
     {
-      hData_TotalSystErr->SetBinContent(ipt, sqrt( TMath::Power(hData_TrackSigShapeSystErr->GetBinContent(ipt),2) +  TMath::Power( hData_TrackBkgrShapeSystErr->GetBinContent(ipt),2) + TMath::Power( hData_MuonPOGSystErr->GetBinContent(ipt),2) + TMath::Power( hData_EffiToySystErr->GetBinContent(ipt),2)+ TMath::Power( hData_IDIsoSigShapeSystErr->GetBinContent(ipt),2)+ TMath::Power( hData_IDIsoBkgrShapeSystErr->GetBinContent(ipt),2) + TMath::Power( hData_MetResolSystErr->GetBinContent(ipt),2) + TMath::Power( hData_EnMomScaleSystErr->GetBinContent(ipt),2) + TMath::Power(hData_EnMomSmearSystErr->GetBinContent(ipt),2) + TMath::Power( hData_QcdBckgrSystErr->GetBinContent(ipt),2) + TMath::Power( hData_QcdShapeSystErr->GetBinContent(ipt),2) + TMath::Power( hData_EwkSystErr->GetBinContent(ipt),2) + TMath::Power( hData_FsrSystErr->GetBinContent(ipt),2) + TMath::Power( hData_SvdUnfSystErr->GetBinContent(ipt),2) + TMath::Power( hData_UnfoldBiasSystErr->GetBinContent(ipt),2)  + TMath::Power( hData_LumiSystErr->GetBinContent(ipt),2) ));
-
+      hData_TotalSystErr->SetBinContent(ipt, sqrt(
+	    TMath::Power(hData_TrackSigShapeSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_TrackBkgrShapeSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_MuonPOGSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_EffiToySystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_IDIsoSigShapeSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_IDIsoBkgrShapeSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_MetResolSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_EnMomScaleSystErr->GetBinContent(ipt),2) +
+	    TMath::Power(hData_EnMomSmearSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_QcdBckgrSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_QcdShapeSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_EwkSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_FsrSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_SvdUnfSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_UnfoldBiasSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_LumiSystErr->GetBinContent(ipt),2) ));
     }
     
   }
@@ -179,12 +194,25 @@ int theoryStudy_separate(const TString BaseName)
     //// Calculate total syst for electron
     for( int ipt(1);ipt<=nBins-1;ipt++)
     {
-      hData_TotalSystErr->SetBinContent(ipt, sqrt( TMath::Power(hData_BinningSystErr->GetBinContent(ipt),2) + TMath::Power( hData_EffiToySystErr->GetBinContent(ipt),2) + TMath::Power( hData_IDIsoSigShapeSystErr->GetBinContent(ipt),2) + TMath::Power( hData_IDIsoBkgrShapeSystErr->GetBinContent(ipt),2) + TMath::Power( hData_MetResolSystErr->GetBinContent(ipt),2) + TMath::Power( hData_EnMomScaleSystErr->GetBinContent(ipt),2) + TMath::Power(hData_EnMomSmearSystErr->GetBinContent(ipt),2) + TMath::Power( hData_QcdBckgrSystErr->GetBinContent(ipt),2) + TMath::Power( hData_QcdShapeSystErr->GetBinContent(ipt),2) + TMath::Power( hData_EwkSystErr->GetBinContent(ipt),2) + TMath::Power( hData_FsrSystErr->GetBinContent(ipt),2) + TMath::Power( hData_SvdUnfSystErr->GetBinContent(ipt),2) + TMath::Power( hData_UnfoldBiasSystErr->GetBinContent(ipt),2) + TMath::Power( hData_LumiSystErr->GetBinContent(ipt),2) ));
-
+      hData_TotalSystErr->SetBinContent(ipt, sqrt(
+	    TMath::Power(hData_BinningSystErr->GetBinContent(ipt),2) + 
+	    TMath::Power( hData_EffiToySystErr->GetBinContent(ipt),2) + 
+	    TMath::Power( hData_IDIsoSigShapeSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_IDIsoBkgrShapeSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_MetResolSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_EnMomScaleSystErr->GetBinContent(ipt),2) +
+	    TMath::Power(hData_EnMomSmearSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_QcdBckgrSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_QcdShapeSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_EwkSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_FsrSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_SvdUnfSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_UnfoldBiasSystErr->GetBinContent(ipt),2) +
+	    TMath::Power( hData_LumiSystErr->GetBinContent(ipt),2) ));
     }
   }
 
-  TH1D *hData_TotalUncer   = new TH1D("hData_TotalUncer","hData_TotalUncer",nBins-1,WptBins);hData_TotalUncer->Sumw2();
+  TH1D *hData_TotalUncer   = new TH1D("hData_TotalUncer","hData_TotalUncer",nBins-1,WptBins);
   for( int ipt(1);ipt<nBins;ipt++)
   {
     hData_TotalUncer->SetBinContent(ipt, sqrt(TMath::Power(hData_StatErr->GetBinContent(ipt),2)+ TMath::Power(hData_TotalSystErr->GetBinContent(ipt),2)));
@@ -210,7 +238,6 @@ int theoryStudy_separate(const TString BaseName)
     //cout<<"hData_SvdUnfSystErr: "<<ipt<<"\t"<<hData_SvdUnfSystErr->GetBinContent(ipt)<<endl;
     //cout<<"hData_UnfoldBiasSystErr: "<<ipt<<"\t"<<hData_UnfoldBiasSystErr->GetBinContent(ipt)<<endl;
   } 
-
 
   TH1D* hPowheg_PDFErr		 = (TH1D*)f_Data_PowhegErr->Get("h_PowhegPDF")->Clone("hPowheg_PDFErr");
   
@@ -253,7 +280,7 @@ int theoryStudy_separate(const TString BaseName)
   }
 
   // X-sex and error Log scale
-  TH1D *hData_Xsec_BornLogScale     = new TH1D("hData_Xsec_BornLogScale","hData_Xsec_BornLogScale",nBins-1,WptLogBins);hData_Xsec_BornLogScale->Sumw2();
+  TH1D *hData_Xsec_BornLogScale     = new TH1D("hData_Xsec_BornLogScale","hData_Xsec_BornLogScale",nBins-1,WptLogBins);
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     hData_Xsec_BornLogScale->SetBinContent(ipt,hData_Xsec_BornLinScale->GetBinContent(ipt)/hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt    ));
@@ -261,8 +288,8 @@ int theoryStudy_separate(const TString BaseName)
   }
   
   ///   Theory/Data ratio plot errors related to Real Data
-  TH1D *hRatioDataErrBand = new TH1D("hRatioDataErrBand","hRatioDataErrBand",nBins-1,WptLogBins);hRatioDataErrBand->Sumw2();
-  TH1D *hRatioDataStatErr = new TH1D("hRatioDataStatErr","hRatioDataStatErr",nBins-1,WptLogBins);hRatioDataStatErr->Sumw2();
+  TH1D *hRatioDataErrBand = new TH1D("hRatioDataErrBand","hRatioDataErrBand",nBins-1,WptLogBins);
+  TH1D *hRatioDataStatErr = new TH1D("hRatioDataStatErr","hRatioDataStatErr",nBins-1,WptLogBins);
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     hRatioDataErrBand->SetBinContent(ipt,1.);
@@ -315,10 +342,11 @@ int theoryStudy_separate(const TString BaseName)
   {
     Powheg_Xsec_BornStatErr[ipt] = hPowheg_Xsec_BornLinScale->GetBinContent(ipt)*sqrt(hPowheg_Yield_BornAfterFidCut->GetBinContent(ipt))/hPowheg_Yield_BornAfterFidCut->GetBinContent(ipt);
     Powheg_Xsec_BornTotalErr[ipt] = sqrt(Powheg_Xsec_BornStatErr[ipt]*Powheg_Xsec_BornStatErr[ipt] + hPowheg_Xsec_BornLinScale->GetBinError(ipt)*hPowheg_Xsec_BornLinScale->GetBinError(ipt));
+    cout << "SVDBorn.Gen : " << hPowheg_Yield_BornAfterFidCut->GetBinContent(ipt) << endl;
   }
 
   // X-sex and error Log scale
-  TH1D *hPowheg_Xsec_BornLogScale   = new TH1D("hPowheg_Xsec_BornLogScale","hPowheg_Xsec_BornLogScale",nBins-1,WptLogBins);hPowheg_Xsec_BornLogScale->Sumw2();
+  TH1D *hPowheg_Xsec_BornLogScale   = new TH1D("hPowheg_Xsec_BornLogScale","hPowheg_Xsec_BornLogScale",nBins-1,WptLogBins);
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     hPowheg_Xsec_BornLogScale->SetBinContent(ipt,hPowheg_Xsec_BornLinScale->GetBinContent(ipt)/hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt));
@@ -326,8 +354,8 @@ int theoryStudy_separate(const TString BaseName)
   }
 
   ///   Theory/Data ratio plot errors related to Real Data
-  TH1D *hRatioPowhegStatErrBand = new TH1D("hRatioPowhegStatErrBand","hRatioPowhegStatErrBand",nBins-1,WptLogBins);hRatioPowhegStatErrBand->Sumw2();
-  TH1D *hRatioPowhegPDFErrBand = new TH1D("hRatioPowhegPDFErrBand","hRatioPowhegPDFErrBand",nBins-1,WptLogBins);hRatioPowhegPDFErrBand->Sumw2();
+  TH1D *hRatioPowhegStatErrBand = new TH1D("hRatioPowhegStatErrBand","hRatioPowhegStatErrBand",nBins-1,WptLogBins);
+  TH1D *hRatioPowhegPDFErrBand = new TH1D("hRatioPowhegPDFErrBand","hRatioPowhegPDFErrBand",nBins-1,WptLogBins);
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     hRatioPowhegStatErrBand->SetBinContent(ipt,hPowheg_Xsec_BornLogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
@@ -358,42 +386,49 @@ int theoryStudy_separate(const TString BaseName)
   TH1D* hFEWZ_Xsec_PDFError;
   hFEWZ_Xsec_PDFError = (TH1D*)f_Fewz->Get("PDFErr")->Clone("hFEWZ_Xsec_PDFError");
   
+  double FEWZ_Xsec_StatErr[14];
   double FEWZ_Xsec_ScaleErr[14];
   double FEWZ_Xsec_PDFErr[14];
   double FEWZ_Xsec_TotalErr[14];
+  double FEWZ_DiffXsec_StatErr[14];
+  double FEWZ_DiffXsec_ScaleErr[14];
+  double FEWZ_DiffXsec_PDFErr[14];
+  double FEWZ_DiffXsec_TotalErr[14];
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
+    FEWZ_Xsec_StatErr[ipt] = hFEWZ_Xsec_LinScale->GetBinError(ipt);
     FEWZ_Xsec_ScaleErr[ipt] = 0.01*hFEWZ_Xsec_ScaleError->GetBinError(ipt)*hFEWZ_Xsec_LinScale->GetBinContent(ipt);
     FEWZ_Xsec_PDFErr[ipt]   = 0.01*hFEWZ_Xsec_PDFError->GetBinError(ipt)*hFEWZ_Xsec_LinScale->GetBinContent(ipt);
-    
     FEWZ_Xsec_TotalErr[ipt] = sqrt( FEWZ_Xsec_ScaleErr[ipt]*FEWZ_Xsec_ScaleErr[ipt] + FEWZ_Xsec_PDFErr[ipt]*FEWZ_Xsec_PDFErr[ipt] );
+
+    FEWZ_DiffXsec_StatErr[ipt] = FEWZ_Xsec_StatErr[ipt]/hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt) ; 
+    FEWZ_DiffXsec_ScaleErr[ipt] = FEWZ_Xsec_ScaleErr[ipt] / hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt);
+    FEWZ_DiffXsec_PDFErr[ipt]   = FEWZ_Xsec_PDFErr[ipt] / hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt);
+    FEWZ_DiffXsec_TotalErr[ipt] = FEWZ_Xsec_TotalErr[ipt] / hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt);
+
   }
   
   // X-sex and error Log scale
-  TH1D *hFEWZ_Xsec_LogScale   = new TH1D("hFEWZ_Xsec_LogScale","hFEWZ_Xsec_LogScale",nBins-1,WptLogBins);hFEWZ_Xsec_LogScale->Sumw2();
+  TH1D *hFEWZ_Xsec_LogScale   = new TH1D("hFEWZ_Xsec_LogScale","hFEWZ_Xsec_LogScale",nBins-1,WptLogBins);
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     hFEWZ_Xsec_LogScale->SetBinContent(ipt,hFEWZ_Xsec_LinScale->GetBinContent(ipt)/hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt));
-    hFEWZ_Xsec_LogScale->SetBinError(ipt,FEWZ_Xsec_TotalErr[ipt]/hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt));
+    hFEWZ_Xsec_LogScale->SetBinError(ipt,FEWZ_DiffXsec_TotalErr[ipt]);
   } 
   ///   Theory/Data ratio plot errors related to Real Data
-  TH1D *hRatioFEWZStatErrBand = new TH1D("hRatioFEWZStatErrBand","hRatioFEWZStatErrBand",nBins-1,WptLogBins);hRatioFEWZStatErrBand->Sumw2();
-  TH1D *hRatioFEWZScaleErr = new TH1D("hRatioFEWZScaleErr","hRatioFEWZScaleErr",nBins-1,WptLogBins);hRatioFEWZScaleErr->Sumw2();
-  TH1D *hRatioFEWZQCDScaleErrBand = new TH1D("hRatioFEWZQCDScalePDFErrBand","hRatioFEWZQCDScalePDFErrBand",nBins-1,WptLogBins);hRatioFEWZQCDScalePDFErrBand->Sumw2();
-  TH1D *hRatioFEWZScalePDFErrBand = new TH1D("hRatioFEWZScalePDFErrBand","hRatioFEWZScalePDFErrBand",nBins-1,WptLogBins);hRatioFEWZScalePDFErrBand->Sumw2();
+  TH1D *hRatioFEWZStatErrBand = new TH1D("hRatioFEWZStatErrBand","hRatioFEWZStatErrBand",nBins-1,WptLogBins);
+  TH1D *hRatioFEWZQCDScaleErrBand = new TH1D("hRatioFEWZQCDScalePDFErrBand","hRatioFEWZQCDScalePDFErrBand",nBins-1,WptLogBins);
+  TH1D *hRatioFEWZScalePDFErrBand = new TH1D("hRatioFEWZScalePDFErrBand","hRatioFEWZScalePDFErrBand",nBins-1,WptLogBins);
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     hRatioFEWZStatErrBand->SetBinContent(ipt,hFEWZ_Xsec_LogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
-    hRatioFEWZStatErrBand->SetBinError(ipt,0.01);
+    hRatioFEWZStatErrBand->SetBinError(ipt,FEWZ_DiffXsec_StatErr[ipt]/hData_Xsec_BornLogScale->GetBinContent(ipt));
     
-    hRatioFEWZScaleErr->SetBinContent(ipt,hFEWZ_Xsec_LogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
-    hRatioFEWZScaleErr->SetBinError(ipt,FEWZ_Xsec_ScaleErr[ipt]/hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt));
-  
     hRatioFEWZQCDScaleErrBand->SetBinContent(ipt,hFEWZ_Xsec_LogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
-    hRatioFEWZQCDScaleErrBand->SetBinError(ipt,0.01 + hRatioFEWZScaleErr->GetBinError(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
+    hRatioFEWZQCDScaleErrBand->SetBinError(ipt,(FEWZ_DiffXsec_StatErr[ipt] + FEWZ_DiffXsec_ScaleErr[ipt])/hData_Xsec_BornLogScale->GetBinContent(ipt));
   
     hRatioFEWZScalePDFErrBand->SetBinContent(ipt,hFEWZ_Xsec_LogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
-    hRatioFEWZScalePDFErrBand->SetBinError(ipt,0.01+(hFEWZ_Xsec_LogScale->GetBinError(ipt)+hRatioFEWZScaleErr->GetBinError(ipt))/hData_Xsec_BornLogScale->GetBinContent(ipt));
+    hRatioFEWZScalePDFErrBand->SetBinError(ipt,(FEWZ_DiffXsec_StatErr[ipt] + FEWZ_DiffXsec_ScaleErr[ipt] + FEWZ_DiffXsec_PDFErr[ipt])/hData_Xsec_BornLogScale->GetBinContent(ipt));
   }
   
   /// TGraph
@@ -449,7 +484,7 @@ int theoryStudy_separate(const TString BaseName)
   }
   
   // X-sex and error Log scale
-  TH1D *hResBos30_CentralYield_LogScale   = new TH1D("hResBos30_CentralYield_LogScale","hResBos30_CentralYield_LogScale",nBins-1,WptLogBins);hResBos30_CentralYield_LogScale->Sumw2();
+  TH1D *hResBos30_CentralYield_LogScale   = new TH1D("hResBos30_CentralYield_LogScale","hResBos30_CentralYield_LogScale",nBins-1,WptLogBins);
   Double_t hResb30_CentralXsec[nBins-1];
   Double_t RatioResbVal[nBins-1],errResbosDataLo[nBins-1],errResbosDataHi[nBins-1];
   for( int ipt(0);ipt<nBins-1;ipt++)
