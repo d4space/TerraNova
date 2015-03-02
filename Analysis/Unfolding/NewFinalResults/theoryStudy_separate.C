@@ -96,84 +96,6 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   StatErrBand->Draw("E1same");
 }
 
-void drawDiffAllinOne(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGraphErrors* iH4,TGraphAsymmErrors* iH5,TH1* StatErrBand,TGraphErrors* iH6){
-  std::string lName = std::string(iH0->GetName());
-  TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),nBins-1,WptLogBins);
-  TH1F *lXHDiff1 = new TH1F((lName+"XDiff1").c_str(),(lName+"XDiff1").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax());
-  int i1 = 0;
-  lXHDiff1->SetLineWidth(2); lXHDiff1->SetLineColor(kBlack); //lXHDiff1->SetLineStyle(2);
-  
-  StatErrBand->SetMarkerStyle(kFullCircle); StatErrBand->SetMarkerColor(kBlack);StatErrBand->SetMarkerSize(0.6);
-  StatErrBand->SetLineWidth(2); StatErrBand->SetLineColor(kBlack);
-  
-  lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
-  lHDiff->GetYaxis()->SetTitleOffset(0.4);
-  lHDiff->GetYaxis()->SetTitleSize(0.12);
-  lHDiff->GetYaxis()->SetLabelSize(0.12);
-  lHDiff->GetYaxis()->CenterTitle();
-  lHDiff->GetXaxis()->SetTitleOffset(1.0);
-  lHDiff->GetXaxis()->SetTitleSize(0.12);
-  lHDiff->GetXaxis()->SetLabelSize(0);
-  if(chnl==3)
-    lHDiff->GetXaxis()->SetLabelSize(0.12);
-  lHDiff->GetYaxis()->SetNdivisions(405);
-  if(chnl==3)
-    lHDiff->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
-  lHDiff->GetYaxis()->SetTitle("Theory/Data");
-  gStyle->SetOptStat(0);
-  
-  for(int i0 = 0; i0 < lHDiff->GetNbinsX()+1; i0++) {
-    double lXCenter = lHDiff->GetBinCenter(i0);
-    double lXVal     = iH0   ->GetBinContent(i0);
-    lXHDiff1->SetBinContent(i0, 1.0);
-    while(iH1->GetBinCenter(i1) < lXCenter) {i1++;}
-    if(iH1->GetBinContent(i0) > 0) lHDiff->SetBinContent(i0,lXVal/(iH1->GetBinContent(i0)));
-    if(iH1->GetBinContent(i0) > 0) lHDiff->SetBinError(i0,0.00001);
-  }
-  
-  TGraphErrors* ErrBand = new TGraphErrors(iH2);
-  ErrBand->SetFillColor(kBlack);
-  ErrBand->SetFillStyle(3354);
-  ErrBand->SetLineWidth(1);
-  
-  if (chnl == 1)
-  {
-    lHDiff->SetMarkerStyle(kOpenCircle);
-    lHDiff->SetMarkerColor(kBlue);
-    lHDiff->SetLineColor(kBlue);
-  }
-  if (chnl == 2)
-  {
-    lHDiff->SetMarkerStyle(kOpenTriangleUp);
-    lHDiff->SetMarkerColor(kRed);
-    lHDiff->SetLineColor(kRed);
-  }
-  if (chnl == 3)
-  {
-    lHDiff->SetMarkerStyle(kOpenSquare);
-    lHDiff->SetMarkerColor(kGreen+3);
-    lHDiff->SetLineColor(kGreen+3);
-  }
-  
-  lHDiff->SetMarkerSize(0.8);
-
-
-  lHDiff->SetTitle("");
-  lHDiff->Draw("E");
-  //if (chnl == 1)
-    iH5->Draw("2same");
-  //if (chnl == 2 || chnl == 3)
-    iH4->Draw("2");
-  //if (chnl == 3)
-    iH6->Draw("2");
-  //if (chnl == 2 || chnl == 3)
-    iH3->Draw("2same");
-  lXHDiff1->Draw("histsame");
-  ErrBand->Draw("2same");
-  lHDiff->Draw("Esame");
-  StatErrBand->Draw("E1same");
-}
-
 int theoryStudy_separate(const TString BaseName)
 {
   TString tmpTStr;
@@ -367,6 +289,7 @@ int theoryStudy_separate(const TString BaseName)
   ///   Theory/Data ratio plot errors related to Real Data
   TH1D *hRatioDataErrBand = new TH1D("hRatioDataErrBand","hRatioDataErrBand",nBins-1,WptLogBins);
   TH1D *hRatioDataStatErr = new TH1D("hRatioDataStatErr","hRatioDataStatErr",nBins-1,WptLogBins);
+  TH1D *hRatioDataTotalErr = new TH1D("hRatioDataTotalErr","hRatioDataTotalErr",nBins-1,WptLogBins);
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     hRatioDataErrBand->SetBinContent(ipt,1.);
@@ -374,6 +297,9 @@ int theoryStudy_separate(const TString BaseName)
     
     hRatioDataStatErr->SetBinContent(ipt,1.);
     hRatioDataStatErr->SetBinError(ipt,Data_Xsec_BornStatErr[ipt]/hData_Xsec_BornLinScale->GetBinContent(ipt));
+    
+    hRatioDataTotalErr->SetBinContent(ipt,1.);
+    hRatioDataTotalErr->SetBinError(ipt,Data_Xsec_BornTotalErr[ipt]/hData_Xsec_BornLinScale->GetBinContent(ipt));
   }
   
 
@@ -419,7 +345,8 @@ int theoryStudy_separate(const TString BaseName)
   {
     Powheg_Xsec_BornStatErr[ipt] = hPowheg_Xsec_BornLinScale->GetBinContent(ipt)*sqrt(hPowheg_Yield_BornAfterFidCut->GetBinContent(ipt))/hPowheg_Yield_BornAfterFidCut->GetBinContent(ipt);
     Powheg_Xsec_BornTotalErr[ipt] = sqrt(Powheg_Xsec_BornStatErr[ipt]*Powheg_Xsec_BornStatErr[ipt] + hPowheg_Xsec_BornLinScale->GetBinError(ipt)*hPowheg_Xsec_BornLinScale->GetBinError(ipt));
-    cout << "SVDBorn.Gen : " << hPowheg_Yield_BornAfterFidCut->GetBinContent(ipt) << endl;
+    //cout << "SVDBorn.Gen : " << hPowheg_Yield_BornAfterFidCut->GetBinContent(ipt) << endl;
+    cout << Form("Powheg Xsec : %.0f +- %.8f +- %.8f  TotalUncer : %.8f", hPowheg_Xsec_BornLinScale->GetBinContent(ipt), Powheg_Xsec_BornStatErr[ipt], hPowheg_Xsec_BornLinScale->GetBinError(ipt), Powheg_Xsec_BornTotalErr[ipt]) << endl;
   }
 
   // X-sec and error Log scale
@@ -433,21 +360,25 @@ int theoryStudy_separate(const TString BaseName)
   ///   Theory/Data ratio plot errors related to Real Data
   TH1D *hRatioPowhegStatErrBand = new TH1D("hRatioPowhegStatErrBand","hRatioPowhegStatErrBand",nBins-1,WptLogBins);
   TH1D *hRatioPowhegPDFErrBand = new TH1D("hRatioPowhegPDFErrBand","hRatioPowhegPDFErrBand",nBins-1,WptLogBins);
+  TH1D *hRatioPowhegTotalErrBand = new TH1D("hRatioPowhegTotalErrBand","hRatioPowhegTotalErrBand",nBins-1,WptLogBins);
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
-    //hRatioPowhegStatErrBand->SetBinContent(ipt,hPowheg_Xsec_BornLogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
-    hRatioPowhegStatErrBand->SetBinContent(ipt,(hData_Xsec_BornLogScale->GetBinContent(ipt)-hPowheg_Xsec_BornLogScale->GetBinContent(ipt)) / hData_Xsec_BornLogScale->GetBinError(ipt));
+    hRatioPowhegStatErrBand->SetBinContent(ipt,hPowheg_Xsec_BornLogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
     hRatioPowhegStatErrBand->SetBinError(ipt,Powheg_Xsec_BornStatErr[ipt]/hData_Xsec_BornLinScale->GetBinContent(ipt));
     
     hRatioPowhegPDFErrBand->SetBinContent(ipt,hPowheg_Xsec_BornLogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
     hRatioPowhegPDFErrBand->SetBinError(ipt,(Powheg_Xsec_BornStatErr[ipt]/hData_Xsec_BornLinScale->GetBinContent(ipt))+(hPowheg_Xsec_BornLinScale->GetBinError(ipt)/hData_Xsec_BornLinScale->GetBinContent(ipt)));
-    cout <<"PowhegRatio : " <<  hRatioPowhegStatErrBand->GetBinContent(ipt) << endl;
+    
+    hRatioPowhegTotalErrBand->SetBinContent(ipt,hPowheg_Xsec_BornLogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
+    hRatioPowhegTotalErrBand->SetBinError(ipt,(Powheg_Xsec_BornTotalErr[ipt]/hData_Xsec_BornLinScale->GetBinContent(ipt)));
+    //cout <<"PowhegRatio and error : " <<  hRatioPowhegTotalErrBand->GetBinContent(ipt) << " +- " << hRatioPowhegTotalErrBand->GetBinError(ipt) << endl;
   }
   
   /// TGraph
   TGraphErrors *Powheg_Xsec_Born = new TGraphErrors(hPowheg_Xsec_BornLogScale);
   TGraphErrors *RatioPowhegStatErrBand = new TGraphErrors(hRatioPowhegStatErrBand);
   TGraphErrors *RatioPowhegPDFErrBand = new TGraphErrors(hRatioPowhegPDFErrBand);
+  TGraphErrors *RatioPowhegTotalErrBand = new TGraphErrors(hRatioPowhegTotalErrBand);
 
   /////==========Powheg related stuff Finished here=========================================
   
@@ -478,7 +409,7 @@ int theoryStudy_separate(const TString BaseName)
     FEWZ_Xsec_StatErr[ipt] = hFEWZ_Xsec_LinScale->GetBinError(ipt);
     FEWZ_Xsec_ScaleErr[ipt] = 0.01*hFEWZ_Xsec_ScaleError->GetBinError(ipt)*hFEWZ_Xsec_LinScale->GetBinContent(ipt);
     FEWZ_Xsec_PDFErr[ipt]   = 0.01*hFEWZ_Xsec_PDFError->GetBinError(ipt)*hFEWZ_Xsec_LinScale->GetBinContent(ipt);
-    FEWZ_Xsec_TotalErr[ipt] = sqrt( FEWZ_Xsec_ScaleErr[ipt]*FEWZ_Xsec_ScaleErr[ipt] + FEWZ_Xsec_PDFErr[ipt]*FEWZ_Xsec_PDFErr[ipt] );
+    FEWZ_Xsec_TotalErr[ipt] = sqrt(FEWZ_Xsec_StatErr[ipt]*FEWZ_Xsec_StatErr[ipt] +  FEWZ_Xsec_ScaleErr[ipt]*FEWZ_Xsec_ScaleErr[ipt] + FEWZ_Xsec_PDFErr[ipt]*FEWZ_Xsec_PDFErr[ipt] );
 
     FEWZ_DiffXsec_StatErr[ipt] = FEWZ_Xsec_StatErr[ipt]/hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt) ; 
     FEWZ_DiffXsec_ScaleErr[ipt] = FEWZ_Xsec_ScaleErr[ipt] / hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt);
@@ -498,6 +429,7 @@ int theoryStudy_separate(const TString BaseName)
   TH1D *hRatioFEWZStatErrBand = new TH1D("hRatioFEWZStatErrBand","hRatioFEWZStatErrBand",nBins-1,WptLogBins);
   TH1D *hRatioFEWZQCDScaleErrBand = new TH1D("hRatioFEWZQCDScalePDFErrBand","hRatioFEWZQCDScalePDFErrBand",nBins-1,WptLogBins);
   TH1D *hRatioFEWZScalePDFErrBand = new TH1D("hRatioFEWZScalePDFErrBand","hRatioFEWZScalePDFErrBand",nBins-1,WptLogBins);
+  TH1D *hRatioFEWZTotalErrBand = new TH1D("hRatioFEWZTotalErrBand","hRatioFEWZTotalErrBand",nBins-1,WptLogBins);
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     hRatioFEWZStatErrBand->SetBinContent(ipt,hFEWZ_Xsec_LogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
@@ -508,6 +440,9 @@ int theoryStudy_separate(const TString BaseName)
   
     hRatioFEWZScalePDFErrBand->SetBinContent(ipt,hFEWZ_Xsec_LogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
     hRatioFEWZScalePDFErrBand->SetBinError(ipt,(FEWZ_DiffXsec_StatErr[ipt] + FEWZ_DiffXsec_ScaleErr[ipt] + FEWZ_DiffXsec_PDFErr[ipt])/hData_Xsec_BornLogScale->GetBinContent(ipt));
+    
+    hRatioFEWZTotalErrBand->SetBinContent(ipt,hFEWZ_Xsec_LogScale->GetBinContent(ipt)/hData_Xsec_BornLogScale->GetBinContent(ipt));
+    hRatioFEWZTotalErrBand->SetBinError(ipt,FEWZ_DiffXsec_TotalErr[ipt]/hData_Xsec_BornLogScale->GetBinContent(ipt));
   }
   
   /// TGraph
@@ -554,6 +489,7 @@ int theoryStudy_separate(const TString BaseName)
       if( tmpDiff > Resb_errMax[ipt] ) Resb_errMax[ipt] = tmpDiff;
       if( tmpDiff < Resb_errMin[ipt] ) Resb_errMin[ipt] = tmpDiff;
     }
+  cout << "Resbos Xsec : " << hResBos30_CentralYield_LinScale->GetBinContent(ipt+1) << "\t error+ : " << Resb_errMax[ipt] << "\t error - : " << Resb_errMin[ipt] << endl; 
 
     if (Resb_errMax[ipt] < 0) Resb_errMax[ipt] = 0.;
     if (Resb_errMin[ipt] > 0) Resb_errMin[ipt] = 0.;
@@ -561,10 +497,13 @@ int theoryStudy_separate(const TString BaseName)
     Resb_errMax[ipt] = Resb_errMax[ipt]/hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt+1);
     Resb_errMin[ipt] = Resb_errMin[ipt]/hWptBins_LinScale->GetXaxis()->GetBinWidth(ipt+1);
   }
+
   
   // X-sec and error Log scale
   TH1D *hResBos30_CentralYield_LogScale   = new TH1D("hResBos30_CentralYield_LogScale","hResBos30_CentralYield_LogScale",nBins-1,WptLogBins);
+  TH1D *hResBosRatio   = new TH1D("hResBosRatio","hResBosRatio",nBins-1,WptLogBins);
   Double_t hResb30_CentralXsec[nBins-1];
+  Double_t hResb30_Error[nBins-1];
   Double_t RatioResbVal[nBins-1],errResbosDataLo[nBins-1],errResbosDataHi[nBins-1];
   for( int ipt(0);ipt<nBins-1;ipt++)
   {
@@ -575,7 +514,12 @@ int theoryStudy_separate(const TString BaseName)
     RatioResbVal[ipt]=hResBos30_CentralYield_LogScale->GetBinContent(ipt+1)/hData_Xsec_BornLogScale->GetBinContent(ipt+1);
     errResbosDataLo[ipt]=Resb_errMin[ipt]/hData_Xsec_BornLogScale->GetBinContent(ipt+1);
     errResbosDataHi[ipt]=Resb_errMax[ipt]/hData_Xsec_BornLogScale->GetBinContent(ipt+1);
+    
+    hResb30_Error[ipt] = (errResbosDataLo[ipt] > errResbosDataHi[ipt]) ? errResbosDataLo[ipt] : errResbosDataHi[ipt];
+    hResBosRatio->SetBinContent(ipt+1,RatioResbVal[ipt]);
+    hResBosRatio->SetBinError(ipt+1,hResb30_Error[ipt]);
 
+    //cout << "resbos ratio and error : " << RatioResbVal[ipt] << " +- " << hResb30_Error[ipt] << endl; 
   }
   ///   Theory/Data ratio plot errors related to Real Data
   TGraphAsymmErrors *Resb30_CentralXsec = new TGraphAsymmErrors(nBins-1, ax, hResb30_CentralXsec, aex, aex, Resb_errMin, Resb_errMax);
@@ -604,6 +548,9 @@ int theoryStudy_separate(const TString BaseName)
   RatioPowhegPDFErrBand->SetFillColor(kRed+2);
   RatioPowhegPDFErrBand->SetFillStyle(3001);
 
+  RatioPowhegTotalErrBand->SetFillColor(kRed+3);
+  RatioPowhegTotalErrBand->SetFillStyle(3001);
+  
   //FEWZ
   FEWZ_Xsec->SetFillColor(kGreen);
   FEWZ_Xsec->SetFillStyle(3444);
@@ -821,8 +768,9 @@ int theoryStudy_separate(const TString BaseName)
 
   // Start New Style 
   TCanvas *Cnew = new TCanvas("NewCanvas","NewCanvas",800,900);
-  Cnew->Divide(1,3,0,0);
-  Cnew->cd(1)->SetPad(0,0.46,0.95,1.0);
+  //Cnew->Divide(1,3,0,0);
+  Cnew->Divide(1,2,0,0);
+  Cnew->cd(1)->SetPad(0,0.26,0.95,1.0);
   Cnew->cd(1)->SetTopMargin(0.05);
   Cnew->cd(1)->SetLeftMargin(0.15);
   Cnew->cd(1)->SetRightMargin(0.07);
@@ -844,9 +792,10 @@ int theoryStudy_separate(const TString BaseName)
   lL->Draw();
   tb->Draw();
   cmspre->Draw();
-
-  // Draw new style ratio pad1 ( (data-theory)/sigma_data )
-  Cnew->cd(2)->SetPad(0,0.26,0.95,0.44);
+  
+  // Draw new style ratio pad2 (Theory / Data)
+  Cnew->cd(2)->SetPad(0,0.05,0.95,0.24);
+  Cnew->cd(2)->SetBottomMargin(0.1);
   Cnew->cd(2)->SetLeftMargin(0.15);
   Cnew->cd(2)->SetRightMargin(0.07);
   Cnew->cd(2)->SetTickx(1);
@@ -854,96 +803,66 @@ int theoryStudy_separate(const TString BaseName)
   Cnew->cd(2)->SetLogx();
   gStyle->SetLineWidth(2.);
 
-  TH1D *hRatioResbos = new TH1D("hRatioResbos","",nBins-1,WptLogBins);
-  TH1D *hRatioPowheg = new TH1D("hRatioPowheg","",nBins-1,WptLogBins);
-  TH1D *hRatioFEWZ = new TH1D("hRatioFEWZ","",nBins-1,WptLogBins);
-  TH1D *hRatioDummy = new TH1D("hRatioDummy","",nBins-1,WptLogBins);
-  double ratioPowheg[14]={0.,};
-  double ratioResbos[14]={0.,};
-  double ratioFEWZ[14]={0.,};
+  // set canvas
+  TH1D *hRatioDummy2 = new TH1D("hRatioDummy2","",nBins-1,WptLogBins);
+  hRatioDummy2->GetYaxis()->SetRangeUser(0.5,1.5);
+  hRatioDummy2->GetYaxis()->SetTitle("Theory/Data");
+  hRatioDummy2->GetYaxis()->CenterTitle();
+  hRatioDummy2->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
+  hRatioDummy2->GetYaxis()->SetTitleSize(0.12);
+  hRatioDummy2->GetYaxis()->SetLabelSize(0.12);
+  hRatioDummy2->GetYaxis()->SetTitleOffset(0.36);
+  hRatioDummy2->GetYaxis()->SetNdivisions(405);
+  hRatioDummy2->GetXaxis()->SetTitleSize(0.12);
+  hRatioDummy2->GetXaxis()->SetLabelSize(0.12);
 
-  for(i = 1;i<=13;i++){
-    //cout <<hFEWZ_Xsec_LogScale->GetBinContent(i) << endl;
-    ratioPowheg[i] = (hData_Xsec_BornLogScale->GetBinContent(i) - hPowheg_Xsec_BornLogScale->GetBinContent(i) ) / hData_Xsec_BornLogScale->GetBinError(i) ;
-    ratioResbos[i] = (hData_Xsec_BornLogScale->GetBinContent(i) - hResBos30_CentralYield_LogScale->GetBinContent(i) ) / hData_Xsec_BornLogScale->GetBinError(i) ;
-    ratioFEWZ[i] = (hData_Xsec_BornLogScale->GetBinContent(i) - hFEWZ_Xsec_LogScale->GetBinContent(i) ) / hData_Xsec_BornLogScale->GetBinError(i) ;
-    hRatioPowheg->SetBinContent(i,ratioPowheg[i]);
-    hRatioResbos->SetBinContent(i,ratioResbos[i]);
-    hRatioFEWZ->SetBinContent(i,ratioFEWZ[i]);
-  }
-
-
-  // set canvas range and Y axis title
-  hRatioDummy->GetYaxis()->SetRangeUser(-6,6);
-  hRatioDummy->GetYaxis()->SetTitle("(data-MC)/#sigma_{data}");
-  hRatioDummy->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
-  hRatioDummy->GetYaxis()->SetTitleSize(0.12);
-  hRatioDummy->GetYaxis()->SetLabelSize(0);
-  hRatioDummy->GetYaxis()->SetTitleOffset(0.36);
-  hRatioDummy->GetYaxis()->SetNdivisions(605);
-  hRatioDummy->GetXaxis()->SetTitleSize(0.12);
-  hRatioDummy->GetXaxis()->SetLabelSize(0);
-
-  // set Marker color and size
-  hRatioResbos->SetLineColor(kBlue);
-  hRatioPowheg->SetLineColor(kRed);
-  hRatioFEWZ->SetLineColor(kGreen+2);
-  hRatioResbos->SetMarkerColor(kBlue);
-  hRatioPowheg->SetMarkerColor(kRed);
-  hRatioFEWZ->SetMarkerColor(kGreen+2);
-  hRatioResbos->SetMarkerStyle(kFullCircle);
-  hRatioPowheg->SetMarkerStyle(kFullCircle);
-  hRatioFEWZ->SetMarkerStyle(kFullCircle);
-  hRatioResbos->SetMarkerSize(0.8);
-  hRatioPowheg->SetMarkerSize(0.8);
-  hRatioFEWZ->SetMarkerSize(0.8);
-
-  //// set Legend
-  //TLegend *lRatio = new TLegend(0.7,0.7,0.9,0.85); lRatio->SetFillColor(0); lRatio->SetBorderSize(0);
-  //lRatio->AddEntry(hRatioPowheg,"POWHEG CT10 NLO","l");
-  //lRatio->AddEntry(hRatioResbos,"ResBos CT10 NNLL","l");
-  //lRatio->AddEntry(hRatioFEWZ,"FEWZ CT10 NNLO","l");
-  
-  // Draw sigma band
-  const double x[4] = {0,600,600,0};
-  const double y1[4] = {1,1,-1,-1};
-  const double y2[4] = {2,2,-2,-2};
-  TGraph* band1s = new TGraph(4,x,y1);
-  TGraph* band2s = new TGraph(4,x,y2);
-  band1s->SetFillColor(kGreen-7);
-  band2s->SetFillColor(kYellow);
+  TGraphErrors* DataRatio = new TGraphErrors(hRatioDataTotalErr);
+  TGraphErrors* PowhegRatio = new TGraphErrors(hRatioPowhegTotalErrBand);
+  TGraphErrors* FEWZRatio = new TGraphErrors(hRatioFEWZTotalErrBand);
+  TGraphErrors* ResBosRatio = new TGraphErrors(hResBosRatio);
  
-  // Draw line dotted
-  TLine* lineDotted = new TLine(0,0,600,0);
-  lineDotted -> SetLineColor(kRed+2);
-  lineDotted -> SetLineWidth(2);
-  lineDotted->SetLineStyle(2);
+  //DataRatio->SetFillColor(kGreen-4);
+  DataRatio->SetFillColor(kBlack);
+  //DataRatio->SetFillStyle(1001);
+  DataRatio->SetFillStyle(3001);
 
-  // Draw canvas
-  hRatioDummy->Draw();
-  band2s->Draw("F same");
-  band1s->Draw("F same");
-  lineDotted->Draw("L same");
-  hRatioPowheg->Draw("PL same");
-  hRatioResbos->Draw("PL same");
-  hRatioFEWZ->Draw("PL same");
-  //lRatio->Draw("same");
+  PowhegRatio->SetFillColor(kRed);
+  PowhegRatio->SetFillStyle(3002);
+  PowhegRatio->SetMarkerStyle(22); // triangle style
+  PowhegRatio->SetMarkerColor(kRed+2);
+  PowhegRatio->SetMarkerSize(1.0);
+  PowhegRatio->SetLineColor(kRed);
+
+  FEWZRatio->SetFillColor(kGreen);
+  FEWZRatio->SetFillStyle(3002);
+  FEWZRatio->SetMarkerStyle(21); // square
+  FEWZRatio->SetMarkerColor(kGreen+2);
+  FEWZRatio->SetMarkerSize(1.0);
+  FEWZRatio->SetLineColor(kGreen);
+
+  ResBosRatio->SetFillColor(kBlue);
+  ResBosRatio->SetFillStyle(3344);
+  ResBosRatio->SetMarkerStyle(34); // cross
+  ResBosRatio->SetMarkerColor(kBlue+2);
+  ResBosRatio->SetMarkerSize(1.0);
+  ResBosRatio->SetLineColor(kBlue);
+
+  // Draw line
+  TLine* line = new TLine(0,1,600,1);
+  line -> SetLineColor(kBlack);
+  line -> SetLineWidth(1);
+  line->SetLineStyle(1);
+  
+  // Draw
+  hRatioDummy2->Draw();
+  DataRatio->Draw("2");
+  line->Draw("L");
+  PowhegRatio->Draw("5 P");
+  ResBosRatio->Draw("5 P");
+  FEWZRatio->Draw("5 P");
+
+
   gPad->RedrawAxis();
-
-  // Draw new style ratio pad2 (data / theory)
-  Cnew->cd(3)->SetPad(0,0.05,0.95,0.24);
-  Cnew->cd(3)->SetBottomMargin(0.1);
-  Cnew->cd(3)->SetLeftMargin(0.15);
-  Cnew->cd(3)->SetRightMargin(0.07);
-  Cnew->cd(3)->SetTickx(1);
-  Cnew->cd(3)->SetTicky(1);
-  Cnew->cd(3)->SetLogx();
-  gStyle->SetLineWidth(2.);
-
-  // Draw 
-  drawDiffAllinOne(hFEWZ_Xsec_LogScale,hData_Xsec_BornLogScale,hRatioDataErrBand,RatioFEWZStatErrBand,3,RatioFEWZScalePDFErrBand,RatioResbosErrBand,hRatioDataStatErr,RatioFEWZQCDScaleErrBand);
-
-
 
   Cnew->SaveAs(BaseName+"_NewStyle.png");
   return 0;
