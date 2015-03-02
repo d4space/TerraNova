@@ -801,7 +801,7 @@ int theoryStudy_separate(const TString BaseName)
   Cnew->cd(2)->SetTickx(1);
   Cnew->cd(2)->SetTicky(1);
   Cnew->cd(2)->SetLogx();
-  gStyle->SetLineWidth(2.);
+  //gStyle->SetLineWidth(2.);
 
   // set canvas
   TH1D *hRatioDummy2 = new TH1D("hRatioDummy2","",nBins-1,WptLogBins);
@@ -841,7 +841,7 @@ int theoryStudy_separate(const TString BaseName)
   FEWZRatio->SetLineColor(kGreen);
 
   ResBosRatio->SetFillColor(kBlue);
-  ResBosRatio->SetFillStyle(3344);
+  ResBosRatio->SetFillStyle(3013);
   ResBosRatio->SetMarkerStyle(34); // cross
   ResBosRatio->SetMarkerColor(kBlue+2);
   ResBosRatio->SetMarkerSize(1.0);
