@@ -41,7 +41,7 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   lHDiff->GetYaxis()->SetNdivisions(405);
   if(chnl==3)
     lHDiff->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
-  lHDiff->GetYaxis()->SetTitle("Theory/Data");
+  lHDiff->GetYaxis()->SetTitle("Theory / Data");
   gStyle->SetOptStat(0);
   
   for(int i0 = 0; i0 < lHDiff->GetNbinsX()+1; i0++) {
@@ -540,7 +540,7 @@ int theoryStudy_separate(const TString BaseName)
   
   //Powheg
   Powheg_Xsec_Born->SetFillColor(kRed);
-  Powheg_Xsec_Born->SetFillStyle(3345);
+  Powheg_Xsec_Born->SetFillStyle(3353);
 
   RatioPowhegStatErrBand->SetFillColor(kRed-10);
   RatioPowhegStatErrBand->SetFillStyle(3001);
@@ -553,7 +553,7 @@ int theoryStudy_separate(const TString BaseName)
   
   //FEWZ
   FEWZ_Xsec->SetFillColor(kGreen);
-  FEWZ_Xsec->SetFillStyle(3444);
+  FEWZ_Xsec->SetFillStyle(3345);
   
   RatioFEWZStatErrBand->SetFillColor(kGreen);
   RatioFEWZStatErrBand->SetFillStyle(3001);
@@ -567,7 +567,7 @@ int theoryStudy_separate(const TString BaseName)
   
   //ResBos
   Resb30_CentralXsec->SetFillColor(kBlue);
-  Resb30_CentralXsec->SetFillStyle(3354);
+  Resb30_CentralXsec->SetFillStyle(3444);
  
   RatioResbosErrBand->SetFillColor(kBlue-7);
   RatioResbosErrBand->SetFillStyle(3001);
@@ -770,7 +770,7 @@ int theoryStudy_separate(const TString BaseName)
   TCanvas *Cnew = new TCanvas("NewCanvas","NewCanvas",800,900);
   //Cnew->Divide(1,3,0,0);
   Cnew->Divide(1,2,0,0);
-  Cnew->cd(1)->SetPad(0,0.26,0.95,1.0);
+  Cnew->cd(1)->SetPad(0,0.50,0.95,0.95);
   Cnew->cd(1)->SetTopMargin(0.05);
   Cnew->cd(1)->SetLeftMargin(0.15);
   Cnew->cd(1)->SetRightMargin(0.07);
@@ -779,42 +779,60 @@ int theoryStudy_separate(const TString BaseName)
   Cnew->cd(1)->SetLogx();
   Cnew->cd(1)->SetLogy();
   gStyle->SetLineWidth(2.);
-  
-  Powheg_Xsec_Born->GetXaxis()->SetLabelSize(0.);
-  Powheg_Xsec_Born->GetXaxis()->SetTitle("");
+ 
+  TGraphErrors* Data_Xsec_Born_New = (TGraphErrors*)Data_Xsec_Born->Clone("Data_Xsec_Born_New");
+  TGraphErrors* Powheg_Xsec_Born_New = (TGraphErrors*)Powheg_Xsec_Born->Clone("Powheg_Xsec_Born_New");
+  TGraphErrors* FEWZ_Xsec_New = (TGraphErrors*)FEWZ_Xsec->Clone("FEWZ_Xsec_New");
+  TGraphErrors* Resb30_CentralXsec_New = (TGraphErrors*)Resb30_CentralXsec->Clone("Resb30_CentralXsec_New");
+
+  Powheg_Xsec_Born_New->GetXaxis()->SetLabelSize(0.);
+  Powheg_Xsec_Born_New->GetXaxis()->SetTitle("");
+  Powheg_Xsec_Born_New->GetYaxis()->SetTitleSize(0.08);
+  Powheg_Xsec_Born_New->GetYaxis()->SetTitleOffset(0.55);
+
+  TPaveText *cmspre_New = new TPaveText(0.6,0.95,0.95,1.1,"NDC");
+  cmspre_New->SetBorderSize(0);
+  cmspre_New->SetFillStyle(0);
+  cmspre_New->AddText("CMS preliminary");
+
+  TLegend *lL_New =new TLegend(0.2,0.1,0.52,0.38); lL_New->SetFillColor(0); lL_New->SetBorderSize(0);
+  lL_New->AddEntry(Data_Xsec_Born,"data","PL");
+  lL_New->AddEntry(Powheg_Xsec_Born,"POWHEG CT10 NLO","f");
+  lL_New->AddEntry(FEWZ_Xsec,"FEWZ CT10 NNLO","f");
+  lL_New->AddEntry(Resb30_CentralXsec,"ResBos CT10 NNLL","f");
 
   //Draw Original Diff-Xsec Distribution
-  Powheg_Xsec_Born->Draw("A2");
-  FEWZ_Xsec->Draw("2");
-  Resb30_CentralXsec->Draw("2");
-  Data_Xsec_Born->Draw("p");
+  Powheg_Xsec_Born_New->Draw("A2");
+  FEWZ_Xsec_New->Draw("2");
+  Resb30_CentralXsec_New->Draw("2");
+  Data_Xsec_Born_New->Draw("p");
   
-  lL->Draw();
+  lL_New->Draw();
   tb->Draw();
-  cmspre->Draw();
+  cmspre_New->Draw();
   
   // Draw new style ratio pad2 (Theory / Data)
-  Cnew->cd(2)->SetPad(0,0.05,0.95,0.24);
+  Cnew->cd(2)->SetPad(0,0.05,0.95,0.45);
   Cnew->cd(2)->SetBottomMargin(0.1);
   Cnew->cd(2)->SetLeftMargin(0.15);
   Cnew->cd(2)->SetRightMargin(0.07);
   Cnew->cd(2)->SetTickx(1);
   Cnew->cd(2)->SetTicky(1);
   Cnew->cd(2)->SetLogx();
-  //gStyle->SetLineWidth(2.);
+  gStyle->SetLineWidth(2.);
 
   // set canvas
   TH1D *hRatioDummy2 = new TH1D("hRatioDummy2","",nBins-1,WptLogBins);
-  hRatioDummy2->GetYaxis()->SetRangeUser(0.5,1.5);
-  hRatioDummy2->GetYaxis()->SetTitle("Theory/Data");
+  hRatioDummy2->GetYaxis()->SetRangeUser(0.6,1.5);
+  hRatioDummy2->GetYaxis()->SetTitle("Theory / Data");
   hRatioDummy2->GetYaxis()->CenterTitle();
   hRatioDummy2->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
-  hRatioDummy2->GetYaxis()->SetTitleSize(0.12);
-  hRatioDummy2->GetYaxis()->SetLabelSize(0.12);
-  hRatioDummy2->GetYaxis()->SetTitleOffset(0.36);
+  hRatioDummy2->GetYaxis()->SetTitleSize(0.08);
+  hRatioDummy2->GetYaxis()->SetLabelSize(0.05);
+  hRatioDummy2->GetYaxis()->SetTitleOffset(0.56);
   hRatioDummy2->GetYaxis()->SetNdivisions(405);
-  hRatioDummy2->GetXaxis()->SetTitleSize(0.12);
-  hRatioDummy2->GetXaxis()->SetLabelSize(0.12);
+  hRatioDummy2->GetXaxis()->SetTitleSize(0.05);
+  hRatioDummy2->GetXaxis()->SetLabelSize(0.07);
 
   TGraphErrors* DataRatio = new TGraphErrors(hRatioDataTotalErr);
   TGraphErrors* PowhegRatio = new TGraphErrors(hRatioPowhegTotalErrBand);
@@ -827,14 +845,16 @@ int theoryStudy_separate(const TString BaseName)
   DataRatio->SetFillStyle(3001);
 
   PowhegRatio->SetFillColor(kRed);
-  PowhegRatio->SetFillStyle(3002);
+  //PowhegRatio->SetFillStyle(3002);
+  PowhegRatio->SetFillStyle(3004);
   PowhegRatio->SetMarkerStyle(22); // triangle style
   PowhegRatio->SetMarkerColor(kRed+2);
   PowhegRatio->SetMarkerSize(1.0);
   PowhegRatio->SetLineColor(kRed);
 
   FEWZRatio->SetFillColor(kGreen);
-  FEWZRatio->SetFillStyle(3002);
+  //FEWZRatio->SetFillStyle(3002);
+  FEWZRatio->SetFillStyle(3005);
   FEWZRatio->SetMarkerStyle(21); // square
   FEWZRatio->SetMarkerColor(kGreen+2);
   FEWZRatio->SetMarkerSize(1.0);
