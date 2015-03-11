@@ -1,0 +1,45 @@
+WpToMu
+Powheg Xsec : 1369 +- 3.27298354 +- 58.41186189  TotalUncer : 58.50348734
+Powheg Xsec : 808 +- 2.51533589 +- 33.52084896  TotalUncer : 33.61508932
+Powheg Xsec : 484 +- 1.94646116 +- 19.95209347  TotalUncer : 20.04681383
+Powheg Xsec : 390 +- 1.74758870 +- 16.08721209  TotalUncer : 16.18185586
+Powheg Xsec : 227 +- 1.33183458 +- 9.36375162  TotalUncer : 9.45799280
+Powheg Xsec : 232 +- 1.34886129 +- 9.59075518  TotalUncer : 9.68514386
+Powheg Xsec : 132 +- 1.01628152 +- 5.46678489  TotalUncer : 5.56044649
+Powheg Xsec : 130 +- 1.00914284 +- 6.86824759  TotalUncer : 6.94198777
+Powheg Xsec : 78 +- 0.78123964 +- 3.29212085  TotalUncer : 3.38354770
+Powheg Xsec : 19 +- 0.38241702 +- 0.82694158  TotalUncer : 0.91108460
+Powheg Xsec : 6 +- 0.21564127 +- 0.28629232  TotalUncer : 0.35841938
+Powheg Xsec : 3 +- 0.15556416 +- 0.15690766  TotalUncer : 0.22095299
+Powheg Xsec : 2 +- 0.10958195 +- 0.09333752  TotalUncer : 0.14394477
+
+WmToMu
+Powheg Xsec : 888 +- 1.52662233 +- 39.05985582  TotalUncer : 39.08967783
+Powheg Xsec : 541 +- 1.19211172 +- 23.73658560  TotalUncer : 23.76650219
+Powheg Xsec : 331 +- 0.93220582 +- 14.65040947  TotalUncer : 14.68003764
+Powheg Xsec : 266 +- 0.83546001 +- 11.81517407  TotalUncer : 11.84467525
+Powheg Xsec : 161 +- 0.64957362 +- 7.15367309  TotalUncer : 7.18310410
+Powheg Xsec : 165 +- 0.65855708 +- 7.48671822  TotalUncer : 7.51562686
+Powheg Xsec : 95 +- 0.49809523 +- 7.36357053  TotalUncer : 7.38039768
+Powheg Xsec : 92 +- 0.49236117 +- 5.70743629  TotalUncer : 5.72863409
+Powheg Xsec : 55 +- 0.37975860 +- 2.53898372  TotalUncer : 2.56722709
+Powheg Xsec : 13 +- 0.18519338 +- 0.56565748  TotalUncer : 0.59520162
+Powheg Xsec : 4 +- 0.10644767 +- 0.19737324  TotalUncer : 0.22424831
+Powheg Xsec : 2 +- 0.07303916 +- 0.10170219  TotalUncer : 0.12521204
+Powheg Xsec : 1 +- 0.04904537 +- 0.04827685  TotalUncer : 0.06881934
+
+WinclToMu
+hPowheg_Xsec_BornLinScale : 2256.32	 StatErr : 3.15027	 PDFErr : 97.4768 	 TotalErr : 97.5277
+hPowheg_Xsec_BornLinScale : 1349.63	 StatErr : 2.42613	 PDFErr : 57.2644 	 TotalErr : 57.3157
+hPowheg_Xsec_BornLinScale : 815.047	 StatErr : 1.88016	 PDFErr : 34.6089 	 TotalErr : 34.66
+hPowheg_Xsec_BornLinScale : 656.05	 StatErr : 1.68763	 PDFErr : 27.908 	 TotalErr : 27.959
+hPowheg_Xsec_BornLinScale : 387.336	 StatErr : 1.2899	 PDFErr : 16.5204 	 TotalErr : 16.5707
+hPowheg_Xsec_BornLinScale : 397.644	 StatErr : 1.30659	 PDFErr : 17.0816 	 TotalErr : 17.1315
+hPowheg_Xsec_BornLinScale : 226.454	 StatErr : 0.985011	 PDFErr : 12.8592 	 TotalErr : 12.8969
+hPowheg_Xsec_BornLinScale : 222.443	 StatErr : 0.977417	 PDFErr : 12.5856 	 TotalErr : 12.6235
+hPowheg_Xsec_BornLinScale : 132.908	 StatErr : 0.756258	 PDFErr : 5.83449 	 TotalErr : 5.88329
+hPowheg_Xsec_BornLinScale : 31.7474	 StatErr : 0.369982	 PDFErr : 1.39237 	 TotalErr : 1.44069
+hPowheg_Xsec_BornLinScale : 10.257	 StatErr : 0.209239	 PDFErr : 0.483456 	 TotalErr : 0.526793
+hPowheg_Xsec_BornLinScale : 5.12379	 StatErr : 0.149859	 PDFErr : 0.258579 	 TotalErr : 0.298866
+hPowheg_Xsec_BornLinScale : 2.45039	 StatErr : 0.104963	 PDFErr : 0.14144 	 TotalErr : 0.176132
+

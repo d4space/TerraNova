@@ -1,0 +1,20 @@
+
+
+
+
+
+
+WinclToMu
+FEWZ Xsec : 2364.16	 PDF Err : 200.989	 Scale Err : 115.843	 TotalUcer : 231.983
+FEWZ Xsec : 1348.76	 PDF Err : 88.7892	 Scale Err : 3.628	 TotalUcer : 88.8633
+FEWZ Xsec : 770.279	 PDF Err : 47.6332	 Scale Err : 13.616	 TotalUcer : 49.5411
+FEWZ Xsec : 583.876	 PDF Err : 34.1723	 Scale Err : 17.465	 TotalUcer : 38.3767
+FEWZ Xsec : 350.151	 PDF Err : 19.2697	 Scale Err : 14.094	 TotalUcer : 23.8739
+FEWZ Xsec : 359.439	 PDF Err : 18.4288	 Scale Err : 16.97	 TotalUcer : 25.052
+FEWZ Xsec : 206.015	 PDF Err : 9.54496	 Scale Err : 10.9147	 TotalUcer : 14.4995
+FEWZ Xsec : 205.64	 PDF Err : 8.19532	 Scale Err : 12.6114	 TotalUcer : 15.0403
+FEWZ Xsec : 130.124	 PDF Err : 3.76826	 Scale Err : 9.3662	 TotalUcer : 10.0958
+FEWZ Xsec : 33.8691	 PDF Err : 0.618976	 Scale Err : 2.8385	 TotalUcer : 2.9052
+FEWZ Xsec : 10.8373	 PDF Err : 0.234595	 Scale Err : 0.8623	 TotalUcer : 0.893642
+FEWZ Xsec : 5.4068	 PDF Err : 0.172409	 Scale Err : 0.68576	 TotalUcer : 0.707101
+FEWZ Xsec : 2.52383	 PDF Err : 0.136048	 Scale Err : 0.325762	 TotalUcer : 0.35303
