@@ -1,0 +1,19 @@
+Theory Normalization
+
+To run the Code, please see MACRO.
+
+1. MakeRoot_WpT_FEWZ.C
+This code makes WpToMuNu_FEWZ.root and WmToMuNu_FEWZ.root file in ./root folder.
+The Normalized Differential Cross-section and its error (by using toy method) is saved in root files.
+We make W-/W+ plots by using these root files.
+
+2. MakeRoot_WpTincl_FEWZ.C
+This code makes WinclMuNu_FEWZ.root file in ./root filder.
+The inclusive Normalized Differential Cross-section and its error (by using toy method) is saved in root files.
+We use this root file to make Z/W ratio plot.
+
+3. MakeRoot_ZpT_FEWZ.C
+This code makes ZToMuMu_FEWZ.root file in ./root filder.
+The inclusive Normalized Differential Cross-section and its error (by using toy method) is saved in root files.
+We use this root file to make Z/W ratio plot.
+
