@@ -1,0 +1,7 @@
+===For Powheg===
+root -l MakeRoot_WpT_Powheg.C\(\"WpToMuNu\"\)
+root -l MakeRoot_WpT_Powheg.C\(\"WmToMuNu\"\)
+
+
+root -l MakeRoot_InclWpT_Powheg.C\(\"InclWToMuNu\"\)
+
