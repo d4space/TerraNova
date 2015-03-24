@@ -1,0 +1,93 @@
+ CMS collision Energy =    8000.00000000000     
+ Collider type = pp
+ ======================================
+ Factorization scale                =    91.1876000000000     
+ Renormalization scale              =    91.1876000000000     
+ ==================================
+ NNLO QCD + NLO EW Cross-Section
+ ======================================
+ EW input parameters: Gmu scheme
+ Fermi constant (1/GeV^2)           =   1.166370000000000E-005
+ ======================================
+ Lepton mass (GeV)                  =   0.105000000000000     
+ W mass (GeV)                       =    80.4030000000000     
+ W width (GeV)                      =    2.14100000000000     
+ Z mass (GeV)                       =    91.1876000000000     
+ Z width (GeV)                      =    2.49520000000000     
+ Top mass (GeV)                     =    172.900000000000     
+ Higgs mass (GeV)                   =    125.000000000000     
+ ======================================
+ Strong coupling                    =   0.118000270605034     
+ PDF set = CTEQ12NNLO                                                  
+ ======================================
+ Z pole focus ON
+ ======================================
+ Lepton-pair invariant mass minimum =    60.0000000000000     
+ Lepton-pair invariant mass maximum =    120.000000000000     
+ Transverse mass minimum            =    0.00000000000000     
+ Transverse mass maximum            =    8000.00000000000     
+ Z pT minimum                       =    0.00000000000000     
+ Z pT maximum                       =    8000.00000000000     
+ Z rapidity minimum                 =   -2000.00000000000     
+ Z rapidity maximum                 =    2000.00000000000     
+ Lepton pT minimum                  =    20.0000000000000     
+ Lepton pT maximum                  =    8000.00000000000     
+ Anti-lepton pT minimum             =    20.0000000000000     
+ Anti-lepton pT maximum             =    8000.00000000000     
+ Lepton eta absolute value?         =   T
+ Lepton pseudorapidity minimum      =    0.00000000000000     
+ Lepton pseudorapidity maximum      =    2.10000000000000     
+ Anti-lepton eta absolute value?    =   T
+ Anti-lepton pseudorapidity minimum =    0.00000000000000     
+ Anti-lepton pseudorapidity maximum =    2.10000000000000     
+ ======================================
+ Photon Recombination Cone Size     =     0.100000000000000     
+ Minimum pT for Observable Photon   =    0.00000000000000     
+ Maximum eta for Observable Photon  =    2.50000000000000     
+ Minimum Number of Photon           =             0
+ Maximum Number of Photon           =             2
+ ======================================
+ Jet merging algorithm              =   ktal
+ Jet algorithm cone size (deltaR)   =   0.400000000000000     
+ parton-parton Rsep (cone algo only)=    1.30000000000000     
+ Minimum pT for Observable Jets     =    20.0000000000000     
+ Maximum eta for Observable Jets    =    4.50000000000000     
+ Minimum Number of Jets             =             0
+ Maximum Number of Jets             =             2
+ Leading jet pT minimum             =    0.00000000000000     
+ ======================================
+ Lep-Anti-lep deltaR minimum        =    0.00000000000000     
+ Lep-Anti-lep deltaPhi minimum      =    0.00000000000000     
+ Lep-Anti-lep deltaPhi maximum      =    4.00000000000000     
+ Lep-Jet deltaR minimum             =    0.00000000000000     
+ Lep-Photon deltaR minimum          =    0.00000000000000     
+ ======================================
+ Rapidity of Z cutoff for CS angles =    0.00000000000000     
+ 
+ ===========   VEGAS PARAMETERS   ========
+ 
+ Maximum number of evaluations      =   1500000000
+ Actual number of evaluations       =     59500000
+ Requested relative precision (%)   =    0.00000000000000     
+ Requested absolute precision       =    1.00000000000000     
+ Total integration time (sec)       =    132000.000000000     
+ Random number seed                 =          791
+ 
+ ===========   RESULT    =================
+ 
+ Sigma (pb)                  =    444.67
+ Integration Error (pb)      =    0.92358
+ PDF Error (pb)              +       30.4671
+                             -       18.5555
+ 
+ ===========   HISTOGRAMS    =================
+      bin           weight    numerical error       + pdf error       - pdf error
+
+  ----   Z/W pT         ----
+
+     3.75           138.274          0.991013           14.0653           10.0929
+    10.00           103.757          0.347511           7.32285           3.83243
+    15.00           59.4709          0.197072            3.8426           1.92563
+    23.75           68.4585          0.139355            4.1238           1.90581
+    35.00           26.5977         0.0763465           1.42682          0.605502
+    45.00           15.9503         0.0709948           0.77231          0.310734

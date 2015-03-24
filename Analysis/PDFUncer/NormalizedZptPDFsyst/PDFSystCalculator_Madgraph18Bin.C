@@ -30,8 +30,10 @@
 
 const int nptBins = 18;
 const double xbins_pt[nptBins+1] = {0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 30, 40, 50, 70, 90, 110, 150, 190, 250, 600};
+//const int nptBins = 12;
+//const double xbins_pt[nptBins+1] = {0.0, 7.5, 12.5, 17.5, 30, 40, 50, 70, 110, 150, 190, 250, 600};
 
-void PDFSystCalculator()
+void PDFSystCalculator_Madgraph18Bin()
 {
   typedef std::pair<double,double> pairOfDouble;
   set<pairOfDouble> uniqueEventsTrue;
@@ -47,6 +49,9 @@ void PDFSystCalculator()
   //variable related PDF systematic uncertainty
   double weightedSelectedEvents[18][53];
   double weighted2SelectedEvents[18][53];
+ // double weightedSelectedEvents[12][53];
+ // double weighted2SelectedEvents[12][53];
+  
   double events_central[nptBins] = {0.0};
   double events2_central[nptBins] = {0.0};
   double wa[nptBins] = {0.0};
@@ -54,12 +59,19 @@ void PDFSystCalculator()
   double wplus[nptBins] = {0.0};
   double wminus[nptBins] = {0.0};
 
+  char tmpName[30];
+
 
   // read input root file
   TChain* tree = new TChain("tree");
-  tree->AddFile("DYJetsToLL_nocut_1.root");  // Madgraph Ntuple
-  tree->AddFile("DYJetsToLL_nocut_2.root");  // Madgraph Ntuple
-  tree->AddFile("DYJetsToLL_nocut_3.root");  // Madgraph Ntuple
+  //for(int i(1);i<95;i++)
+  for(int i(1);i<3;i++)
+  {
+    //sprintf(tmpName,"DYJetsToLL_%d.root",i);
+    //sprintf(tmpName,"/d1/scratch/sangilpark/Zpt/CMSSW_5_3_14_patch1/src/TerraNova/NtupleMaker/test/ZpT_Powheg_LowPU/DYJetsToLL_%d.root",i);
+    sprintf(tmpName,"/d2/scratch/Storage_Area/ZpT8TeV_Madgraph_LowPU/DYJetsToLL_nocut_%d.root",i);
+    tree->AddFile(tmpName);  // Powheg Ntuple
+  }
 
   TH1D* hPtMCTot = new TH1D("hPtMCTot", "", nptBins, xbins_pt); // no cut
   TH1D* hPtMCAcc = new TH1D("hPtMCAcc", "", nptBins, xbins_pt); // acc.cuts
@@ -153,19 +165,37 @@ void PDFSystCalculator()
     }
   }
 
-  // Calculate PDF syst
+  double weightedSelectedEventsCentTot=0;
+  for(int iBin(0);iBin<nptBins;iBin++)
+  {
+     weightedSelectedEventsCentTot += weightedSelectedEvents[iBin][0];
+  }
+    // Calculate PDF syst
   for(int iBin(0);iBin<nptBins;iBin++)
   {
     unsigned int nmembers = weights_CT10->size();
     unsigned int npairs = (nmembers-1)/2;
-    events_central[iBin] = weightedSelectedEvents[iBin][0];
+ 
+    events_central[iBin] = weightedSelectedEvents[iBin][0]/weightedSelectedEventsCentTot/(xbins_pt[iBin+1]-xbins_pt[iBin]);
     events2_central[iBin] = weighted2SelectedEvents[iBin][0];
     if(npairs>0){
       for (unsigned int j=0; j<npairs; ++j)
       {
+	double weightedSelectedEventsXPlusTot=0;
+	double weightedSelectedEventsXMinusTot=0;
+	for(int iBin(0);iBin<nptBins;iBin++)
+	{
+	  weightedSelectedEventsXPlusTot += weightedSelectedEvents[iBin][2*j+1];
+	  weightedSelectedEventsXMinusTot += weightedSelectedEvents[iBin][2*j+2];
+	}
+
 	//cout << "events central : " << events_central[iBin] << endl;
-	wa[iBin] = weightedSelectedEvents[iBin][2*j+1]/events_central[iBin]-1.;
-	wb[iBin] = weightedSelectedEvents[iBin][2*j+2]/events_central[iBin]-1.;
+	//wa[iBin] = weightedSelectedEvents[iBin][2*j+1]/events_central[iBin]-1.;
+	//wb[iBin] = weightedSelectedEvents[iBin][2*j+2]/events_central[iBin]-1.;
+	
+	wa[iBin] = (weightedSelectedEvents[iBin][2*j+1]/weightedSelectedEventsXPlusTot/(xbins_pt[iBin+1]-xbins_pt[iBin]))/events_central[iBin]-1.;
+	wb[iBin] = (weightedSelectedEvents[iBin][2*j+2]/weightedSelectedEventsXMinusTot/(xbins_pt[iBin+1]-xbins_pt[iBin]))/events_central[iBin]-1.;
+	
 	if (wa[iBin]>wb[iBin]){
 	  if (wa[iBin]<0.) wa[iBin] = 0.;
 	  if (wb[iBin]>0.) wb[iBin] = 0.;
@@ -183,7 +213,8 @@ void PDFSystCalculator()
     }else{
       cout << "\tNO eigenvectors for uncertainty estimation" << endl;
     }
-    cout <<iBin+1<<" Bin: Relative uncertainty with respect to central member: +" << 100.*wplus[iBin] << " / -" <<  100.*wminus[iBin] << " [%]" << endl;
+    //cout <<iBin+1<<" Bin: Relative uncertainty with respect to central member: +" << 100.*wplus[iBin] << " / -" <<  100.*wminus[iBin] << " [%]" << endl;
+    cout <<iBin+1<<" + " << 100.*wplus[iBin] << " / -" <<  100.*wminus[iBin] << " [%]" << endl;
   }
 
   for(int i(0); i<nptBins; i++)
@@ -191,7 +222,7 @@ void PDFSystCalculator()
     cout << i+1 << " bin Events number : " << hPtMCAcc->GetBinContent(i+1) << endl;
   }
 
-  TFile* Hist_out = new TFile("preFSR_Madgraph.root","recreate");
+  TFile* Hist_out = new TFile("ZptPreFSR_Madgraph18Bin.root","recreate");
 
   hPtMCTot->Write();
   hPtMCAcc->Write();

@@ -1,0 +1,272 @@
+ CMS collision Energy =    8000.00000000000     
+ Collider type = pp, W+ mode
+ ======================================
+ Factorization scale                =    94.6800000000000     
+ Renormalization scale              =    94.6800000000000     
+ ==================================
+ NNLO Cross-Section
+ ======================================
+ Alpha QED                          =   7.812500000000000E-003
+ ======================================
+ W mass (GeV)                       =    80.4030000000000     
+ W width (GeV)                      =    2.14100000000000     
+ W->lv partial width                =   0.226300000000000     
+ sin^2(theta)                       =   0.222550000000000     
+ Vud                                =   0.974280000000000     
+ Vus=Vcd                            =   0.225300000000000     
+ Vcs                                =   0.973450000000000     
+ Vub                                =   3.470000000000000E-003
+ Vcb                                =   4.100000000000000E-002
+ ======================================
+ Strong coupling                    =   0.117334118486289     
+ PDF set = CTEQ12NNLO                                                  
+ ======================================
+ W pole focus ON
+ ======================================
+ Lepton-pair invariant mass minimum =    0.00000000000000     
+ Lepton-pair invariant mass maximum =    4000.00000000000     
+ Transverse mass minimum            =    0.00000000000000     
+ Transverse mass maximum            =    4000.00000000000     
+ W pT minimum                       =    0.00000000000000     
+ W pT maximum                       =    4000.00000000000     
+ W rapidity minimum                 =   -20.0000000000000     
+ W rapidity maximum                 =    20.0000000000000     
+ Charged lepton pT minimum          =    20.0000000000000     
+ Charged lepton pT maximum          =    4000.00000000000     
+ Missing pT minimum                 =    0.00000000000000     
+ Missing pT maximum                 =    4000.00000000000     
+ Lepton eta absolute value?         =   T
+ Lepton pseudorapidity minimum      =    0.00000000000000     
+ Lepton pseudorapidity maximum      =    2.10000000000000     
+ ======================================
+ Jet merging algorithm              =   ktal
+ Jet algorithm cone size (deltaR)   =   0.400000000000000     
+ parton-parton Rsep (cone algo only)=    1.30000000000000     
+ Minimum pT for Observable Jets     =    20.0000000000000     
+ Maximum eta for Observable Jets    =    4.50000000000000     
+ Minimum Number of Jets             =             0
+ Maximum Number of Jets             =             2
+ Leading jet pT minimum             =    0.00000000000000     
+ ======================================
+ Lep-neutrino deltaPhi minimum      =    0.00000000000000     
+ Lep-neutrino deltaPhi maximum      =    4.00000000000000     
+ Lep-Jet deltaR minimum             =    0.00000000000000     
+ ======================================
+ 
+ ===========   VEGAS PARAMETERS   ========
+ 
+ Maximum number of evaluations      =     15000000
+ Actual number of evaluations       =     17500000
+ Requested relative precision (%)   =    0.00000000000000     
+ Requested absolute precision       =    10.0000000000000     
+ Total integration time (sec)       =    160.000000000000     
+ Random number seed                 =          889
+ 
+ ===========   RESULT    =================
+ 
+ Sigma (pb)                  =    3886.31     
+ Error (pb)                  =   11.2713     
+ 
+ Sigma (pb)                  =    3788.12     
+ Error (pb)                  =   11.1135     
+ 
+ Sigma (pb)                  =    3799.78     
+ Error (pb)                  =   11.1054     
+ 
+ Sigma (pb)                  =    3887.07     
+ Error (pb)                  =   11.3056     
+ 
+ Sigma (pb)                  =    3851.89     
+ Error (pb)                  =   11.2016     
+ 
+ Sigma (pb)                  =    3829.31     
+ Error (pb)                  =   11.1959     
+ 
+ Sigma (pb)                  =    3795.02     
+ Error (pb)                  =   11.0983     
+ 
+ Sigma (pb)                  =    3883.74     
+ Error (pb)                  =   11.2949     
+ 
+ Sigma (pb)                  =    3840.05     
+ Error (pb)                  =   11.1941     
+ 
+ Sigma (pb)                  =    3839.19     
+ Error (pb)                  =   11.198     
+ 
+ Sigma (pb)                  =    3746.86     
+ Error (pb)                  =   10.9384     
+ 
+ Sigma (pb)                  =    3910.34     
+ Error (pb)                  =   11.399     
+ 
+ Sigma (pb)                  =    3854.4     
+ Error (pb)                  =   11.2154     
+ 
+ Sigma (pb)                  =    3825.26     
+ Error (pb)                  =   11.1777     
+ 
+ Sigma (pb)                  =    3812     
+ Error (pb)                  =   11.1854     
+ 
+ Sigma (pb)                  =    3898.17     
+ Error (pb)                  =   11.2661     
+ 
+ Sigma (pb)                  =    3831     
+ Error (pb)                  =   11.1576     
+ 
+ Sigma (pb)                  =    3840.3     
+ Error (pb)                  =   11.2153     
+ 
+ Sigma (pb)                  =    3908.42     
+ Error (pb)                  =   11.3621     
+ 
+ Sigma (pb)                  =    3824.84     
+ Error (pb)                  =   11.155     
+ 
+ Sigma (pb)                  =    3872.67     
+ Error (pb)                  =   11.2709     
+ 
+ Sigma (pb)                  =    3900.93     
+ Error (pb)                  =   11.342     
+ 
+ Sigma (pb)                  =    3848.18     
+ Error (pb)                  =   11.2255     
+ 
+ Sigma (pb)                  =    3830.71     
+ Error (pb)                  =   11.1722     
+ 
+ Sigma (pb)                  =    3820.97     
+ Error (pb)                  =   11.1646     
+ 
+ Sigma (pb)                  =    3845.58     
+ Error (pb)                  =   11.2076     
+ 
+ Sigma (pb)                  =    3830.05     
+ Error (pb)                  =   11.1723     
+ 
+ Sigma (pb)                  =    3854.46     
+ Error (pb)                  =   11.2352     
+ 
+ Sigma (pb)                  =    3868.45     
+ Error (pb)                  =   11.2198     
+ 
+ Sigma (pb)                  =    3897.53     
+ Error (pb)                  =   11.3723     
+ 
+ Sigma (pb)                  =    3913.61     
+ Error (pb)                  =   11.3587     
+ 
+ Sigma (pb)                  =    3918.58     
+ Error (pb)                  =   11.384     
+ 
+ Sigma (pb)                  =    3842.49     
+ Error (pb)                  =   11.2162     
+ 
+ Sigma (pb)                  =    3838.12     
+ Error (pb)                  =   11.1852     
+ 
+ Sigma (pb)                  =    3881.45     
+ Error (pb)                  =   11.3169     
+ 
+ Sigma (pb)                  =    3891.97     
+ Error (pb)                  =   11.2928     
+ 
+ Sigma (pb)                  =    3833.55     
+ Error (pb)                  =   11.1533     
+ 
+ Sigma (pb)                  =    3843.82     
+ Error (pb)                  =   11.2377     
+ 
+ Sigma (pb)                  =    3885.56     
+ Error (pb)                  =   11.3179     
+ 
+ Sigma (pb)                  =    3924.21     
+ Error (pb)                  =   11.3695     
+ 
+ Sigma (pb)                  =    3941.61     
+ Error (pb)                  =   11.4291     
+ 
+ Sigma (pb)                  =    3846.34     
+ Error (pb)                  =   11.2033     
+ 
+ Sigma (pb)                  =    3906.76     
+ Error (pb)                  =   11.3015     
+ 
+ Sigma (pb)                  =    3862.07     
+ Error (pb)                  =   11.2553     
+ 
+ Sigma (pb)                  =    3843.84     
+ Error (pb)                  =   11.2032     
+ 
+ Sigma (pb)                  =    3836.93     
+ Error (pb)                  =   11.1937     
+ 
+ Sigma (pb)                  =    3825.69     
+ Error (pb)                  =   11.169     
+ 
+ Sigma (pb)                  =    3835.02     
+ Error (pb)                  =   11.1771     
+ 
+ Sigma (pb)                  =    3768.1     
+ Error (pb)                  =   10.996     
+ 
+ Sigma (pb)                  =    3841.05     
+ Error (pb)                  =   11.1639     
+ 
+ 
+ ===========   HISTOGRAMS    =================
+      bin           weight    numerical error
+
+  ----   Z/W pT         ----
+
+    60.00           122.497          0.852523
+    60.00           121.072          0.844079
+    60.00           121.554           0.84734
+    60.00           122.126          0.849794
+    60.00           121.759          0.847399
+    60.00           121.862          0.849372
+    60.00           121.084           0.84414
+    60.00            122.58          0.853058
+    60.00           121.825          0.848445
+    60.00           121.817           0.84852
+    60.00           120.575          0.842772
+    60.00           122.689          0.852154
+    60.00           121.659          0.847225
+    60.00           121.946          0.849521
+    60.00           121.263          0.845353
+    60.00           122.893           0.85512
+    60.00           122.034          0.854664
+    60.00           121.639          0.844874
+    60.00           123.585          0.861451
+    60.00           121.068          0.842706
+    60.00           121.811          0.847435
+    60.00           123.534          0.861408
+    60.00           121.844          0.850181
+    60.00           121.739          0.847226
+    60.00            121.81          0.849658
+    60.00           121.815          0.847741
+    60.00           121.683          0.848113
+    60.00            122.03          0.849021
+    60.00           121.771          0.847665
+    60.00           123.581          0.861316
+    60.00           123.583           0.86212
+    60.00           123.105          0.856422
+    60.00           121.751          0.847922
+    60.00           121.877          0.848959
+    60.00            122.34           0.84996
+    60.00           123.205          0.860896
+    60.00           121.668          0.847007
+    60.00           121.931          0.849745
+    60.00           122.863          0.858108
+    60.00           123.292          0.856486
+    60.00           123.652          0.859151
+    60.00           121.952          0.851685
+    60.00           123.093          0.857328
+    60.00           121.891          0.848953
+    60.00            121.86          0.849906
+    60.00             121.8          0.847229
+    60.00           121.561          0.848301
+    60.00           121.669          0.845115
+    60.00           120.982           0.84419
+    60.00           121.715          0.848064
