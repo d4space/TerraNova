@@ -14,6 +14,9 @@
 
 using namespace std;
 
+void FEWZ_PDFUncer(double *WmWpRatio, double *Err);
+void Powheg_PDFUncer(double *WmWpRatio, double *Err);
+
 //int WMinusWplusRatio()
 int WMinusWplusRatio_logScale()
 {
@@ -406,8 +409,8 @@ int WMinusWplusRatio_logScale()
  
   double WmToMu_Powheg[12]={0};
   double WpToMu_Powheg[12]={0};
-  double WmToMuErr_Powheg[12]={0};
-  double WpToMuErr_Powheg[12]={0};
+  double WmToMuStatErr_Powheg[12]={0};
+  double WpToMuStatErr_Powheg[12]={0};
  
   double WmToMu_Resbos[12]={0};
   double WpToMu_Resbos[12]={0};
@@ -416,8 +419,8 @@ int WMinusWplusRatio_logScale()
  
   double WmToMu_FEWZ[12]={0};
   double WpToMu_FEWZ[12]={0};
-  double WmToMuErr_FEWZ[12]={0};
-  double WpToMuErr_FEWZ[12]={0};
+  double WmToMuStatErr_FEWZ[12]={0};
+  double WpToMuStatErr_FEWZ[12]={0};
  
   double WmWpratio_RD[12]={0};
   double WmWpratioErr_RD_NoCorr[12]={0};
@@ -425,7 +428,9 @@ int WMinusWplusRatio_logScale()
   double WmWpratioErr_RD_Total[12]={0};
 
   double WmWpratio_Powheg[12]={0};
-  double WmWpratioErr_Powheg[12]={0};
+  double WmWpratioStatErr_Powheg[12]={0}; // Stat error by error propagation
+  double WmWpratioPDFErr_Powheg[12]={0}; // W-/W+ PDF error
+  double WmWpratioTotalErr_Powheg[12]={0}; // sqrt(StatErr^2 + PDFErr^2 + ScaleErr^2)
   
   double WmWpratio_Resbos[12]={0};
   double WmWpratioErr_Resbos[12]={0};
@@ -433,9 +438,10 @@ int WMinusWplusRatio_logScale()
   double WmWpratio_FEWZ[12]={0};
   double WmWp_Up_ratio_FEWZ[12]={0};
   double WmWp_Down_ratio_FEWZ[12]={0};
-  double WmWpratioErr_FEWZ[12]={0}; // error by error propagation
-  double WmWpratioScaleErr_FEWZ[12]={0}; // scale error
-  double WmWpratioTotalErr_FEWZ[12]={0}; // sqrt(err^2 + scaleErr^2)
+  double WmWpratioStatErr_FEWZ[12]={0}; // Stat error by error propagation
+  double WmWpratioPDFErr_FEWZ[12]={0}; // W-/W+ PDF error
+  double WmWpratioScaleErr_FEWZ[12]={0}; // W-/W+ scale error
+  double WmWpratioTotalErr_FEWZ[12]={0}; // sqrt(StatErr^2 + PDFErr^2 + ScaleErr^2)
   
   cout << fixed << setprecision(8) << endl;
   cout << " ===== Wpt minus and Wptplus Normalilzed Differntial cross-section and errors In Fiducial Volume ==="<< endl;
@@ -479,24 +485,34 @@ int WMinusWplusRatio_logScale()
 
     // FEWZ ratio error propagation
     WmToMu_FEWZ[i] = hWmToMu_FEWZ->GetBinContent(i+1);
-    WmToMuErr_FEWZ[i] = hWmToMu_FEWZ->GetBinError(i+1);
+    WmToMuStatErr_FEWZ[i] = hWmToMu_FEWZ->GetBinError(i+1);
     
     WpToMu_FEWZ[i] = hWpToMu_FEWZ->GetBinContent(i+1);
-    WpToMuErr_FEWZ[i] = hWpToMu_FEWZ->GetBinError(i+1);
+    WpToMuStatErr_FEWZ[i] = hWpToMu_FEWZ->GetBinError(i+1);
 
-    WmWpratioErr_FEWZ[i] = WmWpratio_FEWZ[i] * TMath::Sqrt((WmToMuErr_FEWZ[i]*WmToMuErr_FEWZ[i]/WmToMu_FEWZ[i]/WmToMu_FEWZ[i]) + (WpToMuErr_FEWZ[i]*WpToMuErr_FEWZ[i]/WpToMu_FEWZ[i]/WpToMu_FEWZ[i]));
+    WmWpratioStatErr_FEWZ[i] = WmWpratio_FEWZ[i] * TMath::Sqrt((WmToMuStatErr_FEWZ[i]*WmToMuStatErr_FEWZ[i]/WmToMu_FEWZ[i]/WmToMu_FEWZ[i]) + (WpToMuStatErr_FEWZ[i]*WpToMuStatErr_FEWZ[i]/WpToMu_FEWZ[i]/WpToMu_FEWZ[i])); // FEWZ Stat Error propagation
+
+    FEWZ_PDFUncer(WmWpratio_FEWZ,WmWpratioPDFErr_FEWZ);
+    cout << "WmWpratioPDFErr_FEWZ in main : " << WmWpratioPDFErr_FEWZ[i] << endl; // check PDF error number is correctly retured
  
-    WmWpratioTotalErr_FEWZ[i] = sqrt(WmWpratioErr_FEWZ[i]*WmWpratioErr_FEWZ[i] + WmWpratioScaleErr_FEWZ[i]*WmWpratioScaleErr_FEWZ[i]);
+    WmWpratioTotalErr_FEWZ[i] = sqrt(WmWpratioStatErr_FEWZ[i]*WmWpratioStatErr_FEWZ[i] +WmWpratioPDFErr_FEWZ[i]*WmWpratioPDFErr_FEWZ[i] +  WmWpratioScaleErr_FEWZ[i]*WmWpratioScaleErr_FEWZ[i]);
 
     // Powheg ratio error propagation
     WmToMu_Powheg[i] = hWmToMu_Powheg->GetBinContent(i+1);
-    WmToMuErr_Powheg[i] = hWmToMu_Powheg->GetBinError(i+1);
+    WmToMuStatErr_Powheg[i] = hWmToMu_Powheg->GetBinError(i+1);
     
     WpToMu_Powheg[i] = hWpToMu_Powheg->GetBinContent(i+1);
-    WpToMuErr_Powheg[i] = hWpToMu_Powheg->GetBinError(i+1);
+    WpToMuStatErr_Powheg[i] = hWpToMu_Powheg->GetBinError(i+1);
 
-    WmWpratioErr_Powheg[i] = WmWpratio_Powheg[i] * TMath::Sqrt((WmToMuErr_Powheg[i]*WmToMuErr_Powheg[i]/WmToMu_Powheg[i]/WmToMu_Powheg[i]) + (WpToMuErr_Powheg[i]*WpToMuErr_Powheg[i]/WpToMu_Powheg[i]/WpToMu_Powheg[i]));
+    WmWpratioStatErr_Powheg[i] = WmWpratio_Powheg[i] * TMath::Sqrt((WmToMuStatErr_Powheg[i]*WmToMuStatErr_Powheg[i]/WmToMu_Powheg[i]/WmToMu_Powheg[i]) + (WpToMuStatErr_Powheg[i]*WpToMuStatErr_Powheg[i]/WpToMu_Powheg[i]/WpToMu_Powheg[i]));
  
+    
+    Powheg_PDFUncer(WmWpratio_Powheg,WmWpratioPDFErr_Powheg);
+    cout << "WmWpratioPDFErr_Powheg in main : " << WmWpratioPDFErr_Powheg[i] << "\t in %\t"<< 100*WmWpratioPDFErr_Powheg[i]/WmWpratio_Powheg[i]<<endl; // check PDF error number is correctly retured
+    
+    ///Total powheg error calculated here
+    WmWpratioTotalErr_Powheg[i] = sqrt(WmWpratioStatErr_Powheg[i]*WmWpratioStatErr_Powheg[i] +WmWpratioPDFErr_Powheg[i]*WmWpratioPDFErr_Powheg[i]);
+  
 /* 
     // Resbos ratio error propagation
     WmToMu_Resbos[i] = hWmToMu_Resbos->GetBinContent(i+1);
@@ -511,7 +527,38 @@ int WMinusWplusRatio_logScale()
     //printf("WmWpratioErr_Powheg : %.8f\n",WmWpratioErr_Powheg[i]);
     //printf("WmWpratioErr_Resbos : %.8f\n",WmWpratioErr_Resbos[i]);
   }
+  //// Print Powheg errors
+  cout <<"=====  Print Powheg errors "<< endl;
+  cout << fixed << setprecision(2) << endl;
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWmWpratioStatErr_Powheg: " << WmWpratioStatErr_Powheg[i] <<"\t in %\t"<< 100*WmWpratioStatErr_Powheg[i]/WmWpratio_Powheg[i]<<endl; 
+  }
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWmWpratioPDFErr_Powheg : " << WmWpratioPDFErr_Powheg[i] << "\t in %\t"<< 100*WmWpratioPDFErr_Powheg[i]/WmWpratio_Powheg[i]<<endl;
+  }
+ //// Print FEWZ errors
+  cout <<"=====  Print FEWZ errors "<< endl;
 
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWmWpratioStatErr_FEWZ : " << WmWpratioStatErr_FEWZ[i] << "\t in %\t"<< 100*WmWpratioStatErr_FEWZ[i]/WmWpratio_Powheg[i]<<endl;
+  }
+
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWmWpratioPDFErr_FEWZ : " << WmWpratioPDFErr_FEWZ[i] << "\t in %\t"<< 100*WmWpratioPDFErr_FEWZ[i]/WmWpratio_Powheg[i]<<endl;
+  }
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWmWpratioScaleErr_FEWZ : " << WmWpratioScaleErr_FEWZ[i] << "\t in %\t"<< 100*WmWpratioScaleErr_FEWZ[i]/WmWpratio_Powheg[i]<<endl;
+  }
+
+
+
+
+  cout << fixed << setprecision(5) << endl;
   cout<<"Wpt minus FEWZ\t"<<"Wpt plus FEWZ"<<endl; 
   for(int i=0;i<12;i++)
   {
@@ -540,7 +587,7 @@ int WMinusWplusRatio_logScale()
     hWmWpratio_RD->SetBinError(i+1,WmWpratioErr_RD_Total[i]);
     
     hWmWpratio_Powheg->SetBinContent(i+1,WmWpratio_Powheg[i]);
-    hWmWpratio_Powheg->SetBinError(i+1,WmWpratioErr_Powheg[i]);
+    hWmWpratio_Powheg->SetBinError(i+1,WmWpratioTotalErr_Powheg[i]);
     
     //hWmWpratio_Resbos->SetBinContent(i+1,WmWpratio_Resbos[i]);
     //hWmWpratio_Resbos->SetBinError(i+1,WmWpratioErr_Resbos[i]);
@@ -561,7 +608,7 @@ int WMinusWplusRatio_logScale()
     hRatioDataTotalErr->SetBinError(i+1,WmWpratioErr_RD_Total[i] / WmWpratio_RD[i]);
     
     hRatioPowhegTotalErr->SetBinContent(i+1,WmWpratio_Powheg[i] / WmWpratio_RD[i]);
-    hRatioPowhegTotalErr->SetBinError(i+1,WmWpratioErr_Powheg[i] / WmWpratio_RD[i]);
+    hRatioPowhegTotalErr->SetBinError(i+1,WmWpratioTotalErr_Powheg[i] / WmWpratio_RD[i]);
     
     //hRatioResbosTotalErr->SetBinContent(i+1,WmWpratio_Resbos[i] / WmWpratio_RD[i]);
     //hRatioResbosTotalErr->SetBinError(i+1,WmWpratioErr_Resbos[i] / WmWpratio_RD[i]);
@@ -621,9 +668,9 @@ int WMinusWplusRatio_logScale()
   LeptonCut->AddText("p_{T}>20 Gev, |#eta |<2.1");
 
   hWmWpratio_RD->GetYaxis()->SetRangeUser(0.5,1.5);
-  hWmWpratio_RD->GetYaxis()->SetTitleOffset(1.4);
+  hWmWpratio_RD->GetYaxis()->SetTitleOffset(0.8);
   hWmWpratio_RD->GetYaxis()->SetLabelSize(0.035);
-  hWmWpratio_RD->GetYaxis()->SetTitleSize(0.045);
+  hWmWpratio_RD->GetYaxis()->SetTitleSize(0.06);
   hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{-}}} #frac{d#sigma^{W^{-}}}{p_{T}^{W^{-}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
   hWmWpratio_RD->GetXaxis()->SetTitleOffset(1.);
   hWmWpratio_RD->GetXaxis()->SetLabelSize(0.04);
@@ -745,4 +792,52 @@ int WMinusWplusRatio_logScale()
   C1->SaveAs("WmMuWpMuNormFid12Bin_logScale_New.png");
   return 0;
 }
-  
+ 
+void FEWZ_PDFUncer(double *WmWpRatio, double *Err)
+{
+  // FEWZ Normalized PDF error in % unit
+  double PDFErr[12] = {0.,};
+
+  PDFErr[0] = 1.14;  
+  PDFErr[1] = 0.36;
+  PDFErr[2] = 0.59;
+  PDFErr[3] = 0.58;
+  PDFErr[4] = 0.80;
+  PDFErr[5] = 1.06;
+  PDFErr[6] = 1.23;
+  PDFErr[7] = 1.58;
+  PDFErr[8] = 1.80;
+  PDFErr[9] = 2.52;
+  PDFErr[10] = 2.24;
+  PDFErr[11] = 3.87;
+
+  for(int i(0); i<12; i++)
+  {
+    Err[i] = WmWpRatio[i] * PDFErr[i] * 0.01;
+    cout << "PDFErr in function : " << Err[i] << endl;
+  }
+}
+void Powheg_PDFUncer(double *WmWpRatio, double *Err)
+{
+  // Powheg Normalized PDF error in % unit
+  double PDFErr[12] = {0.,};
+
+  PDFErr[0] =0.34912  ;  
+  PDFErr[1] =0.11815  ;
+  PDFErr[2] =0.12652  ;
+  PDFErr[3] =0.27171  ;
+  PDFErr[4] =0.33522  ;
+  PDFErr[5] =0.50769  ;
+  PDFErr[6] =0.61623  ;
+  PDFErr[7] =0.77008  ;
+  PDFErr[8] =0.87044  ;
+  PDFErr[9] =0.89737  ;
+  PDFErr[10]=1.14706  ;
+  PDFErr[11]=1.11763  ;
+
+  for(int i(0); i<12; i++)
+  {
+    Err[i] = WmWpRatio[i] * PDFErr[i] * 0.01;
+    cout << "PDFErr in function : " << Err[i] << endl;
+  }
+}

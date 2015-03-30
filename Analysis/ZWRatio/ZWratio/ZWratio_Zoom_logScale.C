@@ -8,6 +8,9 @@
 #include "./Utils/const.h"
 using namespace std;
 
+void FEWZ_PDFUncer(double *ZWRatio, double *Err);
+void Powheg_PDFUncer(double *ZWRatio, double *Err);
+
 int ZWratio_Zoom_logScale()
 {
   const int nBins = 13;
@@ -54,8 +57,8 @@ int ZWratio_Zoom_logScale()
  
   double Wpt_Powheg[12]={0};
   double Zpt_Powheg[12]={0};
-  double WptErr_Powheg[12]={0};
-  double ZptErr_Powheg[12]={0};
+  double WptStatErr_Powheg[12]={0};
+  double ZptStatErr_Powheg[12]={0};
  
   double Wpt_Resbos[12]={0};
   double Zpt_Resbos[12]={0};
@@ -64,14 +67,16 @@ int ZWratio_Zoom_logScale()
  
   double Wpt_FEWZ[12]={0};
   double Zpt_FEWZ[12]={0};
-  double WptErr_FEWZ[12]={0};
-  double ZptErr_FEWZ[12]={0};
+  double WptStatErr_FEWZ[12]={0};
+  double ZptStatErr_FEWZ[12]={0};
  
   double WZratio_RD[12]={0};
   double WZratioErr_RD[12]={0};
 
   double WZratio_Powheg[12]={0};
-  double WZratioErr_Powheg[12]={0};
+  double WZratioStatErr_Powheg[12]={0};
+  double WZratioPDFErr_Powheg[12]={0};
+  double WZratioTotalErr_Powheg[12]={0}; // sqrt(Stat^2 + PDF^2 + Scale^2)
   
   double WZratio_Resbos[12]={0};
   double WZratioErr_Resbos[12]={0};
@@ -79,9 +84,10 @@ int ZWratio_Zoom_logScale()
   double WZratio_FEWZ[12]={0};
   double WZratio_Up_FEWZ[12]={0};
   double WZratio_Down_FEWZ[12]={0};
-  double WZratioErr_FEWZ[12]={0};
-  double WZratioScaleErr_FEWZ[12]={0};
-  double WZratioTotalErr_FEWZ[12]={0};
+  double WZratioStatErr_FEWZ[12]={0}; // Error propagation
+  double WZratioPDFErr_FEWZ[12]={0}; // Norm PDF %
+  double WZratioScaleErr_FEWZ[12]={0}; // Norm Scale subtraction
+  double WZratioTotalErr_FEWZ[12]={0}; // sqrt(Stat^2 + PDF^2 + Scale^2)
   
   cout << fixed << setprecision(8) << endl;
   cout << " ===== Wpt and Zpt Normalilzed Differntial cross-section and errors In Fiducial Volume ==="<< endl;
@@ -113,13 +119,17 @@ int ZWratio_Zoom_logScale()
 
     // Powheg ratio error propagation
     Wpt_Powheg[i] = hWpt_Powheg->GetBinContent(i+1);
-    WptErr_Powheg[i] = hWpt_Powheg->GetBinError(i+1);
+    WptStatErr_Powheg[i] = hWpt_Powheg->GetBinError(i+1);
 
     Zpt_Powheg[i] = hZpt_Powheg->GetBinContent(i+1);
-    ZptErr_Powheg[i] = hZpt_Powheg->GetBinError(i+1);
+    ZptStatErr_Powheg[i] = hZpt_Powheg->GetBinError(i+1);
 
-    WZratioErr_Powheg[i] = WZratio_Powheg[i] * TMath::Sqrt((ZptErr_Powheg[i]*ZptErr_Powheg[i]/Zpt_Powheg[i]/Zpt_Powheg[i] + WptErr_Powheg[i]*WptErr_Powheg[i]/Wpt_Powheg[i]/Wpt_Powheg[i]));
+    WZratioStatErr_Powheg[i] = WZratio_Powheg[i] * TMath::Sqrt((ZptStatErr_Powheg[i]*ZptStatErr_Powheg[i]/Zpt_Powheg[i]/Zpt_Powheg[i] + WptStatErr_Powheg[i]*WptStatErr_Powheg[i]/Wpt_Powheg[i]/Wpt_Powheg[i]));
 
+    Powheg_PDFUncer(WZratio_Powheg,WZratioPDFErr_Powheg);
+    
+    WZratioTotalErr_Powheg[i] = sqrt(WZratioStatErr_Powheg[i]*WZratioStatErr_Powheg[i] + WZratioPDFErr_Powheg[i]*WZratioPDFErr_Powheg[i]); //  
+    
     /*
     // Resbos ratio error propagation
     Wpt_Resbos[i] = hWpt_Resbos->GetBinContent(i+1);
@@ -132,17 +142,54 @@ int ZWratio_Zoom_logScale()
 */
     // FEWZ ratio error propagation
     Wpt_FEWZ[i] = hWpt_FEWZ->GetBinContent(i+1);
-    WptErr_FEWZ[i] = hWpt_FEWZ->GetBinError(i+1);
+    WptStatErr_FEWZ[i] = hWpt_FEWZ->GetBinError(i+1);
 
     Zpt_FEWZ[i] = hZpt_FEWZ->GetBinContent(i+1);
-    ZptErr_FEWZ[i] = hZpt_FEWZ->GetBinError(i+1);
+    ZptStatErr_FEWZ[i] = hZpt_FEWZ->GetBinError(i+1);
 
-    WZratioErr_FEWZ[i] = WZratio_FEWZ[i] * TMath::Sqrt((ZptErr_FEWZ[i]*ZptErr_FEWZ[i]/Zpt_FEWZ[i]/Zpt_FEWZ[i] + WptErr_FEWZ[i]*WptErr_FEWZ[i]/Wpt_FEWZ[i]/Wpt_FEWZ[i]));
+    WZratioStatErr_FEWZ[i] = WZratio_FEWZ[i] * TMath::Sqrt((ZptStatErr_FEWZ[i]*ZptStatErr_FEWZ[i]/Zpt_FEWZ[i]/Zpt_FEWZ[i] + WptStatErr_FEWZ[i]*WptStatErr_FEWZ[i]/Wpt_FEWZ[i]/Wpt_FEWZ[i]));
 
-    WZratioTotalErr_FEWZ[i] = sqrt(WZratioErr_FEWZ[i]*WZratioErr_FEWZ[i] + WZratioScaleErr_FEWZ[i]*WZratioScaleErr_FEWZ[i]); 
+    FEWZ_PDFUncer(WZratio_FEWZ,WZratioPDFErr_FEWZ);
+    //cout << "WZratioPDFErr_FEWZ in main : " << WZratioPDFErr_FEWZ[i] << endl; // check PDF error number is correctly returned
+
+    WZratioTotalErr_FEWZ[i] = sqrt(WZratioStatErr_FEWZ[i]*WZratioStatErr_FEWZ[i] + WZratioPDFErr_FEWZ[i]*WZratioPDFErr_FEWZ[i] + WZratioScaleErr_FEWZ[i]*WZratioScaleErr_FEWZ[i]); //  
     
-    cout << Form("Wpt_FEWZ : %.8f +- %.8f \t Zpt_FEWZ : %.8f +- %.8f",Wpt_FEWZ[i],WptErr_FEWZ[i],Zpt_FEWZ[i],ZptErr_FEWZ[i]) << endl;
+    cout << Form("Wpt_FEWZ : %.8f +- %.8f \t Zpt_FEWZ : %.8f +- %.8f",Wpt_FEWZ[i],WptStatErr_FEWZ[i],Zpt_FEWZ[i],ZptStatErr_FEWZ[i]) << endl;
   }
+
+
+  //// Print Powheg errors
+  cout <<"=====  Print Powheg errors "<< endl;
+  cout << fixed << setprecision(2) << endl;
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWZratioStatErr_Powheg: " << WZratioStatErr_Powheg[i] <<"\t in %\t"<< 100*WZratioStatErr_Powheg[i]/WZratio_Powheg[i]<<endl; 
+  }
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWZratioPDFErr_Powheg : " << WZratioPDFErr_Powheg[i] << "\t in %\t"<< 100*WZratioPDFErr_Powheg[i]/WZratio_Powheg[i]<<endl;
+  }
+ //// Print FEWZ errors
+  cout <<"=====  Print FEWZ errors "<< endl;
+
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWZratioStatErr_FEWZ : " << WZratioStatErr_FEWZ[i] << "\t in %\t"<< 100*WZratioStatErr_FEWZ[i]/WZratio_FEWZ[i]<<endl;
+  }
+
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWZratioPDFErr_FEWZ : " << WZratioPDFErr_FEWZ[i] << "\t in %\t"<< 100*WZratioPDFErr_FEWZ[i]/WZratio_FEWZ[i]<<endl;
+  }
+  for(int i=0;i<12;i++)
+  {
+    cout << i<<"\tWZratioScaleErr_FEWZ : " << WZratioScaleErr_FEWZ[i] << "\t in %\t"<< 100*WZratioScaleErr_FEWZ[i]/WZratio_FEWZ[i]<<endl;
+  }
+
+
+
+
+
 
   cout<<"Wpt FEWZ\t"<<"Zpt FEWZ"<<endl; 
   for(int i=0;i<12;i++)
@@ -174,7 +221,7 @@ int ZWratio_Zoom_logScale()
     hWZratio_RD->SetBinError(i+1,WZratioErr_RD[i]);
     
     hWZratio_Powheg->SetBinContent(i+1,WZratio_Powheg[i]);
-    hWZratio_Powheg->SetBinError(i+1,WZratioErr_Powheg[i]);
+    hWZratio_Powheg->SetBinError(i+1,WZratioTotalErr_Powheg[i]);
   
     //hWZratio_Resbos->SetBinContent(i+1,WZratio_Resbos[i]);
     //hWZratio_Resbos->SetBinError(i+1,WZratioErr_Resbos[i]);
@@ -195,7 +242,7 @@ int ZWratio_Zoom_logScale()
     hRatioDataTotalErr->SetBinError(i+1,WZratioErr_RD[i] / WZratio_RD[i]);
 
     hRatioPowhegTotalErr->SetBinContent(i+1,WZratio_Powheg[i] / WZratio_RD[i]);
-    hRatioPowhegTotalErr->SetBinError(i+1,WZratioErr_Powheg[i] /WZratio_RD[i]);
+    hRatioPowhegTotalErr->SetBinError(i+1,WZratioTotalErr_Powheg[i] /WZratio_RD[i]);
 
     //hRatioResbosTotalErr->SetBinContent(i+1,WZratio_Resbos[i] / WZratio_RD[i]);
     //hRatioResbosTotalErr->SetBinError(i+1,WZratioErr_Resbos[i] / WZratio_RD[i]);
@@ -233,7 +280,8 @@ int ZWratio_Zoom_logScale()
   C1->cd(1)->SetLeftMargin(0.15);
   C1->cd(1)->SetRightMargin(0.07);
   C1->cd(1)->SetTickx(1);
-  C1->cd(1)->SetTicky(1);
+  //C1->cd(1)->SetTicky(1);
+  C1->cd(1)->SetTicky(2);
   C1->cd(1)->SetLogx(1);
 
 
@@ -265,11 +313,14 @@ int ZWratio_Zoom_logScale()
   LeptonCut->AddText("p_{T}>20 GeV, |#eta |<2.1");
 
   hWZratio_RD->GetYaxis()->SetRangeUser(-1.2,6.);
-  hWZratio_RD->GetYaxis()->SetTitleOffset(1.2);
-  hWZratio_RD->GetYaxis()->SetLabelSize(0.035);
-  hWZratio_RD->GetYaxis()->SetNdivisions(405);
+  //hWZratio_RD->GetYaxis()->SetTitleOffset(1.2);
+  hWZratio_RD->GetYaxis()->SetTitleOffset(0.8);
+  //hWZratio_RD->GetYaxis()->SetLabelSize(0.035);
+  hWZratio_RD->GetYaxis()->SetLabelSize(0.033);
+  hWZratio_RD->GetYaxis()->SetTitleSize(0.053);
+  //hWZratio_RD->GetYaxis()->SetNdivisions(405);
+  hWZratio_RD->GetYaxis()->SetNdivisions(410);
   hWZratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{Z}} #frac{d#sigma^{Z}}{p_{T}^{Z}})/(#frac{1}{#sigma^{W}} #frac{d#sigma^{W}}{p_{T}^{W}})");
-  hWZratio_RD->GetYaxis()->SetTitleSize(0.04);
   hWZratio_RD->GetXaxis()->SetTitleOffset(0.6);
   hWZratio_RD->GetXaxis()->SetTitleSize(0.1);
   hWZratio_RD->GetXaxis()->SetLabelSize(0);
@@ -302,7 +353,10 @@ int ZWratio_Zoom_logScale()
   //Zchannel->Draw();
   //LeptonCut->Draw();
   
-  C1->cd(2)->SetPad(0.028,0.505,0.76,0.805);
+  //C1->cd(2)->SetPad(0.028,0.505,0.76,0.805);
+  //C1->cd(2)->SetPad(0.028,0.505,0.76,0.770);
+  //C1->cd(2)->SetPad(0.028,0.505,0.76,0.760);
+  C1->cd(2)->SetPad(0.028,0.505,0.76,0.750);
   
   C1->cd(2)->SetLogx(1);
 
@@ -311,7 +365,9 @@ int ZWratio_Zoom_logScale()
   hWZratio_RD_Zoom->GetYaxis()->SetTitle("");
   hWZratio_RD_Zoom->GetXaxis()->SetRangeUser(1,150);
   hWZratio_RD_Zoom->GetYaxis()->SetRangeUser(0.5,1.7);
-  hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.05);
+  //hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.05);
+  hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.065);
+  hWZratio_RD_Zoom->GetYaxis()->SetNdivisions(405);
   hWZratio_RD_Zoom->GetXaxis()->SetTitle("");
   hWZratio_RD_Zoom->Draw(" E1");
   
@@ -333,11 +389,12 @@ int ZWratio_Zoom_logScale()
   
   // set canvas range and XY axis title
   hRatioDummy->GetYaxis()->SetRangeUser(0.1,3);
-  hRatioDummy->GetYaxis()->SetTitle("Theory / Data");
+ // hRatioDummy->GetYaxis()->SetTitle("Theory / Data");
   hRatioDummy->GetXaxis()->SetTitle("p_{T}^{V} [GeV]");
   hRatioDummy->GetYaxis()->SetTitleSize(0.07);
   hRatioDummy->GetYaxis()->SetTitleOffset(0.58);
-  hRatioDummy->GetYaxis()->SetLabelSize(0.05);
+  //hRatioDummy->GetYaxis()->SetLabelSize(0.05);
+  hRatioDummy->GetYaxis()->SetLabelSize(0.045);
   hRatioDummy->GetYaxis()->SetNdivisions(605);
   hRatioDummy->GetYaxis()->CenterTitle();
   hRatioDummy->GetXaxis()->SetTitleSize(0.07);
@@ -372,7 +429,8 @@ int ZWratio_Zoom_logScale()
   gPad->RedrawAxis();
  
   // Set Zoomed Ratio plot
-  C1->cd(4)->SetPad(0.028,0.056,0.76,0.405);
+  //C1->cd(4)->SetPad(0.028,0.056,0.76,0.405);
+  C1->cd(4)->SetPad(0.028,0.065,0.76,0.344);
   
   C1->cd(4)->SetLogx(1);
   
@@ -381,7 +439,9 @@ int ZWratio_Zoom_logScale()
   hRatioDummy_Zoom->GetXaxis()->SetRangeUser(1,150); // X axis range
   hRatioDummy_Zoom->GetYaxis()->SetTitle("Theory / Data");
   hRatioDummy_Zoom->GetYaxis()->SetTitleOffset(0.68);
-  hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.05);
+  hRatioDummy_Zoom->GetYaxis()->SetLabelSize(0.06);
+  //hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.05);
+  hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.065);
   hRatioDummy_Zoom->GetXaxis()->SetTitle("");
   
   hRatioDummy_Zoom->Draw();
@@ -393,4 +453,53 @@ int ZWratio_Zoom_logScale()
   C1->SaveAs("RatioNormZW_Fid_Zoom_logScale.png");
 
   return 0;
+}
+
+void FEWZ_PDFUncer(double *ZWRatio, double *Err)
+{
+  // FEWZ Normalized PDF error in % unit
+  double PDFErr[12] = {0.,};
+
+  PDFErr[0] = 2.51;  
+  PDFErr[1] = 0.61;
+  PDFErr[2] = 0.96;
+  PDFErr[3] = 1.13;
+  PDFErr[4] = 1.44;
+  PDFErr[5] = 1.61;
+  PDFErr[6] = 1.82;
+  PDFErr[7] = 2.07;
+  PDFErr[8] = 2.42;
+  PDFErr[9] = 2.34;
+  PDFErr[10] =2.30;
+  PDFErr[11] =2.47;
+
+  for(int i(0); i<12; i++)
+  {
+    Err[i] = ZWRatio[i] * PDFErr[i] * 0.01;
+    cout << "PDFErr in function : " << Err[i] << endl;
+  }
+}
+void Powheg_PDFUncer(double *ZWRatio, double *Err)
+{
+  // Powheg Normalized PDF error in % unit
+  double PDFErr[12] = {0.,};
+
+  PDFErr[0] = 0.70904 ;  
+  PDFErr[1] = 0.08829 ;
+  PDFErr[2] = 0.26802 ;
+  PDFErr[3] = 0.48621 ;
+  PDFErr[4] = 0.74545 ;
+  PDFErr[5] = 0.78758 ;
+  PDFErr[6] = 0.89615 ;
+  PDFErr[7] = 1.05564 ;
+  PDFErr[8] = 1.23073 ;
+  PDFErr[9] = 1.09974 ;
+  PDFErr[10]= 1.36105 ;
+  PDFErr[11]= 2.64723 ;
+
+  for(int i(0); i<12; i++)
+  {
+    Err[i] = ZWRatio[i] * PDFErr[i] * 0.01;
+    cout << "PDFErr in function : " << Err[i] << endl;
+  }
 }
