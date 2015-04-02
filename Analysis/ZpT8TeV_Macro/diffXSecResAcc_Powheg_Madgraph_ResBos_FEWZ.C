@@ -332,7 +332,7 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
   // 3. Unfolding Resolution
   hXSec -> Sumw2();
   applyMatrix(hXSec, hPtData);
-
+  
   // FSR correction
   hXSecFSR -> Sumw2();
   applyMatrixFSR(hXSecFSR, hXSec);
@@ -641,8 +641,77 @@ TGraphAsymmErrors* Powheg(){
    double point[18] = {1.25, 3.75, 6.25, 8.75, 11.75, 13.75, 16.25, 18.75, 24.25, 33.75, 44.75, 59.00, 79.00, 99.00, 126.00, 168.00, 214.00, 337.50};
    double x[n];
 
-   double y[18] = {0.02235400, 0.05174493, 0.05481679, 0.04554186, 0.03635185, 0.02887949, 0.02342429, 0.01891330, 0.01215069, 0.00647063, 0.00375604, 0.00189651, 0.00081956, 0.00037999, 0.00014702, 0.00004982, 0.00001823, 0.00000140};
-   double error_y[18] = {0.00014316, 0.00021737, 0.00022373, 0.00020393, 0.00018219, 0.00016239, 0.00014625, 0.00013142, 0.00005267, 0.00003843, 0.00002928, 0.00001471, 0.00000967, 0.00000659, 0.00000290, 0.00000169, 0.00000083, 0.00000010};
+   ///Powheg Pre fsr numbers
+   double y[18] = {0.0232823816,
+                   0.0534414648, 
+                   0.0556310835, 
+                   0.0454828550, 
+                   0.0356700536, 
+                   0.0280575476, 
+                   0.0226186451, 
+                   0.0182287311, 
+                   0.0118469402, 
+                   0.0064591971, 
+                   0.0037984679, 
+                   0.0019372698, 
+                   0.0008350090, 
+                   0.0003902566, 
+                   0.0001503083, 
+                   0.0000509369, 
+                   0.0000184618, 
+                   0.0000014680};
+
+   //// stat error is normalized with Toy RMS method.
+   double errorStat_y[18] = {0.0001395273, 
+                             0.0002032366, 
+                             0.0002069700, 
+                             0.0001884388, 
+                             0.0001705318, 
+                             0.0001524742, 
+                             0.0001370749,
+                             0.0001241799, 
+                             0.0000484067, 
+                             0.0000366260, 
+                             0.0000284210, 
+                             0.0000144427, 
+                             0.0000095287, 
+                             0.0000065614, 
+                             0.0000028981, 
+                             0.0000016920, 
+                             0.0000008289, 
+                             0.0000000970};
+
+   //// powheg norm PDF error in %, convert it to number
+   double errorPDF_y[18] = {0.412089 , 
+                            0.31525  , 
+                            0.209474 , 
+                            0.188146 , 
+                            0.250735 , 
+                            0.21012  , 
+                            0.351397 ,
+                            0.284557 , 
+                            0.304525 , 
+                            0.315051 , 
+                            0.356816 , 
+                            0.619421 , 
+                            1.16534  , 
+                            1.56789  , 
+                            2.29144  , 
+                            2.92386  , 
+                            4.04627  , 
+                            6.01494  };
+  
+  double error_y[n];
+  for (int i=0;i<n;i++)
+  { 
+    errorPDF_y[i]= 0.01*errorPDF_y[i]*y[i];
+    error_y[i] = sqrt(errorStat_y[i]*errorStat_y[i] + errorPDF_y[i]*errorPDF_y[i]); 
+     //std::cout<<"Powhed:  errorPDF_y[i]\t"<<errorPDF_y[i]<<"\terrorStat_y[i]\t"<<errorStat_y[i]<<"\t error_y[i]\t"<<error_y[i]<< std::endl;
+     //std::cout<<"Powhed:  errorPDF_y[i]\t"<<100*errorPDF_y[i]/y[i]<<"\terrorStat_y[i]\t"<<100*errorStat_y[i]/y[i]<<"\t error_y[i]\t"<<error_y[i]<< std::endl;
+     printf("Powheg PDF% : %.2f \t Stat % : %.2f \n ",100*errorPDF_y[i]/y[i] , 100*errorStat_y[i]/y[i]);
+  }
+
+   //double error_x[18];
 
    //double error_x[18];
    double error_xlow[n];
@@ -671,8 +740,42 @@ TGraphAsymmErrors* Resbos(){
    double x[n];
    
 
-   double y[18] = {0.02957739, 0.05620224, 0.04961592, 0.04050349, 0.03325381, 0.02725463, 0.02253389, 0.01862596, 0.01237984, 0.00664593, 0.00393008, 0.00200304, 0.00085508, 0.00041032, 0.00017656, 0.00006332, 0.00002423, 0.00000115};
-   double error_y[18] = {0.00514001, 0.00707116, 0.00664392, 0.00600288, 0.00543919, 0.00492418, 0.00447746, 0.00407074, 0.00165936, 0.00121580, 0.00093494, 0.00047197, 0.00030837, 0.00021361, 0.00009908, 0.00005934, 0.00002997, 0.00000270};
+   double y[18] = {0.02957739, 
+                   0.05620224, 
+                   0.04961592, 
+                   0.04050349, 
+                   0.03325381, 
+                   0.02725463, 
+                   0.02253389, 
+                   0.01862596, 
+                   0.01237984, 
+                   0.00664593, 
+                   0.00393008, 
+                   0.00200304, 
+                   0.00085508, 
+                   0.00041032, 
+                   0.00017656, 
+                   0.00006332, 
+                   0.00002423, 
+                   0.00000115};
+   double error_y[18] = {0.00514001, 
+                         0.00707116,
+                         0.00664392, 
+                         0.00600288,
+                         0.00543919, 
+                         0.00492418, 
+                         0.00447746, 
+                         0.00407074, 
+                         0.00165936, 
+                         0.00121580, 
+                         0.00093494, 
+                         0.00047197, 
+                         0.00030837, 
+                         0.00021361, 
+                         0.00009908, 
+                         0.00005934, 
+                         0.00002997, 
+                         0.00000270};
 
    //double error_x[18];
    double error_xlow[n];
@@ -712,8 +815,72 @@ TGraphAsymmErrors* Madgraph(){
   double error_y[18] = {0.00022293, 0.00031362, 0.00030326, 0.00027401, 0.00024550, 0.00021984, 0.00019774, 0.00017707, 0.00007115, 0.00005216, 0.00004045, 0.00002061, 0.00001359, 0.00000946, 0.00000449, 0.00000261, 0.00000126, 0.00000015};
 */
   // PreFSR and Total Uncer(sqrt(StatErr^2 + PDFErr^2))
-  double y[18] = {0.0296683, 0.058359, 0.0532516, 0.042838, 0.03381, 0.0268681, 0.0216179, 0.0171872, 0.0113335, 0.00623927, 0.00378249, 0.0019837, 0.000862846,0.000418884, 0.000188615, 6.45009e-05, 2.23858e-05, 1.91878e-06};
-  double error_y[18] = {0.00144458, 0.00254434, 0.00225796, 0.0018391, 0.00143056, 0.00110053, 0.000863273, 0.000677619, 0.000400122, 0.000232083, 0.000143093, 7.22082e-05, 3.16004e-05, 1.66169e-05, 7.30625e-06, 3.23596e-06, 1.40064e-06, 1.63834e-07};
+  double y[18] = { 0.0296683  , 
+                   0.058359   , 
+                   0.0532516  , 
+                   0.042838   , 
+                   0.03381    , 
+                   0.0268681  , 
+                   0.0216179  , 
+                   0.0171872  , 
+                   0.0113335  , 
+                   0.00623927 , 
+                   0.00378249 , 
+                   0.0019837  , 
+                   0.000862846,
+                   0.000418884, 
+                   0.000188615, 
+                   6.45009e-05, 
+                   2.23858e-05, 
+                   1.91878e-06};
+  double errorStat_y[18] = {0.0002159060, 
+                            0.0002914961, 
+                            0.0002808667, 
+                            0.0002537420, 
+                            0.0002301006, 
+                            0.0002065859, 
+                            0.0001854926, 
+                            0.0001669025, 
+                            0.0000656459, 
+                            0.0000498163, 
+                            0.0000392100, 
+                            0.0000201929, 
+                            0.0000133864, 
+                            0.0000093946, 
+                            0.0000044844, 
+                            0.0000026313, 
+                            0.0000012616, 
+                            0.0000001533};
+       /////normalized PDF syst in %, convert it to number
+  double errorPDF_y[18] = {1.87987 , 
+                           1.74473 , 
+                           1.31112 , 
+                           1.15229 , 
+                           0.797034, 
+                           0.369078, 
+                           0.275328, 
+                           0.691266, 
+                           1.29233 , 
+                           1.74525 , 
+                           1.93177 , 
+                           2.09596 , 
+                           2.31831 , 
+                           2.62671 , 
+                           2.7677  , 
+                           3.15532 , 
+                           3.78032 , 
+                           4.67155 };
+
+ 
+  double error_y[n];
+  for (int i=0;i<n;i++)
+  { 
+    errorPDF_y[i]= 0.01*errorPDF_y[i]*y[i];
+    error_y[i] = sqrt(errorStat_y[i]*errorStat_y[i] + errorPDF_y[i]*errorPDF_y[i]); 
+     //std::cout<<"Madgraph:   errorPDF_y[i]\t"<<errorPDF_y[i]<<"\terrorStat_y[i]\t"<<errorStat_y[i]<<"\t error_y[i]\t"<<error_y[i]<< std::endl;
+     //std::cout<<"Madgraph:  errorPDF_y[i]\t"<<100*errorPDF_y[i]/y[i]<<"\terrorStat_y[i]\t"<<100*errorStat_y[i]/y[i]<<"\t error_y[i]\t"<<error_y[i]<< std::endl;
+     printf("Madgraph PDF % : %.2f \t Stat % : %.2f \n ",100*errorPDF_y[i]/y[i] , 100*errorStat_y[i]/y[i]);
+  }
 
 
   //double error_x[18];
@@ -743,10 +910,119 @@ TGraphAsymmErrors* FEWZ(){
    double x[n];
 
 
-   double y[18] = {0,0,0,0,0,0,0,0,0.010946908,0.005861624,0.00351576,0.00186525,0.000836974,0.000406356,0.000176403,6.37816E-05,2.25044E-05,2.08287E-06};
-   double error_ylow[18] = {0,0,0,0,0,0,0,0,0.000260501,0.00013212,7.60136E-05,3.86252E-05,1.65916E-05,7.78994E-06,3.33908E-06,1.20556E-06,3.89959E-07,4.13802E-08};
-   double error_yhigh[18] = {0,0,0,0,0,0,0,0,0.00031118,0.00015371,8.64209E-05,4.26788E-05,1.75198E-05,8.01257E-06,3.36195E-06,1.27319E-06,4.68827E-07,5.67557E-08};
+   //double y[18] = {0,0,0,0,0,0,0,0,0.010946908,0.005861624,0.00351576,0.00186525,0.000836974,0.000406356,0.000176403,6.37816E-05,2.25044E-05,2.08287E-06};
+   //double error_ylow[18] = {0,0,0,0,0,0,0,0,0.000260501,0.00013212,7.60136E-05,3.86252E-05,1.65916E-05,7.78994E-06,3.33908E-06,1.20556E-06,3.89959E-07,4.13802E-08};
+   //double error_yhigh[18] = {0,0,0,0,0,0,0,0,0.00031118,0.00015371,8.64209E-05,4.26788E-05,1.75198E-05,8.01257E-06,3.36195E-06,1.27319E-06,4.68827E-07,5.67557E-08};
+double y[18];
+y[0] = 100;//-0.04927787; 
+y[1] = 100;//0.11569336 ; 
+y[2] = 0.07234848 ; 
+y[3] = 0.04951937 ; 
+y[4] = 0.03593429 ; 
+y[5] = 0.02730082 ; 
+y[6] = 0.02129024 ; 
+y[7] = 0.01716449 ; 
+y[8] = 0.01089575 ; 
+y[9] = 0.00582537 ; 
+y[10] = 0.00348453; 
+y[11] = 0.00184388; 
+y[12] = 0.00082675; 
+y[13] = 0.00040203; 
+y[14] = 0.00017418; 
+y[15] = 0.00006305; 
+y[16] = 0.00002236; 
+y[17] = 0.00000208; 
 
+  double errorStat_y[18] = {0.0,//0.00091921, 
+                            0.0,//0.00040849, 
+                            0.00025063,
+                            0.00017318,
+                            0.00012892,
+                            0.00010112,
+                            0.00008239,
+                            0.00006917,
+                            0.00002694,
+                            0.00001446,
+                            0.00000872,
+                            0.00000460,
+                            0.00000211,
+                            0.00000106,
+                            0.00000047,
+                            0.00000020,
+                            0.00000006,
+                            0.00000001};
+
+       /////normalized PDF syst in %, convert it to number
+  double errorPDF_ylow[18] = { 0.0,//-10.4255 , 
+                               0.0,//  1.1517, 
+                                 0.7699,
+                                 1.0193,
+                                 1.2871,
+                                 1.4930,
+                                 1.6505,
+                                 1.8590,
+                                 2.1993,
+                                 2.7430,
+                                 3.2037,
+                                 3.7960,
+                                 4.6610,
+                                 5.4135,
+                                 6.4242,
+                                 7.7925,
+                                 9.3314,
+                                 11.8156}; 
+         
+  double errorPDF_yhigh[18] = {0.0,// -9.8258, 
+                               0.0,// 1.9602 , 
+                                1.3525 ,
+                                1.2935 ,
+                                1.3600 ,
+                                1.4350 ,
+                                1.5280 ,
+                                1.6451 ,
+                                1.8457 ,
+                                2.2029 ,
+                                 2.5252,
+                                 2.9297,
+                                 3.4978,
+                                 3.9328,
+                                 4.4643,
+                                 5.0914,
+                                 5.7220,
+                                 6.6717}; 
+  double errorScale[18] = {
+	     0.0        , 
+	     0.0        ,
+	     0.00264859 ,
+	     0.000128741,
+	     0.000100589,
+	     0.000456016,
+	     0.000283771,
+	     0.0004495  ,
+	     0.000343126,
+	     0.000238052,
+	     0.000168766,
+	     0.000103991,
+	     5.39771e-05,
+	     3.00939e-05,
+	     1.4121e-05 ,
+	     5.42266e-06,
+	     2.10019e-06,
+	     2.02132e-07};
+
+  double error_yhigh[n];
+  double error_ylow[n];
+  for (int i=0;i<n;i++)
+  { 
+    errorPDF_ylow[i]= 0.01*errorPDF_ylow[i]*y[i];
+    errorPDF_yhigh[i]= 0.01*errorPDF_yhigh[i]*y[i];
+    error_ylow[i] = sqrt(errorStat_y[i]*errorStat_y[i] + errorPDF_ylow[i]*errorPDF_ylow[i] + errorScale[i]*errorScale[i]); 
+    error_yhigh[i] = sqrt(errorStat_y[i]*errorStat_y[i] + errorPDF_yhigh[i]*errorPDF_yhigh[i] + errorScale[i]*errorScale[i]); 
+     //std::cout<<"FEWZ:   errorPDF_ylow[i]\t"<<errorPDF_ylow[i]<<"\terrorStat_y[i]\t"<<errorStat_y[i]<<"\t error_ylow[i]\t"<<error_ylow[i]<< std::endl;
+     //std::cout<<"FEWZ:  errorPDF_y[i]\t"<<100*TMath::Max(errorPDF_ylow[i],errorPDF_yhigh[i])/y[i]<<"\terrorStat_y[i]\t"<<100*errorStat_y[i]/y[i]<<"\terrorScale_y[i]\t"<<100*errorScale[i]/y[i]<< std::endl;
+     printf("FEWZ PDF % : %.2f \t Stat % : %.2f Scale % : %.2f \n ",100*TMath::Max(errorPDF_ylow[i],errorPDF_yhigh[i])/y[i] , 100*errorStat_y[i]/y[i], 100*errorScale[i]/y[i]);
+  }
+ 
    //double error_x[18];
    double error_xlow[n];
    double error_xhigh[n];
@@ -755,6 +1031,10 @@ TGraphAsymmErrors* FEWZ(){
      error_xlow[i] = (point[i] - bin[i]);
      error_xhigh[i] = (bin[i+1]-point[i]);
    }
+
+   //double error_y[18];
+   //for (int i=0;i<n;i++) error_x[i]=0;
+   //for (int i=0;i<n;i++) error_y[i] = (error_yhigh[i]>error_ylow[i]) ? error_yhigh[i] : error_ylow[i];
 
    //TGraphAsymmErrors* grFEWZ = new TGraphAsymmErrors(n,point,y,error_x,error_x,error_y,error_y);
    TGraphAsymmErrors* grFEWZ = new TGraphAsymmErrors(n,point,y,error_xlow,error_xhigh,error_ylow,error_yhigh);
@@ -829,7 +1109,8 @@ void fillHistos(TTree* tree,
     hPt       -> Fill( recoCandPt );
 
   }
-  std::cout << " DONE!" << std::endl;
+  //std::cout << " DONE!" << std::endl;
+  std::cout << " Total hPt : " << hPt->Integral() << std::endl;
   return;
 }
 
@@ -1060,6 +1341,23 @@ void DrawWithRatio(TCanvas *canvas, char *cTitle,
 //------------------------------------------------------------------------------
 // Draw projections and residuals
 //------------------------------------------------------------------------------
+/*
+void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
+                   TGraphAsymmErrors* gNum, 
+		   TGraphAsymmErrors* gDen, 
+		   TGraphAsymmErrors* gDen2, 
+		   TGraphAsymmErrors* gDen3, 
+		   TGraph* band, 
+		   TGraph* band2, 
+		   TGraph* band3, 
+		   TLine* line,
+		   TLine* line2,
+		   TLine* line3,
+		   TLegend* leg, 
+		   TLegend* leg2, 
+		   TLegend* leg3, 
+		   TLatex* tex, TLatex* tex1, TLatex* tex2) {
+  */
 void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
                    TGraphAsymmErrors* gNum, 
 		   TGraphAsymmErrors* gDen, 
@@ -1324,7 +1622,8 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   hDen_dummy->SetMinimum(10E-7);
   hDen_dummy->SetTitle("");
   hDen_dummy -> GetYaxis() -> SetTitle("#frac{1}{#sigma} #frac{d#sigma}{dp_{T}^{Z}} [GeV]^{-1}");
-  //hDen_dummy -> GetYaxis() -> SetTitleSize(0.05);
+  hDen_dummy -> GetYaxis() -> SetTitleSize(0.04);
+  hDen_dummy -> GetYaxis() -> SetTitleOffset(0.15);
   hDen_dummy -> GetYaxis() -> SetLabelSize(0.045);
   hDen_dummy -> GetXaxis() -> SetLabelSize(0);
   hDen_dummy -> GetYaxis() -> SetTitleOffset(1.2);
@@ -1377,6 +1676,11 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   gDen->Print();
 
   pad1->RedrawAxis();
+
+
+
+
+
 
 
 //   const int nptBins = 18;
