@@ -41,9 +41,6 @@
 #include "RooCategory.h"
 #include "RooSimultaneous.h"
 #include "RooFitResult.h"
-#include "RooLandau.h"
-#include "RooCBShape.h"
-#include "RooGaussian.h"
 #include "RooFFTConvPdf.h"
 #endif
 //From WMuNeu.h
@@ -69,14 +66,14 @@ void makeHTML(const TString outDir);
 
 //=== MAIN MACRO ================================================ 
 
-//void fitWEleMetModRayleighSimult_NNLO(const TString  outputDir,   // output directory
-void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // output directory
+//void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output directory
+void fitWMuMetMtModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // output directory
            const TString  filetype,		// Select input root files for Nominal, Up, Down and Before Recoil Correction
            const Double_t lumi,        // integrated luminosity (/fb)
 	   const Double_t nsigma=0     // vary MET corrections by n-sigmas (nsigma=0 means nominal correction)
 )
 {
-  gBenchmark->Start("fitWEleMetModRayleighSimult_NNLO");
+  gBenchmark->Start("fitWMuMetMtModRayleighSimult_NNLO");
 
   //------------------
   // Settings 
@@ -124,25 +121,25 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   vector <double> nEventDYToTauTauM;
   vector <double> nEventTTJetsM;
   vector <double> nEventWToTauNuM;
-
+  
   int ewkNumber(0);
-  fnamev.push_back("../WPtMET/Electron2012LoPU/Ele_RD_LowPU_ScaleCorr.root"); typev.push_back(eData);
-  fnamev.push_back("../WPtMET/Electron2012LoPU/Ele_DYToEE_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
-  fnamev.push_back("../WPtMET/Electron2012LoPU/Ele_DYToTauTau_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
-  fnamev.push_back("../WPtMET/Electron2012LoPU/Ele_TTJets_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
-  fnamev.push_back("../WPtMET/Electron2012LoPU/Ele_WToTauNu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_RD_LowPU_ScaleCorr.root"); typev.push_back(eData);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_DYToMuMu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_DYToTauTau_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_TTJets_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_WToTauNu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
   if (filetype == "Nominal"){
-    fnamev.push_back("../WPtMET/Electron2012LoPU/WpToEleNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../WPtMET/Electron2012LoPU/WmToEleNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../WPtMET/Muon2012LoPU/WpToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../WPtMET/Muon2012LoPU/WmToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Up"){
-    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WpToEleNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WmToEleNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Down"){
-    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WpToEleNu_S8_Down_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WmToEleNu_S8_Down_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Down_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Down_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "BeforeRC"){
-    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WpToEleNu_S8_Analysis.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WmToEleNu_S8_Analysis.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Analysis.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Analysis.root"); typev.push_back(eWmMuNu);
   }
   //-------------------------
   // Main analysis code 
@@ -184,11 +181,16 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   TH1D *hDYToTauTauP	= new TH1D("hDYToTauTauP","hDYToTauTauP",13,WptBins);hDYToTauTauP->Sumw2();
   TH1D *hDYToTauTauM	= new TH1D("hDYToTauTauM","hDYToTauTauM",13,WptBins);hDYToTauTauM->Sumw2();
 
+  TH1D *hQCD_Sig	= new TH1D("hQCD_Sig","hQCD_Sig",13,WptBins);hQCD_Sig->Sumw2();
   TH1D *hQCD_SigPlus	= new TH1D("hQCD_SigPlus","hQCD_SigPlus",13,WptBins);hQCD_SigPlus->Sumw2();
   TH1D *hQCD_SigMinus	= new TH1D("hQCD_SigMinus","hQCD_SigMinus",13,WptBins);hQCD_SigMinus->Sumw2();
   TH1D *hQCD_SigQCDPlus	= new TH1D("hQCD_SigQCDPlus","hQCD_SigQCDPlus",13,WptBins);hQCD_SigQCDPlus->Sumw2();
   TH1D *hQCD_SigQCDMinus= new TH1D("hQCD_SigQCDMinus","hQCD_SigQCDMinus",13,WptBins);hQCD_SigQCDMinus->Sumw2();
-
+  
+  TH1D *hAntiQCD_Sig	 = new TH1D("hAntiQCD_Sig","hAntiQCD_Sig",13,WptBins);hAntiQCD_Sig->Sumw2();
+  TH1D *hAntiQCD_SigPlus = new TH1D("hAntiQCD_SigPlus","hAntiQCD_SigPlus",13,WptBins);hAntiQCD_SigPlus->Sumw2();
+  TH1D *hAntiQCD_SigMinus= new TH1D("hAntiQCD_SigMinus","hAntiQCD_SigMinus",13,WptBins);hAntiQCD_SigMinus->Sumw2();
+  
   TH1D *hDataMet[NWptBinPlus];
   TH1D *hDataMetm[NWptBinPlus];
   TH1D *hDataMetp[NWptBinPlus]; 
@@ -229,7 +231,7 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   UInt_t  npv, npu;
   Float_t genVPt, genVPhi;
   Float_t scale1fb;
-  Float_t met, metPhi, sumEt, mt, u1, u2;
+  Float_t met, metPhi, sumEt, u1, u2;
   Int_t   q;
   LorentzVector *lep=0;
   Float_t pfChIso, pfGamIso, pfNeuIso;
@@ -244,7 +246,6 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   bool first_EWK_file(true);
   char histName[30],histName_org[30];
   for(UInt_t ifile=0; ifile<fnamev.size(); ifile++) {
-    
     // Read input file and get the TTrees
     cout << "Processing " << fnamev[ifile] << "..." << endl;
     infile = new TFile(fnamev[ifile]);	  assert(infile);
@@ -267,49 +268,96 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
       hdataWMpt->Sumw2();
       for(int ipt(0);ipt<NWptBinPlus;ipt++)
       {
-	sprintf(histName,"hDataMet_%d",ipt);
-	sprintf(histName_org,"h1_W_Neu_pt_%d",ipt);
-	hDataMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hDataMet[ipt]->Sumw2();
-	sprintf(histName,"hDataMetm_%d",ipt);
-	sprintf(histName_org,"h1_Wm_Neu_pt_%d",ipt);
-	hDataMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hDataMetm[ipt]->Sumw2();
-	sprintf(histName,"hDataMetp_%d",ipt);
-	sprintf(histName_org,"h1_Wp_Neu_pt_%d",ipt);
-	hDataMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hDataMetp[ipt]->Sumw2();
+	if(ipt<9){
+	  sprintf(histName,"hDataMet_%d",ipt);
+	  sprintf(histName_org,"h1_W_Neu_pt_%d",ipt);
+	  hDataMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hDataMet[ipt]->Sumw2();
+	  sprintf(histName,"hDataMetm_%d",ipt);
+	  sprintf(histName_org,"h1_Wm_Neu_pt_%d",ipt);
+	  hDataMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hDataMetm[ipt]->Sumw2();
+	  sprintf(histName,"hDataMetp_%d",ipt);
+	  sprintf(histName_org,"h1_Wp_Neu_pt_%d",ipt);
+	  hDataMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hDataMetp[ipt]->Sumw2();
 
-	sprintf(histName,"hAntiDataMet_%d",ipt);
-	sprintf(histName_org,"h1_WSide_Neu_pt_%d",ipt);
-	hAntiDataMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiDataMet[ipt]->Sumw2();
-	sprintf(histName,"hAntiDataMetm_%d",ipt);
-	sprintf(histName_org,"h1_WmSide_Neu_pt_%d",ipt);
-	hAntiDataMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiDataMetm[ipt]->Sumw2();
-	sprintf(histName,"hAntiDataMetp_%d",ipt);
-	sprintf(histName_org,"h1_WpSide_Neu_pt_%d",ipt);
-	hAntiDataMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiDataMetp[ipt]->Sumw2();
+	  sprintf(histName,"hAntiDataMet_%d",ipt);
+	  sprintf(histName_org,"h1_WSide_Neu_pt_%d",ipt);
+	  hAntiDataMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiDataMet[ipt]->Sumw2();
+	  sprintf(histName,"hAntiDataMetm_%d",ipt);
+	  sprintf(histName_org,"h1_WmSide_Neu_pt_%d",ipt);
+	  hAntiDataMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiDataMetm[ipt]->Sumw2();
+	  sprintf(histName,"hAntiDataMetp_%d",ipt);
+	  sprintf(histName_org,"h1_WpSide_Neu_pt_%d",ipt);
+	  hAntiDataMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiDataMetp[ipt]->Sumw2();
+	}
+	if(ipt>8){
+	  sprintf(histName,"hDataMet_%d",ipt);
+	  sprintf(histName_org,"h1_W_Mt_%d",ipt);
+	  hDataMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hDataMet[ipt]->Sumw2();
+	  sprintf(histName,"hDataMetm_%d",ipt);
+	  sprintf(histName_org,"h1_Wm_Mt_%d",ipt);
+	  hDataMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hDataMetm[ipt]->Sumw2();
+	  sprintf(histName,"hDataMetp_%d",ipt);
+	  sprintf(histName_org,"h1_Wp_Mt_%d",ipt);
+	  hDataMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hDataMetp[ipt]->Sumw2();
+
+	  sprintf(histName,"hAntiDataMet_%d",ipt);
+	  sprintf(histName_org,"h1_WSide_Mt_%d",ipt);
+	  hAntiDataMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiDataMet[ipt]->Sumw2();
+	  sprintf(histName,"hAntiDataMetm_%d",ipt);
+	  sprintf(histName_org,"h1_WmSide_Mt_%d",ipt);
+	  hAntiDataMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiDataMetm[ipt]->Sumw2();
+	  sprintf(histName,"hAntiDataMetp_%d",ipt);
+	  sprintf(histName_org,"h1_WpSide_Mt_%d",ipt);
+	  hAntiDataMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiDataMetp[ipt]->Sumw2();
+	}
       }
     }
     if(typev[ifile]==eWpMuNu)
     {
       for( int ipt(0);ipt<NWptBinPlus;ipt++)
       {
-	sprintf(histName,"hWmunuMetp_%d",ipt);
-	sprintf(histName_org,"h1_Wp_Neu_pt_%d",ipt);
-	hWmunuMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hWmunuMetp[ipt]->Sumw2();
-	sprintf(histName,"hAntiWmunuMetp_%d",ipt);
-	sprintf(histName_org,"h1_WpSide_Neu_pt_%d",ipt);
-	hAntiWmunuMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiWmunuMetp[ipt]->Sumw2();
+	if(ipt<9)
+	{
+	  sprintf(histName,"hWmunuMetp_%d",ipt);
+	  sprintf(histName_org,"h1_Wp_Neu_pt_%d",ipt);
+	  hWmunuMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hWmunuMetp[ipt]->Sumw2();
+	  sprintf(histName,"hAntiWmunuMetp_%d",ipt);
+	  sprintf(histName_org,"h1_WpSide_Neu_pt_%d",ipt);
+	  hAntiWmunuMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiWmunuMetp[ipt]->Sumw2();
+	}
+	if(ipt>8)
+	{
+	  sprintf(histName,"hWmunuMetp_%d",ipt);
+	  sprintf(histName_org,"h1_Wp_Mt_%d",ipt);
+	  hWmunuMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hWmunuMetp[ipt]->Sumw2();
+	  sprintf(histName,"hAntiWmunuMetp_%d",ipt);
+	  sprintf(histName_org,"h1_WpSide_Mt_%d",ipt);
+	  hAntiWmunuMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiWmunuMetp[ipt]->Sumw2();
+	}
       }
     }
     if(typev[ifile]==eWmMuNu)
     {
       for( int ipt(0);ipt<NWptBinPlus;ipt++)
       {
-	sprintf(histName,"hWmunuMetm_%d",ipt);
-	sprintf(histName_org,"h1_Wm_Neu_pt_%d",ipt);
-	hWmunuMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hWmunuMetm[ipt]->Sumw2();
-	sprintf(histName,"hAntiWmunuMetm_%d",ipt);
-	sprintf(histName_org,"h1_WmSide_Neu_pt_%d",ipt);
-	hAntiWmunuMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiWmunuMetm[ipt]->Sumw2();
+	if(ipt<9)
+	{
+	  sprintf(histName,"hWmunuMetm_%d",ipt);
+	  sprintf(histName_org,"h1_Wm_Neu_pt_%d",ipt);
+	  hWmunuMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hWmunuMetm[ipt]->Sumw2();
+	  sprintf(histName,"hAntiWmunuMetm_%d",ipt);
+	  sprintf(histName_org,"h1_WmSide_Neu_pt_%d",ipt);
+	  hAntiWmunuMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiWmunuMetm[ipt]->Sumw2();
+	}
+	if(ipt>8)
+	{
+	  sprintf(histName,"hWmunuMetm_%d",ipt);
+	  sprintf(histName_org,"h1_Wm_Mt_%d",ipt);
+	  hWmunuMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hWmunuMetm[ipt]->Sumw2();
+	  sprintf(histName,"hAntiWmunuMetm_%d",ipt);
+	  sprintf(histName_org,"h1_WmSide_Mt_%d",ipt);
+	  hAntiWmunuMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiWmunuMetm[ipt]->Sumw2();
+	}
       }
     }
     if(typev[ifile]==eEWK)
@@ -318,55 +366,111 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
         ewkNumber++;
 	for( int ipt(0); ipt<NWptBinPlus; ipt++)
 	{
-	  sprintf(histName,"hEWKMet_%d",ipt);
-	  sprintf(histName_org,"h1_W_Neu_pt_%d",ipt);
-	  hEWKMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hEWKMet[ipt]->Sumw2();
-	  nEventDYToMuMu.push_back(hEWKMet[ipt]->Integral());
-	  sprintf(histName,"hEWKMetm_%d",ipt);
-	  sprintf(histName_org,"h1_Wm_Neu_pt_%d",ipt);
-	  hEWKMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hEWKMetm[ipt]->Sumw2();
-	  nEventDYToMuMuM.push_back(hEWKMetm[ipt]->Integral());
-	  sprintf(histName,"hEWKMetp_%d",ipt);
-	  sprintf(histName_org,"h1_Wp_Neu_pt_%d",ipt);
-	  hEWKMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hEWKMetp[ipt]->Sumw2();
-	  nEventDYToMuMuP.push_back(hEWKMetp[ipt]->Integral());
+	  if(ipt<9)
+	  {
+	    sprintf(histName,"hEWKMet_%d",ipt);
+	    sprintf(histName_org,"h1_W_Neu_pt_%d",ipt);
+	    hEWKMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hEWKMet[ipt]->Sumw2();
+	    nEventDYToMuMu.push_back(hEWKMet[ipt]->Integral());
+	    sprintf(histName,"hEWKMetm_%d",ipt);
+	    sprintf(histName_org,"h1_Wm_Neu_pt_%d",ipt);
+	    hEWKMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hEWKMetm[ipt]->Sumw2();
+	    nEventDYToMuMuM.push_back(hEWKMetm[ipt]->Integral());
+	    sprintf(histName,"hEWKMetp_%d",ipt);
+	    sprintf(histName_org,"h1_Wp_Neu_pt_%d",ipt);
+	    hEWKMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hEWKMetp[ipt]->Sumw2();
+	    nEventDYToMuMuP.push_back(hEWKMetp[ipt]->Integral());
 
-	  sprintf(histName,"hAntiEWKMet_%d",ipt);
-	  sprintf(histName_org,"h1_WSide_Neu_pt_%d",ipt);
-	  hAntiEWKMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiEWKMet[ipt]->Sumw2();
-	  sprintf(histName,"hAntiEWKMetm_%d",ipt);
-	  sprintf(histName_org,"h1_WmSide_Neu_pt_%d",ipt);
-	  hAntiEWKMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiEWKMetm[ipt]->Sumw2();
-	  sprintf(histName,"hAntiEWKMetp_%d",ipt);
-	  sprintf(histName_org,"h1_WpSide_Neu_pt_%d",ipt);
-	  hAntiEWKMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiEWKMetp[ipt]->Sumw2();
+	    sprintf(histName,"hAntiEWKMet_%d",ipt);
+	    sprintf(histName_org,"h1_WSide_Neu_pt_%d",ipt);
+	    hAntiEWKMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiEWKMet[ipt]->Sumw2();
+	    sprintf(histName,"hAntiEWKMetm_%d",ipt);
+	    sprintf(histName_org,"h1_WmSide_Neu_pt_%d",ipt);
+	    hAntiEWKMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiEWKMetm[ipt]->Sumw2();
+	    sprintf(histName,"hAntiEWKMetp_%d",ipt);
+	    sprintf(histName_org,"h1_WpSide_Neu_pt_%d",ipt);
+	    hAntiEWKMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiEWKMetp[ipt]->Sumw2();
+	  }
+	  if(ipt>8)
+	  {
+	    sprintf(histName,"hEWKMet_%d",ipt);
+	    sprintf(histName_org,"h1_W_Mt_%d",ipt);
+	    hEWKMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hEWKMet[ipt]->Sumw2();
+	    nEventDYToMuMu.push_back(hEWKMet[ipt]->Integral());
+	    sprintf(histName,"hEWKMetm_%d",ipt);
+	    sprintf(histName_org,"h1_Wm_Mt_%d",ipt);
+	    hEWKMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hEWKMetm[ipt]->Sumw2();
+	    nEventDYToMuMuM.push_back(hEWKMetm[ipt]->Integral());
+	    sprintf(histName,"hEWKMetp_%d",ipt);
+	    sprintf(histName_org,"h1_Wp_Mt_%d",ipt);
+	    hEWKMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hEWKMetp[ipt]->Sumw2();
+	    nEventDYToMuMuP.push_back(hEWKMetp[ipt]->Integral());
+
+	    sprintf(histName,"hAntiEWKMet_%d",ipt);
+	    sprintf(histName_org,"h1_WSide_Mt_%d",ipt);
+	    hAntiEWKMet[ipt] =(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiEWKMet[ipt]->Sumw2();
+	    sprintf(histName,"hAntiEWKMetm_%d",ipt);
+	    sprintf(histName_org,"h1_WmSide_Mt_%d",ipt);
+	    hAntiEWKMetm[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiEWKMetm[ipt]->Sumw2();
+	    sprintf(histName,"hAntiEWKMetp_%d",ipt);
+	    sprintf(histName_org,"h1_WpSide_Mt_%d",ipt);
+	    hAntiEWKMetp[ipt]=(TH1D*)infile->Get(histName_org)->Clone(histName);hAntiEWKMetp[ipt]->Sumw2();
+	  }
 	}
       }else{
 	ewkNumber++;
 	for( int ipt(0); ipt<NWptBinPlus; ipt++)
 	{
-	  sprintf(histName_org,"h1_W_Neu_pt_%d",ipt);
-	  hEWKMet[ipt] ->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
-	  if(ewkNumber == 2)nEventDYToTauTau.push_back(hEWKMet[ipt]->Integral());
-	  if(ewkNumber == 3)nEventTTJets.push_back(hEWKMet[ipt]->Integral());
-	  if(ewkNumber == 4)nEventWToTauNu.push_back(hEWKMet[ipt]->Integral());
-	  sprintf(histName_org,"h1_Wm_Neu_pt_%d",ipt);
-	  hEWKMetm[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
-          if(ewkNumber == 2)nEventDYToTauTauM.push_back(hEWKMetm[ipt]->Integral());
-          if(ewkNumber == 3)nEventTTJetsM.push_back(hEWKMetm[ipt]->Integral());
-          if(ewkNumber == 4)nEventWToTauNuM.push_back(hEWKMetm[ipt]->Integral());
-	  sprintf(histName_org,"h1_Wp_Neu_pt_%d",ipt);
-	  hEWKMetp[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
-          if(ewkNumber == 2)nEventDYToTauTauP.push_back(hEWKMetp[ipt]->Integral());
-          if(ewkNumber == 3)nEventTTJetsP.push_back(hEWKMetp[ipt]->Integral());
-          if(ewkNumber == 4)nEventWToTauNuP.push_back(hEWKMetp[ipt]->Integral());
+	  if(ipt<9)
+	  {
+	    sprintf(histName_org,"h1_W_Neu_pt_%d",ipt);
+	    hEWKMet[ipt] ->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+	    if(ewkNumber == 2)nEventDYToTauTau.push_back(hEWKMet[ipt]->Integral());
+	    if(ewkNumber == 3)nEventTTJets.push_back(hEWKMet[ipt]->Integral());
+	    if(ewkNumber == 4)nEventWToTauNu.push_back(hEWKMet[ipt]->Integral());
+	    sprintf(histName_org,"h1_Wm_Neu_pt_%d",ipt);
+	    hEWKMetm[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+            if(ewkNumber == 2)nEventDYToTauTauM.push_back(hEWKMetm[ipt]->Integral());
+            if(ewkNumber == 3)nEventTTJetsM.push_back(hEWKMetm[ipt]->Integral());
+            if(ewkNumber == 4)nEventWToTauNuM.push_back(hEWKMetm[ipt]->Integral());
+	    sprintf(histName_org,"h1_Wp_Neu_pt_%d",ipt);
+	    hEWKMetp[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+            if(ewkNumber == 2)nEventDYToTauTauP.push_back(hEWKMetp[ipt]->Integral());
+            if(ewkNumber == 3)nEventTTJetsP.push_back(hEWKMetp[ipt]->Integral());
+            if(ewkNumber == 4)nEventWToTauNuP.push_back(hEWKMetp[ipt]->Integral());
 
-	  sprintf(histName_org,"h1_WSide_Neu_pt_%d",ipt);
-	  hAntiEWKMet[ipt] ->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
-	  sprintf(histName_org,"h1_WmSide_Neu_pt_%d",ipt);
-	  hAntiEWKMetm[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
-	  sprintf(histName_org,"h1_WpSide_Neu_pt_%d",ipt);
-	  hAntiEWKMetp[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+	    sprintf(histName_org,"h1_WSide_Neu_pt_%d",ipt);
+	    hAntiEWKMet[ipt] ->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+	    sprintf(histName_org,"h1_WmSide_Neu_pt_%d",ipt);
+	    hAntiEWKMetm[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+	    sprintf(histName_org,"h1_WpSide_Neu_pt_%d",ipt);
+	    hAntiEWKMetp[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+	  }
+	  if(ipt>8)
+	  {
+	    sprintf(histName_org,"h1_W_Mt_%d",ipt);
+	    hEWKMet[ipt] ->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+	    if(ewkNumber == 2)nEventDYToTauTau.push_back(hEWKMet[ipt]->Integral());
+	    if(ewkNumber == 3)nEventTTJets.push_back(hEWKMet[ipt]->Integral());
+	    if(ewkNumber == 4)nEventWToTauNu.push_back(hEWKMet[ipt]->Integral());
+	    sprintf(histName_org,"h1_Wm_Mt_%d",ipt);
+	    hEWKMetm[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+            if(ewkNumber == 2)nEventDYToTauTauM.push_back(hEWKMetm[ipt]->Integral());
+            if(ewkNumber == 3)nEventTTJetsM.push_back(hEWKMetm[ipt]->Integral());
+            if(ewkNumber == 4)nEventWToTauNuM.push_back(hEWKMetm[ipt]->Integral());
+	    sprintf(histName_org,"h1_Wp_Mt_%d",ipt);
+	    hEWKMetp[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+            if(ewkNumber == 2)nEventDYToTauTauP.push_back(hEWKMetp[ipt]->Integral());
+            if(ewkNumber == 3)nEventTTJetsP.push_back(hEWKMetp[ipt]->Integral());
+            if(ewkNumber == 4)nEventWToTauNuP.push_back(hEWKMetp[ipt]->Integral());
+
+	    sprintf(histName_org,"h1_WSide_Mt_%d",ipt);
+	    hAntiEWKMet[ipt] ->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+	    sprintf(histName_org,"h1_WmSide_Mt_%d",ipt);
+	    hAntiEWKMetm[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+	    sprintf(histName_org,"h1_WpSide_Mt_%d",ipt);
+	    hAntiEWKMetp[ipt]->Add((TH1D*)infile->Get(histName_org)->Clone(histName));
+	  }
 	}
       }
       first_EWK_file=false;
@@ -495,6 +599,13 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   CPepeModelMean* aqcdp[NWptBinPlus];
   CPepeModelMean* aqcdm[NWptBinPlus];
   
+  mtModelMean* mt[NWptBinPlus];
+  mtModelMean* mtp[NWptBinPlus];
+  mtModelMean* mtm[NWptBinPlus];
+  mtModelMean* amt[NWptBinPlus];
+  mtModelMean* amtp[NWptBinPlus];
+  mtModelMean* amtm[NWptBinPlus];
+  
   CPepePlusMod* qcd1[NWptBinPlus];
   CPepePlusMod* qcd1p[NWptBinPlus];
   CPepePlusMod* qcd1m[NWptBinPlus];
@@ -509,33 +620,43 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   CPepeDouble* aqcd2p[NWptBinPlus];
   CPepeDouble* aqcd2m[NWptBinPlus];
   
+  RooRealVar* mtmean[NWptBinPlus];
+  RooRealVar* mtPmean[NWptBinPlus];
+  RooRealVar* mtMmean[NWptBinPlus];
+  RooRealVar* mtsigma[NWptBinPlus];
+  RooRealVar* mtPsigma[NWptBinPlus];
+  RooRealVar* mtMsigma[NWptBinPlus];
+  RooRealVar* mta1[NWptBinPlus];
+  RooRealVar* mtPa1[NWptBinPlus];
+  RooRealVar* mtMa1[NWptBinPlus];
+  
+  RooRealVar* amtsigma[NWptBinPlus];
+  RooRealVar* amtPsigma[NWptBinPlus];
+  RooRealVar* amtMsigma[NWptBinPlus];
+  
   RooRealVar* qcdmean[NWptBinPlus];
   RooRealVar* qcdPmean[NWptBinPlus];
   RooRealVar* qcdMmean[NWptBinPlus];
   
-  RooRealVar* qcdsigma1[NWptBinPlus];
-  RooRealVar* qcdPsigma1[NWptBinPlus];
-  RooRealVar* qcdMsigma1[NWptBinPlus];
-  
-  RooRealVar* aqcdsigma1[NWptBinPlus];
-  RooRealVar* aqcdPsigma1[NWptBinPlus];
-  RooRealVar* aqcdMsigma1[NWptBinPlus];
+  RooRealVar* aqcdmean[NWptBinPlus];
+  RooRealVar* aqcdPmean[NWptBinPlus];
+  RooRealVar* aqcdMmean[NWptBinPlus];
   
   RooRealVar* qcda1[NWptBinPlus];
   RooRealVar* qcdPa1[NWptBinPlus];
   RooRealVar* qcdMa1[NWptBinPlus];
   
-  RooRealVar* qcdsigma2[NWptBinPlus];
-  RooRealVar* qcdPsigma2[NWptBinPlus];
-  RooRealVar* qcdMsigma2[NWptBinPlus];
-  
-  RooRealVar* aqcdsigma2[NWptBinPlus];
-  RooRealVar* aqcdPsigma2[NWptBinPlus];
-  RooRealVar* aqcdMsigma2[NWptBinPlus];
-  
   RooRealVar* qcda2[NWptBinPlus];
   RooRealVar* qcdPa2[NWptBinPlus];
   RooRealVar* qcdMa2[NWptBinPlus];
+  
+  RooRealVar* qcdsigma1[NWptBinPlus];
+  RooRealVar* qcdPsigma1[NWptBinPlus];
+  RooRealVar* qcdMsigma1[NWptBinPlus];
+  
+  RooRealVar* qcdsigma2[NWptBinPlus];
+  RooRealVar* qcdPsigma2[NWptBinPlus];
+  RooRealVar* qcdMsigma2[NWptBinPlus];
   
   RooRealVar* Frac1[NWptBinPlus];
   RooRealVar* Frac1P[NWptBinPlus];
@@ -553,20 +674,26 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   RooRealVar* dFrac2P[NWptBinPlus];
   RooRealVar* dFrac2M[NWptBinPlus];
   
+  RooRealVar* aqcdsigma1[NWptBinPlus];
+  RooRealVar* aqcdPsigma1[NWptBinPlus];
+  RooRealVar* aqcdMsigma1[NWptBinPlus];
+  
+  RooRealVar* aqcdsigma2[NWptBinPlus];
+  RooRealVar* aqcdPsigma2[NWptBinPlus];
+  RooRealVar* aqcdMsigma2[NWptBinPlus];
+  
   TCanvas *c;
   c = MakeCanvas("c","c",800,800);
   c->Divide(1,2,0,0);
   c->cd(1)->SetPad(0,0.3,1.0,1.0);
   c->cd(1)->SetTopMargin(0.1);
-  //c->cd(1)->SetBottomMargin(0.01);
-  c->cd(1)->SetBottomMargin(0.02);
+  c->cd(1)->SetBottomMargin(0.01);
   c->cd(1)->SetLeftMargin(0.15);  
   c->cd(1)->SetRightMargin(0.07);  
   c->cd(1)->SetTickx(1);
   c->cd(1)->SetTicky(1);  
   c->cd(2)->SetPad(0,0,1.0,0.3);
-  //c->cd(2)->SetTopMargin(0.05);
-  c->cd(2)->SetTopMargin(0.07);
+  c->cd(2)->SetTopMargin(0.05);
   c->cd(2)->SetBottomMargin(0.45);
   c->cd(2)->SetLeftMargin(0.15);
   c->cd(2)->SetRightMargin(0.07);
@@ -577,10 +704,8 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   char ylabel[100];  // string buffer for y-axis label
   // label for lumi
   char lumitext[100];
-  //if(lumi<0.1) sprintf(lumitext,"%.1f pb^{-1}  at  #sqrt{s} = 8 TeV",lumi*1000.);
-  //else         sprintf(lumitext,"%.2f fb^{-1}  at  #sqrt{s} = 8 TeV",lumi);
-  if(lumi<0.1) sprintf(lumitext,"L = %.1f pb^{-1}, #sqrt{s} = 8 TeV",lumi*1000.);
-  else         sprintf(lumitext,"L = %.2f fb^{-1}, #sqrt{s} = 8 TeV",lumi);
+  if(lumi<0.1) sprintf(lumitext,"%.1f pb^{-1}  at  #sqrt{s} = 8 TeV",lumi*1000.);
+  else         sprintf(lumitext,"%.2f fb^{-1}  at  #sqrt{s} = 8 TeV",lumi);
   char binlabel[50];
   
   // plot colors
@@ -604,11 +729,7 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   hDummyW->SetLineColor(linecolorW);
   hDummyW->SetFillColor(fillcolorW);
   hDummyW->SetFillStyle(1001);
- 
-  TH1D *hDummyDotLineW = new TH1D ("hDummyDotLineW","",0,0,10);
-  hDummyDotLineW ->SetLineColor(linecolorW);
-  hDummyDotLineW ->SetLineStyle(2);
-
+  
   TH1D *hDummyEWK = new TH1D("hDummyEWK","",0,0,10);
   hDummyEWK->SetLineColor(linecolorEWK);
   hDummyEWK->SetFillColor(fillcolorEWK);
@@ -655,6 +776,7 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   ios_base::fmtflags flags;
   Double_t chi2prob, chi2ndf;
   Double_t ksprob, ksprobpe;
+  Double_t chi2, ndf;
 
   Double_t RaySigma, RaySigma_p, RaySigma_m;
   Int_t NBINS;
@@ -662,20 +784,20 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   sprintf(allyieldsfname,"%s/AllYields.txt",CPlot::sOutDir.Data());
   allyields.open(allyieldsfname);
   assert(allyields.is_open());
-//  allyields << " ********************** Inclusive W Yields ********************** " << endl;
-//  allyields << "Bin #" << "\t" << " Signal " << "\t" << " Error " << endl;
+  allyields<<"********************** Inclusive W Yields **********************"<<endl;
+  allyields<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)"<<endl;
 
   sprintf(allyieldsfnamep,"%s/AllYields_P.txt",CPlot::sOutDir.Data());
   allyieldsp.open(allyieldsfnamep);
   assert(allyieldsp.is_open());
-//  allyieldsp << " ********************** W^{+} Yields ********************** " << endl;
-//  allyieldsp << "Bin #" << "\t" << " Signal " << "\t" << " Error " << endl;
+  allyieldsp<<"********************** W^{+} Yields **********************"<<endl;
+  allyieldsp<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)"<<endl;
 
   sprintf(allyieldsfnamem,"%s/AllYields_M.txt",CPlot::sOutDir.Data());
   allyieldsm.open(allyieldsfnamem);
   assert(allyieldsm.is_open());
-//  allyieldsm << " ********************** W^{-} Yields ********************** " << endl;
-//  allyieldsm << "Bin #" << "\t" << " Signal " << "\t" << " Error " << endl;
+  allyieldsm<<"********************** W^{-} Yields **********************"<<endl;
+  allyieldsm<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)"<<endl;
 
 //Create MET Fit Plots --> HTML file
   ofstream metplotsfile;
@@ -723,6 +845,13 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   assert(Wmmfile.is_open());
   Wmmfile << " *** W minus -- All Bin Yields Information *** " << endl;
   
+  ofstream Wfile;
+  char Wfname[100];    
+  sprintf(Wfname,"%s/Events_AllBin.txt",CPlot::sOutDir.Data());
+  Wfile.open(Wfname);
+  assert(Wfile.is_open());
+  Wfile << " *** All Bin Yields Information *** " << endl;
+  
   ofstream qcdfile;
   char qcdfname[100];    
   sprintf(qcdfname,"%s/qcd_shapes.txt",CPlot::sOutDir.Data());
@@ -735,43 +864,31 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   InValfile.open(InValfname);
   assert(InValfile.is_open());
   
-  //Merge Side Band Bins 10-13
-  TH1D *hHighWpTAnti_DataMet ;
-  TH1D *hHighWpTAnti_DataMetm;
-  TH1D *hHighWpTAnti_DataMetp;
-  TH1D *hHighWpTAnti_WmunuMet;
-  TH1D *hHighWpTAnti_WmunuMetp;
-  TH1D *hHighWpTAnti_WmunuMetm;
-  TH1D *hHighWpTAnti_EWKMet;
-  TH1D *hHighWpTAnti_EWKMetp;
-  TH1D *hHighWpTAnti_EWKMetm;
-  
-  hHighWpTAnti_DataMet  = (TH1D*)hAntiDataMet[10]  ->Clone("hHighWpTAnti_DataMet");   hHighWpTAnti_DataMet->Sumw2();
-  hHighWpTAnti_DataMetp = (TH1D*)hAntiDataMetp[10] ->Clone("hHighWpTAnti_DataMetp");  hHighWpTAnti_DataMetp->Sumw2();
-  hHighWpTAnti_DataMetm = (TH1D*)hAntiDataMetm[10] ->Clone("hHighWpTAnti_DataMetm");  hHighWpTAnti_DataMetm->Sumw2();
-  hHighWpTAnti_WmunuMet = (TH1D*)hAntiWmunuMet[10] ->Clone("hHighWpTAnti_WmunuMet");  hHighWpTAnti_WmunuMet->Sumw2();
-  hHighWpTAnti_WmunuMetp= (TH1D*)hAntiWmunuMetp[10]->Clone("hHighWpTAnti_WmunuMetp"); hHighWpTAnti_WmunuMetp->Sumw2();
-  hHighWpTAnti_WmunuMetm= (TH1D*)hAntiWmunuMetm[10]->Clone("hHighWpTAnti_WmunuMetm"); hHighWpTAnti_WmunuMetm->Sumw2();
-  hHighWpTAnti_EWKMet   = (TH1D*)hAntiEWKMet[10]   ->Clone("hHighWpTAnti_EWKMet");    hHighWpTAnti_EWKMet->Sumw2();
-  hHighWpTAnti_EWKMetp  = (TH1D*)hAntiEWKMetp[10]  ->Clone("hHighWpTAnti_EWKMetp");   hHighWpTAnti_EWKMetp->Sumw2();
-  hHighWpTAnti_EWKMetm  = (TH1D*)hAntiEWKMetm[10]  ->Clone("hHighWpTAnti_EWKMetm");   hHighWpTAnti_EWKMetm->Sumw2();
-  
-  for( int ipt(11);ipt<NWptBinPlus;ipt++)
-  {
-    hHighWpTAnti_DataMet  -> Add(hAntiDataMet[ipt]);
-    hHighWpTAnti_DataMetp -> Add(hAntiDataMetp[ipt]);
-    hHighWpTAnti_DataMetm -> Add(hAntiDataMetm[ipt]);
-    hHighWpTAnti_WmunuMet -> Add(hAntiWmunuMet[ipt]);
-    hHighWpTAnti_WmunuMetp-> Add(hAntiWmunuMetp[ipt]);
-    hHighWpTAnti_WmunuMetm-> Add(hAntiWmunuMetm[ipt]);
-    hHighWpTAnti_EWKMet   -> Add(hAntiEWKMet[ipt]);
-    hHighWpTAnti_EWKMetp  -> Add(hAntiEWKMetp[ipt]);
-    hHighWpTAnti_EWKMetm  -> Add(hAntiEWKMetm[ipt]);
-  }
+  ofstream fitfile;
+  char fitfname[100];    
+  sprintf(fitfname,"%s/fitPars.txt",CPlot::sOutDir.Data());
+  fitfile.open(fitfname);
+  assert(fitfile.is_open());
+  fitfile<<"Bin\t chi2\t NDF\t chi2/NDF\t sigma0\t sigma1(sharing)"<<endl;
+
+  ofstream pfitfile;
+  char pfitfname[100];    
+  sprintf(pfitfname,"%s/pfitPars.txt",CPlot::sOutDir.Data());
+  pfitfile.open(pfitfname);
+  assert(pfitfile.is_open());
+  pfitfile<<"Bin\t chi2\t NDF\t chi2/NDF\t sigma0\t sigma1(sharing)"<<endl;
+
+  ofstream mfitfile;
+  char mfitfname[100];    
+  sprintf(mfitfname,"%s/mfitPars.txt",CPlot::sOutDir.Data());
+  mfitfile.open(mfitfname);
+  assert(mfitfile.is_open());
+  mfitfile<<"Bin\t chi2\t NDF\t chi2/NDF\t sigma0\t sigma1(sharing)"<<endl;
+
   //Loop for each Wpt bins==============
   // 0 is the total
   for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(3);ipt<4;ipt++)
+  //for(int ipt(1);ipt<4;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -779,130 +896,152 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     } else if ( ipt<NBIN_PT_DIVIDER_2and3 ) {
       METMAX = METMAX_2;
       NBINS   = NBINS_2;
+    } else if ( ipt<NBIN_PT_DIVIDER_3and4 ) {
+      METMAX = METMAX_3;
+      NBINS   = NBINS_3;
     } else {
       METMAX = METMAX_4;
-      NBINS  = NBINS_2;
+      NBINS  = NBINS_4;
     }
     RooRealVar pfmet("pfmet","pfmet",0,METMAX);
     pfmet.setBins(NBINS);
-    //RooRealVar pfmet("pfmet","pfmet",0,80);
-    //pfmet.setBins(48);
 
     sprintf(histName,"nSig_%d",ipt);
     nSig[ipt] = new RooRealVar(histName,histName
-	,0.7*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
+        ,0.7*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
     sprintf(histName,"nSigp_%d",ipt);
     nSigp[ipt] = new RooRealVar(histName,histName
-	,0.7*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
+        ,0.7*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
     sprintf(histName,"nSigm_%d",ipt);
     nSigm[ipt] = new RooRealVar(histName,histName
-	,0.7*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-   
-    if (ipt==13)
-    {
-      sprintf(histName,"nSig_%d",ipt);
-      nSig[ipt] = new RooRealVar(histName,histName
-	  ,0.5*(hDataMet[ipt]->Integral()),0.05*hDataMet[ipt]->Integral(),0.9*hDataMet[ipt]->Integral());
-      sprintf(histName,"nSigp_%d",ipt);
-      nSigp[ipt] = new RooRealVar(histName,histName
-          ,0.5*(hDataMetp[ipt]->Integral()),0.05*hDataMetp[ipt]->Integral(),0.9*hDataMetp[ipt]->Integral());
-      sprintf(histName,"nSigm_%d",ipt);
-      nSigm[ipt] = new RooRealVar(histName,histName
-  	  ,0.5*(hDataMetm[ipt]->Integral()),0.05*hDataMetm[ipt]->Integral(),0.95*hDataMetm[ipt]->Integral());
+        ,0.7*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
     
-      sprintf(histName,"nQCD_%d",ipt);
-      nQCD[ipt]  = new RooRealVar(histName,histName
-          ,0.3*(hDataMet[ipt]->Integral()),0.05*hDataMet[ipt]->Integral(),0.9*hDataMet[ipt]->Integral());
-      sprintf(histName,"nQCDp_%d",ipt);
-      nQCDp[ipt] = new RooRealVar(histName,histName
-          ,0.3*(hDataMetp[ipt]->Integral()),0.5*hDataMetp[ipt]->Integral(),0.7*hDataMetp[ipt]->Integral());
-      sprintf(histName,"nQCDm_%d",ipt);
-      nQCDm[ipt] = new RooRealVar(histName,histName
-	,0.3*(hDataMetm[ipt]->Integral()),0.5*hDataMetm[ipt]->Integral(),0.7*hDataMetm[ipt]->Integral());
+    sprintf(histName,"nAntiSig_%d",ipt);
+    nAntiSig[ipt] = new RooRealVar(histName,histName
+	,0.02*hAntiDataMet[ipt]->Integral(),0,hAntiDataMet[ipt]->Integral());
+    sprintf(histName,"nAntiSigp_%d",ipt);
+    nAntiSigp[ipt] = new RooRealVar(histName,histName
+	,0.02*hAntiDataMetp[ipt]->Integral(),0,hAntiDataMetp[ipt]->Integral());
+    sprintf(histName,"nAntiSigm_%d",ipt);
+    nAntiSigm[ipt] = new RooRealVar(histName,histName
+	,0.02*hAntiDataMetm[ipt]->Integral(),0,hAntiDataMetm[ipt]->Integral());
     
-    }
-    if (ipt<10)
-    {
-      sprintf(histName,"nAntiSig_%d",ipt);
-      nAntiSig[ipt] = new RooRealVar(histName,histName
-	  ,hAntiDataMet[ipt]->Integral(),0,hAntiDataMet[ipt]->Integral());
-      sprintf(histName,"nAntiSigp_%d",ipt);
-      nAntiSigp[ipt] = new RooRealVar(histName,histName
-	  ,hAntiDataMetp[ipt]->Integral(),0,hAntiDataMetp[ipt]->Integral());
-      sprintf(histName,"nAntiSigm_%d",ipt);
-      nAntiSigm[ipt] = new RooRealVar(histName,histName
-	  ,hAntiDataMetm[ipt]->Integral(),0,hAntiDataMetm[ipt]->Integral());
+    sprintf(histName,"nAntiQCD_%d",ipt);
+    nAntiQCD[ipt] = new RooRealVar(histName,histName
+	,0.9*(hAntiDataMet[ipt]->Integral()),0,hAntiDataMet[ipt]->Integral());
+    sprintf(histName,"nAntiQCDp_%d",ipt);
+    nAntiQCDp[ipt] = new RooRealVar(histName,histName
+	,0.9*(hAntiDataMetp[ipt]->Integral()),0,hAntiDataMetp[ipt]->Integral());
+    sprintf(histName,"nAntiQCDm_%d",ipt);
+    nAntiQCDm[ipt] = new RooRealVar(histName,histName
+	,0.9*(hAntiDataMetm[ipt]->Integral()),0,hAntiDataMetm[ipt]->Integral());
     
-      sprintf(histName,"nAntiQCD_%d",ipt);
-      nAntiQCD[ipt] = new RooRealVar(histName,histName
-          ,0.9*(hAntiDataMet[ipt]->Integral()),0,hAntiDataMet[ipt]->Integral());
-      sprintf(histName,"nAntiQCDp_%d",ipt);
-      nAntiQCDp[ipt] = new RooRealVar(histName,histName
-          ,0.9*(hAntiDataMetp[ipt]->Integral()),0,hAntiDataMetp[ipt]->Integral());
-      sprintf(histName,"nAntiQCDm_%d",ipt);
-      nAntiQCDm[ipt] = new RooRealVar(histName,histName
-          ,0.9*(hAntiDataMetm[ipt]->Integral()),0,hAntiDataMetm[ipt]->Integral());
-      
-      sprintf(histName,"dewk_%d",ipt);
-      dewk[ipt] = new RooRealVar(histName,histName,0.01,0,5);
-      dewk[ipt]->setVal(hAntiEWKMet[ipt]->Integral()/hAntiWmunuMet[ipt]->Integral());
-      dewk[ipt]->setConstant(kTRUE);
-   
-      sprintf(histName,"dewkp_%d",ipt);
-      dewkp[ipt] = new RooRealVar(histName,histName,0.01,0,5);
-      dewkp[ipt]->setVal(hAntiEWKMetp[ipt]->Integral()/hAntiWmunuMetp[ipt]->Integral());
-      dewkp[ipt]->setConstant(kTRUE);
-      
-      sprintf(histName,"dewkm_%d",ipt);
-      dewkm[ipt] = new RooRealVar(histName,histName,0.01,0,5);
-      dewkm[ipt]->setVal(hAntiEWKMetm[ipt]->Integral()/hAntiWmunuMetm[ipt]->Integral());
-      dewkm[ipt]->setConstant(kTRUE);
-    }else{
-      sprintf(histName,"nAntiSig_%d",ipt);
-      nAntiSig[ipt] = new RooRealVar(histName,histName
-	  ,hHighWpTAnti_DataMet->Integral(),0,hHighWpTAnti_DataMet->Integral());
-      sprintf(histName,"nAntiSigp_%d",ipt);
-      nAntiSigp[ipt] = new RooRealVar(histName,histName
-	  ,hHighWpTAnti_DataMetp->Integral(),0,hHighWpTAnti_DataMetp->Integral());
-      sprintf(histName,"nAntiSigm_%d",ipt);
-      nAntiSigm[ipt] = new RooRealVar(histName,histName
-	  ,hHighWpTAnti_DataMetm->Integral(),0,hHighWpTAnti_DataMetm->Integral());
+    sprintf(histName,"dewk_%d",ipt);
+    dewk[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+    dewk[ipt]->setVal(hAntiEWKMet[ipt]->Integral()/hAntiWmunuMet[ipt]->Integral());
+    dewk[ipt]->setConstant(kTRUE);
     
-      sprintf(histName,"nAntiQCD_%d",ipt);
-      nAntiQCD[ipt] = new RooRealVar(histName,histName
-          ,0.9*(hHighWpTAnti_DataMet->Integral()),0,hHighWpTAnti_DataMet->Integral());
-      sprintf(histName,"nAntiQCDp_%d",ipt);
-      nAntiQCDp[ipt] = new RooRealVar(histName,histName
-          ,0.9*(hHighWpTAnti_DataMetp->Integral()),0,hHighWpTAnti_DataMetp->Integral());
-      sprintf(histName,"nAntiQCDm_%d",ipt);
-      nAntiQCDm[ipt] = new RooRealVar(histName,histName
-          ,0.9*(hHighWpTAnti_DataMetm->Integral()),0,hHighWpTAnti_DataMetm->Integral());
-      
-      sprintf(histName,"dewk_%d",ipt);
-      dewk[ipt] = new RooRealVar(histName,histName,0.01,0,5);
-      dewk[ipt]->setVal(hHighWpTAnti_EWKMet->Integral()/hHighWpTAnti_WmunuMet->Integral());
-      dewk[ipt]->setConstant(kTRUE);
-   
-      sprintf(histName,"dewkp_%d",ipt);
-      dewkp[ipt] = new RooRealVar(histName,histName,0.01,0,5);
-      dewkp[ipt]->setVal(hHighWpTAnti_EWKMetp->Integral()/hHighWpTAnti_WmunuMetp->Integral());
-      dewkp[ipt]->setConstant(kTRUE);
-      
-      sprintf(histName,"dewkm_%d",ipt);
-      dewkm[ipt] = new RooRealVar(histName,histName,0.01,0,5);
-      dewkm[ipt]->setVal(hHighWpTAnti_EWKMetm->Integral()/hHighWpTAnti_WmunuMetm->Integral());
-      dewkm[ipt]->setConstant(kTRUE);
-    } 
+    sprintf(histName,"dewkp_%d",ipt);
+    dewkp[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+    dewkp[ipt]->setVal(hAntiEWKMetp[ipt]->Integral()/hAntiWmunuMetp[ipt]->Integral());
+    dewkp[ipt]->setConstant(kTRUE);
+    
+    sprintf(histName,"dewkm_%d",ipt);
+    dewkm[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+    dewkm[ipt]->setVal(hAntiEWKMetm[ipt]->Integral()/hAntiWmunuMetm[ipt]->Integral());
+    dewkm[ipt]->setConstant(kTRUE);
+    
     sprintf(histName,"nQCD_%d",ipt);
     nQCD[ipt]  = new RooRealVar(histName,histName
-	,0.3*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
+        ,0.3*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
     sprintf(histName,"nQCDp_%d",ipt);
     nQCDp[ipt] = new RooRealVar(histName,histName
-	,0.3*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
+        ,0.3*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
     sprintf(histName,"nQCDm_%d",ipt);
     nQCDm[ipt] = new RooRealVar(histName,histName
-	,0.3*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-    
+        ,0.3*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
+   
+    if(ipt>10){
+      sprintf(histName,"nSig_%d",ipt);
+      nSig[ipt] = new RooRealVar(histName,histName
+          ,0.7*(hDataMet[ipt]->Integral()),0.3*hDataMet[ipt]->Integral(),0.95*hDataMet[ipt]->Integral());
+      sprintf(histName,"nSigp_%d",ipt);
+      nSigp[ipt] = new RooRealVar(histName,histName
+          ,0.7*(hDataMetp[ipt]->Integral()),0.3*hDataMetp[ipt]->Integral(),0.95*hDataMetp[ipt]->Integral());
+      sprintf(histName,"nSigm_%d",ipt);
+      nSigm[ipt] = new RooRealVar(histName,histName
+          ,0.64*(hDataMetm[ipt]->Integral()),0.6*hDataMetm[ipt]->Integral(),0.7*hDataMetm[ipt]->Integral());
+      sprintf(histName,"nQCD_%d",ipt);
+      nQCD[ipt]  = new RooRealVar(histName,histName
+          ,0.2*(hDataMet[ipt]->Integral()),0.1*hDataMet[ipt]->Integral(),0.3*hDataMet[ipt]->Integral());
+      sprintf(histName,"nQCDp_%d",ipt);
+      nQCDp[ipt] = new RooRealVar(histName,histName
+          ,0.2*(hDataMetp[ipt]->Integral()),0.1*hDataMetp[ipt]->Integral(),0.3*hDataMetp[ipt]->Integral());
+      sprintf(histName,"nQCDm_%d",ipt);
+      nQCDm[ipt] = new RooRealVar(histName,histName
+          ,0.09*(hDataMetm[ipt]->Integral()),0.07*hDataMetm[ipt]->Integral(),0.11*hDataMetm[ipt]->Integral());
+      
+      sprintf(histName,"nAntiSig_%d",ipt);
+      nAntiSig[ipt] = new RooRealVar(histName,histName
+          ,0.03*hAntiDataMet[ipt]->Integral(),0,0.1*hAntiDataMet[ipt]->Integral());
+      sprintf(histName,"nAntiSigp_%d",ipt);
+      nAntiSigp[ipt] = new RooRealVar(histName,histName
+          ,0.03*hAntiDataMetp[ipt]->Integral(),0,0.1*hAntiDataMetp[ipt]->Integral());
+      sprintf(histName,"nAntiSigm_%d",ipt);
+      nAntiSigm[ipt] = new RooRealVar(histName,histName
+          ,0.02*hAntiDataMetm[ipt]->Integral(),0.01*hAntiDataMetm[ipt]->Integral(),0.03*hAntiDataMetm[ipt]->Integral());
+      
+      sprintf(histName,"nAntiQCD_%d",ipt);
+      nAntiQCD[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMet[ipt]->Integral()),0.7*hAntiDataMet[ipt]->Integral(),0.99*hAntiDataMet[ipt]->Integral());
+      sprintf(histName,"nAntiQCDp_%d",ipt);
+      nAntiQCDp[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMetp[ipt]->Integral()),0.7*hAntiDataMetp[ipt]->Integral(),0.99*hAntiDataMetp[ipt]->Integral());
+      sprintf(histName,"nAntiQCDm_%d",ipt);
+      nAntiQCDm[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMetm[ipt]->Integral()),0.8*hAntiDataMetm[ipt]->Integral(),0.99*hAntiDataMetm[ipt]->Integral());
+    }
+    if(ipt==10){
+      sprintf(histName,"nSig_%d",ipt);
+      nSig[ipt] = new RooRealVar(histName,histName
+          ,0.7*(hDataMet[ipt]->Integral()),0.3*hDataMet[ipt]->Integral(),0.95*hDataMet[ipt]->Integral());
+      sprintf(histName,"nSigp_%d",ipt);
+      nSigp[ipt] = new RooRealVar(histName,histName
+          ,0.7*(hDataMetp[ipt]->Integral()),0.3*hDataMetp[ipt]->Integral(),0.95*hDataMetp[ipt]->Integral());
+      sprintf(histName,"nSigm_%d",ipt);
+      nSigm[ipt] = new RooRealVar(histName,histName
+          ,0.7*(hDataMetm[ipt]->Integral()),0.6*hDataMetm[ipt]->Integral(),0.8*hDataMetm[ipt]->Integral());
+      sprintf(histName,"nQCD_%d",ipt);
+      nQCD[ipt]  = new RooRealVar(histName,histName
+          ,0.2*(hDataMet[ipt]->Integral()),0.1*hDataMet[ipt]->Integral(),0.3*hDataMet[ipt]->Integral());
+      sprintf(histName,"nQCDp_%d",ipt);
+      nQCDp[ipt] = new RooRealVar(histName,histName
+          ,0.2*(hDataMetp[ipt]->Integral()),0.1*hDataMetp[ipt]->Integral(),0.3*hDataMetp[ipt]->Integral());
+      sprintf(histName,"nQCDm_%d",ipt);
+      nQCDm[ipt] = new RooRealVar(histName,histName
+          ,0.1*(hDataMetm[ipt]->Integral()),0.09*hDataMetm[ipt]->Integral(),0.2*hDataMetm[ipt]->Integral());
+      
+      sprintf(histName,"nAntiSig_%d",ipt);
+      nAntiSig[ipt] = new RooRealVar(histName,histName
+          ,0.03*hAntiDataMet[ipt]->Integral(),0,0.1*hAntiDataMet[ipt]->Integral());
+      sprintf(histName,"nAntiSigp_%d",ipt);
+      nAntiSigp[ipt] = new RooRealVar(histName,histName
+          ,0.03*hAntiDataMetp[ipt]->Integral(),0,0.1*hAntiDataMetp[ipt]->Integral());
+      sprintf(histName,"nAntiSigm_%d",ipt);
+      nAntiSigm[ipt] = new RooRealVar(histName,histName
+          ,0.02*hAntiDataMetm[ipt]->Integral(),0.01*hAntiDataMetm[ipt]->Integral(),0.03*hAntiDataMetm[ipt]->Integral());
+      
+      sprintf(histName,"nAntiQCD_%d",ipt);
+      nAntiQCD[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMet[ipt]->Integral()),0.7*hAntiDataMet[ipt]->Integral(),0.99*hAntiDataMet[ipt]->Integral());
+      sprintf(histName,"nAntiQCDp_%d",ipt);
+      nAntiQCDp[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMetp[ipt]->Integral()),0.7*hAntiDataMetp[ipt]->Integral(),0.99*hAntiDataMetp[ipt]->Integral());
+      sprintf(histName,"nAntiQCDm_%d",ipt);
+      nAntiQCDm[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMetm[ipt]->Integral()),0.7*hAntiDataMetm[ipt]->Integral(),0.99*hAntiDataMetm[ipt]->Integral());
+    }
+
     sprintf(histName,"cewk_%d",ipt);
     cewk[ipt] = new RooRealVar(histName,histName,0.01,0,5);
     cewk[ipt]->setVal(hEWKMet[ipt]->Integral()/hWmunuMet[ipt]->Integral());
@@ -938,6 +1077,34 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     nAntiEWKm[ipt] = new RooFormulaVar(histName,histName
 	,"@0*@1",RooArgList(*nAntiSigm[ipt],*dewkm[ipt]));
 
+    sprintf(histName,"mtmean_%d",ipt);
+    mtmean[ipt] = new RooRealVar(histName,histName,3.,-50,50);
+    sprintf(histName,"mtPmean_%d",ipt);
+    mtPmean[ipt] = new RooRealVar(histName,histName,3.,-50,50);
+    sprintf(histName,"mtMmean_%d",ipt);
+    mtMmean[ipt] = new RooRealVar(histName,histName,3.,-50,50);
+
+    sprintf(histName,"mtsigma_%d",ipt);
+    mtsigma[ipt] = new RooRealVar(histName,histName,15,0,25);
+    sprintf(histName,"mtPsigma_%d",ipt);
+    mtPsigma[ipt] = new RooRealVar(histName,histName,15,0,25);
+    sprintf(histName,"mtMsigma_%d",ipt);
+    mtMsigma[ipt] = new RooRealVar(histName,histName,15,0,25);
+
+    sprintf(histName,"mta1_%d",ipt);
+    mta1[ipt] = new RooRealVar(histName,histName,0.01,-1,1);
+    sprintf(histName,"mtPa1_%d",ipt);
+    mtPa1[ipt] = new RooRealVar(histName,histName,0.01,-1,1);
+    sprintf(histName,"mtMa1_%d",ipt);
+    mtMa1[ipt] = new RooRealVar(histName,histName,0.01,-1,1);
+    
+    sprintf(histName,"amtsigma_%d",ipt);
+    amtsigma[ipt] = new RooRealVar(histName,histName,15,0,25);
+    sprintf(histName,"amtPsigma_%d",ipt);
+    amtPsigma[ipt] = new RooRealVar(histName,histName,15,0,25);
+    sprintf(histName,"amtMsigma_%d",ipt);
+    amtMsigma[ipt] = new RooRealVar(histName,histName,15,0,25);
+
     sprintf(histName,"qcdmean_%d",ipt);
     qcdmean[ipt] = new RooRealVar(histName,histName,15,0,50);
     sprintf(histName,"qcdPmean_%d",ipt);
@@ -945,33 +1112,12 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     sprintf(histName,"qcdMmean_%d",ipt);
     qcdMmean[ipt] = new RooRealVar(histName,histName,15,0,50);
 
-    sprintf(histName,"qcdsigma1_%d",ipt);
-    qcdsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
-    sprintf(histName,"qcdPsigma1_%d",ipt);
-    qcdPsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
-    sprintf(histName,"qcdMsigma1_%d",ipt);
-    qcdMsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
-    
-    sprintf(histName,"aqcdsigma1_%d",ipt);
-    aqcdsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
-    sprintf(histName,"aqcdPsigma1_%d",ipt);
-    aqcdPsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
-    sprintf(histName,"aqcdMsigma1_%d",ipt);
-    aqcdMsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
-    
-    sprintf(histName,"qcdsigma2_%d",ipt);
-    qcdsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
-    sprintf(histName,"qcdPsigma2_%d",ipt);
-    qcdPsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
-    sprintf(histName,"qcdMsigma2_%d",ipt);
-    qcdMsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
-    
-    sprintf(histName,"aqcdsigma2_%d",ipt);
-    aqcdsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
-    sprintf(histName,"aqcdPsigma2_%d",ipt);
-    aqcdPsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
-    sprintf(histName,"aqcdMsigma2_%d",ipt);
-    aqcdMsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
+    sprintf(histName,"aqcdmean_%d",ipt);
+    aqcdmean[ipt] = new RooRealVar(histName,histName,15,0,50);
+    sprintf(histName,"aqcdPmean_%d",ipt);
+    aqcdPmean[ipt] = new RooRealVar(histName,histName,15,0,50);
+    sprintf(histName,"aqcdMmean_%d",ipt);
+    aqcdMmean[ipt] = new RooRealVar(histName,histName,15,0,50);
     
     sprintf(histName,"qcda1_%d",ipt);
     qcda1[ipt] = new RooRealVar(histName,histName,0.01,-1,1);
@@ -986,6 +1132,20 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     qcdPa2[ipt] = new RooRealVar(histName,histName,0.01,-1,1);
     sprintf(histName,"qcdMa2_%d",ipt);
     qcdMa2[ipt] = new RooRealVar(histName,histName,0.01,-1,1);
+    
+    sprintf(histName,"qcdsigma1_%d",ipt);
+    qcdsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
+    sprintf(histName,"qcdPsigma1_%d",ipt);
+    qcdPsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
+    sprintf(histName,"qcdMsigma1_%d",ipt);
+    qcdMsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
+    
+    sprintf(histName,"qcdsigma2_%d",ipt);
+    qcdsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
+    sprintf(histName,"qcdPsigma2_%d",ipt);
+    qcdPsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
+    sprintf(histName,"qcdMsigma2_%d",ipt);
+    qcdMsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
     
     sprintf(histName,"Frac1_%d",ipt);
     Frac1[ipt]  = new RooRealVar(histName,histName,0.3,0,1);
@@ -1015,481 +1175,435 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     sprintf(histName,"dFrac2M_%d",ipt);
     dFrac2M[ipt] = new RooRealVar(histName,histName,0.2,0,0.5);
     
+    sprintf(histName,"aqcdsigma1_%d",ipt);
+    aqcdsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
+    sprintf(histName,"aqcdPsigma1_%d",ipt);
+    aqcdPsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
+    sprintf(histName,"aqcdMsigma1_%d",ipt);
+    aqcdMsigma1[ipt] = new RooRealVar(histName,histName,25,0,75);
+    
+    sprintf(histName,"aqcdsigma2_%d",ipt);
+    aqcdsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
+    sprintf(histName,"aqcdPsigma2_%d",ipt);
+    aqcdPsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
+    sprintf(histName,"aqcdMsigma2_%d",ipt);
+    aqcdMsigma2[ipt] = new RooRealVar(histName,histName,25,0,75);
+    
     //Initial Values
-    if (ipt == 0){
-      nSig[ipt] -> setVal(74801);
-      nSigp[ipt]-> setVal(43934.1);
-      nSigm[ipt]-> setVal(30829.5);
-      nAntiSig[ipt] -> setVal(26.9267);
-      nAntiSigp[ipt]-> setVal(21.1389);
-      nAntiSigm[ipt]-> setVal(5.68059);
-      nQCD[ipt] -> setVal(56422.5);
-      nQCDp[ipt]-> setVal(28739.5);
-      nQCDm[ipt]-> setVal(27718.1);
-      nAntiQCD[ipt] -> setVal(42488.6);
-      nAntiQCDp[ipt]-> setVal(21922.7);
-      nAntiQCDm[ipt]-> setVal(20565.9);
-      qcdmean[ipt] ->setVal(0.0399263);
-      qcdPmean[ipt]->setVal(4.32118e-09);
-      qcdMmean[ipt]->setVal(1.01264e-09);
-      qcdsigma1[ipt] ->setVal(10.7756);
-      qcdPsigma1[ipt]->setVal(10.7471);
-      qcdMsigma1[ipt]->setVal(10.9425);
-      qcda1[ipt] ->setVal(0.14601);
-      qcdPa1[ipt]->setVal(0.147688);
-      qcdMa1[ipt]->setVal(0.142555);
-      aqcdsigma1[ipt] ->setVal(10.7756);
-      aqcdPsigma1[ipt]->setVal(10.7471);
-      aqcdMsigma1[ipt]->setVal(10.9425);
+    if (ipt == 0)
+    {
+      nSig[ipt]  -> setVal(94624.8770);
+      nSigp[ipt] -> setVal(56338.1514);
+      nSigm[ipt] -> setVal(38286.7256);
+      nAntiSig[ipt]  -> setVal(1650.044);
+      nAntiSigp[ipt] -> setVal(878.832);
+      nAntiSigm[ipt] -> setVal(771.212);
+      nQCD[ipt]  -> setVal(24276.3);
+      nQCDp[ipt] -> setVal(12316.2);
+      nQCDm[ipt] -> setVal(11960.1);
+      nAntiQCD[ipt]  -> setVal(66165.2);
+      nAntiQCDp[ipt] -> setVal(33417.1);
+      nAntiQCDm[ipt] -> setVal(32748.1);
+      qcdmean[ipt] ->setVal(0.0451553);
+      qcdPmean[ipt]->setVal(0.0474507);
+      qcdMmean[ipt]->setVal(0.0441552);
+      qcda1[ipt] ->setVal(0.150583);
+      qcdPa1[ipt]->setVal(0.153104);
+      qcdMa1[ipt]->setVal(0.151087);
+      qcdsigma1[ipt] ->setVal(10.9774);
+      qcdPsigma1[ipt]->setVal(10.9892);
+      qcdMsigma1[ipt]->setVal(11.0631);
+      aqcdsigma1[ipt] ->setVal(11.1359);
+      aqcdPsigma1[ipt]->setVal(11.0598);
+      aqcdMsigma1[ipt]->setVal(11.1798);
     }else if (ipt == 1){
-      nSig[ipt] -> setVal(14480.8);
-      nSigp[ipt]-> setVal(8658.81);
-      nSigm[ipt]-> setVal(5808);
-      nAntiSig[ipt] -> setVal(0.00034139);
-      nAntiSigp[ipt]-> setVal(5.39149e-05);
-      nAntiSigm[ipt]-> setVal(4.8935e-05);
-      nQCD[ipt] -> setVal(593.609);
-      nQCDp[ipt]-> setVal(345.887);
-      nQCDm[ipt]-> setVal(328.594);
-      nAntiQCD[ipt] -> setVal(519.999);
-      nAntiQCDp[ipt]-> setVal(299.701);
-      nAntiQCDm[ipt]-> setVal(226.951);
-      qcdmean[ipt] ->setVal(17.1871);
-      qcdPmean[ipt]->setVal(17.2592);
-      qcdMmean[ipt]->setVal(17.0766);
-      qcdsigma1[ipt] ->setVal(11.6833);
-      qcdPsigma1[ipt]->setVal(10.5063);
-      qcdMsigma1[ipt]->setVal(15.0365);
-      qcda1[ipt] ->setVal(0.0437592);
-      qcdPa1[ipt]->setVal(0.0690869);
-      qcdMa1[ipt]->setVal(-0.0442332);
-      aqcdsigma1[ipt] ->setVal(11.6833);
-      aqcdPsigma1[ipt]->setVal(10.5063);
-      aqcdMsigma1[ipt]->setVal(15.0365);
+      nSig[ipt]  -> setVal(19379.3);
+      nSigp[ipt] -> setVal(11811.9);
+      nSigm[ipt] -> setVal(7567.4);
+      nAntiSig[ipt]  -> setVal(132.6809);
+      nAntiSigp[ipt] -> setVal(87.5464);
+      nAntiSigm[ipt] -> setVal(45.1345);
+      nQCD[ipt]  -> setVal(397.636);
+      nQCDp[ipt] -> setVal(209.826);
+      nQCDm[ipt] -> setVal(187.81);
+      nAntiQCD[ipt]  -> setVal(1628.773);
+      nAntiQCDp[ipt] -> setVal(828.444);
+      nAntiQCDm[ipt] -> setVal(800.329);
+      qcdmean[ipt] ->setVal(13.0857);
+      qcdPmean[ipt]->setVal(13.0492);
+      qcdMmean[ipt]->setVal(13.0294);
+      qcda1[ipt] ->setVal(0.077171);
+      qcdPa1[ipt]->setVal(0.0753291);
+      qcdMa1[ipt]->setVal(0.0743306);
+      qcdsigma1[ipt] ->setVal(6.09383);
+      qcdPsigma1[ipt]->setVal(5.92679);
+      qcdMsigma1[ipt]->setVal(5.82792);
+      aqcdsigma1[ipt] ->setVal(7.30621);
+      aqcdPsigma1[ipt]->setVal(7.34123);
+      aqcdMsigma1[ipt]->setVal(7.3123);
     }else if (ipt == 2){
-      nSig[ipt] -> setVal(15315.6);
-      nSigp[ipt]-> setVal(8956.26);
-      nSigm[ipt]-> setVal(6357.27);
-      nAntiSig[ipt] -> setVal(75.8382);
-      nAntiSigp[ipt]-> setVal(41.3299);
-      nAntiSigm[ipt]-> setVal(35.7369);
-      nQCD[ipt] -> setVal(912.305);
-      nQCDp[ipt]-> setVal(468.451);
-      nQCDm[ipt]-> setVal(445.882);
-      nAntiQCD[ipt] -> setVal(1101.84);
-      nAntiQCDp[ipt]-> setVal(526.186);
-      nAntiQCDm[ipt]-> setVal(574.185);
-      qcdmean[ipt] ->setVal(12.3907);
-      qcdPmean[ipt]->setVal(12.3962);
-      qcdMmean[ipt]->setVal(12.3842);
-      qcdsigma1[ipt] ->setVal(7.03566);
-      qcdPsigma1[ipt]->setVal(7.00347);
-      qcdMsigma1[ipt]->setVal(7.14096);
-      qcda1[ipt] ->setVal(0.126379);
-      qcdPa1[ipt]->setVal(0.139463);
-      qcdMa1[ipt]->setVal(0.108171);
-      aqcdsigma1[ipt] ->setVal(7.77426);
-      aqcdPsigma1[ipt]->setVal(7.17002);
-      aqcdMsigma1[ipt]->setVal(8.45443);
+      nSig[ipt]  -> setVal(19677.4);
+      nSigp[ipt] -> setVal(11849.7);
+      nSigm[ipt] -> setVal(7827.7);
+      nAntiSig[ipt]  -> setVal(158.377);
+      nAntiSigp[ipt] -> setVal(56.9426);
+      nAntiSigm[ipt] -> setVal(101.4344);
+      nQCD[ipt]  -> setVal(1187.65);
+      nQCDp[ipt] -> setVal(486.394);
+      nQCDm[ipt] -> setVal(701.256);
+      nAntiQCD[ipt]  -> setVal(3520.17);
+      nAntiQCDp[ipt] -> setVal(1814.19);
+      nAntiQCDm[ipt] -> setVal(1705.98);
+      qcdmean[ipt] ->setVal(7.35995);
+      qcdPmean[ipt]->setVal(7.24302);
+      qcdMmean[ipt]->setVal(7.36558);
+      qcda1[ipt] ->setVal(0.189282);
+      qcdPa1[ipt]->setVal(0.211965);
+      qcdMa1[ipt]->setVal(0.194421);
+      qcdsigma1[ipt] ->setVal(6.24625);
+      qcdPsigma1[ipt]->setVal(5.11739);
+      qcdMsigma1[ipt]->setVal(5.52003);
+      aqcdsigma1[ipt] ->setVal(6.33735);
+      aqcdPsigma1[ipt]->setVal(6.00495);
+      aqcdMsigma1[ipt]->setVal(6.27976);
     }else if (ipt == 3){
-      nSig[ipt] -> setVal(12153);
-      nSigp[ipt]-> setVal(7236.17);
-      nSigm[ipt]-> setVal(4905.17);
-      nAntiSig[ipt] -> setVal(56.9367);
-      nAntiSigp[ipt]-> setVal(36.2514);
-      nAntiSigm[ipt]-> setVal(14.3742);
-      nQCD[ipt] -> setVal(2420.27);
-      nQCDp[ipt]-> setVal(1216.12);
-      nQCDm[ipt]-> setVal(1216.91);
-      nAntiQCD[ipt] -> setVal(2290.19);
-      nAntiQCDp[ipt]-> setVal(1122.03);
-      nAntiQCDm[ipt]-> setVal(1176.03);
-      qcdmean[ipt] ->setVal(7.38242);
-      qcdPmean[ipt]->setVal(7.35278);
-      qcdMmean[ipt]->setVal(7.41877);
-      qcdsigma1[ipt] ->setVal(7.71841);
-      qcdPsigma1[ipt]->setVal(7.62938);
-      qcdMsigma1[ipt]->setVal(7.61305);
-      qcda1[ipt] ->setVal(0.119073);
-      qcdPa1[ipt]->setVal(0.126624);
-      qcdMa1[ipt]->setVal(0.125783);
-      aqcdsigma1[ipt] ->setVal(7.71841);
-      aqcdPsigma1[ipt]->setVal(7.62938);
-      aqcdMsigma1[ipt]->setVal(7.61305);
+      nSig[ipt]  -> setVal(15512.3);
+      nSigp[ipt] -> setVal(9369.66);
+      nSigm[ipt] -> setVal(6171.27);
+      nAntiSig[ipt]  -> setVal(227.734);
+      nAntiSigp[ipt] -> setVal(136.044);
+      nAntiSigm[ipt] -> setVal(87.9412);
+      nQCD[ipt]  -> setVal(2162.12);
+      nQCDp[ipt] -> setVal(1003.71);
+      nQCDm[ipt] -> setVal(1128.77);
+      nAntiQCD[ipt]  -> setVal(6337.12);
+      nAntiQCDp[ipt] -> setVal(3165.03);
+      nAntiQCDm[ipt] -> setVal(3175.79);
+      qcdmean[ipt] ->setVal(2.39849);
+      qcdPmean[ipt]->setVal(2.38088);
+      qcdMmean[ipt]->setVal(3.36884);
+      qcda1[ipt] ->setVal(0.14289);
+      qcdPa1[ipt]->setVal(0.139815);
+      qcdMa1[ipt]->setVal(0.201203);
+      qcdsigma1[ipt] ->setVal(7.81821);
+      qcdPsigma1[ipt]->setVal(7.63968);
+      qcdMsigma1[ipt]->setVal(5.86408);
+      aqcdsigma1[ipt] ->setVal(7.89324);
+      aqcdPsigma1[ipt]->setVal(8.04422);
+      aqcdMsigma1[ipt]->setVal(5.84902);
     }else if (ipt == 4){
-      nSig[ipt] -> setVal(10753.9);
-      nSigp[ipt]-> setVal(6284.88);
-      nSigm[ipt]-> setVal(4372.62);
-      nAntiSig[ipt] -> setVal(14.3793);
-      nAntiSigp[ipt]-> setVal(6.64878);
-      nAntiSigm[ipt]-> setVal(0.000100531);
-      nQCD[ipt] -> setVal(6702.36);
-      nQCDp[ipt]-> setVal(3428.72);
-      nQCDm[ipt]-> setVal(3309.81);
-      nAntiQCD[ipt] -> setVal(5515.52);
-      nAntiQCDp[ipt]-> setVal(2800.99);
-      nAntiQCDm[ipt]-> setVal(2658.96);
-      qcdmean[ipt] ->setVal(5.46999);
-      qcdMmean[ipt]->setVal(5.65277);
-      qcdsigma1[ipt] ->setVal(4.4329);
-      qcdMsigma1[ipt]->setVal(5.30044);
-      qcda1[ipt] ->setVal(0.222467);
-      qcdPa1[ipt]->setVal(0.214281);
-      qcdMa1[ipt]->setVal(0.221573);
-      qcdsigma2[ipt] ->setVal(8.42163);
-      qcdPsigma2[ipt]->setVal(8.60402);
-      qcdMsigma2[ipt]->setVal(5.55646);
-      qcda2[ipt] ->setVal(0.149918);
-      qcdPa2[ipt]->setVal(0.150846);
-      qcdMa2[ipt]->setVal(0.140031);
-      Frac1[ipt] ->setVal(0.678958);
-      Frac1P[ipt]->setVal(0.0254109);
-      Frac1M[ipt]->setVal(0.597756);
-      Frac2[ipt] ->setVal(0.300864);
-      Frac2P[ipt]->setVal(0.893735);
-      Frac2M[ipt]->setVal(0.456884);
-      aqcdsigma1[ipt] ->setVal(4.4329);
-      aqcdPsigma1[ipt]->setVal(4.39185);
-      aqcdMsigma1[ipt]->setVal(5.30044);
-      aqcdsigma2[ipt] ->setVal(8.42163);
-      aqcdPsigma2[ipt]->setVal(8.60402);
-      aqcdMsigma2[ipt]->setVal(5.55646);
+nSig[ipt]  -> setVal(13339.9);
+nSigp[ipt] -> setVal(7854.66);
+nSigm[ipt] -> setVal(5462.53);
+nAntiSig[ipt]  -> setVal(171.375);
+nAntiSigp[ipt] -> setVal(87.3762);
+nAntiSigm[ipt] -> setVal(84.6172);
+nQCD[ipt]  -> setVal(4511.99);
+nQCDp[ipt] -> setVal(2338.27);
+nQCDm[ipt] -> setVal(2197.76);
+nAntiQCD[ipt]  -> setVal(11896.1);
+nAntiQCDp[ipt] -> setVal(6038.63);
+nAntiQCDm[ipt] -> setVal(5855.97);
+qcda1[ipt] ->setVal(0.191223);
+qcdPa1[ipt]->setVal(0.17508);
+qcdMa1[ipt]->setVal(0.196144);
+qcda2[ipt] ->setVal(0.221712);
+qcdPa2[ipt]->setVal(0.217479);
+qcdMa2[ipt]->setVal(0.216091);
+qcdsigma1[ipt] ->setVal(6.96932);
+qcdPsigma1[ipt]->setVal(7.66158);
+qcdMsigma1[ipt]->setVal(7.04166);
+dFrac1[ipt] ->setVal(0.499968);
+dFrac1P[ipt]->setVal(0.261568);
+dFrac1M[ipt]->setVal(0.5);
+qcdsigma2[ipt] ->setVal(2.49865);
+qcdPsigma2[ipt]->setVal(2.34446);
+qcdMsigma2[ipt]->setVal(3.48172);
+dFrac2[ipt] ->setVal(0.398432);
+dFrac2P[ipt]->setVal(0.480716);
+dFrac2M[ipt]->setVal(0.441217);
+aqcdsigma1[ipt] ->setVal(7.11207);
+aqcdPsigma1[ipt]->setVal(8.00501);
+aqcdMsigma1[ipt]->setVal(6.88868);
+aqcdsigma2[ipt] ->setVal(2.96766);
+aqcdPsigma2[ipt]->setVal(3.806);
+aqcdMsigma2[ipt]->setVal(2.69409);
+      //nSig[ipt]  -> setVal(13392.4);
+      //nSigp[ipt] -> setVal(7883.63);
+      //nSigm[ipt] -> setVal(5508.77);
+      //nAntiSig[ipt]  -> setVal(173.273);
+      //nAntiSigp[ipt] -> setVal(88.3787);
+      //nAntiSigm[ipt] -> setVal(84.8943);
+      //nQCD[ipt]  -> setVal(4387.95);
+      //nQCDp[ipt] -> setVal(2282.58);
+      //nQCDm[ipt] -> setVal(2105.37);
+      //nAntiQCD[ipt]  -> setVal(11894.4);
+      //nAntiQCDp[ipt] -> setVal(6038.19);
+      //nAntiQCDm[ipt] -> setVal(5856.21);
+      //qcda1[ipt] ->setVal(0.188517);
+      //qcdPa1[ipt]->setVal(0.153052);
+      //qcdMa1[ipt]->setVal(0.172667);
+      //qcda2[ipt] ->setVal(0.221376);
+      //qcdPa2[ipt]->setVal(0.215376);
+      //qcdMa2[ipt]->setVal(0.217581);
+      //qcdsigma1[ipt] ->setVal(7.09608);
+      //qcdPsigma1[ipt]->setVal(8.77087);
+      //qcdMsigma1[ipt]->setVal(7.79109);
+      //dFrac1[ipt] ->setVal(0.499997);
+      //dFrac1P[ipt]->setVal(0.189024);
+      //dFrac1M[ipt]->setVal(0.169521);
+      //qcdsigma2[ipt] ->setVal(2.49669);
+      //qcdPsigma2[ipt]->setVal(2.69496);
+      //qcdMsigma2[ipt]->setVal(2.35191);
+      //dFrac2[ipt] ->setVal(0.337458);
+      //dFrac2P[ipt]->setVal(0.488801);
+      //dFrac2M[ipt]->setVal(0.492906);
+      //aqcdsigma1[ipt] ->setVal(7.26393);
+      //aqcdPsigma1[ipt]->setVal(8.77087);
+      //aqcdMsigma1[ipt]->setVal(8.14876);
+      //aqcdsigma2[ipt] ->setVal(3.10788);
+      //aqcdPsigma2[ipt]->setVal(4.07679);
+      //aqcdsigma2[ipt] ->setVal(3.89267);
     }else if (ipt == 5){
-      nSig[ipt] -> setVal(6041.33);
-      nSigp[ipt]-> setVal(3588.06);
-      nSigm[ipt]-> setVal(2453.53);
-      nAntiSig[ipt] -> setVal(9.90583e-07);
-      nAntiSigp[ipt]-> setVal(4.51575e-07);
-      nAntiSigm[ipt]-> setVal(4.84586e-08);
-      nQCD[ipt] -> setVal(9564.79);
-      nQCDp[ipt]-> setVal(4848.08);
-      nQCDm[ipt]-> setVal(4707.75);
-      nAntiQCD[ipt] -> setVal(6777.96);
-      nAntiQCDp[ipt]-> setVal(3386.99);
-      nAntiQCDm[ipt]-> setVal(3360.94);
-      qcdsigma1[ipt] ->setVal(5.48791);
-      qcdPsigma1[ipt]->setVal(5.2083);
-      qcdMsigma1[ipt]->setVal(5.76412);
-      qcda1[ipt] ->setVal(-0.272349);
-      qcdPa1[ipt]->setVal(-0.266754);
-      qcdMa1[ipt]->setVal(-0.273361);
-      dFrac1[ipt] ->setVal(0.479271);
-      dFrac1P[ipt]->setVal(0.5);
-      dFrac1M[ipt]->setVal(0.44892);
-      qcdsigma2[ipt] ->setVal(7.02199);
-      qcdPsigma2[ipt]->setVal(6.93642);
-      qcdMsigma2[ipt]->setVal(7.11994);
-      qcda2[ipt] ->setVal(0.200897);
-      qcdPa2[ipt]->setVal(0.205516);
-      qcdMa2[ipt]->setVal(0.198893);
-      dFrac2[ipt] ->setVal(0.477855);
-      dFrac2P[ipt]->setVal(0.5);
-      dFrac2M[ipt]->setVal(0.5);
-      aqcdsigma1[ipt] ->setVal(1.25429);
-      aqcdPsigma1[ipt]->setVal(1.15983);
-      aqcdMsigma1[ipt]->setVal(1.25411);
-      aqcdsigma2[ipt] ->setVal(6.76098);
-      aqcdPsigma2[ipt]->setVal(6.56927);
-      aqcdMsigma2[ipt]->setVal(6.8319);
+      nSig[ipt]  -> setVal(7638.65);
+      nSigp[ipt] -> setVal(4405.97);
+      nSigm[ipt] -> setVal(3205.86);
+      nAntiSig[ipt]  -> setVal(163.964);
+      nAntiSigp[ipt] -> setVal(96.9441);
+      nAntiSigm[ipt] -> setVal(64.5437);
+      nQCD[ipt]  -> setVal(5022.18);
+      nQCDp[ipt] -> setVal(2677.72);
+      nQCDm[ipt] -> setVal(2371.59);
+      nAntiQCD[ipt]  -> setVal(12289.7);
+      nAntiQCDp[ipt] -> setVal(6225.43);
+      nAntiQCDm[ipt] -> setVal(6067.28);
+      qcda1[ipt] ->setVal(0.105421);
+      qcdPa1[ipt]->setVal(0.124598);
+      qcdMa1[ipt]->setVal(0.0822151);
+      qcda2[ipt] ->setVal(-0.420169);
+      qcdPa2[ipt]->setVal(-0.41828);
+      //qcdMa2[ipt]->setVal(-0.421857);
+      qcdMa2[ipt]->setVal(-0.42185);
+      qcdsigma1[ipt] ->setVal(11.0098);
+      qcdPsigma1[ipt]->setVal(11.2848);
+      qcdMsigma1[ipt]->setVal(10.875);
+      dFrac1[ipt] ->setVal(0.49967);
+      dFrac1P[ipt]->setVal(0.499992);
+      dFrac1M[ipt]->setVal(0.49999);
+      qcdsigma2[ipt] ->setVal(13.3233);
+      qcdPsigma2[ipt]->setVal(13.2503);
+      qcdMsigma2[ipt]->setVal(13.4125);
+      dFrac2[ipt] ->setVal(0.0627072);
+      dFrac2P[ipt]->setVal(0.00195115);
+      dFrac2M[ipt]->setVal(0.110732);
+      aqcdsigma1[ipt] ->setVal(10.5246);
+      aqcdPsigma1[ipt]->setVal(10.2211);
+      aqcdMsigma1[ipt]->setVal(10.9319);
+      aqcdsigma2[ipt] ->setVal(13.1023);
+      aqcdPsigma2[ipt]->setVal(13.0202);
+      aqcdMsigma2[ipt]->setVal(13.1731);
     }else if (ipt == 6){
-      nSig[ipt] -> setVal(5965.12);
-      nSigp[ipt]-> setVal(3596.2);
-      nSigm[ipt]-> setVal(2359.4);
-      nAntiSig[ipt] -> setVal(2.84459);
-      nAntiSigp[ipt]-> setVal(1.79112);
-      nAntiSigm[ipt]-> setVal(1.62222e-07);
-      nQCD[ipt] -> setVal(16007.8);
-      nQCDp[ipt]-> setVal(8013.9);
-      nQCDm[ipt]-> setVal(8016.53);
-      nAntiQCD[ipt] -> setVal(11601.33);
-      nAntiQCDp[ipt]-> setVal(6069.33);
-      nAntiQCDm[ipt]-> setVal(5532);
-      qcdsigma1[ipt] ->setVal(16.4608);
-      qcdPsigma1[ipt]->setVal(10.5678);
-      qcdMsigma1[ipt]->setVal(9.79437);
-      qcda1[ipt] ->setVal(-0.426312);
-      qcdPa1[ipt]->setVal(0.110942);
-      qcdMa1[ipt]->setVal(0.143796);
-      dFrac1[ipt] ->setVal(0.5);
-      dFrac1P[ipt]->setVal(0.294399);
-      dFrac1M[ipt]->setVal(0.5);
-      qcdsigma2[ipt] ->setVal(9.81148);
-      qcdPsigma2[ipt]->setVal(15.2015);
-      qcdMsigma2[ipt]->setVal(16.68);
-      qcda2[ipt] ->setVal(0.130821);
-      qcdPa2[ipt]->setVal(-0.324381);
-      qcdMa2[ipt]->setVal(-0.463181);
-      dFrac2[ipt] ->setVal(0.5);
-      dFrac2P[ipt]->setVal(0.4979);
-      dFrac2M[ipt]->setVal(0.499997);
-      aqcdsigma1[ipt] ->setVal(16.4608);
-      aqcdPsigma1[ipt]->setVal(10.5678);
-      aqcdMsigma1[ipt]->setVal(9.79437);
-      aqcdsigma2[ipt] ->setVal(9.81148);
-      aqcdPsigma2[ipt]->setVal(15.2015);
-      aqcdMsigma2[ipt]->setVal(16.68);
+      nSig[ipt]  -> setVal(7519.74);
+      nSigp[ipt] -> setVal(4482.35);
+      nSigm[ipt] -> setVal(3078.34);
+      nAntiSig[ipt]  -> setVal(114.842);
+      nAntiSigp[ipt] -> setVal(86.3985);
+      nAntiSigm[ipt] -> setVal(71.1227);
+      nQCD[ipt]  -> setVal(6200.9);
+      nQCDp[ipt] -> setVal(3109.75);
+      nQCDm[ipt] -> setVal(3048.97);
+      nAntiQCD[ipt]  -> setVal(16327.5);
+      nAntiQCDp[ipt] -> setVal(8406.54);
+      nAntiQCDm[ipt] -> setVal(8109.4);
+      qcdmean[ipt] ->setVal(9.11372);
+      qcdPmean[ipt]->setVal(9.07582);
+      qcdMmean[ipt]->setVal(9.17093);
+      qcda1[ipt] ->setVal(0.178394);
+      qcdPa1[ipt]->setVal(0.181038);
+      qcdMa1[ipt]->setVal(0.172535);
+      qcda2[ipt] ->setVal(-0.51328);
+      qcdPa2[ipt]->setVal(-0.527663);
+      qcdMa2[ipt]->setVal(-0.480146);
+      qcdsigma1[ipt] ->setVal(6.46026);
+      qcdPsigma1[ipt]->setVal(6.22989);
+      qcdMsigma1[ipt]->setVal(6.58644);
+      qcdsigma2[ipt] ->setVal(22.1879);
+      qcdPsigma2[ipt]->setVal(22.8741);
+      qcdMsigma2[ipt]->setVal(21.1607);
+      Frac1[ipt] ->setVal(0.976721);
+      Frac1P[ipt]->setVal(0.910176);
+      Frac1M[ipt]->setVal(0.999248);
+      Frac2[ipt] ->setVal(0.027472);
+      Frac2P[ipt]->setVal(0.089132);
+      Frac2M[ipt]->setVal(0.000829324);
+      aqcdsigma1[ipt] ->setVal(6.47281);
+      aqcdPsigma1[ipt]->setVal(6.58175);
+      aqcdMsigma1[ipt]->setVal(6.39214);
+      aqcdsigma2[ipt] ->setVal(22.2207);
+      aqcdPsigma2[ipt]->setVal(22.4465);
+      aqcdMsigma2[ipt]->setVal(21.5377);
     }else if (ipt == 7){
-      nSig[ipt] -> setVal(3373.35);
-      nSigp[ipt]-> setVal(1954.85);
-      nSigm[ipt]-> setVal(1389.76);
-      nAntiSig[ipt] -> setVal(5.89658);
-      nAntiSigp[ipt]-> setVal(2.50604);
-      nAntiSigm[ipt]-> setVal(2.51128);
-      nQCD[ipt] -> setVal(10266);
-      nQCDp[ipt]-> setVal(5210.16);
-      nQCDm[ipt]-> setVal(5097.38);
-      nAntiQCD[ipt] -> setVal(7440.51);
-      nAntiQCDp[ipt]-> setVal(3863.33);
-      nAntiQCDm[ipt]-> setVal(3579.18);
-      qcdsigma1[ipt] ->setVal(47.2335);
-      qcdPsigma1[ipt]->setVal(34.411);
-      qcdMsigma1[ipt]->setVal(31.8372);
-      qcda1[ipt] ->setVal(-0.563342);
-      qcdPa1[ipt]->setVal(-0.299181);
-      qcdMa1[ipt]->setVal(-0.664296);
-      dFrac1[ipt] ->setVal(0.0205096);
-      dFrac1P[ipt]->setVal(0.0315425);
-      dFrac1M[ipt]->setVal(0.5);
-      qcdsigma2[ipt] ->setVal(31.0753);
-      qcdPsigma2[ipt]->setVal(29.9725);
-      qcdMsigma2[ipt]->setVal(18.562);
-      qcda2[ipt] ->setVal(-0.63675);
-      qcdPa2[ipt]->setVal(-0.604079);
-      qcdMa2[ipt]->setVal(-0.0610386);
-      dFrac2[ipt] ->setVal(0.457178);
-      dFrac2P[ipt]->setVal(0.499232);
-      dFrac2M[ipt]->setVal(0.5);
-      aqcdsigma1[ipt] ->setVal(47.2335);
-      aqcdPsigma1[ipt]->setVal(34.411);
-      aqcdMsigma1[ipt]->setVal(31.8372);
-      aqcdsigma2[ipt] ->setVal(31.0753);
-      aqcdPsigma2[ipt]->setVal(29.9725);
-      aqcdMsigma2[ipt]->setVal(18.562);
+      nSig[ipt]  -> setVal(3902.62);
+      nSigp[ipt] -> setVal(2239.28);
+      nSigm[ipt] -> setVal(1645.21);
+      nAntiSig[ipt]  -> setVal(94.7871);
+      nAntiSigp[ipt] -> setVal(47.5397);
+      nAntiSigm[ipt] -> setVal(32.4616);
+      nQCD[ipt]  -> setVal(3161.57);
+      nQCDp[ipt] -> setVal(1635.96);
+      nQCDm[ipt] -> setVal(1588.77);
+      nAntiQCD[ipt]  -> setVal(8609.71);
+      nAntiQCDp[ipt] -> setVal(4243.61);
+      nAntiQCDm[ipt] -> setVal(4265.45);
+      qcdmean[ipt] ->setVal(16.0993);
+      qcdPmean[ipt]->setVal(16.1706);
+      qcdMmean[ipt]->setVal(15.7962);
+      qcda1[ipt] ->setVal(0.0266751);
+      qcdPa1[ipt]->setVal(0.0289408);
+      qcdMa1[ipt]->setVal(0.0365465);
+      qcda2[ipt] ->setVal(-0.692346);
+      qcdPa2[ipt]->setVal(-0.674169);
+      qcdMa2[ipt]->setVal(-0.71513);
+      qcdsigma1[ipt] ->setVal(8.02124);
+      qcdPsigma1[ipt]->setVal(8.33102);
+      qcdMsigma1[ipt]->setVal(7.42375);
+      qcdsigma2[ipt] ->setVal(38.7667);
+      qcdPsigma2[ipt]->setVal(37.1089);
+      qcdMsigma2[ipt]->setVal(40.7961);
+      Frac1[ipt] ->setVal(0.246236);
+      Frac1P[ipt]->setVal(0.334439);
+      Frac1M[ipt]->setVal(0.317583);
+      Frac2[ipt] ->setVal(0.53897);
+      Frac2P[ipt]->setVal(0.461992);
+      Frac2M[ipt]->setVal(0.494888);
+      aqcdsigma1[ipt] ->setVal(8.6167);
+      aqcdPsigma1[ipt]->setVal(8.55825);
+      aqcdMsigma1[ipt]->setVal(8.6434);
+      aqcdsigma2[ipt] ->setVal(37.0122);
+      aqcdPsigma2[ipt]->setVal(35.5345);
+      aqcdMsigma2[ipt]->setVal(38.6745);
     }else if (ipt == 8){
-      nSig[ipt] -> setVal(3180.01);
-      nSigp[ipt]-> setVal(1766.23);
-      nSigm[ipt]-> setVal(1424.83);
-      nAntiSig[ipt] -> setVal(1.21884e-05);
-      nAntiSigp[ipt]-> setVal(7.88715e-08);
-      nAntiSigm[ipt]-> setVal(3.82513e-07);
-      nQCD[ipt] -> setVal(7416.27);
-      nQCDp[ipt]-> setVal(3874.62);
-      nQCDm[ipt]-> setVal(3516.82);
-      nAntiQCD[ipt] -> setVal(5285.99);
-      nAntiQCDp[ipt]-> setVal(2763);
-      nAntiQCDm[ipt]-> setVal(2523);
-      qcdsigma1[ipt] ->setVal(39.3815);
-      qcdPsigma1[ipt]->setVal(37.2932);
-      qcdMsigma1[ipt]->setVal(43.0451);
-      qcda1[ipt] ->setVal(-0.500541);
-      qcdPa1[ipt]->setVal(-0.446264);
-      qcdMa1[ipt]->setVal(0.185207);
-      dFrac1[ipt] ->setVal(0.5);
-      dFrac1P[ipt]->setVal(0.499995);
-      dFrac1M[ipt]->setVal(0.393532);
-      qcdsigma2[ipt] ->setVal(12.6948);
-      qcdPsigma2[ipt]->setVal(13.3255);
-      qcdMsigma2[ipt]->setVal(12.0182);
-      qcda2[ipt] ->setVal(0.164526);
-      qcdPa2[ipt]->setVal(0.15779);
-      qcdMa2[ipt]->setVal(-0.493645);
-      dFrac2[ipt] ->setVal(0.26639);
-      dFrac2P[ipt]->setVal(0.0899833);
-      dFrac2M[ipt]->setVal(0.5);
-      aqcdsigma1[ipt] ->setVal(39.3815);
-      aqcdPsigma1[ipt]->setVal(37.2932);
-      aqcdMsigma1[ipt]->setVal(43.0451);
-      aqcdsigma2[ipt] ->setVal(12.6948);
-      aqcdPsigma2[ipt]->setVal(13.3255);
-      aqcdMsigma2[ipt]->setVal(12.0182);
+      nSig[ipt]  -> setVal(4083.77);
+      nSigp[ipt] -> setVal(2346.76);
+      nSigm[ipt] -> setVal(1630.26);
+      nAntiSig[ipt]  -> setVal(34.1022);
+      nAntiSigp[ipt] -> setVal(18.4404);
+      nAntiSigm[ipt] -> setVal(13.7165);
+      nQCD[ipt]  -> setVal(1612.74);
+      nQCDp[ipt] -> setVal(823.3);
+      nQCDm[ipt] -> setVal(905.345);
+      nAntiQCD[ipt]  -> setVal(5132.29);
+      nAntiQCDp[ipt] -> setVal(2464.81);
+      nAntiQCDm[ipt] -> setVal(2552.32);
+      qcdmean[ipt] ->setVal(23.2853);
+      qcdPmean[ipt]->setVal(23.1915);
+      qcdMmean[ipt]->setVal(23.9665);
+      qcda1[ipt] ->setVal(0.0379206);
+      qcdPa1[ipt]->setVal(0.0440807);
+      qcdMa1[ipt]->setVal(0.0171145);
+      qcda2[ipt] ->setVal(-0.99982);
+      qcdPa2[ipt]->setVal(-0.980964);
+      qcdMa2[ipt]->setVal(-1);
+      qcdsigma1[ipt] ->setVal(12.3256);
+      qcdPsigma1[ipt]->setVal(12.191);
+      qcdMsigma1[ipt]->setVal(12.398);
+      qcdsigma2[ipt] ->setVal(64.7823);
+      qcdPsigma2[ipt]->setVal(67.938);
+      qcdMsigma2[ipt]->setVal(57.8739);
+      Frac1[ipt] ->setVal(0.945856);
+      Frac1P[ipt]->setVal(0.987425);
+      Frac1M[ipt]->setVal(0.952938);
+      Frac2[ipt] ->setVal(0.0499124);
+      Frac2P[ipt]->setVal(0.0121822);
+      Frac2M[ipt]->setVal(0.0377628);
+      aqcdsigma1[ipt] ->setVal(12.3136);
+      aqcdPsigma1[ipt]->setVal(12.1939);
+      aqcdMsigma1[ipt]->setVal(12.3985);
+      aqcdsigma2[ipt] ->setVal(65.8215);
+      aqcdPsigma2[ipt]->setVal(66.0511);
+      aqcdMsigma2[ipt]->setVal(62.4798);
     }else if (ipt == 9){
-      nSig[ipt] -> setVal(2158.18);
-      nSigp[ipt]-> setVal(1233.45);
-      nSigm[ipt]-> setVal(930.985);
-      nAntiSig[ipt] -> setVal(2.0908e-06);
-      nAntiSigp[ipt]-> setVal(1.15197e-09);
-      nAntiSigm[ipt]-> setVal(1.25979e-07);
-      nQCD[ipt] -> setVal(2430.82);
-      nQCDp[ipt]-> setVal(1255.23);
-      nQCDm[ipt]-> setVal(1164.64);
-      nAntiQCD[ipt] -> setVal(1539.99);
-      nAntiQCDp[ipt]-> setVal(804.999);
-      nAntiQCDm[ipt]-> setVal(734.98);
-      qcdsigma1[ipt] ->setVal(17.5926);
-      qcdPsigma1[ipt]->setVal(2.67624);
-      qcdMsigma1[ipt]->setVal(21.3831);
-      qcda1[ipt] ->setVal(-0.139205);
-      qcdPa1[ipt]->setVal(-0.297966);
-      qcdMa1[ipt]->setVal(-0.297966);
-      dFrac1[ipt] ->setVal(0.5);
-      dFrac1P[ipt]->setVal(0.499956);
-      dFrac1M[ipt]->setVal(0.499995);
-      qcdsigma2[ipt] ->setVal(24.5268);
-      qcdPsigma2[ipt]->setVal(22.4994);
-      qcdMsigma2[ipt]->setVal(26.54);
-      qcda2[ipt] ->setVal(0.0121803);
-      qcdPa2[ipt]->setVal(0.0457006);
-      qcdMa2[ipt]->setVal(-0.024091);
-      dFrac2[ipt] ->setVal(0.5);
-      dFrac2P[ipt]->setVal(0.499998);
-      dFrac2M[ipt]->setVal(0.499995);
-      aqcdsigma1[ipt] ->setVal(17.5926);
-      aqcdPsigma1[ipt]->setVal(13.5481);
-      aqcdMsigma1[ipt]->setVal(21.3831);
-      aqcdsigma2[ipt] ->setVal(24.5268);
-      aqcdPsigma2[ipt]->setVal(22.4994);
-      aqcdMsigma2[ipt]->setVal(26.54);
+      nSig[ipt]  -> setVal(2575.43);
+      nSigp[ipt] -> setVal(1486.47);
+      nSigm[ipt] -> setVal(1088.96);
+      nAntiSig[ipt]  -> setVal(23.9738);
+      nAntiSigp[ipt] -> setVal(13.5356);
+      nAntiSigm[ipt] -> setVal(10.4382);
+      nQCD[ipt]  -> setVal(375.415);
+      nQCDp[ipt] -> setVal(172.675);
+      nQCDm[ipt] -> setVal(202.74);
+      nAntiQCD[ipt]  -> setVal(1012.61);
+      nAntiQCDp[ipt] -> setVal(494.914);
+      nAntiQCDm[ipt] -> setVal(517.696);
+      mtmean[ipt] ->setVal(-6.05299);
+      mtPmean[ipt]->setVal(-6.49458);
+      mtMmean[ipt]->setVal(-5.26778);
+      mtsigma[ipt] ->setVal(11.76);
+      mtPsigma[ipt]->setVal(11.7019);
+      mtMsigma[ipt]->setVal(9.71772);
+      mta1[ipt] ->setVal(0.233821);
+      mtPa1[ipt]->setVal(0.227436);
+      mtMa1[ipt]->setVal(0.235449);
+      amtsigma[ipt] ->setVal(9.34428);
+      amtPsigma[ipt]->setVal(9.2221);
+      amtMsigma[ipt]->setVal(8.88873);
     }else if (ipt == 10){
-      nSig[ipt] -> setVal(562.134);
-      nSigp[ipt]-> setVal(313.594);
-      nSigm[ipt]-> setVal(232.294);
-      nAntiSig[ipt] -> setVal(2.05272e-07);
-      nAntiSigp[ipt]-> setVal(8.52672e-07);
-      nAntiSigm[ipt]-> setVal(1.21661e-09);
-      nQCD[ipt] -> setVal(386.856);
-      nQCDp[ipt]-> setVal(175.406);
-      nQCDm[ipt]-> setVal(232.384);
-      nAntiQCD[ipt] -> setVal(208.889);
-      nAntiQCDp[ipt]-> setVal(122.732);
-      nAntiQCDm[ipt]-> setVal(89.9626);
-      qcdsigma1[ipt] ->setVal(0.0283783);
-      qcdPsigma1[ipt]->setVal(20.2699);
-      qcdMsigma1[ipt]->setVal(22.6586);
-      qcda1[ipt] ->setVal(0.27462);
-      qcdPa1[ipt]->setVal(-0.274271);
-      qcdMa1[ipt]->setVal(-0.313617);
-      dFrac1[ipt] ->setVal(7.96642e-05);
-      dFrac1P[ipt]->setVal(0.499999);
-      dFrac1M[ipt]->setVal(0.477816);
-      qcdsigma2[ipt] ->setVal(15.283);
-      qcdPsigma2[ipt]->setVal(16.051);
-      qcdMsigma2[ipt]->setVal(15.8383);
-      qcda2[ipt] ->setVal(0.162499);
-      qcdPa2[ipt]->setVal(0.118942);
-      qcdMa2[ipt]->setVal(0.228386);
-      dFrac2[ipt] ->setVal(0.5);
-      dFrac2P[ipt]->setVal(0.5);
-      dFrac2M[ipt]->setVal(0.487604);
-      aqcdsigma1[ipt] ->setVal(5.69312);
-      aqcdPsigma1[ipt]->setVal(5.81669);
-      aqcdMsigma1[ipt]->setVal(22.6586);
-      aqcdsigma2[ipt] ->setVal(15.283);
-      aqcdPsigma2[ipt]->setVal(16.051);
-      aqcdMsigma2[ipt]->setVal(15.8383);
-    }else if (ipt == 11){
-      nSig[ipt] -> setVal(178.6752);
-      nSigp[ipt]-> setVal(105.287);
-      nSigm[ipt]-> setVal(73.3882);
-      nAntiSig[ipt] -> setVal(8.93272e-07);
-      nAntiSigp[ipt]-> setVal(8.80563e-07);
-      nAntiSigm[ipt]-> setVal(1.27087e-08);
-      nQCD[ipt] -> setVal(80.6883);
-      nQCDp[ipt]-> setVal(48.9074);
-      nQCDm[ipt]-> setVal(48.9074);
-      nAntiQCD[ipt] -> setVal(221.8918);
-      nAntiQCDp[ipt]-> setVal(131.905);
-      nAntiQCDm[ipt]-> setVal(89.9868);
-      qcdsigma1[ipt] ->setVal(6.23596);
-      qcdPsigma1[ipt]->setVal(5.72016);
-      qcdMsigma1[ipt]->setVal(6.23647);
-      qcda1[ipt] ->setVal(-0.280424);
-      qcdPa1[ipt]->setVal(-0.278688);
-      qcdMa1[ipt]->setVal(-0.281934);
-      dFrac1[ipt] ->setVal(0.4976205);
-      dFrac1P[ipt]->setVal(0.5);
-      dFrac1M[ipt]->setVal(0.499999);
-      qcdsigma2[ipt] ->setVal(16.0165);
-      qcdPsigma2[ipt]->setVal(17.8307);
-      qcdMsigma2[ipt]->setVal(15.8982);
-      qcda2[ipt] ->setVal(0.248564);
-      qcdPa2[ipt]->setVal(0.102558);
-      qcdMa2[ipt]->setVal(0.248447);
-      dFrac2[ipt] ->setVal(0.49994);
-      dFrac2P[ipt]->setVal(0.5);
-      dFrac2M[ipt]->setVal(0.499999);
-      aqcdsigma1[ipt] ->setVal(6.23596);
-      aqcdPsigma1[ipt]->setVal(5.72016);
-      aqcdMsigma1[ipt]->setVal(6.23647);
-      aqcdsigma2[ipt] ->setVal(16.0165);
-      aqcdPsigma2[ipt]->setVal(17.8307);
-      aqcdMsigma2[ipt]->setVal(15.8982);
-    }else if (ipt == 12){
-      nSig[ipt] -> setVal(81.5678);
-      nSigp[ipt]-> setVal(53.9281);
-      nSigm[ipt]-> setVal(37.4959);
-      nAntiSig[ipt] -> setVal(3.8198e-07);
-      nAntiSigp[ipt]-> setVal(2.10445e-11);
-      nAntiSigm[ipt]-> setVal(3.16652e-07);
-      nQCD[ipt] -> setVal(28.0666);
-      nQCDp[ipt]-> setVal(7.85523);
-      nQCDm[ipt]-> setVal(15.89297);
-      nAntiQCD[ipt] -> setVal(208.763);
-      nAntiQCDp[ipt]-> setVal(132);
-      nAntiQCDm[ipt]-> setVal(89.818);
-      qcdsigma1[ipt] ->setVal(5.14769);
-      qcdPsigma1[ipt]->setVal(5.99326);
-      qcdMsigma1[ipt]->setVal(5.37902);
-      qcda1[ipt] ->setVal(0.281856);
-      qcdPa1[ipt]->setVal(0.289049);
-      qcdMa1[ipt]->setVal(0.283406);
-      dFrac1[ipt] ->setVal(0.433415);
-      dFrac1P[ipt]->setVal(0.433415);
-      dFrac1M[ipt]->setVal(0.499978);
-      qcdsigma2[ipt] ->setVal(15.2418);
-      qcdPsigma2[ipt]->setVal(15.9374);
-      qcdMsigma2[ipt]->setVal(15.6185);
-      qcda2[ipt] ->setVal(0.159594);
-      qcdPa2[ipt]->setVal(0.15815);
-      qcdMa2[ipt]->setVal(0.14915);
-      dFrac2[ipt] ->setVal(0.499865);
-      dFrac2P[ipt]->setVal(0.46938);
-      dFrac2M[ipt]->setVal(0.499995);
-      aqcdsigma1[ipt] ->setVal(5.14769);
-      aqcdPsigma1[ipt]->setVal(5.99326);
-      aqcdMsigma1[ipt]->setVal(6.83763);
-      aqcdsigma2[ipt] ->setVal(15.2418);
-      aqcdPsigma2[ipt]->setVal(15.9374);
-      aqcdMsigma2[ipt]->setVal(15.6185);
-    }else if (ipt == 13){
-      nSig[ipt] -> setVal(35.2164);
-      nSigp[ipt]-> setVal(16.7866);
-      nSigm[ipt]-> setVal(18.4298);
-      nAntiSig[ipt] -> setVal(1.00015e-06);
-      nAntiSigp[ipt]-> setVal(1.21768e-07);
-      nAntiSigm[ipt]-> setVal(1.05537e-07);
-      nQCD[ipt] -> setVal(40.7157);
-      nQCDp[ipt]-> setVal(27.114);
-      nQCDm[ipt]-> setVal(13.6017);
-      nAntiQCD[ipt] -> setVal(221.768);
-      nAntiQCDp[ipt]-> setVal(122.791);
-      nAntiQCDm[ipt]-> setVal(98.977);
-      qcdsigma1[ipt] ->setVal(33.9061);
-      qcdPsigma1[ipt]->setVal(33.9314);
-      qcdMsigma1[ipt]->setVal(33.1227);
-      qcda1[ipt] ->setVal(-0.314078);
-      qcdPa1[ipt]->setVal(-0.278158);
-      qcdMa1[ipt]->setVal(-0.386199);
-      dFrac1[ipt] ->setVal(0.499997);
-      dFrac1P[ipt]->setVal(0.5);
-      dFrac1M[ipt]->setVal(0.048127);
-      qcdsigma2[ipt] ->setVal(61.4473);
-      qcdPsigma2[ipt]->setVal(74.9997);
-      qcdMsigma2[ipt]->setVal(30.9997);
-      qcda2[ipt] ->setVal(0.170593);
-      qcdPa2[ipt]->setVal(0.132836);
-      qcdMa2[ipt]->setVal(0.267273);
-      dFrac2[ipt] ->setVal(0.5);
-      dFrac2P[ipt]->setVal(0.499998);
-      dFrac2M[ipt]->setVal(0.391545);
-      aqcdsigma1[ipt] ->setVal(5.69688);
-      aqcdPsigma1[ipt]->setVal(5.56539);
-      aqcdMsigma1[ipt]->setVal(45.0997);
-      aqcdsigma2[ipt] ->setVal(14.5731);
-      aqcdPsigma2[ipt]->setVal(15.9764);
-      aqcdMsigma2[ipt]->setVal(8.06314);
+      nSig[ipt]  -> setVal(556.096);
+      nSigp[ipt] -> setVal(331.1);
+      nSigm[ipt] -> setVal(240.92);
+      nAntiSig[ipt]  -> setVal(2.29291);
+      //nAntiSigp[ipt] -> setVal(2.38776);
+      nAntiSigm[ipt] -> setVal(0.454716);
+      nQCD[ipt]  -> setVal(85.0001);
+      nQCDp[ipt] -> setVal(94.6);
+      nQCDm[ipt] -> setVal(34.1392);
+      nAntiQCD[ipt]  -> setVal(66.4221);
+      //nAntiQCDp[ipt] -> setVal(38.6319);
+      nAntiQCDm[ipt] -> setVal(26.9169);
+      mtmean[ipt] ->setVal(0.796914);
+      mtPmean[ipt]->setVal(0.733878);
+      mtMmean[ipt]->setVal(0.832343);
+      mtsigma[ipt] ->setVal(15.51);
+      mtPsigma[ipt]->setVal(19.4904);
+      mtMsigma[ipt]->setVal(20.0487);
+      mta1[ipt] ->setVal(0.270705);
+      mtPa1[ipt]->setVal(0.252494);
+      mtMa1[ipt]->setVal(0.25254);
+      amtsigma[ipt] ->setVal(5.94135);
+      amtPsigma[ipt]->setVal(6.75855);
+      amtMsigma[ipt]->setVal(6.58761);
+      //mtmean[ipt] ->setConstant(kTRUE);
+      //mtPmean[ipt]->setConstant(kTRUE);
+      //mtMmean[ipt]->setConstant(kTRUE);
+      //mta1[ipt] ->setConstant(kTRUE);
+      //mtPa1[ipt]->setConstant(kTRUE);
+      mtMa1[ipt]->setConstant(kTRUE);
+      //mtsigma[ipt]->setConstant(kTRUE);
+      //mtPsigma[ipt]->setConstant(kTRUE);
+      mtMsigma[ipt]->setConstant(kTRUE);
+    }else if(ipt>10){
+      mtmean[ipt] ->setVal(0.796909);
+      mtPmean[ipt]->setVal(0.796263);
+      mtMmean[ipt]->setVal(0.189992);
+      mtsigma[ipt] ->setVal(5.94119);
+      mtPsigma[ipt]->setVal(6.63024);
+      mtMsigma[ipt]->setVal(6.97583);
+      mta1[ipt] ->setVal(0.270707);
+      mtPa1[ipt]->setVal(0.25212);
+      mtMa1[ipt]->setVal(0.25254);
+      amtsigma[ipt] ->setVal(5.94119);
+      amtPsigma[ipt]->setVal(6.63024);
+      amtMsigma[ipt]->setVal(6.97583);
+      mtmean[ipt] ->setConstant(kTRUE);
+      mtPmean[ipt]->setConstant(kTRUE);
+      mtMmean[ipt]->setConstant(kTRUE);
+      mtsigma[ipt]->setConstant(kTRUE);
+      mtPsigma[ipt]->setConstant(kTRUE);
+      mtMsigma[ipt]->setConstant(kTRUE);
+      mta1[ipt] ->setConstant(kTRUE);
+      mtPa1[ipt]->setConstant(kTRUE);
+      mtMa1[ipt]->setConstant(kTRUE);
     }
-
-    //  
     //   Construct PDFs for fitting
     //
     // Signal PDFs
@@ -1529,61 +1643,34 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     pdfEWKm[ipt]=new RooHistPdf (histName,histName,pfmet,*ewkMetm[ipt],1); 
   
     // Anti-Signal & Anti-EWK+top PDFs
-    if (ipt<10){
-      sprintf(histName,"awmunuMet_%d",ipt);
-      awmunuMet[ipt] =new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hAntiWmunuMet[ipt]) ;
-      sprintf(histName,"awmunuMetp_%d",ipt);
-      awmunuMetp[ipt]=new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hAntiWmunuMetp[ipt]);
-      sprintf(histName,"awmunuMetm_%d",ipt);
-      awmunuMetm[ipt]=new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hAntiWmunuMetm[ipt]);
-      
-      sprintf(histName,"aewkMet_%d",ipt);
-      aewkMet[ipt] =new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hAntiEWKMet[ipt]);  
-      sprintf(histName,"aewkMetp_%d",ipt);
-      aewkMetp[ipt]=new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hAntiEWKMetp[ipt]);  
-      sprintf(histName,"aewkMetm_%d",ipt);
-      aewkMetm[ipt]=new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hAntiEWKMetm[ipt]);  
-    }else{
-      sprintf(histName,"awmunuMet_%d",ipt);
-      awmunuMet[ipt] =new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hHighWpTAnti_WmunuMet) ;
-      sprintf(histName,"awmunuMetp_%d",ipt);
-      awmunuMetp[ipt]=new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hHighWpTAnti_WmunuMetp);
-      sprintf(histName,"awmunuMetm_%d",ipt);
-      awmunuMetm[ipt]=new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hHighWpTAnti_WmunuMetm);
-      
-      sprintf(histName,"aewkMet_%d",ipt);
-      aewkMet[ipt] =new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hHighWpTAnti_EWKMet);  
-      sprintf(histName,"aewkMetp_%d",ipt);
-      aewkMetp[ipt]=new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hHighWpTAnti_EWKMetp);  
-      sprintf(histName,"aewkMetm_%d",ipt);
-      aewkMetm[ipt]=new RooDataHist(histName,histName
-          ,RooArgSet(pfmet),hHighWpTAnti_EWKMetm);  
-    }
+    sprintf(histName,"awmunuMet_%d",ipt);
+    awmunuMet[ipt] =new RooDataHist(histName,histName,RooArgSet(pfmet),hAntiWmunuMet[ipt]) ;
+    sprintf(histName,"awmunuMetp_%d",ipt);
+    awmunuMetp[ipt]=new RooDataHist(histName,histName,RooArgSet(pfmet),hAntiWmunuMetp[ipt]);
+    sprintf(histName,"awmunuMetm_%d",ipt);
+    awmunuMetm[ipt]=new RooDataHist(histName,histName,RooArgSet(pfmet),hAntiWmunuMetm[ipt]);
+    
+    sprintf(histName,"aewkMet_%d",ipt);
+    aewkMet[ipt] =new RooDataHist(histName,histName,RooArgSet(pfmet),hAntiEWKMet[ipt]);
+    sprintf(histName,"aewkMetp_%d",ipt);
+    aewkMetp[ipt]=new RooDataHist(histName,histName,RooArgSet(pfmet),hAntiEWKMetp[ipt]);
+    sprintf(histName,"aewkMetm_%d",ipt);
+    aewkMetm[ipt]=new RooDataHist(histName,histName,RooArgSet(pfmet),hAntiEWKMetm[ipt]);
+    
     sprintf(histName,"apdfWm_%d",ipt);
     apdfWm[ipt] =new RooHistPdf("awm", "awm", pfmet,*awmunuMet[ipt], 1);
     sprintf(histName,"apdfWmp_%d",ipt);
     apdfWmp[ipt]=new RooHistPdf(histName,histName,pfmet,*awmunuMetp[ipt],1);
     sprintf(histName,"apdfWmm_%d",ipt);
     apdfWmm[ipt]=new RooHistPdf(histName,histName,pfmet,*awmunuMetm[ipt],1); 
-  
+    
     sprintf(histName,"apdfEWK_%d",ipt);
     apdfEWK[ipt] =new RooHistPdf(histName,histName,pfmet,*aewkMet[ipt], 1);
     sprintf(histName,"apdfEWKp_%d",ipt);
     apdfEWKp[ipt]=new RooHistPdf(histName,histName,pfmet,*aewkMetp[ipt],1);
     sprintf(histName,"apdfEWKm_%d",ipt);
     apdfEWKm[ipt]=new RooHistPdf(histName,histName,pfmet,*aewkMetm[ipt],1);
-
+    
     sprintf(histName,"dataMet_%d",ipt);
     dataMet[ipt]  =new RooDataHist(histName,histName,  RooArgSet(pfmet), hDataMet[ipt]);
     sprintf(histName,"dataMetp_%d",ipt);
@@ -1591,23 +1678,13 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     sprintf(histName,"dataMetm_%d",ipt);
     dataMetm[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hDataMetm[ipt]);
     
-    if (ipt<10)
-    {
-      sprintf(histName,"antiMet_%d",ipt);
-      antiMet[ipt]  =new RooDataHist(histName,histName,  RooArgSet(pfmet), hAntiDataMet[ipt]);
-      sprintf(histName,"antiMetp_%d",ipt);
-      antiMetp[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hAntiDataMetp[ipt]);
-      sprintf(histName,"antiMetm_%d",ipt);
-      antiMetm[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hAntiDataMetm[ipt]);
-    }else{
-      sprintf(histName,"antiMet_%d",ipt);
-      antiMet[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet),  hHighWpTAnti_DataMet);
-      sprintf(histName,"antiMetp_%d",ipt);
-      antiMetp[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hHighWpTAnti_DataMetp);
-      sprintf(histName,"antiMetm_%d",ipt);
-      antiMetm[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hHighWpTAnti_DataMetm);
-    }
-
+    sprintf(histName,"antiMet_%d",ipt);
+    antiMet[ipt]  =new RooDataHist(histName,histName,  RooArgSet(pfmet), hAntiDataMet[ipt]);
+    sprintf(histName,"antiMetp_%d",ipt);
+    antiMetp[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hAntiDataMetp[ipt]);
+    sprintf(histName,"antiMetm_%d",ipt);
+    antiMetm[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hAntiDataMetm[ipt]);
+    
     sprintf(histName,"dataTotal_%d",ipt);
     dataTotal[ipt]=new RooDataHist(histName,histName, RooArgList(pfmet), Index(rooCat),
                           Import("Select", *dataMet[ipt]),
@@ -1623,9 +1700,8 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
                            Import("Select", *dataMetm[ipt]),
                            Import("Anti",   *antiMetm[ipt]));
     //QCD PDFs
-    if (ipt<4){
+    if(ipt<4){
       //Modified Rayleigh Function - Bins 0-3
-      
       //sprintf(histName,"qcd_%d",ipt);
       //qcd[ipt] =new CPepeModelMean(histName, pfmet);
       //sprintf(histName,"qcdp_%d",ipt);
@@ -1673,32 +1749,126 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
       apdfMetm[ipt] =new RooAddPdf(histName,histName
           ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(aqcdm[ipt]->model))
           ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
-    }else if (ipt == 4){
-      //Rayleigh Plus Modified Rayleigh - Bin 4
+    }else if (ipt > 3 && ipt < 6){
+      //sprintf(histName,"qcd2_%d",ipt);
+      //qcd2[ipt]  = new CPepeDouble(histName,pfmet);
+      //sprintf(histName,"qcd2p_%d",ipt);
+      //qcd2p[ipt] = new CPepeDouble(histName,pfmet);
+      //sprintf(histName,"qcd2m_%d",ipt);
+      //qcd2m[ipt] = new CPepeDouble(histName,pfmet);
       
-      //sprintf(histName,"qcd1_%d",ipt);
-      //qcd1[ipt]  = new CPepePlusMod(histName,pfmet);
-      //sprintf(histName,"qcd1p_%d",ipt);
-      //qcd1p[ipt] = new CPepePlusMod(histName,pfmet);
-      //sprintf(histName,"qcd1m_%d",ipt);
-      //qcd1m[ipt] = new CPepePlusMod(histName,pfmet);
+      sprintf(histName,"qcd2_%d",ipt);
+      qcd2[ipt]  = new CPepeDouble(histName,pfmet,qcdsigma1[ipt], qcda1[ipt], dFrac1[ipt], qcdsigma2[ipt], qcda2[ipt], dFrac2[ipt]);
+      sprintf(histName,"qcd2p_%d",ipt);
+      qcd2p[ipt] = new CPepeDouble(histName,pfmet,qcdPsigma1[ipt],qcdPa1[ipt],dFrac1P[ipt],qcdPsigma2[ipt],qcdPa2[ipt],dFrac2P[ipt]);
+      sprintf(histName,"qcd2m_%d",ipt);
+      qcd2m[ipt] = new CPepeDouble(histName,pfmet,qcdMsigma1[ipt],qcdMa1[ipt],dFrac1M[ipt],qcdMsigma2[ipt],qcdMa2[ipt],dFrac2M[ipt]);
       
+      //sprintf(histName,"aqcd2_%d",ipt);
+      //aqcd2[ipt]  = new CPepeDouble(histName,pfmet);
+      //sprintf(histName,"aqcd2p_%d",ipt);
+      //aqcd2p[ipt] = new CPepeDouble(histName,pfmet);
+      //sprintf(histName,"aqcd2m_%d",ipt);
+      //aqcd2m[ipt] = new CPepeDouble(histName,pfmet);
+      
+      sprintf(histName,"aqcd2_%d",ipt);
+      aqcd2[ipt]  = new CPepeDouble(histName,pfmet,aqcdsigma1[ipt], qcd2[ipt]->a1, qcd2[ipt]->frac1, aqcdsigma2[ipt], qcd2[ipt]->a2, qcd2[ipt]->frac2);
+      sprintf(histName,"aqcd2p_%d",ipt);
+      aqcd2p[ipt] = new CPepeDouble(histName,pfmet,aqcdPsigma1[ipt],qcd2p[ipt]->a1,qcd2p[ipt]->frac1,aqcdPsigma2[ipt],qcd2p[ipt]->a2,qcd2p[ipt]->frac2);
+      sprintf(histName,"aqcd2m_%d",ipt);
+      aqcd2m[ipt] = new CPepeDouble(histName,pfmet,aqcdMsigma1[ipt],qcd2m[ipt]->a1,qcd2m[ipt]->frac1,aqcdMsigma2[ipt],qcd2m[ipt]->a2,qcd2m[ipt]->frac2);
+      
+      // Signal + Background PDFs
+      sprintf(histName,"pdfMet_%d",ipt);
+      pdfMet[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*pdfWm[ipt],*pdfEWK[ipt],*(qcd2[ipt]->model))
+          ,RooArgList(*nSig[ipt],*nEWK[ipt],*nQCD[ipt]));
+      sprintf(histName,"pdfMetp_%d",ipt);
+      pdfMetp[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*pdfWmp[ipt],*pdfEWKp[ipt],*(qcd2p[ipt]->model))
+          ,RooArgList(*nSigp[ipt],*nEWKp[ipt],*nQCDp[ipt]));
+      sprintf(histName,"pdfMetm_%d",ipt);
+      pdfMetm[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*pdfWmm[ipt],*pdfEWKm[ipt],*(qcd2m[ipt]->model))
+          ,RooArgList(*nSigm[ipt],*nEWKm[ipt],*nQCDm[ipt]));
+
+      if(hAntiWmunuMet[ipt]->Integral() > 0)
+      {
+	sprintf(histName,"apdfMet_%d",ipt);
+        apdfMet[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfWm[ipt],*apdfEWK[ipt],*(aqcd2[ipt]->model))
+            ,RooArgList(*nAntiSig[ipt],*nAntiEWK[ipt],*nAntiQCD[ipt]));
+      }else if(hAntiEWKMet[ipt]->Integral() > 0)
+      {
+        sprintf(histName,"apdfMet_%d",ipt);
+        apdfMet[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfEWK[ipt],*(aqcd2[ipt]->model))
+            ,RooArgList(*nAntiEWK[ipt],*nAntiQCD[ipt]));
+        nAntiSig[ipt]->setVal(0);
+      }else
+      {
+        sprintf(histName,"apdfMet_%d",ipt);
+        apdfMet[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*(aqcd2[ipt]->model))
+            ,RooArgList(*nAntiQCD[ipt]));
+        nAntiSig[ipt]->setVal(0);
+      }
+
+      if(hAntiWmunuMetp[ipt]->Integral() > 0)
+      {
+        sprintf(histName,"apdfMetp_%d",ipt);
+        apdfMetp[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfWmp[ipt],*apdfEWKp[ipt],*(aqcd2p[ipt]->model))
+            ,RooArgList(*nAntiSigp[ipt],*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
+      }else if(hAntiEWKMetp[ipt]->Integral() > 0)
+      {
+        sprintf(histName,"apdfMetp_%d",ipt);
+        apdfMetp[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfEWKp[ipt],*(aqcd2p[ipt]->model))
+            ,RooArgList(*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
+        nAntiSigp[ipt]->setVal(0);
+      }else{
+        sprintf(histName,"apdfMetp_%d",ipt);
+        apdfMetp[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*(aqcd2p[ipt]->model))
+            ,RooArgList(*nAntiQCDp[ipt]));
+        nAntiSigp[ipt]->setVal(0);
+      }
+
+      if(hAntiWmunuMetm[ipt]->Integral() > 0)
+      {
+        sprintf(histName,"apdfMetm_%d",ipt);
+        apdfMetm[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(aqcd2m[ipt]->model))
+            ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
+      }else if(hAntiEWKMetm[ipt]->Integral() > 0)
+      {
+        sprintf(histName,"apdfMetm_%d",ipt);
+        apdfMetm[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfEWKm[ipt],*(aqcd2m[ipt]->model))
+            ,RooArgList(*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
+        nAntiSigm[ipt]->setVal(0);
+      }else{
+        sprintf(histName,"apdfMetm_%d",ipt);
+        apdfMetm[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*(aqcd2m[ipt]->model))
+            ,RooArgList(*nAntiQCDm[ipt]));
+        nAntiSigm[ipt]->setVal(0);
+      }
+    }else if (ipt>5 && ipt<9){
       sprintf(histName,"qcd1_%d",ipt);
-      qcd1[ipt]  = new CPepePlusMod(histName,pfmet,qcdmean[ipt],qcdsigma1[ipt], qcda1[ipt], Frac1[ipt],qcdsigma2[ipt], qcda2[ipt], Frac2[ipt]);
+      qcd1[ipt]  = new CPepePlusMod(histName,pfmet,qcdmean[ipt], qcdsigma1[ipt], qcda1[ipt], Frac1[ipt], qcdsigma2[ipt], qcda2[ipt], Frac2[ipt]);
       sprintf(histName,"qcd1p_%d",ipt);
-      qcd1p[ipt] = new CPepePlusMod(histName,pfmet,qcdPmean[ipt],qcdPsigma1[ipt], qcdPa1[ipt], Frac1P[ipt],qcdPsigma2[ipt], qcdPa2[ipt], Frac2P[ipt]);
+      qcd1p[ipt] = new CPepePlusMod(histName,pfmet,qcdPmean[ipt],qcdPsigma1[ipt],qcdPa1[ipt],Frac1P[ipt],qcdPsigma2[ipt],qcdPa2[ipt],Frac2P[ipt]);
       sprintf(histName,"qcd1m_%d",ipt);
-      qcd1m[ipt] = new CPepePlusMod(histName,pfmet,qcdMmean[ipt],qcdMsigma1[ipt], qcdMa1[ipt], Frac1M[ipt],qcdMsigma2[ipt], qcdMa2[ipt], Frac2M[ipt]);
+      qcd1m[ipt] = new CPepePlusMod(histName,pfmet,qcdMmean[ipt],qcdMsigma1[ipt],qcdMa1[ipt],Frac1M[ipt],qcdMsigma2[ipt],qcdMa2[ipt],Frac2M[ipt]);
       
       sprintf(histName,"aqcd1_%d",ipt);
-      aqcd1[ipt] = new CPepePlusMod(histName,pfmet
-	  ,qcd1[ipt]->m1,aqcdsigma1[ipt],qcd1[ipt]->a1,qcd1[ipt]->f1,aqcdsigma2[ipt],qcd1[ipt]->a2,qcd1[ipt]->f2);
+      aqcd1[ipt]  = new CPepePlusMod(histName,pfmet,qcd1[ipt]->m1, aqcdsigma1[ipt], qcd1[ipt]->a1, qcd1[ipt]->f1, aqcdsigma2[ipt], qcd1[ipt]->a2, qcd1[ipt]->f2);
       sprintf(histName,"aqcd1p_%d",ipt);
-      aqcd1p[ipt] = new CPepePlusMod(histName,pfmet
-	  ,qcd1p[ipt]->m1,aqcdPsigma1[ipt],qcd1p[ipt]->a1,qcd1p[ipt]->f1,aqcdPsigma2[ipt],qcd1p[ipt]->a2,qcd1p[ipt]->f2);
+      aqcd1p[ipt] = new CPepePlusMod(histName,pfmet,qcd1p[ipt]->m1,aqcdPsigma1[ipt],qcd1p[ipt]->a1,qcd1p[ipt]->f1,aqcdPsigma2[ipt],qcd1p[ipt]->a2,qcd1p[ipt]->f2);
       sprintf(histName,"aqcd1m_%d",ipt);
-      aqcd1m[ipt] = new CPepePlusMod(histName,pfmet
-	  ,qcd1m[ipt]->m1,aqcdMsigma1[ipt],qcd1m[ipt]->a1,qcd1m[ipt]->f1,aqcdMsigma2[ipt],qcd1m[ipt]->a2,qcd1m[ipt]->f2);
+      aqcd1m[ipt] = new CPepePlusMod(histName,pfmet,qcd1m[ipt]->m1,aqcdMsigma1[ipt],qcd1m[ipt]->a1,qcd1m[ipt]->f1,aqcdMsigma2[ipt],qcd1m[ipt]->a2,qcd1m[ipt]->f2);
       
       // Signal + Background PDFs
       sprintf(histName,"pdfMet_%d",ipt);
@@ -1720,15 +1890,13 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
 	apdfMet[ipt] =new RooAddPdf(histName,histName
 	    ,RooArgList(*apdfWm[ipt],*apdfEWK[ipt],*(aqcd1[ipt]->model))
 	    ,RooArgList(*nAntiSig[ipt],*nAntiEWK[ipt],*nAntiQCD[ipt]));
-      }else if(hAntiEWKMet[ipt]->Integral() > 0)
-      {
+      }else if(hAntiEWKMet[ipt]->Integral() > 0){
 	sprintf(histName,"apdfMet_%d",ipt);
 	apdfMet[ipt] =new RooAddPdf(histName,histName
 	    ,RooArgList(*apdfEWK[ipt],*(aqcd1[ipt]->model))
 	    ,RooArgList(*nAntiEWK[ipt],*nAntiQCD[ipt]));
 	nAntiSig[ipt]->setVal(0);
-      }else
-      {
+      }else{
 	sprintf(histName,"apdfMet_%d",ipt);
 	apdfMet[ipt] =new RooAddPdf(histName,histName
 	    ,RooArgList(*(aqcd1[ipt]->model))
@@ -1742,8 +1910,7 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
 	apdfMetp[ipt] =new RooAddPdf(histName,histName
 	    ,RooArgList(*apdfWmp[ipt],*apdfEWKp[ipt],*(aqcd1p[ipt]->model))
 	    ,RooArgList(*nAntiSigp[ipt],*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
-      }else if(hAntiEWKMetp[ipt]->Integral() > 0)
-      {
+      }else if(hAntiEWKMetp[ipt]->Integral() > 0){
 	sprintf(histName,"apdfMetp_%d",ipt);
 	apdfMetp[ipt] =new RooAddPdf(histName,histName
 	    ,RooArgList(*apdfEWKp[ipt],*(aqcd1p[ipt]->model))
@@ -1763,8 +1930,7 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
 	apdfMetm[ipt] =new RooAddPdf(histName,histName
 	    ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(aqcd1m[ipt]->model))
 	    ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
-      }else if(hAntiEWKMetm[ipt]->Integral() > 0 || hHighWpTAnti_EWKMetm->Integral() > 0)
-      {
+      }else if(hAntiEWKMetm[ipt]->Integral() > 0){
 	sprintf(histName,"apdfMetm_%d",ipt);
 	apdfMetm[ipt] =new RooAddPdf(histName,histName
 	    ,RooArgList(*apdfEWKm[ipt],*(aqcd1m[ipt]->model))
@@ -1777,111 +1943,96 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
 	    ,RooArgList(*nAntiQCDm[ipt]));
 	nAntiSigm[ipt]->setVal(0);
       }
-    }else if (ipt > 4){
-      // Double Rayleigh - Bins 5-13
- 
-      //sprintf(histName,"qcd2_%d",ipt);
-      //qcd2[ipt]  = new CPepeDouble(histName,pfmet);
-      //sprintf(histName,"qcd2p_%d",ipt);
-      //qcd2p[ipt] = new CPepeDouble(histName,pfmet);
-      //sprintf(histName,"qcd2m_%d",ipt);
-      //qcd2m[ipt] = new CPepeDouble(histName,pfmet);
+    }else if(ipt>8){
+      sprintf(histName,"mt_%d",ipt);
+      mt[ipt]  =new mtModelMean(histName,pfmet,mtmean[ipt], mtsigma[ipt], mta1[ipt]);
+      sprintf(histName,"mtp_%d",ipt);
+      mtp[ipt] =new mtModelMean(histName,pfmet,mtPmean[ipt],mtPsigma[ipt],mtPa1[ipt]);
+      sprintf(histName,"mtm_%d",ipt);
+      mtm[ipt] =new mtModelMean(histName,pfmet,mtMmean[ipt],mtMsigma[ipt],mtMa1[ipt]);
       
-      sprintf(histName,"qcd2_%d",ipt);
-      qcd2[ipt]  = new CPepeDouble(histName,pfmet,qcdsigma1[ipt], qcda1[ipt], dFrac1[ipt], qcdsigma2[ipt], qcda2[ipt],   dFrac2[ipt]);
-      sprintf(histName,"qcd2p_%d",ipt);
-      qcd2p[ipt] = new CPepeDouble(histName,pfmet,qcdPsigma1[ipt],qcdPa1[ipt],dFrac1P[ipt],qcdPsigma2[ipt], qcdPa2[ipt], dFrac2P[ipt]);
-      sprintf(histName,"qcd2m_%d",ipt);
-      qcd2m[ipt] = new CPepeDouble(histName,pfmet,qcdMsigma1[ipt],qcdMa1[ipt],dFrac1M[ipt],qcdMsigma2[ipt], qcdMa2[ipt], dFrac2M[ipt]);
-      
-      sprintf(histName,"aqcd2_%d",ipt);
-      aqcd2[ipt] = new CPepeDouble(histName,pfmet
-	  ,aqcdsigma1[ipt],qcd2[ipt]->a1,qcd2[ipt]->frac1,aqcdsigma2[ipt],qcd2[ipt]->a2,qcd2[ipt]->frac2);
-      sprintf(histName,"aqcd2p_%d",ipt);
-      aqcd2p[ipt] = new CPepeDouble(histName,pfmet
-	  ,aqcdPsigma1[ipt],qcd2p[ipt]->a1,qcd2p[ipt]->frac1,aqcdPsigma2[ipt],qcd2p[ipt]->a2,qcd2p[ipt]->frac2);
-      sprintf(histName,"aqcd2m_%d",ipt);
-      aqcd2m[ipt] = new CPepeDouble(histName,pfmet
-	  ,aqcdMsigma1[ipt],qcd2m[ipt]->a1,qcd2m[ipt]->frac1,aqcdMsigma2[ipt],qcd2m[ipt]->a2,qcd2m[ipt]->frac2);
+      sprintf(histName,"amt_%d",ipt);
+      amt[ipt] =new mtModelMean(histName,pfmet,mt[ipt]->mean, amtsigma[ipt], mt[ipt]->a1);
+      sprintf(histName,"amtp_%d",ipt);
+      amtp[ipt]=new mtModelMean(histName,pfmet,mtp[ipt]->mean,amtPsigma[ipt],mtp[ipt]->a1);
+      sprintf(histName,"amtm_%d",ipt);
+      amtm[ipt]=new mtModelMean(histName,pfmet,mtm[ipt]->mean,amtMsigma[ipt],mtm[ipt]->a1);
       
       // Signal + Background PDFs
       sprintf(histName,"pdfMet_%d",ipt);
       pdfMet[ipt] =new RooAddPdf(histName,histName
-          ,RooArgList(*pdfWm[ipt],*pdfEWK[ipt],*(qcd2[ipt]->model))
-          ,RooArgList(*nSig[ipt],*nEWK[ipt],*nQCD[ipt]));
+          ,RooArgList(*pdfWm[ipt], *pdfEWK[ipt], *(mt[ipt]->model))
+          ,RooArgList(*nSig[ipt], *nEWK[ipt], *nQCD[ipt]));
       sprintf(histName,"pdfMetp_%d",ipt);
       pdfMetp[ipt] =new RooAddPdf(histName,histName
-          ,RooArgList(*pdfWmp[ipt],*pdfEWKp[ipt],*(qcd2p[ipt]->model))
+          ,RooArgList(*pdfWmp[ipt],*pdfEWKp[ipt],*(mtp[ipt]->model))
           ,RooArgList(*nSigp[ipt],*nEWKp[ipt],*nQCDp[ipt]));
       sprintf(histName,"pdfMetm_%d",ipt);
       pdfMetm[ipt] =new RooAddPdf(histName,histName
-          ,RooArgList(*pdfWmm[ipt],*pdfEWKm[ipt],*(qcd2m[ipt]->model))
+          ,RooArgList(*pdfWmm[ipt],*pdfEWKm[ipt],*(mtm[ipt]->model))
           ,RooArgList(*nSigm[ipt],*nEWKm[ipt],*nQCDm[ipt]));
-
-      if(hAntiWmunuMet[ipt]->Integral() > 0 || hHighWpTAnti_WmunuMet->Integral() > 0)
+     
+      if(hAntiWmunuMet[ipt]->Integral() > 0)
       {
 	sprintf(histName,"apdfMet_%d",ipt);
-        apdfMet[ipt] =new RooAddPdf(histName,histName
-            ,RooArgList(*apdfWm[ipt],*apdfEWK[ipt],*(aqcd2[ipt]->model))
-            ,RooArgList(*nAntiSig[ipt],*nAntiEWK[ipt],*nAntiQCD[ipt]));
-      }else if(hAntiEWKMet[ipt]->Integral() > 0 || hHighWpTAnti_EWKMet->Integral() > 0)
-      {
-        sprintf(histName,"apdfMet_%d",ipt);
-        apdfMet[ipt] =new RooAddPdf(histName,histName
-            ,RooArgList(*apdfEWK[ipt],*(aqcd2[ipt]->model))
-            ,RooArgList(*nAntiEWK[ipt],*nAntiQCD[ipt]));
-        nAntiSig[ipt]->setVal(0);
-      }else
-      {
-        sprintf(histName,"apdfMet_%d",ipt);
-        apdfMet[ipt] =new RooAddPdf(histName,histName
-            ,RooArgList(*(aqcd2[ipt]->model))
-            ,RooArgList(*nAntiQCD[ipt]));
-        nAntiSig[ipt]->setVal(0);
-      }
-
-      if(hAntiWmunuMetp[ipt]->Integral() > 0 || hHighWpTAnti_WmunuMetp->Integral() > 0)
-      {
-        sprintf(histName,"apdfMetp_%d",ipt);
-        apdfMetp[ipt] =new RooAddPdf(histName,histName
-            ,RooArgList(*apdfWmp[ipt],*apdfEWKp[ipt],*(aqcd2p[ipt]->model))
-            ,RooArgList(*nAntiSigp[ipt],*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
-      }else if(hAntiEWKMetp[ipt]->Integral() > 0 || hHighWpTAnti_EWKMetp->Integral() > 0)
-      {
-        sprintf(histName,"apdfMetp_%d",ipt);
-        apdfMetp[ipt] =new RooAddPdf(histName,histName
-            ,RooArgList(*apdfEWKp[ipt],*(aqcd2p[ipt]->model))
-            ,RooArgList(*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
-        nAntiSigp[ipt]->setVal(0);
+	apdfMet[ipt] =new RooAddPdf(histName,histName
+	    ,RooArgList(*apdfWm[ipt],*apdfEWK[ipt],*(amt[ipt]->model))
+	    ,RooArgList(*nAntiSig[ipt],*nAntiEWK[ipt],*nAntiQCD[ipt]));
+      }else if(hAntiEWKMet[ipt]->Integral() > 0){
+	sprintf(histName,"apdfMet_%d",ipt);
+	apdfMet[ipt] =new RooAddPdf(histName,histName
+	    ,RooArgList(*apdfEWK[ipt],*(amt[ipt]->model))
+	    ,RooArgList(*nAntiEWK[ipt],*nAntiQCD[ipt]));
+	nAntiSig[ipt]->setVal(0);
       }else{
-        sprintf(histName,"apdfMetp_%d",ipt);
-        apdfMetp[ipt] =new RooAddPdf(histName,histName
-            ,RooArgList(*(aqcd2p[ipt]->model))
-            ,RooArgList(*nAntiQCDp[ipt]));
-        nAntiSigp[ipt]->setVal(0);
+	sprintf(histName,"apdfMet_%d",ipt);
+	apdfMet[ipt] =new RooAddPdf(histName,histName
+	    ,RooArgList(*(amt[ipt]->model))
+	    ,RooArgList(*nAntiQCD[ipt]));
+	nAntiSig[ipt]->setVal(0);
       }
-
-      if(hAntiWmunuMetm[ipt]->Integral() > 0 || hHighWpTAnti_WmunuMetm->Integral() > 0)
+      
+      if(hAntiWmunuMetp[ipt]->Integral() > 0)
       {
-        sprintf(histName,"apdfMetm_%d",ipt);
-        apdfMetm[ipt] =new RooAddPdf(histName,histName
-            ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(aqcd2m[ipt]->model))
-            ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
-      }else if(hAntiEWKMetm[ipt]->Integral() > 0 || hHighWpTAnti_EWKMetm->Integral() > 0)
-      {
-        sprintf(histName,"apdfMetm_%d",ipt);
-        apdfMetm[ipt] =new RooAddPdf(histName,histName
-            ,RooArgList(*apdfEWKm[ipt],*(aqcd2m[ipt]->model))
-            ,RooArgList(*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
-        nAntiSigm[ipt]->setVal(0);
+	sprintf(histName,"apdfMetp_%d",ipt);
+	apdfMetp[ipt] =new RooAddPdf(histName,histName
+	    ,RooArgList(*apdfWmp[ipt],*apdfEWKp[ipt],*(amtp[ipt]->model))
+	    ,RooArgList(*nAntiSigp[ipt],*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
+      }else if(hAntiEWKMetp[ipt]->Integral() > 0){
+	sprintf(histName,"apdfMetp_%d",ipt);
+	apdfMetp[ipt] =new RooAddPdf(histName,histName
+	    ,RooArgList(*apdfEWKp[ipt],*(amtp[ipt]->model))
+	    ,RooArgList(*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
+	nAntiSigp[ipt]->setVal(0);
       }else{
-        sprintf(histName,"apdfMetm_%d",ipt);
-        apdfMetm[ipt] =new RooAddPdf(histName,histName
-            ,RooArgList(*(aqcd2m[ipt]->model))
-            ,RooArgList(*nAntiQCDm[ipt]));
-        nAntiSigm[ipt]->setVal(0);
+	sprintf(histName,"apdfMetp_%d",ipt);
+	apdfMetp[ipt] =new RooAddPdf(histName,histName
+	    ,RooArgList(*(amtp[ipt]->model))
+	    ,RooArgList(*nAntiQCDp[ipt]));
+	nAntiSigp[ipt]->setVal(0);
+      }
+      
+      if(hAntiWmunuMetm[ipt]->Integral() > 0)
+      {
+	sprintf(histName,"apdfMetm_%d",ipt);
+	apdfMetm[ipt] =new RooAddPdf(histName,histName
+	    ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(amtm[ipt]->model))
+	    ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
+      }else if(hAntiEWKMetm[ipt]->Integral() > 0){
+	sprintf(histName,"apdfMetm_%d",ipt);
+	apdfMetm[ipt] =new RooAddPdf(histName,histName
+	    ,RooArgList(*apdfEWKm[ipt],*(amtm[ipt]->model))
+	    ,RooArgList(*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
+	nAntiSigm[ipt]->setVal(0);
+      }else{
+	sprintf(histName,"apdfMetm_%d",ipt);
+	apdfMetm[ipt] =new RooAddPdf(histName,histName
+	    ,RooArgList(*(amtm[ipt]->model))
+	    ,RooArgList(*nAntiQCDm[ipt]));
+	nAntiSigm[ipt]->setVal(0);
       }
     }
+
     // PDF for simultaneous fit
     sprintf(histName,"pdfTotal_%d",ipt);
     pdfTotal[ipt]= new RooSimultaneous(histName,histName,rooCat);
@@ -1900,70 +2051,82 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     
     if (QCDFix)
     {
-      //nQCD[ipt]	->setConstant(kTRUE);
-      //nQCDp[ipt]	->setConstant(kTRUE);
-      //nQCDm[ipt]	->setConstant(kTRUE);
-      //nAntiQCD[ipt]	->setConstant(kTRUE);
-      //nAntiQCDp[ipt]	->setConstant(kTRUE);
-      //nAntiQCDm[ipt]	->setConstant(kTRUE);
-      if (ipt<4){
-	qcdmean[ipt]	->setConstant(kTRUE);
-        qcdPmean[ipt]	->setConstant(kTRUE);
-        qcdMmean[ipt]	->setConstant(kTRUE);
-        qcdsigma1[ipt]	->setConstant(kTRUE);
-        qcdPsigma1[ipt]	->setConstant(kTRUE);
-        qcdMsigma1[ipt]	->setConstant(kTRUE);
-        qcda1[ipt]	->setConstant(kTRUE);
-        qcdPa1[ipt]	->setConstant(kTRUE);
-        qcdMa1[ipt]	->setConstant(kTRUE);
-      }else if (ipt == 4){
-        qcdmean[ipt]	->setConstant(kTRUE);
-        qcdPmean[ipt]	->setConstant(kTRUE);
-        qcdMmean[ipt]	->setConstant(kTRUE);
-        qcdsigma1[ipt]	->setConstant(kTRUE);
-        qcdPsigma1[ipt]	->setConstant(kTRUE);
-        qcdMsigma1[ipt]	->setConstant(kTRUE);
-        qcda1[ipt]	->setConstant(kTRUE);
-        qcdPa1[ipt]	->setConstant(kTRUE);
-        qcdMa1[ipt]	->setConstant(kTRUE);
-        qcdsigma2[ipt]	->setConstant(kTRUE);
-        qcdPsigma2[ipt]	->setConstant(kTRUE);
-        qcdMsigma2[ipt]	->setConstant(kTRUE);
-        qcda2[ipt]	->setConstant(kTRUE);
-        qcdPa2[ipt]	->setConstant(kTRUE);
-        qcdMa2[ipt]	->setConstant(kTRUE);
-        Frac1[ipt]	->setConstant(kTRUE);
-        Frac1P[ipt]	->setConstant(kTRUE);
-        Frac1M[ipt]	->setConstant(kTRUE);
-        Frac2[ipt]	->setConstant(kTRUE);
-        Frac2P[ipt]	->setConstant(kTRUE);
-        Frac2M[ipt]	->setConstant(kTRUE);
-    }else{
-        qcdsigma1[ipt]	-> setConstant(kTRUE);
-        qcdPsigma1[ipt]	-> setConstant(kTRUE);
-        qcdMsigma1[ipt]	-> setConstant(kTRUE);
-        qcda1[ipt]	-> setConstant(kTRUE);
-        qcdPa1[ipt]	-> setConstant(kTRUE);
-        qcdMa1[ipt]	-> setConstant(kTRUE);
-        dFrac1[ipt]	-> setConstant(kTRUE);
-        dFrac1P[ipt]	-> setConstant(kTRUE);
-        dFrac1M[ipt]	-> setConstant(kTRUE);
-        qcdsigma2[ipt]	-> setConstant(kTRUE);
-        qcdPsigma2[ipt]	-> setConstant(kTRUE);
-        qcdMsigma2[ipt]	-> setConstant(kTRUE);
-        qcda2[ipt]	-> setConstant(kTRUE);
-        qcdPa2[ipt]	-> setConstant(kTRUE);
-        qcdMa2[ipt]	-> setConstant(kTRUE);
-        dFrac2[ipt]	-> setConstant(kTRUE);
-        dFrac2P[ipt]	-> setConstant(kTRUE);
-        dFrac2M[ipt]	-> setConstant(kTRUE);
-    }
+      if(ipt<4){
+        qcdmean[ipt] ->setConstant(kTRUE);
+        qcdPmean[ipt]->setConstant(kTRUE);
+        qcdMmean[ipt]->setConstant(kTRUE);
+        qcdsigma1[ipt] ->setConstant(kTRUE);
+        qcdPsigma1[ipt]->setConstant(kTRUE);
+        qcdMsigma1[ipt]->setConstant(kTRUE);
+        qcda1[ipt] ->setConstant(kTRUE);
+        qcdPa1[ipt]->setConstant(kTRUE);
+        qcdMa1[ipt]->setConstant(kTRUE);
+      }else if(ipt>3 && ipt<6){
+        qcdsigma1[ipt] ->setConstant(kTRUE);
+        qcdPsigma1[ipt]->setConstant(kTRUE);
+        qcdMsigma1[ipt]->setConstant(kTRUE);
+        qcda1[ipt] ->setConstant(kTRUE);
+        qcdPa1[ipt]->setConstant(kTRUE);
+        qcdMa1[ipt]->setConstant(kTRUE);
+        dFrac1[ipt] ->setConstant(kTRUE);
+        dFrac1P[ipt]->setConstant(kTRUE);
+        dFrac1M[ipt]->setConstant(kTRUE);
+        qcdsigma2[ipt] ->setConstant(kTRUE);
+        qcdPsigma2[ipt]->setConstant(kTRUE);
+        qcdMsigma2[ipt]->setConstant(kTRUE);
+        qcda2[ipt] ->setConstant(kTRUE);;
+        qcdPa2[ipt]->setConstant(kTRUE);
+        qcdMa2[ipt]->setConstant(kTRUE);
+        dFrac2[ipt] ->setConstant(kTRUE);
+        dFrac2P[ipt]->setConstant(kTRUE);
+        dFrac2M[ipt]->setConstant(kTRUE);
+      }else if (ipt>5 && ipt<9){
+        qcdmean[ipt] ->setConstant(kTRUE);
+        qcdPmean[ipt]->setConstant(kTRUE);
+        qcdMmean[ipt]->setConstant(kTRUE);
+        qcdsigma1[ipt] ->setConstant(kTRUE);
+        qcdPsigma1[ipt]->setConstant(kTRUE);
+        qcdMsigma1[ipt]->setConstant(kTRUE);
+        qcda1[ipt] ->setConstant(kTRUE);
+        qcdPa1[ipt]->setConstant(kTRUE);
+        qcdMa1[ipt]->setConstant(kTRUE);
+        qcdsigma2[ipt] ->setConstant(kTRUE);
+        qcdPsigma2[ipt]->setConstant(kTRUE);
+        qcdMsigma2[ipt]->setConstant(kTRUE);
+        qcda2[ipt] ->setConstant(kTRUE);
+        qcdPa2[ipt]->setConstant(kTRUE);
+        qcdMa2[ipt]->setConstant(kTRUE);
+        Frac1[ipt] ->setConstant(kTRUE);
+        Frac1P[ipt]->setConstant(kTRUE);
+        Frac1M[ipt]->setConstant(kTRUE);
+        Frac2[ipt] ->setConstant(kTRUE);
+        Frac2P[ipt]->setConstant(kTRUE);
+        Frac2M[ipt]->setConstant(kTRUE);
+      }else if (ipt>8){
+	mtmean[ipt] ->setConstant(kTRUE);
+        mtPmean[ipt]->setConstant(kTRUE);
+        mtMmean[ipt]->setConstant(kTRUE);
+        mtsigma[ipt] ->setConstant(kTRUE);
+        mtPsigma[ipt]->setConstant(kTRUE);
+        mtMsigma[ipt]->setConstant(kTRUE);
+        mta1[ipt] ->setConstant(kTRUE);
+        mtPa1[ipt]->setConstant(kTRUE);
+        mtMa1[ipt]->setConstant(kTRUE);
+        amtsigma[ipt] ->setConstant(kTRUE);
+        amtPsigma[ipt]->setConstant(kTRUE);
+        amtMsigma[ipt]->setConstant(kTRUE);
+      }
     }
     // Perform fits
-    fitRes[ipt]  = pdfTotal[ipt] ->fitTo(*dataTotal[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
+    fitRes[ipt]  = pdfTotal[ipt] ->fitTo(*dataTotal[ipt], Extended(),Minos(kTRUE),Save(kTRUE));
     fitResp[ipt] = pdfTotalp[ipt]->fitTo(*dataTotalp[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
     fitResm[ipt] = pdfTotalm[ipt]->fitTo(*dataTotalm[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
-    
+    if(ipt>11){
+      fitRes[ipt]  = pdfMet[ipt] ->fitTo(*dataMet[ipt], Extended(),Minos(kTRUE),Save(kTRUE));
+      fitResp[ipt] = pdfMetp[ipt]->fitTo(*dataMetp[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
+      fitResm[ipt] = pdfMetm[ipt]->fitTo(*dataMetm[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
+    }
+
     // Use histogram version of fitted PDFs to make ratio plots
     // (Will also use PDF histograms later for Chi^2 and KS tests)
     hPdfMet = (TH1D*)(pdfMet[ipt]->createHistogram("hPdfMet", pfmet));
@@ -1979,7 +2142,7 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     hMetpDiff = makeDiffHist(hDataMetp[ipt],hPdfMetp,"hMetpDiff");
     hMetpDiff->SetMarkerStyle(kFullCircle);
     hMetpDiff->SetMarkerSize(0.9);
-      
+    
     hPdfMetm = (TH1D*)(pdfMetm[ipt]->createHistogram("hPdfMetm", pfmet));
     hPdfMetm->Scale(
 	(nSigm[ipt]->getVal()+nEWKm[ipt]->getVal()+nQCDm[ipt]->getVal())/hPdfMetm->Integral());
@@ -1990,31 +2153,22 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
     hPdfAntiMet = (TH1D*)(apdfMet[ipt]->createHistogram("hPdfAntiMet", pfmet));
     hPdfAntiMet->Scale(
 	(nAntiSig[ipt]->getVal()+nAntiEWK[ipt]->getVal()+nAntiQCD[ipt]->getVal())/hPdfAntiMet->Integral());
-    if (ipt<10)
-      hAntiMetDiff = makeDiffHist(hAntiDataMet[ipt],hPdfAntiMet,"hAntiMetDiff");
-    else
-      hAntiMetDiff = makeDiffHist(hHighWpTAnti_DataMet,hPdfAntiMet,"hAntiMetDiff");
+    hAntiMetDiff = makeDiffHist(hAntiDataMet[ipt],hPdfAntiMet,"hAntiMetDiff");
     hAntiMetDiff->SetMarkerStyle(kFullCircle);
     hAntiMetDiff->SetMarkerSize(0.9);
      
     hPdfAntiMetp = (TH1D*)(apdfMetp[ipt]->createHistogram("hPdfAntiMetp", pfmet));
     hPdfAntiMetp->Scale(
 	(nAntiSigp[ipt]->getVal()+nAntiEWKp[ipt]->getVal()+nAntiQCDp[ipt]->getVal())/hPdfAntiMetp->Integral());
-    if (ipt<10)
-      hAntiMetpDiff = makeDiffHist(hAntiDataMetp[ipt],hPdfAntiMetp,"hAntiMetpDiff");
-    else
-      hAntiMetpDiff = makeDiffHist(hHighWpTAnti_DataMetp,hPdfAntiMetp,"hAntiMetpDiff");
+    hAntiMetpDiff = makeDiffHist(hAntiDataMetp[ipt],hPdfAntiMetp,"hAntiMetpDiff");
     hAntiMetpDiff->SetMarkerStyle(kFullCircle);
     hAntiMetpDiff->SetMarkerSize(0.9);
       
     hPdfAntiMetm = (TH1D*)(apdfMetm[ipt]->createHistogram("hPdfAntiMetm", pfmet));
     hPdfAntiMetm->Scale(
 	(nAntiSigm[ipt]->getVal()+nAntiEWKm[ipt]->getVal()+nAntiQCDm[ipt]->getVal())/hPdfAntiMetm->Integral());
-    if (ipt<10)
-      hAntiMetmDiff = makeDiffHist(hAntiDataMetm[ipt],hPdfAntiMetm,"hAntiMetmDiff");
-    else
-      hAntiMetmDiff = makeDiffHist(hHighWpTAnti_DataMetm,hPdfAntiMetm,"hAntiMetmDiff");
-    hAntiMetmDiff->SetMarkerStyle(kFullCircle); 
+    hAntiMetmDiff = makeDiffHist(hAntiDataMetm[ipt],hPdfAntiMetm,"hAntiMetmDiff");
+    hAntiMetmDiff->SetMarkerStyle(kFullCircle);
     hAntiMetmDiff->SetMarkerSize(0.9);
 
     //Write MET Histogram to file
@@ -2100,12 +2254,12 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
         hQCD0m->Write();
         metfile->Close();
       }
-
+    
     if (ipt==0)
-      sprintf(binlabel,"0 < p_{T}^{W} < 600 GeV");
+      sprintf(binlabel,"0 < p_{T}^{W} < 600 (GeV)");
     else
-      sprintf(binlabel,"%.1f < p_{T}^{W} < %.1f GeV",WptBins[ipt-1],WptBins[ipt]);
-cout << "check 1" << endl;
+      sprintf(binlabel,"%.1f < p_{T}^{W} < %.1f (GeV)",WptBins[ipt-1],WptBins[ipt]);
+
     //-------------------------------------------------
     // Make MET Fit plots 
     //=================================================  
@@ -2130,7 +2284,20 @@ cout << "check 1" << endl;
       pdfMet[ipt]->plotOn(wmframe
 	  ,Components(RooArgSet(*(qcd[ipt]->model)))
 	  ,LineColor(linecolorQCD));
-    }else if (ipt == 4){
+    }else if (ipt > 3 && ipt < 6){
+      pdfMet[ipt]->plotOn(wmframe
+	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcd2[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      pdfMet[ipt]->plotOn(wmframe
+	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcd2[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      pdfMet[ipt]->plotOn(wmframe
+	  ,Components(RooArgSet(*(qcd2[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      pdfMet[ipt]->plotOn(wmframe
+	  ,Components(RooArgSet(*(qcd2[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }else if (ipt>5 && ipt<9){
       pdfMet[ipt]->plotOn(wmframe
 	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcd1[ipt]->model)))
 	  ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2143,18 +2310,18 @@ cout << "check 1" << endl;
       pdfMet[ipt]->plotOn(wmframe
 	  ,Components(RooArgSet(*(qcd1[ipt]->model)))
 	  ,LineColor(linecolorQCD));
-    }else if (ipt > 4){
+    }else if(ipt>8){
       pdfMet[ipt]->plotOn(wmframe
-	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcd2[ipt]->model)))
+	  ,Components(RooArgSet(*pdfEWK[ipt],*(mt[ipt]->model)))
 	  ,FillColor(fillcolorEWK),DrawOption("F"));
       pdfMet[ipt]->plotOn(wmframe
-	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcd2[ipt]->model)))
+	  ,Components(RooArgSet(*pdfEWK[ipt],*(mt[ipt]->model)))
 	  ,LineColor(linecolorEWK));
       pdfMet[ipt]->plotOn(wmframe
-	  ,Components(RooArgSet(*(qcd2[ipt]->model)))
+	  ,Components(RooArgSet(*(mt[ipt]->model)))
 	  ,FillColor(fillcolorQCD),DrawOption("F"));
       pdfMet[ipt]->plotOn(wmframe
-	  ,Components(RooArgSet(*(qcd2[ipt]->model)))
+	  ,Components(RooArgSet(*(mt[ipt]->model)))
 	  ,LineColor(linecolorQCD));
     }
     pdfMet[ipt]->plotOn(wmframe
@@ -2162,46 +2329,43 @@ cout << "check 1" << endl;
     dataMet[ipt]->plotOn(wmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
     
     sprintf(ylabel,"Events / %.1f GeV",hDataMet[ipt]->GetBinWidth(1));
-    sprintf(histName,"WElNu_%d",ipt);
+    sprintf(histName,"WMuNu_%d",ipt);
     plotMet=new CPlot(histName,wmframe,"","",ylabel);
     plotMet->setOutDir(CPlot::sOutDir);
     plotMet->SetLegend(0.68,0.55,0.93,0.73);
     plotMet->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotMet->GetLegend()->AddEntry(hDummyW,"W#rightarrow e#nu","F");
+    plotMet->GetLegend()->AddEntry(hDummyW,"W#rightarrow #mu#nu","F");
     plotMet->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
     plotMet->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
     plotMet->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
     plotMet->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotMet->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-    plotMet->SetYRange(0.1,1.3*(hDataMet[ipt]->GetMaximum()));
-    plotMet->SetXRange(0,85);
-cout << "check 2" << endl;
+    plotMet->SetYRange(0.1,1.1*(hDataMet[ipt]->GetMaximum()));
+    if(ipt>10)
+      plotMet->SetYRange(0.1,1.3*(hDataMet[ipt]->GetMaximum()));
     plotMet->Draw(c,kFALSE,format,1);
-cout << "check 3" << endl;
 
     //plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    if(ipt>8)
+      //plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
     plotMetDiff->setOutDir(CPlot::sOutDir);
     //plotMetDiff->AddHist1D(hMetDiff,"EX0",ratioColor);
     plotMetDiff->AddHist1D(hMetDiff,"",kAzure+1,1,1001);
-cout << "check 3-1" << endl;
     //plotMetDiff->SetYRange(-8,8);
     plotMetDiff->SetYRange(-5,5);
-    plotMetDiff->SetXRange(0,85);
-    //plotMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotMetDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
     //plotMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-    //plotMetDiff->Draw(c,kTRUE,format,2);
-cout << "check 4" << endl;
+    plotMetDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WElNu_%d_log",ipt);
+    sprintf(histName,"WMuNu_%d_log",ipt);
     plotMet->SetName(histName);
     plotMet->SetLogy();
     plotMet->SetYRange(1e-3*(hDataMet[ipt]->GetMaximum()),10*(hDataMet[ipt]->GetMaximum()));
-    //plotMet->Draw(c,kTRUE,format,1);
+    plotMet->Draw(c,kTRUE,format,1);
 
-cout << "check 4-1" << endl;
     // W Inclusive Control region MET plot
     awmframe = pfmet.frame(Bins(NBINS));
     antiMet[ipt]->plotOn(awmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
@@ -2220,20 +2384,7 @@ cout << "check 4-1" << endl;
       apdfMet[ipt]->plotOn(awmframe
           ,Components(RooArgSet(*(aqcd[ipt]->model)))
           ,LineColor(linecolorQCD));
-      }else if (ipt == 4){
-	apdfMet[ipt]->plotOn(awmframe
-	    ,Components(RooArgSet(*apdfEWK[ipt],*(aqcd1[ipt]->model)))
-	    ,FillColor(fillcolorEWK),DrawOption("F"));
-	apdfMet[ipt]->plotOn(awmframe
-	    ,Components(RooArgSet(*apdfEWK[ipt],*(aqcd1[ipt]->model)))
-	    ,LineColor(linecolorEWK));
-	apdfMet[ipt]->plotOn(awmframe
-	    ,Components(RooArgSet(*(aqcd1[ipt]->model)))
-	    ,FillColor(fillcolorQCD),DrawOption("F"));
-	apdfMet[ipt]->plotOn(awmframe
-	    ,Components(RooArgSet(*(aqcd1[ipt]->model)))
-	    ,LineColor(linecolorQCD));
-      }else if (ipt > 4){
+      }else if (ipt > 3 && ipt < 6){
       apdfMet[ipt]->plotOn(awmframe
           ,Components(RooArgSet(*apdfEWK[ipt],*(aqcd2[ipt]->model)))
           ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2246,61 +2397,80 @@ cout << "check 4-1" << endl;
       apdfMet[ipt]->plotOn(awmframe
           ,Components(RooArgSet(*(aqcd2[ipt]->model)))
           ,LineColor(linecolorQCD));
+      }else if (ipt>5 && ipt<9){
+	apdfMet[ipt]->plotOn(awmframe
+	    ,Components(RooArgSet(*apdfEWK[ipt],*(aqcd1[ipt]->model)))
+	    ,FillColor(fillcolorEWK),DrawOption("F"));
+	apdfMet[ipt]->plotOn(awmframe
+	    ,Components(RooArgSet(*apdfEWK[ipt],*(aqcd1[ipt]->model)))
+	    ,LineColor(linecolorEWK));
+	apdfMet[ipt]->plotOn(awmframe
+	    ,Components(RooArgSet(*(aqcd1[ipt]->model)))
+	    ,FillColor(fillcolorQCD),DrawOption("F"));
+	apdfMet[ipt]->plotOn(awmframe
+	    ,Components(RooArgSet(*(aqcd1[ipt]->model)))
+	    ,LineColor(linecolorQCD));
+      }else if(ipt>8){
+      apdfMet[ipt]->plotOn(awmframe
+          ,Components(RooArgSet(*apdfEWK[ipt],*(amt[ipt]->model)))
+          ,FillColor(fillcolorEWK),DrawOption("F"));
+      apdfMet[ipt]->plotOn(awmframe
+          ,Components(RooArgSet(*apdfEWK[ipt],*(amt[ipt]->model)))
+          ,LineColor(linecolorEWK));
+      apdfMet[ipt]->plotOn(awmframe
+          ,Components(RooArgSet(*(amt[ipt]->model)))
+          ,FillColor(fillcolorQCD),DrawOption("F"));
+      apdfMet[ipt]->plotOn(awmframe
+          ,Components(RooArgSet(*(amt[ipt]->model)))
+          ,LineColor(linecolorQCD));
     }
     apdfMet[ipt]->plotOn(awmframe
         ,Components(RooArgSet(*apdfWm[ipt])),LineColor(linecolorW),LineStyle(2));
     antiMet[ipt]->plotOn(awmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
-    if (ipt<10)
-      sprintf(ylabel,"Events / %.1f GeV",hAntiDataMet[ipt]->GetBinWidth(1));
-    else
-      sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMet->GetBinWidth(1));
-    sprintf(histName,"WElNu_cont_%d",ipt);
+    sprintf(ylabel,"Events / %.1f GeV",hAntiDataMet[ipt]->GetBinWidth(1));
+    sprintf(histName,"WMuNu_cont_%d",ipt);
     plotAntiMet=new CPlot (histName,awmframe,"","",ylabel);
     plotAntiMet->setOutDir(CPlot::sOutDir);
     plotAntiMet->SetLegend(0.68,0.55,0.93,0.73);
     plotAntiMet->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotAntiMet->GetLegend()->AddEntry(hDummyW,"W#rightarrow e#nu","F");
+    plotAntiMet->GetLegend()->AddEntry(hDummyW,"W#rightarrow #mu#nu","F");
     plotAntiMet->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
     plotAntiMet->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
     plotAntiMet->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
     plotAntiMet->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotAntiMet->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-    if (ipt<10)
-      plotAntiMet->SetYRange(0.1,1.1*(hAntiDataMet[ipt]->GetMaximum()));
-    else
-      plotAntiMet->SetYRange(0.1,1.5*(hHighWpTAnti_DataMet->GetMaximum()));
-    //plotAntiMet->Draw(c,kFALSE,format,1);
+    plotAntiMet->SetYRange(0.1,1.1*(hAntiDataMet[ipt]->GetMaximum()));
+    if(ipt==10)
+      plotAntiMet->SetYRange(0.1,1.5*(hAntiDataMet[ipt]->GetMaximum()));
+    if(ipt==11)
+      plotAntiMet->SetYRange(0.1,2.0*(hAntiDataMet[ipt]->GetMaximum()));
+    plotAntiMet->Draw(c,kFALSE,format,1);
     
     //plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    if(ipt>8)
+      plotAntiMetDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
     plotAntiMetDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetDiff->AddHist1D(hAntiMetDiff,"EX0",ratioColor);
     plotAntiMetDiff->AddHist1D(hAntiMetDiff,"",kAzure+1,1,1001);
     //plotAntiMetDiff->SetYRange(-8,8);
-    //plotAntiMetDiff->SetYRange(-5,5);
-    plotAntiMetDiff->SetYRange(-3,3);
-    //plotAntiMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotAntiMetDiff->SetYRange(-5,5);
+    plotAntiMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
     //plotAntiMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotAntiMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-    //plotAntiMetDiff->Draw(c,kTRUE,format,2);
+    plotAntiMetDiff->Draw(c,kTRUE,format,2);
     
-cout << "check 5" << endl;
-    sprintf(histName,"WElNu_cont_%d_log",ipt);
+    sprintf(histName,"WMuNu_cont_%d_log",ipt);
     plotAntiMet->SetName(histName);
     plotAntiMet->SetLogy();
-    if (ipt<10)
-      plotAntiMet->SetYRange(1e-3*(hAntiDataMet[ipt]->GetMaximum()),10*(hAntiDataMet[ipt]->GetMaximum()));
-    else
-      plotAntiMet->SetYRange(1e-3*(hHighWpTAnti_DataMet->GetMaximum()),10*(hHighWpTAnti_DataMet->GetMaximum()));
-    //plotAntiMet->Draw(c,kTRUE,format,1);
+    plotAntiMet->SetYRange(1e-3*(hAntiDataMet[ipt]->GetMaximum()),10*(hAntiDataMet[ipt]->GetMaximum()));
+    plotAntiMet->Draw(c,kTRUE,format,1);
     //
     // W+ MET plot Signal region
     //
     wmpframe = pfmet.frame(Bins(NBINS));
     wmpframe->GetYaxis()->SetNdivisions(505);
-    //wmpframe->SetAxisRange(0,70,"X");
     dataMetp[ipt]->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     pdfMetp[ipt]->plotOn(wmpframe,FillColor(fillcolorW),DrawOption("F"));
     pdfMetp[ipt]->plotOn(wmpframe,LineColor(linecolorW));
@@ -2317,7 +2487,20 @@ cout << "check 5" << endl;
       pdfMetp[ipt]->plotOn(wmpframe
 	  ,Components(RooArgSet(*(qcdp[ipt]->model)))
 	  ,LineColor(linecolorQCD));
-    }else if (ipt == 4){
+    }else if (ipt > 3 && ipt < 6){
+      pdfMetp[ipt]->plotOn(wmpframe
+	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcd2p[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      pdfMetp[ipt]->plotOn(wmpframe
+	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcd2p[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      pdfMetp[ipt]->plotOn(wmpframe
+	  ,Components(RooArgSet(*(qcd2p[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      pdfMetp[ipt]->plotOn(wmpframe
+	  ,Components(RooArgSet(*(qcd2p[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }else if (ipt>5 && ipt<9){
       pdfMetp[ipt]->plotOn(wmpframe
 	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcd1p[ipt]->model)))
 	  ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2330,18 +2513,18 @@ cout << "check 5" << endl;
       pdfMetp[ipt]->plotOn(wmpframe
 	  ,Components(RooArgSet(*(qcd1p[ipt]->model)))
 	  ,LineColor(linecolorQCD));
-    }else if (ipt > 4){
+    }else if(ipt>8){
       pdfMetp[ipt]->plotOn(wmpframe
-	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcd2p[ipt]->model)))
+	  ,Components(RooArgSet(*pdfEWKp[ipt],*(mtp[ipt]->model)))
 	  ,FillColor(fillcolorEWK),DrawOption("F"));
       pdfMetp[ipt]->plotOn(wmpframe
-	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcd2p[ipt]->model)))
+	  ,Components(RooArgSet(*pdfEWKp[ipt],*(mtp[ipt]->model)))
 	  ,LineColor(linecolorEWK));
       pdfMetp[ipt]->plotOn(wmpframe
-	  ,Components(RooArgSet(*(qcd2p[ipt]->model)))
+	  ,Components(RooArgSet(*(mtp[ipt]->model)))
 	  ,FillColor(fillcolorQCD),DrawOption("F"));
       pdfMetp[ipt]->plotOn(wmpframe
-	  ,Components(RooArgSet(*(qcd2p[ipt]->model)))
+	  ,Components(RooArgSet(*(mtp[ipt]->model)))
 	  ,LineColor(linecolorQCD));
     }
     pdfMetp[ipt]->plotOn(wmpframe
@@ -2350,41 +2533,37 @@ cout << "check 5" << endl;
     dataMetp[ipt]->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
     
     sprintf(ylabel,"Events / %.1f GeV",hDataMetp[ipt]->GetBinWidth(1));
-    sprintf(histName,"WpElNu_%d",ipt);
+    sprintf(histName,"WpMuNu_%d",ipt);
     plotMetp=new CPlot (histName,wmpframe,"","",ylabel);
     plotMetp->setOutDir(CPlot::sOutDir);
     plotMetp->SetLegend(0.68,0.55,0.93,0.73);
     plotMetp->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow e^{+}#nu","F");
-    //plotMetp->GetLegend()->AddEntry(hDummyDotLineW,"W^{+}#rightarrow e^{+}#nu","L");
+    plotMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow #mu^{+}#nu","F");
     plotMetp->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
     plotMetp->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
     plotMetp->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
     plotMetp->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-    //plotMetp->SetYRange(0.1,1.1*(hDataMetp[ipt]->GetMaximum()));
-    plotMetp->SetYRange(0.1,1.3*(hDataMetp[ipt]->GetMaximum()));
-    plotMetp->SetXRange(0,85);
-    //plotMetp->SetXRange(0,70);
+    plotMetp->SetYRange(0.1,1.1*(hDataMetp[ipt]->GetMaximum()));
+    if(ipt>10)
+      plotMetp->SetYRange(0.1,1.3*(hDataMetp[ipt]->GetMaximum()));
     plotMetp->Draw(c,kFALSE,format,1);
 
     //plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","#chi");
     plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    if(ipt>8)
+      plotMetpDiff=new CPlot (histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
     plotMetpDiff->setOutDir(CPlot::sOutDir);
     //plotMetpDiff->AddHist1D(hMetpDiff,"EX0",ratioColor);
     plotMetpDiff->AddHist1D(hMetpDiff,"",kAzure+1,1,1001);
     //plotMetpDiff->SetYRange(-8,8);
     plotMetpDiff->SetYRange(-5,5);
-    plotMetpDiff->SetXRange(0,85);
-    //plotMetpDiff->SetXRange(0,70);
-    //plotMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    //plotMetpDiff->AddLine(0, 0,70, 0,kBlack,1);
-    plotMetpDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
     //plotMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetpDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WpElNu_%d_log",ipt);
+    sprintf(histName,"WpMuNu_%d_log",ipt);
     plotMetp->SetName(histName);
     plotMetp->SetLogy();
     plotMetp->SetYRange(1e-3*(hDataMetp[ipt]->GetMaximum()),10*(hDataMetp[ipt]->GetMaximum()));
@@ -2408,20 +2587,7 @@ cout << "check 5" << endl;
       apdfMetp[ipt]->plotOn(awmpframe
           ,Components(RooArgSet(*(aqcdp[ipt]->model)))
           ,LineColor(linecolorQCD));
-      }else if (ipt == 4){
-	apdfMetp[ipt]->plotOn(awmpframe
-	    ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcd1p[ipt]->model)))
-	    ,FillColor(fillcolorEWK),DrawOption("F"));
-	apdfMetp[ipt]->plotOn(awmpframe
-	    ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcd1p[ipt]->model)))
-	    ,LineColor(linecolorEWK));
-	apdfMetp[ipt]->plotOn(awmpframe
-	    ,Components(RooArgSet(*(aqcd1p[ipt]->model)))
-	    ,FillColor(fillcolorQCD),DrawOption("F"));
-	apdfMetp[ipt]->plotOn(awmpframe
-	    ,Components(RooArgSet(*(aqcd1p[ipt]->model)))
-	    ,LineColor(linecolorQCD));
-      }else if (ipt > 4){
+      }else if (ipt > 3 && ipt < 6){
       apdfMetp[ipt]->plotOn(awmpframe
           ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcd2p[ipt]->model)))
           ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2434,66 +2600,76 @@ cout << "check 5" << endl;
       apdfMetp[ipt]->plotOn(awmpframe
           ,Components(RooArgSet(*(aqcd2p[ipt]->model)))
           ,LineColor(linecolorQCD));
+      }else if (ipt>5 && ipt<9){
+	apdfMetp[ipt]->plotOn(awmpframe
+	    ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcd1p[ipt]->model)))
+	    ,FillColor(fillcolorEWK),DrawOption("F"));
+	apdfMetp[ipt]->plotOn(awmpframe
+	    ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcd1p[ipt]->model)))
+	    ,LineColor(linecolorEWK));
+	apdfMetp[ipt]->plotOn(awmpframe
+	    ,Components(RooArgSet(*(aqcd1p[ipt]->model)))
+	    ,FillColor(fillcolorQCD),DrawOption("F"));
+	apdfMetp[ipt]->plotOn(awmpframe
+	    ,Components(RooArgSet(*(aqcd1p[ipt]->model)))
+	    ,LineColor(linecolorQCD));
+      }else if(ipt>8){
+      apdfMetp[ipt]->plotOn(awmpframe
+          ,Components(RooArgSet(*apdfEWKp[ipt],*(amtp[ipt]->model)))
+          ,FillColor(fillcolorEWK),DrawOption("F"));
+      apdfMetp[ipt]->plotOn(awmpframe
+          ,Components(RooArgSet(*apdfEWKp[ipt],*(amtp[ipt]->model)))
+          ,LineColor(linecolorEWK));
+      apdfMetp[ipt]->plotOn(awmpframe
+          ,Components(RooArgSet(*(amtp[ipt]->model)))
+          ,FillColor(fillcolorQCD),DrawOption("F"));
+      apdfMetp[ipt]->plotOn(awmpframe
+          ,Components(RooArgSet(*(amtp[ipt]->model)))
+          ,LineColor(linecolorQCD));
     }
     apdfMetp[ipt]->plotOn(awmpframe
         ,Components(RooArgSet(*apdfWmp[ipt]))
         ,LineColor(linecolorW),LineStyle(2));
     antiMetp[ipt]->plotOn(awmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
-    if (ipt<10)
-      sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetp[ipt]->GetBinWidth(1));
-    else
-      sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMetp->GetBinWidth(1));
-    sprintf(histName,"WpElNu_cont_%d",ipt);
+    sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetp[ipt]->GetBinWidth(1));
+    sprintf(histName,"WpMuNu_cont_%d",ipt);
     plotAntiMetp=new CPlot (histName,awmpframe,"","",ylabel);
     plotAntiMetp->setOutDir(CPlot::sOutDir);
     plotAntiMetp->SetLegend(0.68,0.55,0.93,0.73);
     plotAntiMetp->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotAntiMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow e^{+}#nu","F");
-    //plotAntiMetp->GetLegend()->AddEntry(hDummyDotLineW,"W^{+}#rightarrow e^{+}#nu","L");
+    plotAntiMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow #mu^{+}#nu","F");
     plotAntiMetp->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
     plotAntiMetp->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
     plotAntiMetp->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
     plotAntiMetp->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotAntiMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-    if (ipt<10)
-    {
-      plotAntiMetp->SetYRange(0.1,1.1*(hAntiDataMetp[ipt]->GetMaximum()));
-      plotAntiMetp->SetXRange(0,85);
-      //plotAntiMetp->SetXRange(0,70);
-    }
-    else
-      plotAntiMetp->SetYRange(0.1,1.5*(hHighWpTAnti_DataMetp->GetMaximum()));
+    plotAntiMetp->SetYRange(0.1,1.1*(hAntiDataMetp[ipt]->GetMaximum()));
+    if(ipt==10)
+      plotAntiMetp->SetYRange(0.1,1.5*(hAntiDataMetp[ipt]->GetMaximum()));
+    if(ipt==11)
+      plotAntiMetp->SetYRange(0.1,2.0*(hAntiDataMetp[ipt]->GetMaximum()));
     plotAntiMetp->Draw(c,kFALSE,format,1);
     
-cout << "check 6" << endl;
     //plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    if(ipt>8)
+      //plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
     plotAntiMetpDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
     plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"",kAzure+1,1,1001);
     //plotAntiMetpDiff->SetYRange(-8,8);
-    //plotAntiMetpDiff->SetYRange(-5,5);
-    plotAntiMetpDiff->SetYRange(-3,3);
-    plotAntiMetpDiff->SetXRange(0,85);
-    //plotAntiMetpDiff->SetXRange(0,70);
-    //plotAntiMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetpDiff->AddLine(0, 0,85, 0,kBlack,1);
-    //plotAntiMetpDiff->AddLine(0, 0,70, 0,kBlack,1);
+    plotAntiMetpDiff->SetYRange(-5,5);
+    plotAntiMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
     //plotAntiMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotAntiMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetpDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WpElNu_cont_%d_log",ipt);
+    sprintf(histName,"WpMuNu_cont_%d_log",ipt);
     plotAntiMetp->SetName(histName);
     plotAntiMetp->SetLogy();
-    if (ipt<10)
-    {
-      //plotAntiMetp->SetYRange(1e-3*(hAntiDataMetp[ipt]->GetMaximum()),10*(hAntiDataMetp[ipt]->GetMaximum()));
-      plotAntiMetp->SetYRange(0.1,10*(hAntiDataMetp[ipt]->GetMaximum()));
-    }
-    else
-      plotAntiMetp->SetYRange(1e-3*(hHighWpTAnti_DataMetp->GetMaximum()),10*(hHighWpTAnti_DataMetp->GetMaximum()));
+    plotAntiMetp->SetYRange(1e-3*(hAntiDataMetp[ipt]->GetMaximum()),10*(hAntiDataMetp[ipt]->GetMaximum()));
     plotAntiMetp->Draw(c,kTRUE,format,1);
     //
     // W- MET plot Signal region
@@ -2517,7 +2693,20 @@ cout << "check 6" << endl;
       pdfMetm[ipt]->plotOn(wmmframe
 	  ,Components(RooArgSet(*(qcdm[ipt]->model)))
 	  ,LineColor(linecolorQCD));
-    }else if (ipt == 4){
+    }else if (ipt > 3 && ipt < 6){
+      pdfMetm[ipt]->plotOn(wmmframe
+	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcd2m[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      pdfMetm[ipt]->plotOn(wmmframe
+	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcd2m[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      pdfMetm[ipt]->plotOn(wmmframe
+	  ,Components(RooArgSet(*(qcd2m[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      pdfMetm[ipt]->plotOn(wmmframe
+	  ,Components(RooArgSet(*(qcd2m[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }else if (ipt>5 && ipt<9){
       pdfMetm[ipt]->plotOn(wmmframe
 	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcd1m[ipt]->model)))
 	  ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2530,18 +2719,18 @@ cout << "check 6" << endl;
       pdfMetm[ipt]->plotOn(wmmframe
 	  ,Components(RooArgSet(*(qcd1m[ipt]->model)))
 	  ,LineColor(linecolorQCD));
-    }else if (ipt > 4){
+    }else if(ipt>8){
       pdfMetm[ipt]->plotOn(wmmframe
-	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcd2m[ipt]->model)))
+	  ,Components(RooArgSet(*pdfEWKm[ipt],*(mtm[ipt]->model)))
 	  ,FillColor(fillcolorEWK),DrawOption("F"));
       pdfMetm[ipt]->plotOn(wmmframe
-	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcd2m[ipt]->model)))
+	  ,Components(RooArgSet(*pdfEWKm[ipt],*(mtm[ipt]->model)))
 	  ,LineColor(linecolorEWK));
       pdfMetm[ipt]->plotOn(wmmframe
-	  ,Components(RooArgSet(*(qcd2m[ipt]->model)))
+	  ,Components(RooArgSet(*(mtm[ipt]->model)))
 	  ,FillColor(fillcolorQCD),DrawOption("F"));
       pdfMetm[ipt]->plotOn(wmmframe
-	  ,Components(RooArgSet(*(qcd2m[ipt]->model)))
+	  ,Components(RooArgSet(*(mtm[ipt]->model)))
 	  ,LineColor(linecolorQCD));
     }
     pdfMetm[ipt]->plotOn(wmmframe
@@ -2550,40 +2739,42 @@ cout << "check 6" << endl;
     dataMetm[ipt]->plotOn(wmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
     sprintf(ylabel,"Events / %.1f GeV",hDataMetm[ipt]->GetBinWidth(1));
-    sprintf(histName,"WmElNu_%d",ipt);
+    sprintf(histName,"WmMuNu_%d",ipt);
     plotMetm=new CPlot(histName,wmmframe,"","",ylabel);
     plotMetm->setOutDir(CPlot::sOutDir);
     plotMetm->SetLegend(0.68,0.55,0.93,0.73);
     plotMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
+    plotMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow #mu^{-}#bar{#nu}","F");
     plotMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
     plotMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
     plotMetm->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
     plotMetm->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     plotMetm->SetYRange(0.1,1.1*(hDataMetm[ipt]->GetMaximum()));
-    //plotMetm->Draw(c,kFALSE,format,1);
+    if(ipt>10)
+      plotMetm->SetYRange(0.1,1.3*(hDataMetm[ipt]->GetMaximum()));
+    plotMetm->Draw(c,kFALSE,format,1);
 
     //plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    if(ipt>8)
+      //plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
     plotMetmDiff->setOutDir(CPlot::sOutDir);
     //plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
     plotMetmDiff->AddHist1D(hMetmDiff,"",kAzure+1,1,1001);
     //plotMetmDiff->SetYRange(-8,8);
-    //plotMetmDiff->SetYRange(-5,5);
-    plotMetmDiff->SetYRange(-3,3);
-    plotMetmDiff->SetXRange(0,85);
-    //plotMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotMetmDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotMetmDiff->SetYRange(-5,5);
+    plotMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
     //plotMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-    //plotMetmDiff->Draw(c,kTRUE,format,2);
+    plotMetmDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WmElNu_%d_log",ipt);
+    sprintf(histName,"WmMuNu_%d_log",ipt);
     plotMetm->SetName(histName);
     plotMetm->SetLogy();
     plotMetm->SetYRange(1e-3*(hDataMetm[ipt]->GetMaximum()),10*(hDataMetm[ipt]->GetMaximum()));
-    //plotMetm->Draw(c,kTRUE,format,1);
+    plotMetm->Draw(c,kTRUE,format,1);
 
     // W- MET plot Control region
     awmmframe = pfmet.frame(Bins(NBINS));
@@ -2603,20 +2794,7 @@ cout << "check 6" << endl;
       apdfMetm[ipt]->plotOn(awmmframe
           ,Components(RooArgSet(*(aqcdm[ipt]->model)))
           ,LineColor(linecolorQCD));
-    }else if ( ipt == 4){
-      apdfMetm[ipt]->plotOn(awmmframe
-	  ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcd1m[ipt]->model)))
-	  ,FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMetm[ipt]->plotOn(awmmframe
-	  ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcd1m[ipt]->model)))
-	  ,LineColor(linecolorEWK));
-      apdfMetm[ipt]->plotOn(awmmframe
-	  ,Components(RooArgSet(*(aqcd1m[ipt]->model)))
-	  ,FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMetm[ipt]->plotOn(awmmframe
-	  ,Components(RooArgSet(*(aqcd1m[ipt]->model)))
-	  ,LineColor(linecolorQCD));
-    }else if (ipt > 4){
+    }else if (ipt > 3 && ipt < 6){
       apdfMetm[ipt]->plotOn(awmmframe
           ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcd2m[ipt]->model)))
           ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2629,6 +2807,32 @@ cout << "check 6" << endl;
       apdfMetm[ipt]->plotOn(awmmframe
           ,Components(RooArgSet(*(aqcd2m[ipt]->model)))
           ,LineColor(linecolorQCD));
+    }else if (ipt>5 && ipt<9){
+      apdfMetm[ipt]->plotOn(awmmframe
+	  ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcd1m[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      apdfMetm[ipt]->plotOn(awmmframe
+	  ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcd1m[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      apdfMetm[ipt]->plotOn(awmmframe
+	  ,Components(RooArgSet(*(aqcd1m[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      apdfMetm[ipt]->plotOn(awmmframe
+	  ,Components(RooArgSet(*(aqcd1m[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }else if(ipt>8){
+      apdfMetm[ipt]->plotOn(awmmframe
+          ,Components(RooArgSet(*apdfEWKm[ipt],*(amtm[ipt]->model)))
+          ,FillColor(fillcolorEWK),DrawOption("F"));
+      apdfMetm[ipt]->plotOn(awmmframe
+          ,Components(RooArgSet(*apdfEWKm[ipt],*(amtm[ipt]->model)))
+          ,LineColor(linecolorEWK));
+      apdfMetm[ipt]->plotOn(awmmframe
+          ,Components(RooArgSet(*(amtm[ipt]->model)))
+          ,FillColor(fillcolorQCD),DrawOption("F"));
+      apdfMetm[ipt]->plotOn(awmmframe
+          ,Components(RooArgSet(*(amtm[ipt]->model)))
+          ,LineColor(linecolorQCD));
     }
     apdfMetm[ipt]->plotOn(awmmframe
         ,Components(RooArgSet(*apdfWmm[ipt]))
@@ -2636,56 +2840,45 @@ cout << "check 6" << endl;
     antiMetm[ipt]->plotOn(awmmframe
         ,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
-    if (ipt<10)
-      sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetm[ipt]->GetBinWidth(1));
-    else
-      sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMetm->GetBinWidth(1));
-    sprintf(histName,"WmElNu_cont_%d",ipt);
+    sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetm[ipt]->GetBinWidth(1));
+    sprintf(histName,"WmMuNu_cont_%d",ipt);
     plotAntiMetm=new CPlot(histName,awmmframe,"","",ylabel);
     plotAntiMetm->setOutDir(CPlot::sOutDir);
     plotAntiMetm->SetLegend(0.68,0.55,0.93,0.73);
     plotAntiMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotAntiMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
-    //plotAntiMetm->GetLegend()->AddEntry(hDummyDotLineW,"W^{-}#rightarrow e^{-}#bar{#nu}","L");
+    plotAntiMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow #mu^{-}#bar{#nu}","F");
     plotAntiMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
     plotAntiMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
     plotAntiMetm->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
     plotAntiMetm->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotAntiMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-    if (ipt<10)
-    {
-      plotAntiMetm->SetYRange(0.1,1.1*(hAntiDataMetm[ipt]->GetMaximum()));
-      plotAntiMetm->SetXRange(0,85);
-    }
-    else
-      plotAntiMetm->SetYRange(0.1,1.5*(hHighWpTAnti_DataMetm->GetMaximum()));
+    plotAntiMetm->SetYRange(0.1,1.1*(hAntiDataMetm[ipt]->GetMaximum()));
+    if(ipt==10)
+      plotAntiMetm->SetYRange(0.1,1.5*(hAntiDataMetm[ipt]->GetMaximum()));
+    if(ipt==11)
+      plotAntiMetm->SetYRange(0.1,2.0*(hAntiDataMetm[ipt]->GetMaximum()));
     plotAntiMetm->Draw(c,kFALSE,format,1);
     
     //plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    if(ipt>8)
+      //plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
     plotAntiMetmDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
     plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"",kAzure+1,1,1001);
     //plotAntiMetmDiff->SetYRange(-8,8);
-    //plotAntiMetmDiff->SetYRange(-5,5);
-    plotAntiMetmDiff->SetYRange(-3,3);
-    plotAntiMetmDiff->SetXRange(0,85);
-    //plotAntiMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetmDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotAntiMetmDiff->SetYRange(-5,5);
+    plotAntiMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
     //plotAntiMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotAntiMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetmDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WmElNu_cont_%d_log",ipt);
+    sprintf(histName,"WmMuNu_cont_%d_log",ipt);
     plotAntiMetm->SetName(histName);
     plotAntiMetm->SetLogy();
-    if (ipt<10)
-      //plotAntiMetm->SetYRange(1e-3*(hAntiDataMetm[ipt]->GetMaximum()),10*(hAntiDataMetm[ipt]->GetMaximum()));
-      plotAntiMetm->SetYRange(0.1,10*(hAntiDataMetm[ipt]->GetMaximum()));
-    else
-      plotAntiMetm->SetYRange(1e-3*(hHighWpTAnti_DataMetm->GetMaximum()),10*(hHighWpTAnti_DataMetm->GetMaximum()));
+    plotAntiMetm->SetYRange(1e-3*(hAntiDataMetm[ipt]->GetMaximum()),10*(hAntiDataMetm[ipt]->GetMaximum()));
     plotAntiMetm->Draw(c,kTRUE,format,1);
-    
     
     //----------------------------
     // Output
@@ -2701,20 +2894,38 @@ cout << "check 6" << endl;
     
     flags = allyields.flags();
     allyields<<fixed<<setprecision(2);
-    allyields<<"Bin\t"<<ipt<<"\t Signal\t"<<nSig[ipt]->getVal()<<"\t Error\t"<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<" EWK(Fit&Cnt): "<<nEWK[ipt]->getVal()<<" +/- "<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<"\t"<<hEWKMet[ipt]->Integral()<<" +/- "<<sqrt(hEWKMet[ipt]->Integral())<<endl;
+    //allyields<<"Bin\t"<<ipt<<"\t Signal\t"<<nSig[ipt]->getVal()<<"\t Error\t"<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<" EWK(Fit&Cnt): "<<nEWK[ipt]->getVal()<<" +/- "<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<"\t"<<hEWKMet[ipt]->Integral()<<" +/- "<<sqrt(hEWKMet[ipt]->Integral())<<endl;
+    allyields<<ipt<<"\t"<<hDataMet[ipt]->Integral()<<"+/-"<<sqrt(hDataMet[ipt]->Integral())<<"\t"<<nSig[ipt]->getVal()+nEWK[ipt]->getVal()+nQCD[ipt]->getVal()<<"+/-"<<sqrt(nSig[ipt]->getPropagatedError(*fitRes[ipt])*nSig[ipt]->getPropagatedError(*fitRes[ipt])+nQCD[ipt]->getPropagatedError(*fitRes[ipt])*nQCD[ipt]->getPropagatedError(*fitRes[ipt])+nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEWK[ipt]->getPropagatedError(*fitRes[ipt]))<<"\t"<<hWmunuMet[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMet[ipt]->Integral())<<"\t"<<nSig[ipt]->getVal()<<"+/-"<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<"\t"<<hEWKMet[ipt]->Integral()<<"+/-"<<sqrt(hEWKMet[ipt]->Integral())<<"\t"<<nEWK[ipt]->getVal()<<"+/-"<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<"\t"<<nQCD[ipt]->getVal()<<"+/-"<<nQCD[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
 
     flags = allyieldsp.flags();
     allyieldsp<<fixed<<setprecision(2);
-    allyieldsp<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigp[ipt]->getVal()<<"\t Error\t"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<" EWK(Fit&Cnt): "<<nEWKp[ipt]->getVal()<<" +/- "<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<hEWKMetp[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetp[ipt]->Integral())<<endl;
+    //allyieldsp<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigp[ipt]->getVal()<<"\t Error\t"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<" EWK(Fit&Cnt): "<<nEWKp[ipt]->getVal()<<" +/- "<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<hEWKMetp[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetp[ipt]->Integral())<<endl;
+    allyieldsp<<ipt<<"\t"<<hDataMetp[ipt]->Integral()<<"+/-"<<sqrt(hDataMetp[ipt]->Integral())<<"\t"<<nSigp[ipt]->getVal()+nEWKp[ipt]->getVal()+nQCDp[ipt]->getVal()<<"+/-"<<sqrt(nSigp[ipt]->getPropagatedError(*fitResp[ipt])*nSigp[ipt]->getPropagatedError(*fitResp[ipt])+nQCDp[ipt]->getPropagatedError(*fitResp[ipt])*nQCDp[ipt]->getPropagatedError(*fitResp[ipt])+nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEWKp[ipt]->getPropagatedError(*fitResp[ipt]))<<"\t"<<hWmunuMetp[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMetp[ipt]->Integral())<<"\t"<<nSigp[ipt]->getVal()<<"+/-"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<hEWKMetp[ipt]->Integral()<<"+/-"<<sqrt(hEWKMetp[ipt]->Integral())<<"\t"<<nEWKp[ipt]->getVal()<<"+/-"<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<nQCDp[ipt]->getVal()<<"+/-"<<nQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
 
     flags = allyieldsm.flags();
     allyieldsm<<fixed<<setprecision(2);
-    allyieldsm<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigm[ipt]->getVal()<<"\t Error\t"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<" EWK(Fit&Cnt): "<<nEWKm[ipt]->getVal()<<" +/- "<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<hEWKMetm[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetm[ipt]->Integral())<<endl;
+    //allyieldsm<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigm[ipt]->getVal()<<"\t Error\t"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<" EWK(Fit&Cnt): "<<nEWKm[ipt]->getVal()<<" +/- "<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<hEWKMetm[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetm[ipt]->Integral())<<endl;
+    allyieldsm<<ipt<<"\t"<<hDataMetm[ipt]->Integral()<<"+/-"<<sqrt(hDataMetm[ipt]->Integral())<<"\t"<<nSigm[ipt]->getVal()+nEWKm[ipt]->getVal()+nQCDm[ipt]->getVal()<<"+/-"<<sqrt(nSigm[ipt]->getPropagatedError(*fitResm[ipt])*nSigm[ipt]->getPropagatedError(*fitResm[ipt])+nQCDm[ipt]->getPropagatedError(*fitResm[ipt])*nQCDm[ipt]->getPropagatedError(*fitResm[ipt])+nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEWKm[ipt]->getPropagatedError(*fitResm[ipt]))<<"\t"<<hWmunuMetm[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMetm[ipt]->Integral())<<"\t"<<nSigm[ipt]->getVal()<<"+/-"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<hEWKMetm[ipt]->Integral()<<"+/-"<<sqrt(hEWKMetm[ipt]->Integral())<<"\t"<<nEWKm[ipt]->getVal()<<"+/-"<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<nQCDm[ipt]->getVal()<<"+/-"<<nQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
 
     chi2prob = hDataMet[ipt]->Chi2Test(hPdfMet,"PUW");
     chi2ndf  = hDataMet[ipt]->Chi2Test(hPdfMet,"CHI2/NDFUW");
     ksprob   = hDataMet[ipt]->KolmogorovTest(hPdfMet);
     ksprobpe = hDataMet[ipt]->KolmogorovTest(hPdfMet,"DX");
+
+    chi2 = hDataMet[ipt]->Chi2Test(hPdfMet,"CHI2");
+    //ndf = wmframe->GetNbinsX()-1.0;
+    ndf = NBINS-1;
+    
+    flags = fitfile.flags();
+    fitfile<<fixed<<setprecision(4);
+    if(ipt<4)
+      fitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<qcd[ipt]->sigma->getValV()<<"+/-"<<qcd[ipt]->sigma->getError()<<"\t"<<qcd[ipt]->a1->getValV()<<"+/-"<<qcd[ipt]->a1->getError()<<endl;
+    if(ipt>3 && ipt<6)
+      fitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd2[ipt]->sigma1->getValV()*qcd2[ipt]->sigma1->getValV()+qcd2[ipt]->sigma2->getValV()*qcd2[ipt]->sigma2->getValV())<<"+/-"<<sqrt(qcd2[ipt]->sigma1->getError()*qcd2[ipt]->sigma1->getError()+qcd2[ipt]->sigma2->getError()*qcd2[ipt]->sigma2->getError())<<"\t"<<sqrt(qcd2[ipt]->a1->getValV()*qcd2[ipt]->a1->getValV()+qcd2[ipt]->a2->getValV()*qcd2[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd2[ipt]->a1->getError()*qcd2[ipt]->a1->getError()+qcd2[ipt]->a2->getError()*qcd2[ipt]->a2->getError())<<endl;
+    if(ipt>5 && ipt<9)
+      fitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd1[ipt]->s1->getValV()*qcd1[ipt]->s1->getValV()+qcd1[ipt]->s2->getValV()*qcd1[ipt]->s2->getValV())<<"+/-"<<sqrt(qcd1[ipt]->s1->getError()*qcd1[ipt]->s1->getError()+qcd1[ipt]->s2->getError()*qcd1[ipt]->s2->getError())<<"\t"<<sqrt(qcd1[ipt]->a1->getValV()*qcd1[ipt]->a1->getValV()+qcd1[ipt]->a2->getValV()*qcd1[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd1[ipt]->a1->getError()*qcd1[ipt]->a1->getError()+qcd1[ipt]->a2->getError()*qcd1[ipt]->a2->getError())<<endl;
+    if(ipt>8)
+      fitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<mt[ipt]->sigma->getValV()<<"+/-"<<mt[ipt]->sigma->getError()<<"\t"<<mt[ipt]->a1->getValV()<<"+/-"<<mt[ipt]->a1->getError()<<endl;
 
     flags = Wmfile.flags();
     if (ipt==0)
@@ -2742,6 +2953,21 @@ cout << "check 6" << endl;
     ksprob   = hDataMetp[ipt]->KolmogorovTest(hPdfMetp);
     ksprobpe = hDataMetp[ipt]->KolmogorovTest(hPdfMetp,"DX");  
     
+    chi2 = hDataMetp[ipt]->Chi2Test(hPdfMetp,"CHI2");
+    //ndf = wmframe->GetNbinsX()-1.0;
+    ndf = NBINS-1;
+    
+    flags = pfitfile.flags();
+    pfitfile<<fixed<<setprecision(4);
+    if(ipt<4)
+      pfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<qcdp[ipt]->sigma->getValV()<<"+/-"<<qcdp[ipt]->sigma->getError()<<"\t"<<qcdp[ipt]->a1->getValV()<<"+/-"<<qcdp[ipt]->a1->getError()<<endl;
+    if(ipt>3 && ipt<6)
+      pfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd2p[ipt]->sigma1->getValV()*qcd2p[ipt]->sigma1->getValV()+qcd2p[ipt]->sigma2->getValV()*qcd2p[ipt]->sigma2->getValV())<<"+/-"<<sqrt(qcd2p[ipt]->sigma1->getError()*qcd2p[ipt]->sigma1->getError()+qcd2p[ipt]->sigma2->getError()*qcd2p[ipt]->sigma2->getError())<<"\t"<<sqrt(qcd2p[ipt]->a1->getValV()*qcd2p[ipt]->a1->getValV()+qcd2p[ipt]->a2->getValV()*qcd2p[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd2p[ipt]->a1->getError()*qcd2p[ipt]->a1->getError()+qcd2p[ipt]->a2->getError()*qcd2p[ipt]->a2->getError())<<endl;
+    if(ipt>5 && ipt<9)
+      pfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd1p[ipt]->s1->getValV()*qcd1p[ipt]->s1->getValV()+qcd1p[ipt]->s2->getValV()*qcd1p[ipt]->s2->getValV())<<"+/-"<<sqrt(qcd1p[ipt]->s1->getError()*qcd1p[ipt]->s1->getError()+qcd1p[ipt]->s2->getError()*qcd1p[ipt]->s2->getError())<<"\t"<<sqrt(qcd1p[ipt]->a1->getValV()*qcd1p[ipt]->a1->getValV()+qcd1p[ipt]->a2->getValV()*qcd1p[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd1p[ipt]->a1->getError()*qcd1p[ipt]->a1->getError()+qcd1p[ipt]->a2->getError()*qcd1p[ipt]->a2->getError())<<endl;
+    if(ipt>8)
+      pfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<mtp[ipt]->sigma->getValV()<<"+/-"<<mtp[ipt]->sigma->getError()<<"\t"<<mtp[ipt]->a1->getValV()<<"+/-"<<mtp[ipt]->a1->getError()<<endl;
+
     flags = Wmpfile.flags();
     if (ipt==0)
       Wmpfile<<"================================= [0, 600] Bin - "<<ipt<<" =================================="<<endl;
@@ -2768,6 +2994,21 @@ cout << "check 6" << endl;
     ksprob   = hDataMetm[ipt]->KolmogorovTest(hPdfMetm);
     ksprobpe = hDataMetm[ipt]->KolmogorovTest(hPdfMetm,"DX");  
 
+    chi2 = hDataMetm[ipt]->Chi2Test(hPdfMetm,"CHI2");
+    //ndf = wmframe->GetNbinsX()-1.0;
+    ndf = NBINS-1;
+    
+    flags = mfitfile.flags();
+    mfitfile<<fixed<<setprecision(4);
+    if(ipt<4)
+      mfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<qcdm[ipt]->sigma->getValV()<<"+/-"<<qcdm[ipt]->sigma->getError()<<"\t"<<qcdm[ipt]->a1->getValV()<<"+/-"<<qcdm[ipt]->a1->getError()<<endl;
+    if(ipt>3 && ipt<6)
+      mfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd2m[ipt]->sigma1->getValV()*qcd2m[ipt]->sigma1->getValV()+qcd2m[ipt]->sigma2->getValV()*qcd2m[ipt]->sigma2->getValV())<<"+/-"<<sqrt(qcd2m[ipt]->sigma1->getError()*qcd2m[ipt]->sigma1->getError()+qcd2m[ipt]->sigma2->getError()*qcd2m[ipt]->sigma2->getError())<<"\t"<<sqrt(qcd2m[ipt]->a1->getValV()*qcd2m[ipt]->a1->getValV()+qcd2m[ipt]->a2->getValV()*qcd2m[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd2m[ipt]->a1->getError()*qcd2m[ipt]->a1->getError()+qcd2m[ipt]->a2->getError()*qcd2m[ipt]->a2->getError())<<endl;
+    if(ipt>5 && ipt<9)
+      mfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd1m[ipt]->s1->getValV()*qcd1m[ipt]->s1->getValV()+qcd1m[ipt]->s2->getValV()*qcd1m[ipt]->s2->getValV())<<"+/-"<<sqrt(qcd1m[ipt]->s1->getError()*qcd1m[ipt]->s1->getError()+qcd1m[ipt]->s2->getError()*qcd1m[ipt]->s2->getError())<<"\t"<<sqrt(qcd1m[ipt]->a1->getValV()*qcd1m[ipt]->a1->getValV()+qcd1m[ipt]->a2->getValV()*qcd1m[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd1m[ipt]->a1->getError()*qcd1m[ipt]->a1->getError()+qcd1m[ipt]->a2->getError()*qcd1m[ipt]->a2->getError())<<endl;
+    if(ipt>8)
+      mfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<mtm[ipt]->sigma->getValV()<<"+/-"<<mtm[ipt]->sigma->getError()<<"\t"<<mtm[ipt]->a1->getValV()<<"+/-"<<mtm[ipt]->a1->getError()<<endl;
+
     flags = Wmmfile.flags();
     if (ipt==0)
       Wmmfile<<"================================= [0, 600] Bin - "<<ipt<<" =================================="<<endl;
@@ -2788,35 +3029,68 @@ cout << "check 6" << endl;
     printCorrelations(Wmmfile, fitResm[ipt]);
     Wmmfile<<endl;
     printChi2AndKSResults(Wmmfile, chi2prob, chi2ndf, ksprob, ksprobpe);
+    
+    flags = Wfile.flags();
+    if (ipt==0)
+      Wfile<<"==================================== [0, 600] Bin - "<<ipt<<" ================================"<<endl;
+    else
+      Wfile<<"==================================== ["<<WptBins[ipt-1]<<", "<<WptBins[ipt]<<"] Bin - "<<ipt<<" =============================================="<<endl;
+    Wfile<<endl;
+    Wfile<<"=== Inclusive W ==="<<endl;
+    Wfile<<endl;
+    Wfile<<fixed<<setprecision(4);
+    Wfile<<"Selected: "<<hDataMet[ipt]->Integral()<<"\t\t\t Side band:\t"<< hAntiDataMet[ipt]->Integral()<<endl;
+    Wfile<<"  Signal: "<<nSig[ipt]->getVal()<<" +/- "<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<"\t\t\t"<<nAntiSig[ipt]->getVal()<<" +/- "<<nAntiSig[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
+    Wfile<<"     QCD: "<<nQCD[ipt]->getVal()<<" +/- "<<nQCD[ipt]->getPropagatedError(*fitRes[ipt])<<"\t\t\t"<<nAntiQCD[ipt]->getVal()<<" +/- "<<nAntiQCD[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
+    Wfile<<"   Other: "<<nEWK[ipt]->getVal()<<" +/- "<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<"\t\t\t"<<nAntiEWK[ipt]->getVal()<<" +/- "<<nAntiEWK[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
+    Wfile<<"   Total: "<<nSig[ipt]->getVal()+nQCD[ipt]->getVal()+nEWK[ipt]->getVal()<<"\t\t\t\t"<<nAntiSig[ipt]->getVal()+nAntiQCD[ipt]->getVal()+nAntiEWK[ipt]->getVal()<<endl;
+    Wfile<<"SigOvRD: "<<nSig[ipt]->getVal()/hDataMet[ipt]->Integral()<<"\t\t\t Anti: "<<nAntiSig[ipt]->getVal()/hAntiDataMet[ipt]->Integral()<<endl;
+    Wfile<<"QCDovRD: "<<nQCD[ipt]->getVal()/hDataMet[ipt]->Integral()<<"\t\t\t Anti: "<<nAntiQCD[ipt]->getVal()/hAntiDataMet[ipt]->Integral()<<endl;
+    Wfile<<endl;
+    Wfile<<"=== W Plus ==="<<endl;
+    Wfile<<endl;
+    Wfile<<fixed<<setprecision(4);
+    Wfile<<"Selected: "<<hDataMetp[ipt]->Integral()<<"\t\t\t Side band:\t"<< hAntiDataMetp[ipt]->Integral()<<endl;
+    Wfile<<"  Signal: "<<nSigp[ipt]->getVal()<<" +/- "<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t\t\t"<<nAntiSigp[ipt]->getVal()<<" +/- "<<nAntiSigp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
+    Wfile<<"     QCD: "<<nQCDp[ipt]->getVal()<<" +/- "<<nQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t\t\t"<<nAntiQCDp[ipt]->getVal()<<" +/- "<<nAntiQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
+    Wfile<<"   Other: "<<nEWKp[ipt]->getVal()<<" +/- "<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t\t\t"<<nAntiEWKp[ipt]->getVal()<<" +/- "<<nAntiEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
+    Wfile<<"   Total: "<<nSigp[ipt]->getVal()+nQCDp[ipt]->getVal()+nEWKp[ipt]->getVal()<<"\t\t\t\t"<<nAntiSigp[ipt]->getVal()+nAntiQCDp[ipt]->getVal()+nAntiEWKp[ipt]->getVal()<<endl;
+    Wfile<<"SigOvRD: "<<nSigp[ipt]->getVal()/hDataMetp[ipt]->Integral()<<"\t\t\t Anti: "<<nAntiSigp[ipt]->getVal()/hAntiDataMetp[ipt]->Integral()<<endl;
+    Wfile<<"QCDovRD: "<<nQCDp[ipt]->getVal()/hDataMetp[ipt]->Integral()<<"\t\t\t Anti: "<<nAntiQCDp[ipt]->getVal()/hAntiDataMetp[ipt]->Integral()<<endl;
+    Wfile<<endl;
+    Wfile<<"=== W Minus ==="<<endl;
+    Wfile<<endl;
+    Wfile<<fixed<<setprecision(4);
+    Wfile<<"Selected: "<<hDataMetm[ipt]->Integral()<<"\t\t\t Side band:\t"<< hAntiDataMetm[ipt]->Integral()<<endl;
+    Wfile<<"  Signal: "<<nSigm[ipt]->getVal()<<" +/- "<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t\t\t"<<nAntiSigm[ipt]->getVal()<<" +/- "<<nAntiSigm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
+    Wfile<<"     QCD: "<<nQCDm[ipt]->getVal()<<" +/- "<<nQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t\t\t"<<nAntiQCDm[ipt]->getVal()<<" +/- "<<nAntiQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
+    Wfile<<"   Other: "<<nEWKm[ipt]->getVal()<<" +/- "<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t\t\t"<<nAntiEWKm[ipt]->getVal()<<" +/- "<<nAntiEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
+    Wfile<<"   Total: "<<nSigm[ipt]->getVal()+nQCDm[ipt]->getVal()+nEWKm[ipt]->getVal()<<"\t\t\t\t"<<nAntiSigm[ipt]->getVal()+nAntiQCDm[ipt]->getVal()+nAntiEWKm[ipt]->getVal()<<endl;
+    Wfile<<"SigOvRD: "<<nSigm[ipt]->getVal()/hDataMetm[ipt]->Integral()<<"\t\t\t Anti: "<<nAntiSigm[ipt]->getVal()/hAntiDataMetm[ipt]->Integral()<<endl;
+    Wfile<<"QCDovRD: "<<nQCDm[ipt]->getVal()/hDataMetm[ipt]->Integral()<<"\t\t\t Anti: "<<nAntiQCDm[ipt]->getVal()/hAntiDataMetm[ipt]->Integral()<<endl;
+    Wfile<<endl;
+    Wfile.flags(flags);
 
     flags = qcdfile.flags();
     qcdfile<<"======================================================================================"<<endl;
     qcdfile<<"*** Bin "<<ipt<<"***"<<endl;
     qcdfile<<"======================================================================================"<<endl;
     qcdfile<<"Signal region: Normalization factors"<<endl;
-    qcdfile<<"Sig="<<nSig[ipt]->getValV()<<"\t SigP="<<nSigp[ipt]->getValV()<<"\t SigM="<<nSigm[ipt]->getValV()<<"\t QCD="<<nQCD[ipt] ->getValV()<<"\t QCDP="<<nQCDp[ipt] ->getValV()<<"\t QCDM="<<nQCDm[ipt] ->getValV()<<endl;
+    qcdfile<<"Sig="<<nSig[ipt]->getValV()<<"+/-"<<nSig[ipt]->getError()<<"\t SigP="<<nSigp[ipt]->getValV()<<"+/-"<<nSigp[ipt]->getError()<<"\t SigM="<<nSigm[ipt]->getValV()<<"+/-"<<nSigm[ipt]->getError()<<"\t QCD="<<nQCD[ipt] ->getValV()<<"+/-"<<nQCD[ipt]->getError()<<"\t QCDP="<<nQCDp[ipt] ->getValV()<<"+/-"<<nQCDp[ipt]->getError()<<"\t QCDM="<<nQCDm[ipt] ->getValV()<<"+/-"<<nQCDm[ipt]->getError()<<endl;
     qcdfile<<"cewk="<<cewk[ipt]->getVal()<<"\t cewkp="<<cewkp[ipt]->getVal()<<"\t cewkm="<<cewkm[ipt]->getVal()<<endl;
     qcdfile<<"Control region: Normalization factors"<<endl;
-    qcdfile <<"AntiSig="<<nAntiSig[ipt]->getValV()<<"\t AntiSigP="<<nAntiSigp[ipt]->getValV()<<"\t AntiSigM="<<nAntiSigm[ipt]->getValV()<<"\t AntiQCD="<<nAntiQCD[ipt] ->getValV()<<"\t AntiQCDP="<<nAntiQCDp[ipt] ->getValV()<<"\t AntiQCDM="<<nAntiQCDm[ipt] ->getValV()<<endl;
-    qcdfile<<"dewk="<<dewk[ipt]->getVal()
-     <<"\t dewkp="<<dewkp[ipt]->getVal()<<"\t dewkm="
-     <<dewkm[ipt]->getVal()<<endl;
+    qcdfile <<"AntiSig="<<nAntiSig[ipt]->getValV()<<"\t AntiSigP="<<nAntiSigp[ipt]->getValV()<<"\t AntiSigM="<<nAntiSigm[ipt]->getValV()<<"\t AntiQCD="<<nAntiQCD[ipt] ->getValV()<<"+/-"<<nAntiQCD[ipt] ->getError()<<"\t AntiQCDP="<<nAntiQCDp[ipt] ->getValV()<<"+/-"<<nAntiQCDp[ipt] ->getError()<<"\t AntiQCDM="<<nAntiQCDm[ipt] ->getValV()<<"+/-"<<nAntiQCD[ipt] ->getError()<<endl;
+    qcdfile<<"dewk="<<dewk[ipt]->getVal()<<"\t dewkp="<<dewkp[ipt]->getVal()<<"\t dewkm="<<dewkm[ipt]->getVal()<<endl;
+    qcdfile<<"Percentages"<<endl;
+    qcdfile<<"Sig: "<<nSig[ipt]->getValV()/hDataMet[ipt]->Integral()<<" Sigp: "<<nSigp[ipt]->getValV()/hDataMetp[ipt]->Integral()<<" Sigm: "<<nSigm[ipt]->getValV()/hDataMetm[ipt]->Integral()<<endl;
+    qcdfile<<"QCD: "<<nQCD[ipt]->getValV()/hDataMet[ipt]->Integral()<<" QCDp: "<<nQCDp[ipt]->getValV()/hDataMetp[ipt]->Integral()<<" QCDm: "<<nQCDm[ipt]->getValV()/hDataMetm[ipt]->Integral()<<endl;
 
     if (ipt<4){
       qcdfile<<"Signal region: Mod. Rayleigh func. parameters"<<endl;
       qcdfile<<"Mean=" <<qcd[ipt]->mean->getValV()<<" +/- "<<qcd[ipt]->mean->getError()<<"\t Sigma=" <<qcd[ipt] ->sigma->getValV()<<" +/- "<<qcd[ipt]->sigma->getError()<<"\t Sigma1=" <<qcd[ipt]->a1->getValV()<<" +/- "<<qcd[ipt]->a1->getError()<<endl;
       qcdfile<<"MeanP="<<qcdp[ipt]->mean->getValV()<<" +/- "<<qcdp[ipt]->mean->getError()<<"\t SigmaP="<<qcdp[ipt]->sigma->getValV()<<" +/- "<<qcdp[ipt]->sigma->getError()<<"\t Sigma1P="<<qcdp[ipt]->a1->getValV()<<" +/- "<<qcdp[ipt]->a1->getError()<<endl;
       qcdfile<<"MeanM="<<qcdm[ipt]->mean->getValV()<<" +/- "<<qcdm[ipt]->mean->getError()<<"\t SigmaM="<<qcdm[ipt]->sigma->getValV()<<" +/- "<<qcdm[ipt]->sigma->getError()<<"\t Sigma1M="<<qcdm[ipt]->a1->getValV()<<" +/- "<<qcdm[ipt]->a1->getError()<<endl;
-    }else if (ipt == 4){
-      qcdfile<<"Signal region: Rayleigh+Gauss func. parameters"<<endl;
-      qcdfile<<"qcdmean=" <<qcd1[ipt]->m1->getValV()<<" +/- "<<qcd1[ipt]->m1->getError()<<"\t qcdPmean="<<qcd1p[ipt]->m1->getValV()<<" +/- "<<qcd1p[ipt]->m1->getError()<<"\t qcdMmean="<<qcd1m[ipt]->m1->getValV()<<" +/- "<<qcd1m[ipt]->m1->getError()<<endl;
-      qcdfile<<"qcdsigma1="<<qcd1[ipt]->s1->getValV()<<" +/- "<<qcd1[ipt]->s1->getError()<<"\t qcdPsigma1="<<qcd1p[ipt]->s1->getValV()<<" +/- "<<qcd1p[ipt]->s1->getError()<<"\t qcdMsigma1="<<qcd1m[ipt]->s1->getValV()<<" +/- "<<qcd1m[ipt]->s1->getError()<<endl;
-      qcdfile<<"qcda1="<<qcd1[ipt]->a1->getValV()<<" +/- "<<qcd1[ipt]->a1->getError()<<"\t qcdPa1="<<qcd1p[ipt]->a1->getValV()<<" +/- "<<qcd1p[ipt]->a1->getError()<<"\t qcdMa1="<<qcd1m[ipt]->a1->getValV()<<" +/- "<<qcd1m[ipt]->a1->getError()<<endl;
-      qcdfile<<"qcdsigma2="<<qcd1[ipt]->s2->getValV()<<" +/- "<<qcd1[ipt]->s2->getError()<<"\t qcdPsigma2="<<qcd1p[ipt]->s2->getValV()<<" +/- "<<qcd1p[ipt]->s2->getError()<<"\t qcdMsigma2="<<qcd1m[ipt]->s2->getValV()<<" +/- "<<qcd1m[ipt]->s2->getError()<<endl;
-      qcdfile<<"qcda2="<<qcd1[ipt]->a2->getValV()<<" +/- "<<qcd1[ipt]->a2->getError()<<"\t qcdPa2="<<qcd1p[ipt]->a2->getValV()<<" +/- "<<qcd1p[ipt]->a2->getError()<<"\t qcdMa2="<<qcd1m[ipt]->a2->getValV()<<" +/- "<<qcd1m[ipt]->a2->getError()<<endl;
-      qcdfile<<"Frac1="<<qcd1[ipt]->f1->getValV()<<" +/- "<<qcd1[ipt]->f1->getError()<<"\t\t\t Frac1P="   <<qcd1p[ipt]->f1->getValV()<<" +/- "<<qcd1p[ipt]->f1->getError()<<"\t\t\t Frac1M="<<qcd1m[ipt]->f1->getValV()<<" +/- "<<qcd1m[ipt]->f1->getError()<<endl;
-      qcdfile<<"Frac2="<<qcd1[ipt]->f2->getValV()<<" +/- "<<qcd1[ipt]->f2->getError()<<"\t\t\t Frac2P="   <<qcd1p[ipt]->f2->getValV()<<" +/- "<<qcd1p[ipt]->f2->getError()<<"\t\t\t Frac2M="<<qcd1m[ipt]->f2->getValV()<<" +/- "<<qcd1m[ipt]->f2->getError()<<endl;
-    }else if (ipt > 4){
+    }else if(ipt > 3 && ipt < 6){
       qcdfile<<"Signal region: Double Rayleigh func. parameters"<<endl;
       qcdfile<<"qcdsigma1="<<qcd2[ipt]->sigma1->getValV()<<" +/- "<<qcd2[ipt]->sigma1->getError()<<"\t qcdPsigma1="<<qcd2p[ipt]->sigma1->getValV()<<" +/- "<<qcd2p[ipt]->sigma1->getError()<<"\t qcdMsigma1="<<qcd2m[ipt]->sigma1->getValV()<<" +/- "<<qcd2m[ipt]->sigma1->getError()<<endl;
       qcdfile<<"qcda1="        <<qcd2[ipt]->a1->getValV()<<" +/- "<<qcd2[ipt]->a1->getError()<<"\t qcdPa1="        <<qcd2p[ipt]->a1->getValV()<<" +/- "<<qcd2p[ipt]->a1->getError()<<"\t qcdMa1="        <<qcd2m[ipt]->a1->getValV()<<" +/- "<<qcd2m[ipt]->a1->getError()<<endl;
@@ -2824,90 +3098,154 @@ cout << "check 6" << endl;
       qcdfile<<"qcda2="        <<qcd2[ipt]->a2->getValV()<<" +/- "<<qcd2[ipt]->a2->getError()<<"\t qcdPa2="        <<qcd2p[ipt]->a2->getValV()<<" +/- "<<qcd2p[ipt]->a2->getError()<<"\t qcdMa2="        <<qcd2m[ipt]->a2->getValV()<<" +/- "<<qcd2m[ipt]->a2->getError()<<endl;
       qcdfile<<"Frac1="     <<qcd2[ipt]->frac1->getValV()<<" +/- "<<qcd2[ipt]->frac1->getError()<<"\t\t\t Frac1P=" <<qcd2p[ipt]->frac1->getValV()<<" +/- "<<qcd2p[ipt]->frac1->getError()<<"\t\t\t Frac1M=" <<qcd2m[ipt]->frac1->getValV()<<" +/- "<<qcd2m[ipt]->frac1->getError()<<endl;
       qcdfile<<"Frac2="     <<qcd2[ipt]->frac2->getValV()<<" +/- "<<qcd2[ipt]->frac2->getError()<<"\t\t\t Frac1P=" <<qcd2p[ipt]->frac2->getValV()<<" +/- "<<qcd2p[ipt]->frac2->getError()<<"\t\t\t Frac1M=" <<qcd2m[ipt]->frac2->getValV()<<" +/- "<<qcd2m[ipt]->frac2->getError()<<endl;
+    }else if(ipt>5 && ipt<9){
+      qcdfile<<"Signal region: Rayleigh+ModRayleigh func. parameters"<<endl;
+      qcdfile<<"qcdmean=" <<qcd1[ipt]->m1->getValV()<<" +/- "<<qcd1[ipt]->m1->getError()<<"\t qcdPmean="<<qcd1p[ipt]->m1->getValV()<<" +/- "<<qcd1p[ipt]->m1->getError()<<"\t qcdMmean="<<qcd1m[ipt]->m1->getValV()<<" +/- "<<qcd1m[ipt]->m1->getError()<<endl;
+      qcdfile<<"qcdsigma1="<<qcd1[ipt]->s1->getValV()<<" +/- "<<qcd1[ipt]->s1->getError()<<"\t qcdPsigma1="<<qcd1p[ipt]->s1->getValV()<<" +/- "<<qcd1p[ipt]->s1->getError()<<"\t qcdMsigma1="<<qcd1m[ipt]->s1->getValV()<<" +/- "<<qcd1m[ipt]->s1->getError()<<endl;
+      qcdfile<<"qcda1="<<qcd1[ipt]->a1->getValV()<<" +/- "<<qcd1[ipt]->a1->getError()<<"\t qcdPa1="<<qcd1p[ipt]->a1->getValV()<<" +/- "<<qcd1p[ipt]->a1->getError()<<"\t qcdMa1="<<qcd1m[ipt]->a1->getValV()<<" +/- "<<qcd1m[ipt]->a1->getError()<<endl;
+      qcdfile<<"qcdsigma2="<<qcd1[ipt]->s2->getValV()<<" +/- "<<qcd1[ipt]->s2->getError()<<"\t qcdPsigma2="<<qcd1p[ipt]->s2->getValV()<<" +/- "<<qcd1p[ipt]->s2->getError()<<"\t qcdMsigma2="<<qcd1m[ipt]->s2->getValV()<<" +/- "<<qcd1m[ipt]->s2->getError()<<endl;
+      qcdfile<<"qcda2="<<qcd1[ipt]->a2->getValV()<<" +/- "<<qcd1[ipt]->a2->getError()<<"\t qcdPa2="<<qcd1p[ipt]->a2->getValV()<<" +/- "<<qcd1p[ipt]->a2->getError()<<"\t qcdMa2="<<qcd1m[ipt]->a2->getValV()<<" +/- "<<qcd1m[ipt]->a2->getError()<<endl;
+      qcdfile<<"Frac1="<<qcd1[ipt]->f1->getValV()<<" +/- "<<qcd1[ipt]->f1->getError()<<"\t\t\t Frac1P="   <<qcd1p[ipt]->f1->getValV()<<" +/- "<<qcd1p[ipt]->f1->getError()<<"\t\t\t Frac1M="<<qcd1m[ipt]->f1->getValV()<<" +/- "<<qcd1m[ipt]->f1->getError()<<endl;
+      qcdfile<<"Frac2="<<qcd1[ipt]->f2->getValV()<<" +/- "<<qcd1[ipt]->f2->getError()<<"\t\t\t Frac2P="   <<qcd1p[ipt]->f2->getValV()<<" +/- "<<qcd1p[ipt]->f2->getError()<<"\t\t\t Frac2M="<<qcd1m[ipt]->f2->getValV()<<" +/- "<<qcd1m[ipt]->f2->getError()<<endl;
     }
-    qcdfile<<endl;
-    qcdfile.flags(flags);
 
     flags = InValfile.flags();
     InValfile<<"}else if (ipt == "<<ipt<<"){"<<endl;
-    InValfile<<"nSig[ipt] -> setVal("<<nSig[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nSigp[ipt]-> setVal("<<nSigp[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nSigm[ipt]-> setVal("<<nSigm[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nAntiSig[ipt] -> setVal("<<nAntiSig[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nAntiSigp[ipt]-> setVal("<<nAntiSigp[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nAntiSigm[ipt]-> setVal("<<nAntiSigm[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nQCD[ipt] -> setVal("<<nQCD[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nQCDp[ipt]-> setVal("<<nQCDp[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nQCDm[ipt]-> setVal("<<nQCDm[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nAntiQCD[ipt] -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nAntiQCDp[ipt]-> setVal("<<nAntiQCDp[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nAntiQCDm[ipt]-> setVal("<<nAntiQCDm[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nSig[ipt]  -> setVal("<<nSig[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nSigp[ipt] -> setVal("<<nSigp[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nSigm[ipt] -> setVal("<<nSigm[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiSig[ipt]  -> setVal("<<nAntiSig[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nAntiSigp[ipt] -> setVal("<<nAntiSigp[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiSigm[ipt] -> setVal("<<nAntiSigm[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nQCD[ipt]  -> setVal("<<nQCD[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nQCDp[ipt] -> setVal("<<nQCDp[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nQCDm[ipt] -> setVal("<<nQCDm[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiQCD[ipt]  -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nAntiQCDp[ipt] -> setVal("<<nAntiQCDp[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiQCDm[ipt] -> setVal("<<nAntiQCDm[ipt]->getValV()<<");"<<endl;
     if (ipt<4){
       InValfile<<"qcdmean[ipt] ->setVal("<<qcd[ipt] ->mean->getValV()<<");"<<endl;
       InValfile<<"qcdPmean[ipt]->setVal("<<qcdp[ipt]->mean->getValV()<<");"<<endl;
       InValfile<<"qcdMmean[ipt]->setVal("<<qcdm[ipt]->mean->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd[ipt] ->sigma->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcdp[ipt]->sigma->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcdm[ipt]->sigma->getValV()<<");"<<endl;
       InValfile<<"qcda1[ipt] ->setVal("<<qcd[ipt] ->a1->getValV()<<");"<<endl;
       InValfile<<"qcdPa1[ipt]->setVal("<<qcdp[ipt]->a1->getValV()<<");"<<endl;
       InValfile<<"qcdMa1[ipt]->setVal("<<qcdm[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd[ipt] ->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcdp[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcdm[ipt]->sigma->getValV()<<");"<<endl;
       InValfile<<"aqcdsigma1[ipt] ->setVal("<<aqcd[ipt] ->sigma->getValV()<<");"<<endl;
       InValfile<<"aqcdPsigma1[ipt]->setVal("<<aqcdp[ipt]->sigma->getValV()<<");"<<endl;
       InValfile<<"aqcdMsigma1[ipt]->setVal("<<aqcdm[ipt]->sigma->getValV()<<");"<<endl;
-    }else if (ipt == 4){
-      InValfile<<"qcdmean[ipt] ->setVal("<<qcd1[ipt] ->m1->getValV()<<");"<<endl;
-      InValfile<<"qcdPmean[ipt]->setVal("<<qcd1p[ipt]->m1->getValV()<<");"<<endl;
-      InValfile<<"qcdMmean[ipt]->setVal("<<qcd1m[ipt]->m1->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd1[ipt] ->s1->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd1p[ipt]->s1->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd1m[ipt]->s1->getValV()<<");"<<endl;
-      InValfile<<"qcda1[ipt] ->setVal("<<qcd1[ipt] ->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdPa1[ipt]->setVal("<<qcd1p[ipt]->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdMa1[ipt]->setVal("<<qcd1m[ipt]->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd1[ipt] ->s2->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma2[ipt]->setVal("<<qcd1p[ipt]->s2->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma2[ipt]->setVal("<<qcd1m[ipt]->s2->getValV()<<");"<<endl;
-      InValfile<<"qcda2[ipt] ->setVal("<<qcd1[ipt] ->a2->getValV()<<");"<<endl;
-      InValfile<<"qcdPa2[ipt]->setVal("<<qcd1p[ipt]->a2->getValV()<<");"<<endl;
-      InValfile<<"qcdMa2[ipt]->setVal("<<qcd1m[ipt]->a2->getValV()<<");"<<endl;
-      InValfile<<"Frac1[ipt] ->setVal("<<qcd1[ipt] ->f1->getValV()<<");"<<endl;
-      InValfile<<"Frac1P[ipt]->setVal("<<qcd1p[ipt]->f1->getValV()<<");"<<endl;
-      InValfile<<"Frac1M[ipt]->setVal("<<qcd1m[ipt]->f1->getValV()<<");"<<endl;
-      InValfile<<"Frac2[ipt] ->setVal("<<qcd1[ipt] ->f2->getValV()<<");"<<endl;
-      InValfile<<"Frac2P[ipt]->setVal("<<qcd1p[ipt]->f2->getValV()<<");"<<endl;
-      InValfile<<"Frac2M[ipt]->setVal("<<qcd1m[ipt]->f2->getValV()<<");"<<endl;
-      InValfile<<"aqcdsigma1[ipt] ->setVal("<<aqcd1[ipt] ->s1->getValV()<<");"<<endl;
-      InValfile<<"aqcdPsigma1[ipt]->setVal("<<aqcd1p[ipt]->s1->getValV()<<");"<<endl;
-      InValfile<<"aqcdMsigma1[ipt]->setVal("<<aqcd1m[ipt]->s1->getValV()<<");"<<endl;
-      InValfile<<"aqcdsigma2[ipt] ->setVal("<<aqcd1[ipt] ->s2->getValV()<<");"<<endl;
-      InValfile<<"aqcdPsigma2[ipt]->setVal("<<aqcd1p[ipt]->s2->getValV()<<");"<<endl;
-      InValfile<<"aqcdMsigma2[ipt]->setVal("<<aqcd1m[ipt]->s2->getValV()<<");"<<endl;
-    }else if (ipt > 4){
-      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd2[ipt] ->sigma1->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd2p[ipt]->sigma1->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd2m[ipt]->sigma1->getValV()<<");"<<endl;
+    }else if (ipt > 3 && ipt < 6){
       InValfile<<"qcda1[ipt] ->setVal("<<qcd2[ipt] ->a1->getValV()<<");"<<endl;
       InValfile<<"qcdPa1[ipt]->setVal("<<qcd2p[ipt]->a1->getValV()<<");"<<endl;
       InValfile<<"qcdMa1[ipt]->setVal("<<qcd2m[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcda2[ipt] ->setVal("<<qcd2[ipt] ->a2->getValV()<<");"<<endl;
+      InValfile<<"qcdPa2[ipt]->setVal("<<qcd2p[ipt]->a2->getValV()<<");"<<endl;
+      InValfile<<"qcdMa2[ipt]->setVal("<<qcd2m[ipt]->a2->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd2[ipt] ->sigma1->getValV()<<");"<<endl;
+      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd2p[ipt]->sigma1->getValV()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd2m[ipt]->sigma1->getValV()<<");"<<endl;
       InValfile<<"dFrac1[ipt] ->setVal("<<qcd2[ipt] ->frac1->getValV()<<");"<<endl;
       InValfile<<"dFrac1P[ipt]->setVal("<<qcd2p[ipt]->frac1->getValV()<<");"<<endl;
       InValfile<<"dFrac1M[ipt]->setVal("<<qcd2m[ipt]->frac1->getValV()<<");"<<endl;
       InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd2[ipt] ->sigma2->getValV()<<");"<<endl;
       InValfile<<"qcdPsigma2[ipt]->setVal("<<qcd2p[ipt]->sigma2->getValV()<<");"<<endl;
       InValfile<<"qcdMsigma2[ipt]->setVal("<<qcd2m[ipt]->sigma2->getValV()<<");"<<endl;
-      InValfile<<"qcda2[ipt] ->setVal("<<qcd2[ipt] ->a2->getValV()<<");"<<endl;
-      InValfile<<"qcdPa2[ipt]->setVal("<<qcd2p[ipt]->a2->getValV()<<");"<<endl;
-      InValfile<<"qcdMa2[ipt]->setVal("<<qcd2m[ipt]->a2->getValV()<<");"<<endl;
       InValfile<<"dFrac2[ipt] ->setVal("<<qcd2[ipt] ->frac2->getValV()<<");"<<endl;
       InValfile<<"dFrac2P[ipt]->setVal("<<qcd2p[ipt]->frac2->getValV()<<");"<<endl;
       InValfile<<"dFrac2M[ipt]->setVal("<<qcd2m[ipt]->frac2->getValV()<<");"<<endl;
+      
+      InValfile<<"aqcda1[ipt] ->setVal("<<aqcd2[ipt] ->a1->getValV()<<");"<<endl;
+      InValfile<<"aqcdPa1[ipt]->setVal("<<aqcd2p[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"aqcdMa1[ipt]->setVal("<<aqcd2m[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"aqcda2[ipt] ->setVal("<<aqcd2[ipt] ->a2->getValV()<<");"<<endl;
+      InValfile<<"aqcdPa2[ipt]->setVal("<<aqcd2p[ipt]->a2->getValV()<<");"<<endl;
+      InValfile<<"aqcdMa2[ipt]->setVal("<<aqcd2m[ipt]->a2->getValV()<<");"<<endl;
       InValfile<<"aqcdsigma1[ipt] ->setVal("<<aqcd2[ipt] ->sigma1->getValV()<<");"<<endl;
       InValfile<<"aqcdPsigma1[ipt]->setVal("<<aqcd2p[ipt]->sigma1->getValV()<<");"<<endl;
       InValfile<<"aqcdMsigma1[ipt]->setVal("<<aqcd2m[ipt]->sigma1->getValV()<<");"<<endl;
+      InValfile<<"adFrac1[ipt] ->setVal("<<aqcd2[ipt] ->frac1->getValV()<<");"<<endl;
+      InValfile<<"adFrac1P[ipt]->setVal("<<aqcd2p[ipt]->frac1->getValV()<<");"<<endl;
+      InValfile<<"adFrac1M[ipt]->setVal("<<aqcd2m[ipt]->frac1->getValV()<<");"<<endl;
       InValfile<<"aqcdsigma2[ipt] ->setVal("<<aqcd2[ipt] ->sigma2->getValV()<<");"<<endl;
       InValfile<<"aqcdPsigma2[ipt]->setVal("<<aqcd2p[ipt]->sigma2->getValV()<<");"<<endl;
       InValfile<<"aqcdMsigma2[ipt]->setVal("<<aqcd2m[ipt]->sigma2->getValV()<<");"<<endl;
+      InValfile<<"adFrac2[ipt] ->setVal("<<aqcd2[ipt] ->frac2->getValV()<<");"<<endl;
+      InValfile<<"adFrac2P[ipt]->setVal("<<aqcd2p[ipt]->frac2->getValV()<<");"<<endl;
+      InValfile<<"adFrac2M[ipt]->setVal("<<aqcd2m[ipt]->frac2->getValV()<<");"<<endl;
+    }else if (ipt>5 && ipt<9){
+      InValfile<<"qcdmean[ipt] ->setVal("<<qcd1[ipt] ->m1->getValV()<<");"<<endl;
+      InValfile<<"qcdPmean[ipt]->setVal("<<qcd1p[ipt]->m1->getValV()<<");"<<endl;
+      InValfile<<"qcdMmean[ipt]->setVal("<<qcd1m[ipt]->m1->getValV()<<");"<<endl;
+      InValfile<<"qcda1[ipt] ->setVal("<<qcd1[ipt] ->a1->getValV()<<");"<<endl;
+      InValfile<<"qcdPa1[ipt]->setVal("<<qcd1p[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcdMa1[ipt]->setVal("<<qcd1m[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcda2[ipt] ->setVal("<<qcd1[ipt] ->a2->getValV()<<");"<<endl;
+      InValfile<<"qcdPa2[ipt]->setVal("<<qcd1p[ipt]->a2->getValV()<<");"<<endl;
+      InValfile<<"qcdMa2[ipt]->setVal("<<qcd1m[ipt]->a2->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd1[ipt] ->s1->getValV()<<");"<<endl;
+      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd1p[ipt]->s1->getValV()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd1m[ipt]->s1->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd1[ipt] ->s2->getValV()<<");"<<endl;
+      InValfile<<"qcdPsigma2[ipt]->setVal("<<qcd1p[ipt]->s2->getValV()<<");"<<endl;
+      InValfile<<"qcdMsigma2[ipt]->setVal("<<qcd1m[ipt]->s2->getValV()<<");"<<endl;
+      InValfile<<"Frac1[ipt] ->setVal("<<qcd1[ipt] ->f1->getValV()<<");"<<endl;
+      InValfile<<"Frac1P[ipt]->setVal("<<qcd1p[ipt]->f1->getValV()<<");"<<endl;
+      InValfile<<"Frac1M[ipt]->setVal("<<qcd1m[ipt]->f1->getValV()<<");"<<endl;
+      InValfile<<"Frac2[ipt] ->setVal("<<qcd1[ipt] ->f2->getValV()<<");"<<endl;
+      InValfile<<"Frac2P[ipt]->setVal("<<qcd1p[ipt]->f2->getValV()<<");"<<endl;
+      InValfile<<"Frac2M[ipt]->setVal("<<qcd1m[ipt]->f2->getValV()<<");"<<endl;
+      
+      InValfile<<"aqcdmean[ipt] ->setVal("<<aqcd1[ipt] ->m1->getValV()<<");"<<endl;
+      InValfile<<"aqcdPmean[ipt]->setVal("<<aqcd1p[ipt]->m1->getValV()<<");"<<endl;
+      InValfile<<"aqcdMmean[ipt]->setVal("<<aqcd1m[ipt]->m1->getValV()<<");"<<endl;
+      InValfile<<"aqcdsigma1[ipt] ->setVal("<<aqcd1[ipt] ->s1->getValV()<<");"<<endl;
+      InValfile<<"aqcdPsigma1[ipt]->setVal("<<aqcd1p[ipt]->s1->getValV()<<");"<<endl;
+      InValfile<<"aqcdMsigma1[ipt]->setVal("<<aqcd1m[ipt]->s1->getValV()<<");"<<endl;
+      InValfile<<"aqcda1[ipt] ->setVal("<<aqcd1[ipt] ->a1->getValV()<<");"<<endl;
+      InValfile<<"aqcdPa1[ipt]->setVal("<<aqcd1p[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"aqcdMa1[ipt]->setVal("<<aqcd1m[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"aqcdsigma2[ipt] ->setVal("<<aqcd1[ipt] ->s2->getValV()<<");"<<endl;
+      InValfile<<"aqcdPsigma2[ipt]->setVal("<<aqcd1p[ipt]->s2->getValV()<<");"<<endl;
+      InValfile<<"aqcdMsigma2[ipt]->setVal("<<aqcd1m[ipt]->s2->getValV()<<");"<<endl;
+      InValfile<<"aqcda2[ipt] ->setVal("<<aqcd1[ipt] ->a2->getValV()<<");"<<endl;
+      InValfile<<"aqcdPa2[ipt]->setVal("<<aqcd1p[ipt]->a2->getValV()<<");"<<endl;
+      InValfile<<"aqcdMa2[ipt]->setVal("<<aqcd1m[ipt]->a2->getValV()<<");"<<endl;
+      InValfile<<"aFrac1[ipt] ->setVal("<<aqcd1[ipt] ->f1->getValV()<<");"<<endl;
+      InValfile<<"aFrac1P[ipt]->setVal("<<aqcd1p[ipt]->f1->getValV()<<");"<<endl;
+      InValfile<<"aFrac1M[ipt]->setVal("<<aqcd1m[ipt]->f1->getValV()<<");"<<endl;
+      InValfile<<"aFrac2[ipt] ->setVal("<<aqcd1[ipt] ->f2->getValV()<<");"<<endl;
+      InValfile<<"aFrac2P[ipt]->setVal("<<aqcd1p[ipt]->f2->getValV()<<");"<<endl;
+      InValfile<<"aFrac2M[ipt]->setVal("<<aqcd1m[ipt]->f2->getValV()<<");"<<endl;
+    }else if(ipt>8){
+      InValfile<<"mtmean[ipt] ->setVal("<<mt[ipt] ->mean->getValV()<<");"<<endl;
+      InValfile<<"mtPmean[ipt]->setVal("<<mtp[ipt]->mean->getValV()<<");"<<endl;
+      InValfile<<"mtMmean[ipt]->setVal("<<mtm[ipt]->mean->getValV()<<");"<<endl;
+      InValfile<<"mtsigma[ipt] ->setVal("<<mt[ipt] ->sigma->getValV()<<");"<<endl;
+      InValfile<<"mtPsigma[ipt]->setVal("<<mtp[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"mtMsigma[ipt]->setVal("<<mtm[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"mta1[ipt] ->setVal("<<mt[ipt] ->a1->getValV()<<");"<<endl;
+      InValfile<<"mtPa1[ipt]->setVal("<<mtp[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"mtMa1[ipt]->setVal("<<mtm[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"amtmean[ipt] ->setVal("<<amt[ipt] ->mean->getValV()<<");"<<endl;
+      InValfile<<"amtPmean[ipt]->setVal("<<amtp[ipt]->mean->getValV()<<");"<<endl;
+      InValfile<<"amtMmean[ipt]->setVal("<<amtm[ipt]->mean->getValV()<<");"<<endl;
+      InValfile<<"amtsigma[ipt] ->setVal("<<amt[ipt] ->sigma->getValV()<<");"<<endl;
+      InValfile<<"amtPsigma[ipt]->setVal("<<amtp[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"amtMsigma[ipt]->setVal("<<amtm[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"amta1[ipt] ->setVal("<<amt[ipt] ->a1->getValV()<<");"<<endl;
+      InValfile<<"amtPa1[ipt]->setVal("<<amtp[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"amtMa1[ipt]->setVal("<<amtm[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"amtmean[ipt] ->setVal("<<amt[ipt] ->mean->getValV()<<"+/-"<<amt[ipt] ->mean->getError()<<");"<<endl;
+      InValfile<<"amtPmean[ipt]->setVal("<<amtp[ipt]->mean->getValV()<<"+/-"<<amtp[ipt]->mean->getError()<<");"<<endl;
+      InValfile<<"amtMmean[ipt]->setVal("<<amtm[ipt]->mean->getValV()<<"+/-"<<amtm[ipt]->mean->getError()<<");"<<endl;
+      InValfile<<"amtsigma[ipt] ->setVal("<<amt[ipt] ->sigma->getValV()<<"+/-"<<amt[ipt] ->sigma->getError()<<");"<<endl;
+      InValfile<<"amtPsigma[ipt]->setVal("<<amtp[ipt]->sigma->getValV()<<"+/-"<<amtp[ipt]->sigma->getError()<<");"<<endl;
+      InValfile<<"amtMsigma[ipt]->setVal("<<amtm[ipt]->sigma->getValV()<<"+/-"<<amtm[ipt]->sigma->getError()<<");"<<endl;
+      InValfile<<"amta1[ipt] ->setVal("<<amt[ipt] ->a1->getValV()<<"+/-"<<amt[ipt] ->a1->getError()<<");"<<endl;
+      InValfile<<"amtPa1[ipt]->setVal("<<amtp[ipt]->a1->getValV()<<"+/-"<<amtp[ipt]->a1->getError()<<");"<<endl;
+      InValfile<<"amtMa1[ipt]->setVal("<<amtm[ipt]->a1->getValV()<<"+/-"<<amtm[ipt]->a1->getError()<<");"<<endl;
     }
     InValfile<<endl;
     InValfile.flags(flags);
@@ -2925,24 +3263,24 @@ cout << "check 6" << endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"<tr>"<<endl;
     metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W </p></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WElNu_"<<ipt <<".png\"><img src=\"WElNu_"<<ipt <<".png\" width=\"200\" alt=\"WElNu_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WElNu_"<<ipt <<"_log.png\"><img src=\"WElNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WElNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WElNu_cont_"<<ipt <<".png\"><img src=\"WElNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WElNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WElNu_cont_"<<ipt <<"_log.png\"><img src=\"WElNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WElNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_"<<ipt <<".png\"><img src=\"WMuNu_"<<ipt <<".png\" width=\"200\" alt=\"WMuNu_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_"<<ipt <<"_log.png\"><img src=\"WMuNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WMuNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_cont_"<<ipt <<".png\"><img src=\"WMuNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WMuNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_cont_"<<ipt <<"_log.png\"><img src=\"WMuNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WMuNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"<tr>"<<endl;
     metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>+</sup> </p></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpElNu_"<<ipt <<".png\"><img src=\"WpElNu_"<<ipt <<".png\" width=\"200\" alt=\"WpElNu_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpElNu_"<<ipt <<"_log.png\"><img src=\"WpElNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpElNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpElNu_cont_"<<ipt <<".png\"><img src=\"WpElNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WpElNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpElNu_cont_"<<ipt <<"_log.png\"><img src=\"WpElNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpElNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_"<<ipt <<".png\"><img src=\"WpMuNu_"<<ipt <<".png\" width=\"200\" alt=\"WpMuNu_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_"<<ipt <<"_log.png\"><img src=\"WpMuNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpMuNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_cont_"<<ipt <<".png\"><img src=\"WpMuNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WpMuNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_cont_"<<ipt <<"_log.png\"><img src=\"WpMuNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpMuNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"<tr>"<<endl;
     metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>-</sup></p></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmElNu_"<<ipt <<".png\"><img src=\"WmElNu_"<<ipt <<".png\" width=\"200\" alt=\"WmElNu_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmElNu_"<<ipt <<"_log.png\"><img src=\"WmElNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmElNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmElNu_cont_"<<ipt <<".png\"><img src=\"WmElNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WmElNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmElNu_cont_"<<ipt <<"_log.png\"><img src=\"WmElNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmElNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_"<<ipt <<".png\"><img src=\"WmMuNu_"<<ipt <<".png\" width=\"200\" alt=\"WmMuNu_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_"<<ipt <<"_log.png\"><img src=\"WmMuNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmMuNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_cont_"<<ipt <<".png\"><img src=\"WmMuNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WmMuNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_cont_"<<ipt <<"_log.png\"><img src=\"WmMuNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmMuNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"</table>"<<endl;
 
@@ -3008,38 +3346,111 @@ cout << "check 6" << endl;
       hQCDWpt -> SetBinContent(ipt, nQCD[ipt]->getVal());
       hQCDWpt -> SetBinError(ipt, nQCD[ipt]->getPropagatedError(*fitRes[ipt]));
       hQCDWPpt-> SetBinContent(ipt, nQCDp[ipt]->getVal());
-      hQCDWPpt-> SetBinError(ipt, nQCDp[ipt]->getPropagatedError(*fitResp[ipt]));
+      hQCDWPpt -> SetBinError(ipt, nQCDp[ipt]->getPropagatedError(*fitResp[ipt]));
       hQCDWMpt-> SetBinContent(ipt, nQCDm[ipt]->getVal());
-      hQCDWMpt-> SetBinError(ipt, nQCDm[ipt]->getPropagatedError(*fitResm[ipt]));
+      hQCDWMpt -> SetBinError(ipt, nQCDm[ipt]->getPropagatedError(*fitResm[ipt]));
       
-      hQCD_SigPlus    -> SetBinContent(ipt,nQCDp[ipt]->getVal()/nSigp[ipt]->getVal());
-      hQCD_SigMinus   -> SetBinContent(ipt,nQCDm[ipt]->getVal()/nSigm[ipt]->getVal());
-      hQCD_SigQCDPlus -> SetBinContent(ipt,nQCDp[ipt]->getVal()/(nQCDp[ipt]->getVal()+ nSigp[ipt]->getVal()));
-      hQCD_SigQCDMinus-> SetBinContent(ipt,nQCDm[ipt]->getVal()/(nQCDm[ipt]->getVal()+ nSigm[ipt]->getVal()));
+      if(nQCD[ipt]->getVal()==0 || nSig[ipt]->getVal()==0){
+	hQCD_Sig-> SetBinContent(ipt, 0);
+	hQCD_Sig-> SetBinError(ipt, 0);
+      }else{
+	hQCD_Sig-> SetBinContent(ipt, nQCD[ipt]->getVal()/nSig[ipt]->getVal());
+	double RatioErr=nQCD[ipt]->getVal()/nSig[ipt]->getVal()
+	  *sqrt(nQCD[ipt]->getError()*nQCD[ipt]->getError()/(nQCD[ipt]->getVal()*nQCD[ipt]->getVal())
+	      +nSig[ipt]->getError()*nSig[ipt]->getError()/(nSig[ipt]->getVal()*nSig[ipt]->getVal()));
+	hQCD_Sig-> SetBinError(ipt, RatioErr);
+      }
+
+      if (nQCDp[ipt]->getVal()==0 || nSigp[ipt]->getVal()==0){
+	hQCD_SigPlus-> SetBinContent(ipt, 0);
+	hQCD_SigPlus-> SetBinError(ipt, 0);
+      }else{
+	hQCD_SigPlus-> SetBinContent(ipt, nQCDp[ipt]->getVal()/nSigp[ipt]->getVal());
+	double RatioErrP=nQCDp[ipt]->getVal()/nSigp[ipt]->getVal()
+	  *sqrt(nQCDp[ipt]->getError()*nQCDp[ipt]->getError()/(nQCDp[ipt]->getVal()*nQCDp[ipt]->getVal())
+	      +nSigp[ipt]->getError()*nSigp[ipt]->getError()/(nSigp[ipt]->getVal()*nSigp[ipt]->getVal()));
+	hQCD_SigPlus-> SetBinError(ipt, RatioErrP);
+      }
+      
+      if (nQCDm[ipt]->getVal()==0 || nSigm[ipt]->getVal()==0){
+	hQCD_SigMinus-> SetBinContent(ipt, 0);
+	hQCD_SigMinus-> SetBinError(ipt, 0);
+      }else{
+	hQCD_SigMinus-> SetBinContent(ipt, nQCDm[ipt]->getVal()/nSigm[ipt]->getVal());
+	double RatioErrM=nQCDm[ipt]->getVal()/nSigm[ipt]->getVal()
+	  *sqrt(nQCDm[ipt]->getError()*nQCDm[ipt]->getError()/(nQCDm[ipt]->getVal()*nQCDm[ipt]->getVal())
+	      +nSigm[ipt]->getError()*nSigm[ipt]->getError()/(nSigm[ipt]->getVal()*nSigm[ipt]->getVal()));
+	hQCD_SigMinus-> SetBinError(ipt, RatioErrM);
+      }
+
+      if (nAntiQCD[ipt]->getVal() == 0 || nAntiSig[ipt]->getVal() ==0){
+	hAntiQCD_Sig-> SetBinContent(ipt, 0);
+	hAntiQCD_Sig-> SetBinError(ipt, 0);
+      }else{
+	double aRatioIncl = nAntiQCD[ipt]->getVal()/nAntiSig[ipt]->getVal();
+	hAntiQCD_Sig-> SetBinContent(ipt, aRatioIncl);
+	double antiRatioErr=nAntiQCD[ipt]->getVal()/nAntiSig[ipt]->getVal()
+	  *sqrt(nAntiQCD[ipt]->getError()*nAntiQCD[ipt]->getError()/(nAntiQCD[ipt]->getVal()*nAntiQCD[ipt]->getVal())
+	      +nAntiSig[ipt]->getError()*nAntiSig[ipt]->getError()/(nAntiSig[ipt]->getVal()*nAntiSig[ipt]->getVal()));
+	if (antiRatioErr < aRatioIncl)
+	  hAntiQCD_Sig-> SetBinError(ipt, antiRatioErr);
+	else
+	  hAntiQCD_Sig-> SetBinError(ipt, sqrt(aRatioIncl));
+      }
+
+      if (nAntiQCDp[ipt]->getVal()==0 || nAntiSigp[ipt]->getVal()==0){
+	hAntiQCD_SigPlus-> SetBinContent(ipt, 0);
+	hAntiQCD_SigPlus-> SetBinError(ipt, 0);
+      }else{
+	double aRatioP = nAntiQCDp[ipt]->getVal()/nAntiSigp[ipt]->getVal();
+	hAntiQCD_SigPlus-> SetBinContent(ipt, aRatioP);
+	double antiRatioErrP=nAntiQCDp[ipt]->getVal()/nAntiSigp[ipt]->getVal()
+	  *sqrt(nAntiQCDp[ipt]->getError()*nAntiQCDp[ipt]->getError()/(nAntiQCDp[ipt]->getVal()*nAntiQCDp[ipt]->getVal())
+	      +nAntiSigp[ipt]->getError()*nAntiSigp[ipt]->getError()/(nAntiSigp[ipt]->getVal()*nAntiSigp[ipt]->getVal()));
+	if (antiRatioErrP < aRatioP)
+	  hAntiQCD_SigPlus-> SetBinError(ipt, antiRatioErrP);
+	else
+	  hAntiQCD_SigPlus-> SetBinError(ipt, sqrt(aRatioP));
+      }
+
+      if (nAntiQCDm[ipt]->getVal()==0 || nAntiSigm[ipt]->getVal()==0){
+	hAntiQCD_SigMinus-> SetBinContent(ipt, 0);
+	hAntiQCD_SigMinus-> SetBinError(ipt, 0);
+      }else{
+	double aRatioM = nAntiQCDm[ipt]->getVal()/nAntiSigm[ipt]->getVal();
+	hAntiQCD_SigMinus-> SetBinContent(ipt, aRatioM);
+	double antiRatioErrM=nAntiQCDm[ipt]->getVal()/nAntiSigm[ipt]->getVal()
+	  *sqrt(nAntiQCDm[ipt]->getError()*nAntiQCDm[ipt]->getError()/(nAntiQCDm[ipt]->getVal()*nAntiQCDm[ipt]->getVal())
+	      +nAntiSigm[ipt]->getError()*nAntiSigm[ipt]->getError()/(nAntiSigm[ipt]->getVal()*nAntiSigm[ipt]->getVal()));
+	if (antiRatioErrM < aRatioM)
+	  hAntiQCD_SigMinus-> SetBinError(ipt, antiRatioErrM);
+	else
+	  hAntiQCD_SigMinus-> SetBinError(ipt, sqrt(aRatioM));
+      }
       
       double total = nEventDYToMuMu[ipt]+nEventDYToTauTau[ipt]+nEventTTJets[ipt]+nEventWToTauNu[ipt];
       double totalp = nEventDYToMuMuP[ipt]+nEventDYToTauTauP[ipt]+nEventTTJetsP[ipt]+nEventWToTauNuP[ipt];
       double totalm = nEventDYToMuMuM[ipt]+nEventDYToTauTauM[ipt]+nEventTTJetsM[ipt]+nEventWToTauNuM[ipt];
       hDYToMuMu   -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventDYToMuMu[ipt]/total);
       hDYToMuMu   -> SetBinError(ipt,nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEventDYToMuMu[ipt]/total);
-      hWToTauNu   -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventWToTauNu[ipt]/total);
-      hWToTauNu   -> SetBinError(ipt,nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEventWToTauNu[ipt]/total);
+      hWToTauNu  -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventWToTauNu[ipt]/total);
+      hWToTauNu  -> SetBinError(ipt,nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEventWToTauNu[ipt]/total);
       hTTJets     -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventTTJets[ipt]/total);
       hTTJets     -> SetBinError(ipt,nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEventTTJets[ipt]/total);
       hDYToTauTau -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventDYToTauTau[ipt]/total);
       hDYToTauTau -> SetBinError(ipt,nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEventDYToTauTau[ipt]/total);
       hDYToMuMuP  -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventDYToMuMuP[ipt]/totalp);
       hDYToMuMuP  -> SetBinError(ipt,nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEventDYToMuMuP[ipt]/totalp);
-      hWToTauNuP  -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventWToTauNuP[ipt]/totalp);
-      hWToTauNuP  -> SetBinError(ipt,nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEventWToTauNuP[ipt]/totalp);
+      hWToTauNuP -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventWToTauNuP[ipt]/totalp);
+      hWToTauNuP -> SetBinError(ipt,nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEventWToTauNuP[ipt]/totalp);
       hTTJetsP    -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventTTJetsP[ipt]/totalp);
       hTTJetsP    -> SetBinError(ipt,nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEventTTJetsP[ipt]/totalp);
       hDYToTauTauP-> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventDYToTauTauP[ipt]/totalp);
       hDYToTauTauP-> SetBinError(ipt,nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEventDYToTauTauP[ipt]/totalp);
       hDYToMuMuM  -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventDYToMuMuM[ipt]/totalm);
       hDYToMuMuM  -> SetBinError(ipt,nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEventDYToMuMuM[ipt]/totalm);
-      hWToTauNuM  -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventWToTauNuM[ipt]/totalm);
-      hWToTauNuM  -> SetBinError(ipt,nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEventWToTauNuM[ipt]/totalm);
+      hWToTauNuM -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventWToTauNuM[ipt]/totalm);
+      hWToTauNuM -> SetBinError(ipt,nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEventWToTauNuM[ipt]/totalm);
       hTTJetsM    -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventTTJetsM[ipt]/totalm);
       hTTJetsM    -> SetBinError(ipt,nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEventTTJetsM[ipt]/totalm);
       hDYToTauTauM-> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventDYToTauTauM[ipt]/totalm);
@@ -3050,13 +3461,20 @@ cout << "check 6" << endl;
   allyieldsp <<"Tot. Signal: "<<Wp_TotalEvents<<"+/-"<<Wp_Err/13<<" +/- " <<sqrt(Wp_TotalEvents)<<" (stat.)"<<endl;
   allyieldsm <<"Tot. Signal: "<<Wm_TotalEvents<<"+/-"<<Wm_Err/13<<" +/- " <<sqrt(Wm_TotalEvents)<<" (stat.)"<<endl;
   
+  qcdfile<<endl;
+  qcdfile.flags(flags);
   allyields.flags(flags);
   allyieldsp.flags(flags);
   allyieldsm.flags(flags);
 
+  fitfile.close();
+  pfitfile.close();
+  mfitfile.close();
+
   Wmfile.close();
   Wmpfile.close();
   Wmmfile.close();
+  Wfile.close();
   qcdfile.close();
   InValfile.close();
 
@@ -3072,31 +3490,55 @@ cout << "check 6" << endl;
   allyieldsp.close();
   allyieldsm.close();
 //Write Signal numbers to file
-  gSystem->mkdir(outputDir+"/RstElectron",kTRUE);
-  TString Yields = outputDir+"/RstElectron/SigYields_"+filetype+".root";
-
+  gSystem->mkdir(outputDir+"/RstMuon",kTRUE);
+  TString Yields = outputDir+"/RstMuon/SigYields_"+filetype+".root";
+  //gSystem->mkdir("RstMuon",kTRUE);
+  //TString Yields = "RstMuon/SigYields_"+filetype+".root";
   TFile *nsigfile = new TFile(Yields,"RECREATE");
   hSigWpt -> Write();
   hSigWPpt-> Write();
   hSigWMpt-> Write();
+  
   hQCDWpt -> Write();
   hQCDWPpt-> Write();
   hQCDWMpt-> Write();
   
-  //TF1 *f111 = new TF1("f111","[0]*TMath::Exp(-x/[1])+[2]",50.,600.);
-  //f111->SetParameter(0,1);
-  //f111->SetParameter(1,0.3);
-  //f111->SetParameter(2,0);
-  //f111->SetLineColor(kBlue);
-  //hQCD_SigPlus->Fit("f111","L","",50.,600.);
-  //hQCD_SigPlus-> Write();
-  //hQCD_SigMinus->Fit("f111","L","",50.,600.);
-  //hQCD_SigMinus-> Write();
+  hQCD_Sig-> Write();
+  hQCD_SigPlus-> Write();
+  hQCD_SigMinus-> Write();
+  
+  //hAntiQCD_Sig-> Write();
+  //hAntiQCD_SigPlus-> Write();
+  //hAntiQCD_SigMinus-> Write();
+  
+  //TF1 *fincl = new TF1("fincl","[0]*TMath::Exp(-x/[1])+[2]",40,110);
+  //TF1 *fp = new TF1("fp","[0]*TMath::Exp(-x/[1])+[2]",40,110);
+  //TF1 *fm = new TF1("fm","[0]*TMath::Exp(-x/[1])+[2]",40,110);
+  ////f111->SetParameter(0,1); f111->SetParameter(1,0.3); f111->SetParameter(2,0);
+  //fincl->SetParameter(0,0.1); fincl->SetParameter(1,0.3); fincl->SetParameter(2,1);
+  //fincl->SetLineColor(kBlue);
+  //fp->SetParameter(0,0.1); fp->SetParameter(1,0.3); fp->SetParameter(2,1);
+  //fp->SetLineColor(kBlue);
+  //fm->SetParameter(0,0.1); fm->SetParameter(1,2.); fm->SetParameter(2,3);
+  //fm->SetLineColor(kBlue);
 
-  //hQCD_SigQCDPlus->Fit("f111","L","",50.,600.);
-  //hQCD_SigQCDPlus-> Write();
-  //hQCD_SigQCDMinus->Fit("f111","L","",50.,600.);
-  //hQCD_SigQCDMinus-> Write();
+  //hQCD_SigFit->Fit("fincl","L","",40,110);
+  //hQCD_SigFit-> Write();
+  //hQCD_SigPlusFit->Fit("fp","L","",40,110);
+  //hQCD_SigPlusFit-> Write();
+  //hQCD_SigMinusFit->Fit("fm","L","",40,110);
+  //hQCD_SigMinusFit-> Write();
+
+  //hAntiQCD_SigFit->Fit("f222","L","",40,190);
+  //hAntiQCD_SigFit-> Write();
+  //hAntiQCD_SigPlusFit->Fit("f222","L","",40,190);
+  //hAntiQCD_SigPlusFit-> Write();
+  //hAntiQCD_SigMinusFit->Fit("f111","L","",40,110);
+  //hAntiQCD_SigMinusFit-> Write();
+  //hQCD_SigQCDPlusFit->Fit("f111","L","",40,90);
+  //hQCD_SigQCDPlusFit-> Write();
+  //hQCD_SigQCDMinusFit->Fit("f111","L","",40,90);
+  //hQCD_SigQCDMinusFit-> Write();
   
   nsigfile->Close();
 
@@ -3133,15 +3575,15 @@ cout << "check 6" << endl;
   hWptDiff->SetMarkerStyle(kFullCircle);
   hWptDiff->SetMarkerSize(0.9);
 
-  sprintf(histName,"FitWDistribution_Ele");
+  sprintf(histName,"FitWDistribution_Muon");
   plotWpt=new CPlot(histName,"","","Events");
   plotWpt->setOutDir(CPlot::sOutDir);
   plotWpt->AddToStack(hDYToTauTau,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   plotWpt->AddToStack(hTTJets,"t#bar{t}",kAzure-5,kAzure-1);
   plotWpt->AddToStack(hWToTauNu,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
-  plotWpt->AddToStack(hDYToMuMu,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
+  plotWpt->AddToStack(hDYToMuMu,"Z/#gamma^{*}#rightarrow #mu#mu",fillcolorEWK,linecolorEWK);
   plotWpt->AddToStack(hQCDWpt,"QCD",fillcolorQCD,linecolorQCD);
-  plotWpt->AddToStack(hSigWpt,"W#rightarrow e#nu",fillcolorW,linecolorW);
+  plotWpt->AddToStack(hSigWpt,"W#rightarrow #mu#nu",fillcolorW,linecolorW);
   plotWpt->AddHist1D(hdataWpt,"Data","E");
   plotWpt->SetLegend(0.78,0.65,.98,0.88);
   plotWpt->SetYRange(0.1,1.1*(hWptMC->GetMaximum()));
@@ -3162,11 +3604,13 @@ cout << "check 6" << endl;
   //plotWptDiff->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff->Draw(c,kTRUE,format,2);
 
-  //sprintf(histName,"FitWDistribution_EleLog");
-  //plotWpt->SetName(histName);
+  //sprintf(histName,"FitWDistribution_MuonLog");
+  //plotWptDiff->SetName(histName);
   //plotWpt->SetYRange(5e-6*(hWptMC->GetMaximum()),1.4*(hWptMC->GetMaximum()));
   //plotWpt->SetLogy();
-  //plotWpt->Draw(c,kTRUE,format,1);
+  //plotWpt->Draw(c,kFALSE,format,1);
+  //gPad->RedrawAxis();
+  //plotWptDiff->Draw(c,kTRUE,format,2);
   
   double WptBinsLog[14]={1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
   double x1,x2,x3,x4,x5,x6,x7,err;
@@ -3203,19 +3647,32 @@ cout << "check 6" << endl;
   hWptMCLog->Add(hDYToMuMuLog);
   hWptMCLog->Add(hQCDWptLog);
   hWptMCLog->Add(hSigWptLog);
+  for (int i=1; i<=hSigWPpt->GetNbinsX(); i++)
+  {
+    double x11=0,x22=0,x33=0,x44=0,x55=0,x66=0;
+    x11=  sqrt( hDYToTauTau->GetBinContent(i) );
+    x22=  sqrt( hTTJets->GetBinContent(i)     );
+    x33=  sqrt( hWToTauNu->GetBinContent(i)   );
+    x44=  sqrt( hDYToMuMu->GetBinContent(i)   );
+    x55=  sqrt( hQCDWpt->GetBinContent(i)     );
+    x66=  sqrt( hSigWpt->GetBinContent(i)     );
+    
+    hWptMCLog->SetBinError(i, sqrt( TMath::Power(x11,2) + TMath::Power(x22,2)  + TMath::Power(x33,2) + TMath::Power(x44,2)  + TMath::Power(x55,2) + TMath::Power(x66,2)  ));
+  }
+  
   hWptDiffLog = makeDiffHistWptLog(hdataWptLog,hWptMCLog,"hWptDiffLog");
   hWptDiffLog->SetMarkerStyle(kFullCircle);
   hWptDiffLog->SetMarkerSize(0.9);
 
-  sprintf(histName,"FitWDistribution_EleLog");
+  sprintf(histName,"FitWDistribution_MuonLog");
   plotWptLog=new CPlot(histName,"","","Events");
   plotWptLog->setOutDir(CPlot::sOutDir);
   plotWptLog->AddToStack(hDYToTauTauLog,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   plotWptLog->AddToStack(hTTJetsLog,"t#bar{t}",kAzure-5,kAzure-1);
   plotWptLog->AddToStack(hWToTauNuLog,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
-  plotWptLog->AddToStack(hDYToMuMuLog,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
+  plotWptLog->AddToStack(hDYToMuMuLog,"Z/#gamma^{*}#rightarrow #mu#mu",fillcolorEWK,linecolorEWK);
   plotWptLog->AddToStack(hQCDWptLog,"QCD",fillcolorQCD,linecolorQCD);
-  plotWptLog->AddToStack(hSigWptLog,"W#rightarrow e#nu",fillcolorW,linecolorW);
+  plotWptLog->AddToStack(hSigWptLog,"W#rightarrow #mu#nu",fillcolorW,linecolorW);
   plotWptLog->AddHist1D(hdataWptLog,"Data","E");
   plotWptLog->SetLegend(0.78,0.65,.98,0.88);
   plotWptLog->SetYRange(5e-6*(hWptMC->GetMaximum()),1.4*(hWptMC->GetMaximum()));
@@ -3231,6 +3688,7 @@ cout << "check 6" << endl;
   //plotWptDiffLog->AddHist1D(hWptDiffLog,"EX0",ratioColor);
   //plotWptDiffLog->AddHist1D(hWptDiffLog,"hist p",kBlack);
   plotWptDiffLog->AddHist1D(hWptDiffLog,"",kAzure+1,1,1001);
+  //plotWptDiffLog->SetYRange(-0.1,0.1);
   plotWptDiffLog->SetYRange(-0.15,0.15);
   plotWptDiffLog->AddLine(0, 0,600, 0,kBlack,1);
   //plotWptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
@@ -3249,15 +3707,15 @@ cout << "check 6" << endl;
   hWptDiff_p->SetMarkerStyle(kFullCircle);
   hWptDiff_p->SetMarkerSize(0.9);
 
-  sprintf(histName,"FitWDistribution_EleP");
+  sprintf(histName,"FitWDistribution_MuonP");
   plotWpt_p=new CPlot(histName,"","","Events");
   plotWpt_p->setOutDir(CPlot::sOutDir);
   plotWpt_p->AddToStack(hDYToTauTauP,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   plotWpt_p->AddToStack(hTTJetsP,"t#bar{t}",kAzure-5,kAzure-1);
   plotWpt_p->AddToStack(hWToTauNuP,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
-  plotWpt_p->AddToStack(hDYToMuMuP,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
+  plotWpt_p->AddToStack(hDYToMuMuP,"Z/#gamma^{*}#rightarrow #mu#mu",fillcolorEWK,linecolorEWK);
   plotWpt_p->AddToStack(hQCDWPpt,"QCD",fillcolorQCD,linecolorQCD);
-  plotWpt_p->AddToStack(hSigWPpt,"W#rightarrow e#nu",fillcolorW,linecolorW);
+  plotWpt_p->AddToStack(hSigWPpt,"W^{+}#rightarrow #mu^{+}#nu",fillcolorW,linecolorW);
   plotWpt_p->AddHist1D(hdataWPpt,"Data","E");
   plotWpt_p->SetLegend(0.78,0.65,.98,0.88);
   plotWpt_p->SetYRange(0.1,1.1*(hWptMC_p->GetMaximum()));
@@ -3271,17 +3729,20 @@ cout << "check 6" << endl;
   //plotWptDiff_p->AddHist1D(hWptDiff_p,"EX0",ratioColor);
   //plotWptDiff_p->AddHist1D(hWptDiff_p,"hist p",kBlack);
   plotWptDiff_p->AddHist1D(hWptDiff_p,"",kAzure+1,1,1001);
+  //plotWptDiff_p->SetYRange(-0.1,0.1);
   plotWptDiff_p->SetYRange(-0.15,0.15);
   plotWptDiff_p->AddLine(0, 0,600, 0,kBlack,1);
   //plotWptDiff_p->AddLine(0, 0.05,600, 0.05,kBlack,3);
   //plotWptDiff_p->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_p->Draw(c,kTRUE,format,2);
   
-  //sprintf(histName,"FitWDistribution_ElePLog");
-  //plotWpt_p->SetName(histName);
+  //sprintf(histName,"FitWDistribution_MuonPLog");
+  //plotWptDiff_p->SetName(histName);
   //plotWpt_p->SetYRange(5e-6*(hWptMC_p->GetMaximum()),1.4*(hWptMC_p->GetMaximum()));
   //plotWpt_p->SetLogy();
-  //plotWpt_p->Draw(c,kTRUE,format,1);
+  //plotWpt_p->Draw(c,kFALSE,format,1);
+  //gPad->RedrawAxis();
+  //plotWptDiff_p->Draw(c,kTRUE,format,2);
   
   TH1D *hDYToTauTauLogP = new TH1D("hDYToTauTauLogP","",13,WptBinsLog);
   TH1D *hTTJetsLogP = new TH1D("hTTJetsLogP","",13,WptBinsLog);
@@ -3315,6 +3776,7 @@ cout << "check 6" << endl;
   hWPptMCLog->Add(hDYToMuMuLogP);
   hWPptMCLog->Add(hQCDWptLogP);
   hWPptMCLog->Add(hSigWptLogP);
+  
   for (int i=1; i<=hSigWPpt->GetNbinsX(); i++)
   {
     double xEWKp=0,xQCDp=0,xSigp=0;
@@ -3328,15 +3790,15 @@ cout << "check 6" << endl;
   hWPptDiffLog->SetMarkerStyle(kFullCircle);
   hWPptDiffLog->SetMarkerSize(0.9);
   
-  sprintf(histName,"FitWDistribution_ElePLog");
+  sprintf(histName,"FitWDistribution_MuonPLog");
   plotWPptLog=new CPlot(histName,"","","Events");
   plotWPptLog->setOutDir(CPlot::sOutDir);
   plotWPptLog->AddToStack(hDYToTauTauLogP,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   plotWPptLog->AddToStack(hTTJetsLogP,"t#bar{t}",kAzure-5,kAzure-1);
   plotWPptLog->AddToStack(hWToTauNuLogP,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
-  plotWPptLog->AddToStack(hDYToMuMuLogP,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
+  plotWPptLog->AddToStack(hDYToMuMuLogP,"Z/#gamma^{*}#rightarrow #mu#mu",fillcolorEWK,linecolorEWK);
   plotWPptLog->AddToStack(hQCDWptLogP,"QCD",fillcolorQCD,linecolorQCD);
-  plotWPptLog->AddToStack(hSigWptLogP,"W^{+}#rightarrow e^{+}#nu",fillcolorW,linecolorW);
+  plotWPptLog->AddToStack(hSigWptLogP,"W^{+}#rightarrow #mu^{+}#nu",fillcolorW,linecolorW);
   plotWPptLog->AddHist1D(hdataWptLogP,"Data","E");
   plotWPptLog->SetLegend(0.78,0.65,.98,0.88);
   //plotWPptLog->SetYRange(5e-6*(hWptMC_p->GetMaximum()),1.4*(hWptMC_p->GetMaximum()));
@@ -3355,8 +3817,12 @@ cout << "check 6" << endl;
   plotWPptDiffLog->AddHist1D(hWPptDiffLog,"EX0",ratioColor);
   //plotWPptDiffLog->AddHist1D(hWPptDiffLog,"hist p",kBlack);
   //plotWPptDiffLog->AddHist1D(hWPptDiffLog,"",kAzure+1,1,1001);
-  //plotWPptDiffLog->SetYRange(-0.15,0.15);
+  //plotWPptDiffLog->AddHist1D(hWPptDiffLog,"X0",kAzure+1);
+  //plotWPptDiffLog->SetYRange(0.5,1.5);
   plotWPptDiffLog->SetYRange(0.7,1.3);
+  //plotWPptDiffLog->SetYRange(-0.15,0.15);
+  //plotWPptDiffLog->SetYRange(0.99,1.01);
+  //plotWPptDiffLog->AddLine(0, 0,600, 0,kBlack,1);
   plotWPptDiffLog->AddLine(0, 1,600, 1,kBlack,1);
   //plotWPptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
   //plotWPptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
@@ -3376,15 +3842,15 @@ cout << "check 6" << endl;
   hWptDiff_m->SetMarkerStyle(kFullCircle);
   hWptDiff_m->SetMarkerSize(0.9);
 
-  sprintf(histName,"FitWDistribution_EleM");
+  sprintf(histName,"FitWDistribution_MuonM");
   plotWpt_m=new CPlot(histName,"","","Events");
   plotWpt_m->setOutDir(CPlot::sOutDir);
   plotWpt_m->AddToStack(hDYToTauTauM,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   plotWpt_m->AddToStack(hTTJetsM,"t#bar{t}",kAzure-5,kAzure-1);
   plotWpt_m->AddToStack(hWToTauNuM,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
-  plotWpt_m->AddToStack(hDYToMuMuM,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
+  plotWpt_m->AddToStack(hDYToMuMuM,"Z/#gamma^{*}#rightarrow #mu#mu",fillcolorEWK,linecolorEWK);
   plotWpt_m->AddToStack(hQCDWMpt,"QCD",fillcolorQCD,linecolorQCD);
-  plotWpt_m->AddToStack(hSigWMpt,"W#rightarrow e#nu",fillcolorW,linecolorW);
+  plotWpt_m->AddToStack(hSigWMpt,"W^{-}#rightarrow #mu^{-}#nu",fillcolorW,linecolorW);
   plotWpt_m->AddHist1D(hdataWMpt,"Data","E");
   plotWpt_m->SetLegend(0.78,0.65,.98,0.88);
   plotWpt_m->SetYRange(0.1,1.1*(hWptMC_m->GetMaximum()));
@@ -3398,17 +3864,20 @@ cout << "check 6" << endl;
   //plotWptDiff_m->AddHist1D(hWptDiff_m,"EX0",ratioColor);
   //plotWptDiff_m->AddHist1D(hWptDiff_m,"hist p",kBlack);
   plotWptDiff_m->AddHist1D(hWptDiff_m,"",kAzure+1,1,1001);
+  //plotWptDiff_m->SetYRange(-0.1,0.1);
   plotWptDiff_m->SetYRange(-0.15,0.15);
   plotWptDiff_m->AddLine(0, 0,600, 0,kBlack,1);
   //plotWptDiff_m->AddLine(0, 0.05,600, 0.05,kBlack,3);
   //plotWptDiff_m->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_m->Draw(c,kTRUE,format,2);
   
-  //sprintf(histName,"FitWDistribution_EleMLog");
-  //plotWpt_m->SetName(histName);
+  //sprintf(histName,"FitWDistribution_MuonMLog");
+  //plotWptDiff_m->SetName(histName);
   //plotWpt_m->SetYRange(5e-6*(hWptMC_m->GetMaximum()),1.4*(hWptMC_m->GetMaximum()));
   //plotWpt_m->SetLogy();
-  //plotWpt_m->Draw(c,kTRUE,format,1);
+  //plotWpt_m->Draw(c,kFALSE,format,1);
+  //gPad->RedrawAxis();
+  //plotWptDiff_m->Draw(c,kTRUE,format,2);
 
   TH1D *hDYToTauTauLogM = new TH1D("hDYToTauTauLogM","",13,WptBinsLog);
   TH1D *hTTJetsLogM = new TH1D("hTTJetsLogM","",13,WptBinsLog);
@@ -3455,35 +3924,33 @@ cout << "check 6" << endl;
   hWMptDiffLog->SetMarkerStyle(kFullCircle);
   hWMptDiffLog->SetMarkerSize(0.9);
   
-  sprintf(histName,"FitWDistribution_EleMLog");
+  sprintf(histName,"FitWDistribution_MuonMLog");
   plotWMptLog=new CPlot(histName,"","","Events");
   plotWMptLog->setOutDir(CPlot::sOutDir);
   plotWMptLog->AddToStack(hDYToTauTauLogM,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   plotWMptLog->AddToStack(hTTJetsLogM,"t#bar{t}",kAzure-5,kAzure-1);
   plotWMptLog->AddToStack(hWToTauNuLogM,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
-  plotWMptLog->AddToStack(hDYToMuMuLogM,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
+  plotWMptLog->AddToStack(hDYToMuMuLogM,"Z/#gamma^{*}#rightarrow #mu#mu",fillcolorEWK,linecolorEWK);
   plotWMptLog->AddToStack(hQCDWptLogM,"QCD",fillcolorQCD,linecolorQCD);
-  plotWMptLog->AddToStack(hSigWptLogM,"W^{-}#rightarrow e^{-} #bar{#nu}",fillcolorW,linecolorW);
+  plotWMptLog->AddToStack(hSigWptLogM,"W^{-}#rightarrow #mu^{-} #bar{#nu}",fillcolorW,linecolorW);
   plotWMptLog->AddHist1D(hdataWptLogM,"Data","E");
   plotWMptLog->SetLegend(0.78,0.65,.98,0.88);
-  //plotWMptLog->SetYRange(5e-6*(hWptMC_m->GetMaximum()),1.4*(hWptMC_m->GetMaximum()));
-  plotWMptLog->SetYRange(0.25,1.4*(hWptMC_p->GetMaximum()));
+  plotWMptLog->SetYRange(5e-6*(hWptMC_m->GetMaximum()),1.4*(hWptMC_m->GetMaximum()));
   plotWMptLog->SetLogx();
   plotWMptLog->SetLogy();
-  //plotWMptLog->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
-  plotWMptLog->AddTextBox("CMS Preliminary, L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV ",0.40,0.91,0.95,0.97,0);
+  plotWMptLog->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
   plotWMptLog->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
 
   //plotWMptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
   //plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
-  plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","mc / data");
+  plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","mc / data ");
   plotWMptDiffLog->setOutDir(CPlot::sOutDir);
   plotWMptDiffLog->AddHist1D(hWMptDiffLog,"EX0",ratioColor);
   //plotWMptDiffLog->AddHist1D(hWMptDiffLog,"hist p",kBlack);
   //plotWMptDiffLog->AddHist1D(hWMptDiffLog,"",kAzure+1,1,1001);
-  //plotWMptDiffLog->SetYRange(-0.15,0.15);
   plotWMptDiffLog->SetYRange(0.5,1.5);
+  //plotWMptDiffLog->SetYRange(-0.15,0.15);
   plotWMptDiffLog->AddLine(0, 1,600, 1,kBlack,1);
   //plotWMptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
   //plotWMptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
@@ -3494,7 +3961,7 @@ cout << "check 6" << endl;
 		    
   makeHTML(outputDir);
 
-  gBenchmark->Show("fitWEleMetModRayleighSimult_NNLO");
+  gBenchmark->Show("fitWMuMetMtModRayleighSimult_NNLO");
 }
 
 
@@ -3570,22 +4037,26 @@ TH1D *makeDiffHistWptLog(TH1D* hData, TH1D* hFit, const TString name)
   TAxis *xaxis = hData->GetXaxis();
   for(int ibin=1; ibin<=hData->GetNbinsX(); ibin++) {
     //cout << "Data: " << hData->GetBinContent(ibin) << " MC: " << hFit->GetBinContent(ibin) << endl;
-    //Double_t diff = (hData->GetBinContent(ibin)-hFit->GetBinContent(ibin));
+    //Double_t diff = (hData->GetBinContent(ibin)-hFit->GetBinContent(ibin)); // data-mc
+    //Double_t diff = (hData->GetBinContent(ibin)/hFit->GetBinContent(ibin)); // data/mc
     Double_t diff = (hFit->GetBinContent(ibin)/hData->GetBinContent(ibin)); // mc/data
+    
+    Double_t err = sqrt(hData->GetBinContent(ibin));
     
     Double_t errData = sqrt(hData->GetBinContent(ibin));
     Double_t errFit = hFit->GetBinError(ibin);
-    
-    Double_t err = sqrt(hData->GetBinContent(ibin));
+
+
     if(err==0) err= sqrt(hFit->GetBinContent(ibin));
     
     //if(err>0) hDiff->Fill(xaxis->GetBinCenter(ibin),diff/err);
     if(err>0) hDiff->Fill(xaxis->GetBinCenter(ibin),diff);
     else      hDiff->Fill(xaxis->GetBinCenter(ibin),0);
     //Double_t errDiff = sqrt(hData->GetBinError(ibin)*hData->GetBinError(ibin)+hFit->GetBinError(ibin)*hFit->GetBinError(ibin));
-    //hDiff->SetBinError(ibin,errDiff);
     Double_t errDiff = diff*sqrt(errData*errData/hData->GetBinContent(ibin)/hData->GetBinContent(ibin) + errFit*errFit/hFit->GetBinContent(ibin)/hFit->GetBinContent(ibin));
     hDiff->SetBinError(ibin,errDiff);
+    //hDiff->SetBinError(ibin,0);
+    
     cout<<ibin<<
       "\tData\t"<<hData->GetBinContent(ibin)<<
       "\tData error\t"<<errData<<
@@ -3658,7 +4129,7 @@ void makeHTML(const TString outDir)
   htmlfile << "<!DOCTYPE html" << endl;
   htmlfile << "    PUBLIC \"-//W3C//DTD HTML 3.2//EN\">" << endl;
   htmlfile << "<html>" << endl;
-  htmlfile << "<head><title>W --> e nu</title></head>" << endl;
+  htmlfile << "<head><title>W --> mu nu</title></head>" << endl;
   htmlfile << "<body bgcolor=\"white\">" << endl;
   htmlfile << "<hr />" << endl;
   htmlfile << " <p> <a target=\"_blank\" href=\"fitMetPlots.html\">[Wpt All Bins MET Fit distributions]</a>" <<  "&nbsp; <a target=\"_blank\" href=\"AllYieldsTable.html\">[All Bins Yields Table]</a> </p>" << endl;
@@ -3675,16 +4146,16 @@ void makeHTML(const TString outDir)
   htmlfile << "</tr>" << endl;
   htmlfile << "<tr>" << endl;
   htmlfile << "<td width=\"15%\"></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_Ele.png\"><img src=\"FitWDistribution_Ele.png\" alt=\"FitWDistribution_Ele.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_EleP.png\"><img src=\"FitWDistribution_EleP.png\" alt=\"FitWDistribution_EleP.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_EleM.png\"><img src=\"FitWDistribution_EleM.png\" alt=\"FitWDistribution_EleM.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_Muon.png\"><img src=\"FitWDistribution_Muon.png\" alt=\"FitWDistribution_Muon.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonP.png\"><img src=\"FitWDistribution_MuonP.png\" alt=\"FitWDistribution_MuonP.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonM.png\"><img src=\"FitWDistribution_MuonM.png\" alt=\"FitWDistribution_MuonM.png\" width=\"100%\"></a></td>" << endl;
   htmlfile << "<td width=\"10%\"></td>" << endl;
   htmlfile << "</tr>" << endl;
   htmlfile << "<tr>" << endl;
   htmlfile << "<td width=\"15%\"></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_EleLog.png\"><img src=\"FitWDistribution_EleLog.png\" alt=\"FitWDistribution_EleLog.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_ElePLog.png\"><img src=\"FitWDistribution_ElePLog.png\" alt=\"FitWDistribution_ElePLog.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_EleMLog.png\"><img src=\"FitWDistribution_EleMLog.png\" alt=\"FitWDistribution_EleMLog.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonLog.png\"><img src=\"FitWDistribution_MuonLog.png\" alt=\"FitWDistribution_MuonLog.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonPLog.png\"><img src=\"FitWDistribution_MuonPLog.png\" alt=\"FitWDistribution_MuonPLog.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonMLog.png\"><img src=\"FitWDistribution_MuonMLog.png\" alt=\"FitWDistribution_MuonMLog.png\" width=\"100%\"></a></td>" << endl;
   htmlfile << "<td width=\"10%\"></td>" << endl;
   htmlfile << "</tr>" << endl;
   htmlfile << "</table>" << endl;
