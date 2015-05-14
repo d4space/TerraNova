@@ -2187,19 +2187,21 @@ cout << "check 3" << endl;
 cout << "check 3-1" << endl;
     //plotMetDiff->SetYRange(-8,8);
     plotMetDiff->SetYRange(-5,5);
-    plotMetDiff->SetXRange(0,85);
+    //plotMetDiff->SetXRange(0,85);
+    plotMetDiff->SetXRange(0,70);
     //plotMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotMetDiff->AddLine(0, 0,85, 0,kBlack,1);
+    //plotMetDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotMetDiff->AddLine(0, 0,70, 0,kBlack,1);
     //plotMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-    //plotMetDiff->Draw(c,kTRUE,format,2);
+    plotMetDiff->Draw(c,kTRUE,format,2);
 cout << "check 4" << endl;
     
     sprintf(histName,"WElNu_%d_log",ipt);
     plotMet->SetName(histName);
     plotMet->SetLogy();
     plotMet->SetYRange(1e-3*(hDataMet[ipt]->GetMaximum()),10*(hDataMet[ipt]->GetMaximum()));
-    //plotMet->Draw(c,kTRUE,format,1);
+    plotMet->Draw(c,kTRUE,format,1);
 
 cout << "check 4-1" << endl;
     // W Inclusive Control region MET plot
@@ -2270,7 +2272,7 @@ cout << "check 4-1" << endl;
       plotAntiMet->SetYRange(0.1,1.1*(hAntiDataMet[ipt]->GetMaximum()));
     else
       plotAntiMet->SetYRange(0.1,1.5*(hHighWpTAnti_DataMet->GetMaximum()));
-    //plotAntiMet->Draw(c,kFALSE,format,1);
+    plotAntiMet->Draw(c,kFALSE,format,1);
     
     //plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
@@ -2278,13 +2280,14 @@ cout << "check 4-1" << endl;
     //plotAntiMetDiff->AddHist1D(hAntiMetDiff,"EX0",ratioColor);
     plotAntiMetDiff->AddHist1D(hAntiMetDiff,"",kAzure+1,1,1001);
     //plotAntiMetDiff->SetYRange(-8,8);
-    //plotAntiMetDiff->SetYRange(-5,5);
-    plotAntiMetDiff->SetYRange(-3,3);
+    plotAntiMetDiff->SetYRange(-5,5);
+    //plotAntiMetDiff->SetYRange(-3,3);
     //plotAntiMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetDiff->AddLine(0, 0,85, 0,kBlack,1);
+    //plotAntiMetDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotAntiMetDiff->AddLine(0, 0,70, 0,kBlack,1);
     //plotAntiMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotAntiMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-    //plotAntiMetDiff->Draw(c,kTRUE,format,2);
+    plotAntiMetDiff->Draw(c,kTRUE,format,2);
     
 cout << "check 5" << endl;
     sprintf(histName,"WElNu_cont_%d_log",ipt);
@@ -2294,7 +2297,7 @@ cout << "check 5" << endl;
       plotAntiMet->SetYRange(1e-3*(hAntiDataMet[ipt]->GetMaximum()),10*(hAntiDataMet[ipt]->GetMaximum()));
     else
       plotAntiMet->SetYRange(1e-3*(hHighWpTAnti_DataMet->GetMaximum()),10*(hHighWpTAnti_DataMet->GetMaximum()));
-    //plotAntiMet->Draw(c,kTRUE,format,1);
+    plotAntiMet->Draw(c,kTRUE,format,1);
     //
     // W+ MET plot Signal region
     //
@@ -2562,7 +2565,7 @@ cout << "check 6" << endl;
     plotMetm->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     plotMetm->SetYRange(0.1,1.1*(hDataMetm[ipt]->GetMaximum()));
-    //plotMetm->Draw(c,kFALSE,format,1);
+    plotMetm->Draw(c,kFALSE,format,1);
 
     //plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
@@ -2570,20 +2573,22 @@ cout << "check 6" << endl;
     //plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
     plotMetmDiff->AddHist1D(hMetmDiff,"",kAzure+1,1,1001);
     //plotMetmDiff->SetYRange(-8,8);
-    //plotMetmDiff->SetYRange(-5,5);
-    plotMetmDiff->SetYRange(-3,3);
-    plotMetmDiff->SetXRange(0,85);
+    plotMetmDiff->SetYRange(-5,5);
+    //plotMetmDiff->SetYRange(-3,3);
+    //plotMetmDiff->SetXRange(0,85);
+    plotMetmDiff->SetXRange(0,70);
     //plotMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotMetmDiff->AddLine(0, 0,85, 0,kBlack,1);
+    //plotMetmDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotMetmDiff->AddLine(0, 0,70, 0,kBlack,1);
     //plotMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-    //plotMetmDiff->Draw(c,kTRUE,format,2);
+    plotMetmDiff->Draw(c,kTRUE,format,2);
     
     sprintf(histName,"WmElNu_%d_log",ipt);
     plotMetm->SetName(histName);
     plotMetm->SetLogy();
     plotMetm->SetYRange(1e-3*(hDataMetm[ipt]->GetMaximum()),10*(hDataMetm[ipt]->GetMaximum()));
-    //plotMetm->Draw(c,kTRUE,format,1);
+    plotMetm->Draw(c,kTRUE,format,1);
 
     // W- MET plot Control region
     awmmframe = pfmet.frame(Bins(NBINS));
@@ -2667,11 +2672,13 @@ cout << "check 6" << endl;
     //plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
     plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"",kAzure+1,1,1001);
     //plotAntiMetmDiff->SetYRange(-8,8);
-    //plotAntiMetmDiff->SetYRange(-5,5);
-    plotAntiMetmDiff->SetYRange(-3,3);
-    plotAntiMetmDiff->SetXRange(0,85);
+    plotAntiMetmDiff->SetYRange(-5,5);
+    //plotAntiMetmDiff->SetYRange(-3,3);
+    //plotAntiMetmDiff->SetXRange(0,85);
+    plotAntiMetmDiff->SetXRange(0,70);
     //plotAntiMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetmDiff->AddLine(0, 0,85, 0,kBlack,1);
+    //plotAntiMetmDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotAntiMetmDiff->AddLine(0, 0,70, 0,kBlack,1);
     //plotAntiMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotAntiMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetmDiff->Draw(c,kTRUE,format,2);
@@ -3150,7 +3157,7 @@ cout << "check 6" << endl;
   gPad->RedrawAxis();
 
   //plotWptDiff=new CPlot(histName,"","p_{T} [Gev]","#chi");
-  plotWptDiff=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
+  plotWptDiff=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
   plotWptDiff->setOutDir(CPlot::sOutDir);
   //plotWptDiff->AddHist1D(hWptDiff,"EX0",ratioColor);
   //plotWptDiff->AddHist1D(hWptDiff,"hist p",kBlack);
@@ -3226,7 +3233,7 @@ cout << "check 6" << endl;
   gPad->RedrawAxis();
   
   //plotWptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
-  plotWptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
+  plotWptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
   plotWptDiffLog->setOutDir(CPlot::sOutDir);
   //plotWptDiffLog->AddHist1D(hWptDiffLog,"EX0",ratioColor);
   //plotWptDiffLog->AddHist1D(hWptDiffLog,"hist p",kBlack);
@@ -3266,7 +3273,7 @@ cout << "check 6" << endl;
   gPad->RedrawAxis();
 
   //plotWptDiff_p=new CPlot(histName,"","p_{T} [Gev]","#chi");
-  plotWptDiff_p=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
+  plotWptDiff_p=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
   plotWptDiff_p->setOutDir(CPlot::sOutDir);
   //plotWptDiff_p->AddHist1D(hWptDiff_p,"EX0",ratioColor);
   //plotWptDiff_p->AddHist1D(hWptDiff_p,"hist p",kBlack);
@@ -3350,7 +3357,7 @@ cout << "check 6" << endl;
   
   //plotWPptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
   //plotWPptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
-  plotWPptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","mc / data ");
+  plotWPptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","mc / data ");
   plotWPptDiffLog->setOutDir(CPlot::sOutDir);
   plotWPptDiffLog->AddHist1D(hWPptDiffLog,"EX0",ratioColor);
   //plotWPptDiffLog->AddHist1D(hWPptDiffLog,"hist p",kBlack);
@@ -3393,7 +3400,7 @@ cout << "check 6" << endl;
   gPad->RedrawAxis();
 
   //plotWptDiff_m=new CPlot(histName,"","p_{T} [Gev]","#chi");
-  plotWptDiff_m=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
+  plotWptDiff_m=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
   plotWptDiff_m->setOutDir(CPlot::sOutDir);
   //plotWptDiff_m->AddHist1D(hWptDiff_m,"EX0",ratioColor);
   //plotWptDiff_m->AddHist1D(hWptDiff_m,"hist p",kBlack);
@@ -3477,13 +3484,13 @@ cout << "check 6" << endl;
 
   //plotWMptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
   //plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
-  plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","mc / data");
+  plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","mc / data");
   plotWMptDiffLog->setOutDir(CPlot::sOutDir);
   plotWMptDiffLog->AddHist1D(hWMptDiffLog,"EX0",ratioColor);
   //plotWMptDiffLog->AddHist1D(hWMptDiffLog,"hist p",kBlack);
   //plotWMptDiffLog->AddHist1D(hWMptDiffLog,"",kAzure+1,1,1001);
   //plotWMptDiffLog->SetYRange(-0.15,0.15);
-  plotWMptDiffLog->SetYRange(0.5,1.5);
+  plotWMptDiffLog->SetYRange(0.7,1.3);
   plotWMptDiffLog->AddLine(0, 1,600, 1,kBlack,1);
   //plotWMptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
   //plotWMptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
