@@ -309,10 +309,12 @@ int MakeRoot_WpT_FEWZ(TString BaseName)
     
     NormDiff_StatErr[i] = Norm_StatErr[i] / BinWidth[i]; 
     NormDiff_PDFErr[i] = Norm_PDFErr[i] * NormDiff_Xsec[i] * 0.01;
-    NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + NormDiff_PDFErr[i]**2); // Scale Error will be added at W-/W+ Ratio code.
+    //NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + NormDiff_PDFErr[i]**2); // Scale Error will be added at W-/W+ Ratio code.
+    NormDiff_TotalUncer[i] = NormDiff_StatErr[i]; // Scale Error and PDF error will be added at W-/W+ Ratio code.
     
     //printf("NormDiff_Xsec : %.8f \t ScaleUp %.8f \t ScaleDown %.8f \t PDFp %.8f \t PDFm %.8f %\n ",NormDiff_Xsec[i],NormDiff_Xsec_up[i],NormDiff_Xsec_down[i],NormDiff_Xsec_PDFp[i], NormDiff_Xsec_PDFm[i]);
-    printf("NormDiff_Xsec : %.8f \t +- %.8f \t  %.2f %\n ",NormDiff_Xsec[i],NormDiff_TotalUncer[i], NormDiff_TotalUncer[i]/NormDiff_Xsec[i]*100);
+    //printf("NormDiff_Xsec : %.8f \t +- %.8f \t  %.2f %\n ",NormDiff_Xsec[i],NormDiff_TotalUncer[i], NormDiff_TotalUncer[i]/NormDiff_Xsec[i]*100);
+    printf("NormDiff_Xsec : %.8f \t +- %.8f \t  %.2f %\n ",NormDiff_Xsec[i],NormDiff_StatErr[i], NormDiff_StatErr[i]/NormDiff_Xsec[i]*100);
   }
   
   // Save in histogram
@@ -335,6 +337,7 @@ int MakeRoot_WpT_FEWZ(TString BaseName)
 
     hxsec_NormDiff->SetBinContent(i+1,NormDiff_Xsec[i]);
     hxsec_NormDiff->SetBinError(i+1,NormDiff_TotalUncer[i]);
+    //hxsec_NormDiff->SetBinError(i+1,NormDiff_StatErr[i]);
     
     hxsec_NormDiff_up->SetBinContent(i+1,NormDiff_Xsec_up[i]);
     hxsec_NormDiff_down->SetBinContent(i+1,NormDiff_Xsec_down[i]);

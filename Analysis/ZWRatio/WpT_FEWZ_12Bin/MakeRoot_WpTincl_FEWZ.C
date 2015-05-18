@@ -149,7 +149,9 @@ int MakeRoot_WpTincl_FEWZ()
     NormDiff_PDFErr[i] = Norm_PDFErr[i] * NormDiff_Xsec[i] * 0.01;
     //NormDiff_TotalUncer[i] = sqrt(NormDiff_StatPDFErr[i]**2 + NormDiff_PDFErr[i]**2 + NormDiff_ScaleErr[i]**2) ; 
     //NormDiff_TotalUncer[i] = sqrt(NormDiff_StatPDFErr[i]**2 + NormDiff_ScaleErr[i]**2) ; 
-    NormDiff_TotalUncer[i] = sqrt(NormDiff_StatPDFErr[i]**2 + NormDiff_PDFErr[i]**2) ; 
+    //NormDiff_TotalUncer[i] = sqrt(NormDiff_StatPDFErr[i]**2 + NormDiff_PDFErr[i]**2) ; 
+    //NormDiff_TotalUncer[i] = sqrt(NormDiff_StatPDFErr[i]**2 + NormDiff_PDFErr[i]**2) ; 
+    NormDiff_TotalUncer[i] = NormDiff_StatErr[i] ; 
     
     //printf("NormDiff_Xsec : %.8f \t ScaleUp %.8f \t ScaleDown %.8f \t PDFp %.8f \t PDFm %.8f %\n ",NormDiff_Xsec[i],NormDiff_Xsec_up[i],NormDiff_Xsec_down[i],NormDiff_Xsec_PDFp[i], NormDiff_Xsec_PDFm[i]);
     printf("NormDiff_Xsec : %.8f \t +-  %.8f \t , %.2f % \n ",NormDiff_Xsec[i],NormDiff_TotalUncer[i], NormDiff_TotalUncer[i]/NormDiff_Xsec[i]*100);

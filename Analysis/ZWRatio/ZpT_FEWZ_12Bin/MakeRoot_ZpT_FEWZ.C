@@ -170,7 +170,8 @@ int MakeRoot_ZpT_FEWZ()
     
     NormDiff_StatErr[i] = Norm_StatErr[i] / BinWidth[i]; 
     NormDiff_PDFErr[i] = Norm_PDFErr[i]*NormDiff_Xsec[i] *0.01;
-    NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + NormDiff_PDFErr[i]**2) ; 
+    //NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + NormDiff_PDFErr[i]**2) ; 
+    NormDiff_TotalUncer[i] = NormDiff_StatErr[i] ; 
     
     printf("NormDiff_Xsec : %.8f \t +- %.8f \t  %.2f %\n ",NormDiff_Xsec[i],NormDiff_TotalUncer[i], NormDiff_TotalUncer[i]/NormDiff_Xsec[i]*100);
   }
