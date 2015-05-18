@@ -63,31 +63,32 @@ int MakeRoot_ZpT_Powheg()
   double NormDiff_ScaleErr[12];
   double NormDiff_TotalUncer[12];
 
-  Xsec[0] =  144.162643  ;  
-  Xsec[1] =  88.3927688  ;
-  Xsec[2] =  55.1971473  ;
-  Xsec[3] =  71.4703140  ;
-  Xsec[4] =  28.1417541  ;
-  Xsec[5] =  16.5493564  ;
-  Xsec[6] =  16.8807888  ;
-  Xsec[7] =  10.6765966  ;  
-  Xsec[8] =  2.61948299  ;
-  Xsec[9] =  0.88769746  ;
-  Xsec[10] = 0.48261285  ; 
-  Xsec[11] = 0.22386257  ;
 
-  StatErr[0]	=2.79909390 ;  
-  StatErr[1]	=2.19179256 ;
-  StatErr[2]	=1.73200604 ;
-  StatErr[3]	=1.97085159 ;
-  StatErr[4]	=1.23670659 ;
-  StatErr[5]	=0.94837836 ;
-  StatErr[6]	=0.95782783 ;
-  StatErr[7]	=0.76174132 ;
-  StatErr[8]	=0.37731049 ;
-  StatErr[9]	=0.21964614 ;
-  StatErr[10]	=0.16195357 ; 
-  StatErr[11]	=0.11030161 ;
+  Xsec[0] = 148759.0   ;  
+  Xsec[1] = 91211.00   ;
+  Xsec[2] = 56957.00   ;
+  Xsec[3] = 73749.00   ;
+  Xsec[4] = 29039.00   ;
+  Xsec[5] = 17077.00   ;
+  Xsec[6] = 17419.00   ;
+  Xsec[7] = 11017.00   ;  
+  Xsec[8] = 2703.000   ;
+  Xsec[9] = 916.0000   ;
+  Xsec[10] =498.0000   ; 
+  Xsec[11] =231.0000   ;
+
+  StatErr[0]	=385.69288300 ;  
+  StatErr[1]	=302.01158918 ;
+  StatErr[2]	=238.65665715 ;
+  StatErr[3]	=271.56767112 ;
+  StatErr[4]	=170.40833313 ;
+  StatErr[5]	=130.67899602 ;
+  StatErr[6]	=131.98105925 ;
+  StatErr[7]	=104.96189785 ;
+  StatErr[8]	=51.99038373  ;
+  StatErr[9]	=30.26549190  ;
+  StatErr[10]	=22.31591360  ; 
+  StatErr[11]	=15.19868415  ;
 
   ////Zpt 12 powheg Norm PDF error in %
   normPDFErr[0]	       =0.280629    ;   
@@ -146,7 +147,22 @@ int MakeRoot_ZpT_Powheg()
 
   // Calculate Normalized Xsec and Total uncertainty by using 1st order differential formula ??? 
   //ErrPropaNormXsec(Xsec, TotalUncer, Norm_Xsec, Norm_TotalUncer); 
-  
+ 
+//   cout<<"60 Xsec\t"<< 9.42507+6.22349 <<"\tstat err\t"<<sqrt(0.00561647*0.00561647 + 0.00448416*0.00448416)  <<endl;
+//   cout<<"80 Xsec\t"<< 4.18073+2.8357 <<"\tstat err\t"<<sqrt(0.00370456*0.00370456 + 0.00302071*0.00302071 )  <<endl;
+//   cout<<"100 Xsec\t"<<1.9777 + 1.43425  <<
+//     "\tstat err\t"<<sqrt(0.00249719*0.00249719+0.00215388*0.00215388 )  <<endl;
+//   cout<<"120 Xsec\t"<<1.06091+0.800329+0.614703+0.480476 <<
+//     "\tstat err\t"<<sqrt(0.00189177*0.00189177+0.00167684*0.00167684+0.00150472*0.00150472+0.00146742*0.00146742 )  <<endl;
+//
+//   cout<<"170 Xsec\t"<< 0.372581+0.293915+0.2241690+ 0.179449 <<
+//     "\tstat err\t"<<sqrt(0.00134351*0.00134351+0.00116163*0.00116163+0.000947886*0.000947886+0.00102777*0.00102777 )  <<endl;
+//   
+//   cout<<"220 Xsec\t"<< 0.147707+0.119982+0.0980798+0.0810495+0.0667002+0.0558383 <<
+//   "\tstat err\t"<<sqrt(0.000398149*0.000398149+0.000338095*0.000338095+0.000301994*0.000301994+0.000277197*0.000277197+0.000258883*0.000258883+0.000246317*0.000246317 )  <<endl;
+//   cout<<"425 Xsec\t"<<0.167625+0.0732198+0.0343134+0.0175463+0.00856598+0.00447356+0.00265668  <<
+//   "\tstat err\t"<<sqrt(0.000907514*0.000907514+0.000644972*0.000644972+0.00052556*0.00052556+0.000445827*0.000445827+0.000390905*0.000390905+0.000344287*0.000344287+0.000307968*0.000307968 )  <<endl;
+   //cout<<"Xsec\t"<<  <<"\tstat err\t"<<sqrt( )  <<endl;
   // Calculate Normalized Differential Xsec and Total Uncertainty
   for(int i(0); i<12; i++)
   {
@@ -156,16 +172,18 @@ int MakeRoot_ZpT_Powheg()
     
     NormDiff_StatErr[i] = Norm_StatErr[i] / BinWidth[i]; 
     //NormDiff_ScaleErr[i] = TMath::Max(fabs(NormDiff_Xsec_up[i]-NormDiff_Xsec[i]),fabs(NormDiff_Xsec_down[i]-NormDiff_Xsec[i]));
-    NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + (0.01*normPDFErr[i]*NormDiff_Xsec[i])**2) ; 
-    //NormDiff_TotalUncer[i] = NormDiff_StatPDFErr[i] ; 
+    //NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + (0.01*normPDFErr[i]*NormDiff_Xsec[i])**2) ; 
     
-    printf("NormDiff_Xsec : %.8f \t +- %.8f \t  %.2f %\n ",NormDiff_Xsec[i],NormDiff_TotalUncer[i], NormDiff_TotalUncer[i]/NormDiff_Xsec[i]*100);
+    // we calculated PDF error directly from Z/Winlc ratio. Here take only stat error
+    NormDiff_TotalUncer[i] = NormDiff_StatErr[i] ; 
+    
+    printf("NormDiff_Xsec : %.8f \t +- %.10f \t  %.2f %\n ",NormDiff_Xsec[i],NormDiff_TotalUncer[i], NormDiff_TotalUncer[i]/NormDiff_Xsec[i]*100);
   }
    
   cout << fixed << setprecision(10);
   for(int i(0); i<12; i++)
    {
-     cout<<"StatErr\t"<<StatErr[i]<<" \tNor stat error\t"<<StatErr[i]/435.685/BinWidth[i]<<"\t NormDiff_StatErr[i] Toy \t"<<NormDiff_StatErr[i]<<endl;
+     cout<<"StatErr\t"<<StatErr[i]<<" \tNor stat error\t"<<StatErr[i]/449576/BinWidth[i]<<"\t NormDiff_StatErr[i] Toy \t"<<NormDiff_StatErr[i]<<endl;
    }
    for(int i(0); i<12; i++)
    {

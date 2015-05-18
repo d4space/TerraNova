@@ -184,7 +184,10 @@ int MakeRoot_WpT_Powheg(TString BaseName)
     
     //NormDiff_StatErr[i] = StatErr[i] /TotalXsec/BinWidth[i]; 
     NormDiff_StatErr[i] = Norm_StatErr[i] /BinWidth[i]; 
-    NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + (0.01*Norm_PDFErr[i]*NormDiff_Xsec[i] )**2) ; 
+    //NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + (0.01*Norm_PDFErr[i]*NormDiff_Xsec[i] )**2) ; 
+    
+    /// we calculated Norm PDF for Powheg directly for W-/W+. So here we save only stat error.
+    NormDiff_TotalUncer[i] = NormDiff_StatErr[i] ; 
  
     cout<<"Xsec\t"<<Xsec[i]<<" \t TotXsec\t "<<TotalXsec <<"\tNorm_Xsec\t"<<Norm_Xsec[i]<<"\tNormDiff_Xsec \t"<<NormDiff_Xsec[i]<<endl;
 
@@ -197,7 +200,13 @@ int MakeRoot_WpT_Powheg(TString BaseName)
   cout << fixed << setprecision(10);
   for(int i(0); i<12; i++)
   {
-    cout<<"StatErr\t"<<StatErr[i]<<" \t TotXsec\t "<<TotalXsec <<"\tNor stat error\t"<<StatErr[i] /TotalXsec/BinWidth[i]<<"\t NormDiff_StatErr[i] Toy \t"<<NormDiff_StatErr[i]<<endl;
+    cout<<"StatErr\t"<<StatErr[i]<<" \t TotXsec\t "<<TotalXsec <<
+      "\tNor stat error\t"<<StatErr[i] /TotalXsec/BinWidth[i]<<
+      "\t error in%\t"<<(StatErr[i] /TotalXsec/BinWidth[i])/NormDiff_Xsec[i]*100<<
+      "\t NormDiff_StatErr[i] Toy \t"<<NormDiff_StatErr[i]<<
+      "\t  Toy in % \t"<<NormDiff_StatErr[i]/NormDiff_Xsec[i]*100<<
+      
+      endl;
   } 
   for(int i(0); i<12; i++)
   {

@@ -149,7 +149,10 @@ int MakeRoot_InclWpT_Powheg(TString BaseName)
     
     //NormDiff_StatErr[i] = StatErr[i] /TotalXsec/BinWidth[i]; 
     NormDiff_StatErr[i] = Norm_StatErr[i] /BinWidth[i]; 
-    NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + (0.01*Norm_PDFErr[i]*NormDiff_Xsec[i] )**2) ; 
+    //NormDiff_TotalUncer[i] = sqrt(NormDiff_StatErr[i]**2 + (0.01*Norm_PDFErr[i]*NormDiff_Xsec[i] )**2) ; 
+    
+    /// we calculated Z/W Pdf error directly for Z/W ration. so take only stat error here.
+    NormDiff_TotalUncer[i] = NormDiff_StatErr[i] ; 
  
     cout<<"Xsec\t"<<Xsec[i]<<" \t TotXsec\t "<<TotalXsec <<"\tNorm_Xsec\t"<<Norm_Xsec[i]<<"\tNormDiff_Xsec \t"<<NormDiff_Xsec[i]<<endl;
 
