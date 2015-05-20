@@ -6,7 +6,7 @@ process.load("TerraNova.NtupleMaker.wAnalysis_MC_cff")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.MessageLogger.cerr.FwkReport.reportEvery = 10000
 
 #process.load("FWCore.MessageLogger.MessageLogger_cfi")
 #process.MessageLogger = cms.Service("MessageLogger")

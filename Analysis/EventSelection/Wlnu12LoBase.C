@@ -214,8 +214,10 @@ int Wlnu12LoBase::ZbestSelect()
     if(AnaChannel == "TauHighPU")if(TauCutZ(iz) == -1) continue;
     if(AnaChannel == "Muon2012LoPU")if(MuonCutZ(iz) == -1) continue;
     if(AnaChannel == "Electron2012LoPU")if(ElectronCutZ(iz) == -1) continue;
-    if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10)continue;
-    if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10)continue;
+    //if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10)continue;//Wpt
+    //if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10)continue;//Wpt
+    if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 20)continue;//Zpt
+    if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 20)continue;//Zpt
     if((Mode =="RecoilEvaRD")||(Mode == "RecoilEvaMC"))if((*Z_Lept2_pt)[iz] < 15)continue;
     
     Z.Pass=true;
@@ -232,6 +234,8 @@ int Wlnu12LoBase::ZbestSelect()
       Z.Lep2Pz  = (*Z_Lept2_pz)[iz];
       Z.Lep2En  = (*Z_Lept2_en)[iz];
       Z.Lep2Phi = (*Z_Lept2_phi)[iz];
+      Z.Lep1Charge = (*Z_Lept1_charge)[iz];
+      Z.Lep2Charge = (*Z_Lept2_charge)[iz];
 
       Z.ZDiLep2D->Set(
 	  (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],

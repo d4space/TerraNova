@@ -51,6 +51,7 @@ public :
    double 	WptBins[NWptBinPlus]; //Wpt bins
    double 	LepPtBins[8]; //LepPt bins
    double 	LepEtaBins[11]; //LepEta bins
+   double 	ZmassEtaBins[7]; //LepEta bins
      
    Wlnu12LoBase(TTree *tree=0,double weight=1,
        TString OutNameBase_ = "Output",TString Mode="analysis",
@@ -210,8 +211,8 @@ protected:
     double pt;
     double ptRecoil;
     double mass;
-    double Lep1Pt, Lep1Pz, Lep1Phi, Lep1En, Lep1etaSC;
-    double Lep2Pt, Lep2Pz, Lep2Phi, Lep2En, Lep2etaSC;
+    double Lep1Pt, Lep1Pz, Lep1Phi, Lep1En, Lep1etaSC, Lep1Charge;
+    double Lep2Pt, Lep2Pz, Lep2Phi, Lep2En, Lep2etaSC, Lep2Charge;
     TVector2 *ZDiLep2D;
     TVector2 *DiLep2D;
     double DiLep_pt;
@@ -510,6 +511,15 @@ Wlnu12LoBase::Wlnu12LoBase(TTree *Wlnu12LoBaseTree, double lumiweight,
    RecoilBins[14] = 100.;
    RecoilBins[15] = 120.;
    RecoilBins[16] = 150.;
+   
+   //Zmass LepEta bins
+   ZmassEtaBins[0] = -2.1;
+   ZmassEtaBins[1] = -1.4;
+   ZmassEtaBins[2] = -0.7;
+   ZmassEtaBins[3] = 0.;
+   ZmassEtaBins[4] = 0.7;
+   ZmassEtaBins[5] = 1.4;
+   ZmassEtaBins[6] = 2.1;
 
    if (Wlnu12LoBaseTree == 0 ) {
      cout<<"Usage: Wlnu12LoBase(TTree*... ) "<<endl;
@@ -1101,6 +1111,7 @@ Int_t Wlnu12LoBase::MuonCutZ(int i)
   if(!(*Z_Lept1_isGlobal)[i])return -1;
   if(!(*Z_Lept2_isGlobal)[i])return -1;
   if((*Z_Lept1_pt)[i] < 20) return -1;//trigger SingleMu15 but we use 25 for Wpt
+  if((*Z_Lept2_pt)[i] < 20) return -1;//Zpt cut
   if(fabs((*Z_Lept1_eta)[i])>2.1) return -1;
   if(fabs((*Z_Lept2_eta)[i])>2.1) return -1;
   if((*Z_Lept1_globalNormChi2)[i]<0 || (*Z_Lept1_globalNormChi2)[i] >= 10) return -1;
@@ -1292,6 +1303,8 @@ Int_t Wlnu12LoBase::InitVar4Evt()
   Z.Lep2Phi = 0;
   Z.Lep1etaSC = 0;
   Z.Lep2etaSC = 0;
+  Z.Lep1Charge = 0;
+  Z.Lep2Charge = 0;
   
   glbMuChi2=0;
   addLepN=0;corrMet=0;

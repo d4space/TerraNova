@@ -63,6 +63,11 @@ protected:
   TH1D*	h1_ZmassCorr_BE;
   TH1D*	h1_ZmassCorr_EE;
   
+  TH1D*	h1_Zmass_muP[ScaleBins];
+  TH1D*	h1_Zmass_muM[ScaleBins];
+  TH1D*	h1_ZmassCorr_muP[ScaleBins];
+  TH1D*	h1_ZmassCorr_muM[ScaleBins];
+  
   TH1D* h1_ZmassDaughEtaEle[ScElCombiBins];
   TH1D* h1_ZmassDaughEtaEleDiag[ScElCombiBinsDiag];
   TH1D* h1_ZmassDaughEtaMu[ScMuCombiBins];

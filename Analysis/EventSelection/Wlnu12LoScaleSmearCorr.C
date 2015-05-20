@@ -44,15 +44,18 @@ void Wlnu12LoScaleSmearCorr::Loop()
   cout<<"==================================================================="<<endl;
   gBenchmark->Start("Wlnu12LoScaleSmearCorr");
 
-  double eleMass=0.000510998902;
-  double muMass=0.105658389;
-  
   if (fChain == 0) return;
    //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
   Ntries = fChain->GetEntries();
 
   cout<<"Total: "<<Ntries<<endl;
 
+  double leptMass;
+  
+  leptMass = 0.105658389;
+  if(AnaChannel == "Electron2012LoPU")
+    leptMass = 0.000510998902;
+	
   //============================================
   // Looping for each Event 
   //============================================
@@ -96,37 +99,35 @@ void Wlnu12LoScaleSmearCorr::Loop()
     //cout<<"W    size: "<<W_pt->size()<<endl;
   
     ZbestSelect();
-    if(Z.Pass)
+    
+    if(!Z.Pass) continue;
+    
+    mNZevt++;
+    if(Mode == "ScaleMakeMC" || Mode == "ScaleMakeRD")
     {
-      mNZevt++;
-      if(Mode == "ScaleMakeMC" || Mode == "ScaleMakeRD")
-      {
-	int etaRange1 = EtaRange(Z.Lep1etaSC);
-        int etaRange2 = EtaRange(Z.Lep2etaSC);
-        if(AnaChannel == "Electron2012LoPU")
-	{
-	  Fill_EleZmassDaughEta(etaRange1,etaRange2);
-	}
-	if(AnaChannel == "Muon2012LoPU")
-        {
-	  Fill_MuZmassDaughEta(etaRange1,etaRange2);
-	}
-      }
-      Fill_ZHisto();
-      if(Mode == "ScaleMakeMC")
-      {
-	Scale_corrZlep1Pt = 1.0/GetScaleCorr(Z.Lep1etaSC)*Z.Lep1Pt;
-	Scale_corrZlep2Pt = 1.0/GetScaleCorr(Z.Lep2etaSC)*Z.Lep2Pt;
-	PtEtaPhiMLorentzVector Zele1_4(Scale_corrZlep1Pt,Z.Lep1etaSC,Z.Lep1Phi,eleMass);
-	PtEtaPhiMLorentzVector Zele2_4(Scale_corrZlep2Pt,Z.Lep2etaSC,Z.Lep2Phi,eleMass);
-	smearSFLep1 = gRandom->Gaus(Zele1_4.E(), GetSmearCorr(Z.Lep1etaSC))/Zele1_4.E();
-	smearSFLep2 = gRandom->Gaus(Zele2_4.E(), GetSmearCorr(Z.Lep2etaSC))/Zele2_4.E();
-	PtEtaPhiMLorentzVector Z_4 = smearSFLep1*Zele1_4 + smearSFLep2*Zele2_4;
-	Z.mass=Z_4.M();
-	Fill_CorrectedZHisto();
-      }
-    }//Zpass
+      int etaRange1 = EtaRange(Z.Lep1etaSC);
+      int etaRange2 = EtaRange(Z.Lep2etaSC);
+      if(AnaChannel == "Electron2012LoPU") Fill_EleZmassDaughEta(etaRange1,etaRange2);
+      if(AnaChannel == "Muon2012LoPU")     Fill_MuZmassDaughEta(etaRange1,etaRange2);
+    }
+    
+    Fill_ZHisto();
+    if(Mode == "ScaleMakeMC")
+    {
+      Scale_corrZlep1Pt = 1.0/GetScaleCorr(Z.Lep1etaSC)*Z.Lep1Pt;
+      Scale_corrZlep2Pt = 1.0/GetScaleCorr(Z.Lep2etaSC)*Z.Lep2Pt;
+      
+      PtEtaPhiMLorentzVector Zlept1_4(Scale_corrZlep1Pt,Z.Lep1etaSC,Z.Lep1Phi,leptMass);
+      PtEtaPhiMLorentzVector Zlept2_4(Scale_corrZlep2Pt,Z.Lep2etaSC,Z.Lep2Phi,leptMass);
+      
+      smearSFLep1 = gRandom->Gaus(Zlept1_4.E(), GetSmearCorr(Z.Lep1etaSC))/Zlept1_4.E();
+      smearSFLep2 = gRandom->Gaus(Zlept2_4.E(), GetSmearCorr(Z.Lep2etaSC))/Zlept2_4.E();
+      PtEtaPhiMLorentzVector Z_4 = smearSFLep1*Zlept1_4 + smearSFLep2*Zlept2_4;
+      Z.mass=Z_4.M();
+    }
+    Fill_CorrectedZHisto();
   }//Ntries
+
   cout<<"Passed W evts: "<<mNWevt<<endl;
   Fout<<"Passed W evts: "<<mNWevt<<endl;
   //Results======================
@@ -205,15 +206,27 @@ int Wlnu12LoScaleSmearCorr::InitVar4Evt()
 int Wlnu12LoScaleSmearCorr::InitHistogram()
 {
   myFile = new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
-  h1_Zmass   = new TH1D("h1_Zmass","Z Mass",60,60.,120);
-  h1_Zmass_BB= new TH1D("h1_Zmass_BB","Inv Mass for dilepts BB",60.,60.,120.);
-  h1_Zmass_BE= new TH1D("h1_Zmass_BE","Inv Mass for dilepts BE",60.,60.,120.);
-  h1_Zmass_EE= new TH1D("h1_Zmass_EE","Inv Mass for dilepts EE",60.,60.,120.);
+  h1_Zmass   = new TH1D("h1_Zmass","Z Mass",20,80.,100);
+  h1_Zmass_BB= new TH1D("h1_Zmass_BB","Inv Mass for dilepts BB",20,80.,100.);
+  h1_Zmass_BE= new TH1D("h1_Zmass_BE","Inv Mass for dilepts BE",20,80.,100.);
+  h1_Zmass_EE= new TH1D("h1_Zmass_EE","Inv Mass for dilepts EE",20,80.,100.);
   
-  h1_ZmassCorr= new TH1D("h1_ZmassCorr","Inv Mass for dilepts after Scale&Smear",60.,60.,120.);
-  h1_ZmassCorr_BB= new TH1D("h1_ZmassCorr_BB","Inv Mass for dilepts after Scale&Smear BB",60.,60.,120.);
-  h1_ZmassCorr_BE= new TH1D("h1_ZmassCorr_BE","Inv Mass for dilepts after Scale&Smear BE",60.,60.,120.);
-  h1_ZmassCorr_EE= new TH1D("h1_ZmassCorr_EE","Inv Mass for dilepts after Scale&Smear EE",60.,60.,120.);
+  h1_ZmassCorr= new TH1D("h1_ZmassCorr","Inv Mass for dilepts after Scale&Smear",20,80.,100.);
+  h1_ZmassCorr_BB= new TH1D("h1_ZmassCorr_BB","Inv Mass for dilepts after Scale&Smear BB",20,80.,100.);
+  h1_ZmassCorr_BE= new TH1D("h1_ZmassCorr_BE","Inv Mass for dilepts after Scale&Smear BE",20,80.,100.);
+  h1_ZmassCorr_EE= new TH1D("h1_ZmassCorr_EE","Inv Mass for dilepts after Scale&Smear EE",20,80.,100.);
+
+  for(int iBin(0);iBin<ScaleBins;iBin++){
+    sprintf(histName,"h1_Zmass_muP_%d",iBin);
+    h1_Zmass_muP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_Zmass_muM_%d",iBin);
+    h1_Zmass_muM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    
+    sprintf(histName,"h1_ZmassCorr_muP_%d",iBin);
+    h1_ZmassCorr_muP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_ZmassCorr_muM_%d",iBin);
+    h1_ZmassCorr_muM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+  }
 
   if(Mode == "ScaleMakeMC" || Mode == "ScaleMakeRD")
   {
@@ -222,12 +235,12 @@ int Wlnu12LoScaleSmearCorr::InitHistogram()
       for(int i(0);i<ScElCombiBins;i++)
       {
 	sprintf(histName,"h1_ZmassDaughEtaEle_%d",i);
-	h1_ZmassDaughEtaEle[i]= new TH1D(histName,"ZmassDaughterEtaEle",60,60,120);
+	h1_ZmassDaughEtaEle[i]= new TH1D(histName,"ZmassDaughterEtaEle",20,80.,100.);
       }
       for(int i(0);i<ScElCombiBinsDiag;i++)
       {
 	sprintf(histName,"h1_ZmassDaughEtaEleDiag_%d",i);
-	h1_ZmassDaughEtaEleDiag[i]= new TH1D(histName,"ZmassDaughterEtaEleDiag",60,60,120);
+	h1_ZmassDaughEtaEleDiag[i]= new TH1D(histName,"ZmassDaughterEtaEleDiag",20,80.,100.);
       }
     }
     if(AnaChannel=="Muon2012LoPU")
@@ -235,7 +248,7 @@ int Wlnu12LoScaleSmearCorr::InitHistogram()
       for(int i(0);i<ScMuCombiBins;i++)
       {
 	sprintf(histName,"h1_ZmassDaughEtaMu_%d",i);
-	h1_ZmassDaughEtaMu[i]= new TH1D(histName,"ZmassDaughterEtaMu",60,60,120);
+	h1_ZmassDaughEtaMu[i]= new TH1D(histName,"ZmassDaughterEtaMu",20,80.,100.);
       }
     }
   }
@@ -245,48 +258,121 @@ int Wlnu12LoScaleSmearCorr::Fill_ZHisto()
 {
   h1_Zmass->Fill(Z.mass,mTTW);
   
-  //Barrel Barrel
-  if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.4442) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.4442))
+  if( AnaChannel=="Electron2012LoPU")
   {
-    h1_Zmass_BB->Fill(Z.mass,mTTW);
+    //Barrel Barrel
+    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.4442) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.4442))
+      h1_Zmass_BB->Fill(Z.mass,mTTW);
+    //Barrel Endcap
+    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.4442) && (fabs(Z.Lep2etaSC) >= 1.566 && fabs(Z.Lep2etaSC) < 2.5))
+      h1_Zmass_BE->Fill(Z.mass,mTTW);
+    if((fabs(Z.Lep1etaSC) >= 1.566 && fabs(Z.Lep1etaSC) < 2.5) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.4442))
+      h1_Zmass_BE->Fill(Z.mass,mTTW);
+    // Endcap Endcap
+    if((fabs(Z.Lep1etaSC) >= 1.566 && fabs(Z.Lep1etaSC) < 2.5) && (fabs(Z.Lep2etaSC) >= 1.566 && fabs(Z.Lep2etaSC) < 2.5))
+      h1_Zmass_EE->Fill(Z.mass,mTTW);
   }
-  //Barrel Endcap
-  if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.4442) && (fabs(Z.Lep2etaSC) >= 1.566 && fabs(Z.Lep2etaSC) < 2.5))
+  
+  if( AnaChannel=="Muon2012LoPU")
   {
-    h1_Zmass_BE->Fill(Z.mass,mTTW);
-  }else if((fabs(Z.Lep1etaSC) >= 1.566 && fabs(Z.Lep1etaSC) < 2.5) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.4442))
-  {
-    h1_Zmass_BE->Fill(Z.mass,mTTW);
-  }
-  // Endcap Endcap
-  if((fabs(Z.Lep1etaSC) >= 1.566 && fabs(Z.Lep1etaSC) < 2.5) && (fabs(Z.Lep2etaSC) >= 1.566 && fabs(Z.Lep2etaSC) < 2.5))
-  {
-    h1_Zmass_EE->Fill(Z.mass,mTTW);
+    //Barrel Barrel
+    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.))
+      h1_Zmass_BB->Fill(Z.mass,mTTW);
+    //Barrel Endcap
+    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.) && (fabs(Z.Lep2etaSC) >= 1. && fabs(Z.Lep2etaSC) < 2.4))
+      h1_Zmass_BE->Fill(Z.mass,mTTW);
+    if((fabs(Z.Lep1etaSC) >= 1. && fabs(Z.Lep1etaSC) < 2.4) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.))
+      h1_Zmass_BE->Fill(Z.mass,mTTW);
+    // Endcap Endcap
+    if((fabs(Z.Lep1etaSC) >= 1. && fabs(Z.Lep1etaSC) < 2.4) && (fabs(Z.Lep2etaSC) >= 1. && fabs(Z.Lep2etaSC) < 2.4))
+      h1_Zmass_EE->Fill(Z.mass,mTTW);
+    
+    for(int iBin(0);iBin<ScaleBins;iBin++){
+      //Check muon Plus eta and fill Zmass
+      //========================================
+      if(Z.Lep1Charge>0)
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_muP[iBin]->Fill(Z.mass,mTTW);
+      
+      if(Z.Lep2Charge>0)
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_muP[iBin]->Fill(Z.mass,mTTW);
+
+      //========================================
+      //Check muon Plus eta and fill Zmass
+      //========================================
+      if(Z.Lep1Charge<0)
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_muM[iBin]->Fill(Z.mass,mTTW);
+      
+      if(Z.Lep2Charge<0)
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_muM[iBin]->Fill(Z.mass,mTTW);
+      //========================================
+      }
+    
   }
   return 0;
 }
+
 int Wlnu12LoScaleSmearCorr::Fill_CorrectedZHisto()
 {
   h1_ZmassCorr->Fill(Z.mass,mTTW);
-  //Barrel Barrel
-  if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.4442) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.4442))
+  
+  if( AnaChannel=="Electron2012LoPU")
   {
-    h1_ZmassCorr_BB->Fill(Z.mass,mTTW);
+    //Barrel Barrel
+    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.4442) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.4442))
+      h1_ZmassCorr_BB->Fill(Z.mass,mTTW);
+    //Barrel Endcap
+    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.4442) && (fabs(Z.Lep2etaSC) >= 1.566 && fabs(Z.Lep2etaSC) < 2.5))
+      h1_ZmassCorr_BE->Fill(Z.mass,mTTW);
+    if((fabs(Z.Lep1etaSC) >= 1.566 && fabs(Z.Lep1etaSC) < 2.5) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.4442))
+      h1_ZmassCorr_BE->Fill(Z.mass,mTTW);
+    //Endcap Endcap
+    if((fabs(Z.Lep1etaSC) >= 1.566 && fabs(Z.Lep1etaSC) < 2.5) && (fabs(Z.Lep2etaSC) >= 1.566 && fabs(Z.Lep2etaSC) < 2.5))
+      h1_ZmassCorr_EE->Fill(Z.mass,mTTW);
   }
-  //Barrel Endcap
-   if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.4442) && (fabs(Z.Lep2etaSC) >= 1.566 && fabs(Z.Lep2etaSC) < 2.5))
-   {
-     h1_ZmassCorr_BE->Fill(Z.mass,mTTW);
-   }else if((fabs(Z.Lep1etaSC) >= 1.566 && fabs(Z.Lep1etaSC) < 2.5) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.4442))
-   {
-     h1_ZmassCorr_BE->Fill(Z.mass,mTTW);
-   }
-   // Endcap Endcap
-   if((fabs(Z.Lep1etaSC) >= 1.566 && fabs(Z.Lep1etaSC) < 2.5) && (fabs(Z.Lep2etaSC) >= 1.566 && fabs(Z.Lep2etaSC) < 2.5))
-   {
-     h1_ZmassCorr_EE->Fill(Z.mass,mTTW);
-   }
-   return 0;
+  
+  if( AnaChannel=="Muon2012LoPU")
+  {
+    //Barrel Barrel
+    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.))
+      h1_ZmassCorr_BB->Fill(Z.mass,mTTW);
+    //Barrel Endcap
+    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.) && (fabs(Z.Lep2etaSC) >= 1. && fabs(Z.Lep2etaSC) < 2.4))
+      h1_ZmassCorr_BE->Fill(Z.mass,mTTW);
+    if((fabs(Z.Lep1etaSC) >= 1. && fabs(Z.Lep1etaSC) < 2.4) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.))
+      h1_ZmassCorr_BE->Fill(Z.mass,mTTW);
+    //Endcap Endcap
+    if((fabs(Z.Lep1etaSC) >= 1. && fabs(Z.Lep1etaSC) < 2.4) && (fabs(Z.Lep2etaSC) >= 1. && fabs(Z.Lep2etaSC) < 2.4))
+      h1_ZmassCorr_EE->Fill(Z.mass,mTTW);
+    
+    for(int iBin(0);iBin<ScaleBins;iBin++){
+      //Check muon Plus eta and fill Zmass
+      //========================================
+      if(Z.Lep1Charge>0)
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_muP[iBin]->Fill(Z.mass,mTTW);
+      
+      if(Z.Lep2Charge>0)
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_muP[iBin]->Fill(Z.mass,mTTW);
+
+      //========================================
+      //Check muon Plus eta and fill Zmass
+      //========================================
+      if(Z.Lep1Charge<0)
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_muM[iBin]->Fill(Z.mass,mTTW);
+      
+      if(Z.Lep2Charge<0)
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_muM[iBin]->Fill(Z.mass,mTTW);
+      //========================================
+      }
+  }
+  return 0;
 }
 
 int Wlnu12LoScaleSmearCorr::Write_ZHisto()
@@ -295,6 +381,11 @@ int Wlnu12LoScaleSmearCorr::Write_ZHisto()
   h1_Zmass_BB->Write();
   h1_Zmass_BE->Write();
   h1_Zmass_EE->Write();
+  for(int ieta=0;ieta<ScaleBins;ieta++)
+  {
+    h1_Zmass_muP[ieta]->Write();
+    h1_Zmass_muM[ieta]->Write();
+  }
  
   if(Mode == "ScaleMakeMC")
   {
@@ -302,6 +393,11 @@ int Wlnu12LoScaleSmearCorr::Write_ZHisto()
     h1_ZmassCorr_BB->Write();
     h1_ZmassCorr_BE->Write();
     h1_ZmassCorr_EE->Write(); 
+    for(int ieta=0;ieta<ScaleBins;ieta++)
+    {
+      h1_ZmassCorr_muP[ieta]->Write();
+      h1_ZmassCorr_muM[ieta]->Write();
+    }
   }
   
   if(Mode =="ScaleMakeMC" || Mode =="ScaleMakeRD")
@@ -507,7 +603,6 @@ Double_t Wlnu12LoScaleSmearCorr::GetSmearCorr(double LepEta)
     if(fabs(LepEta) >= 0.8 && fabs(LepEta) < 1.2) {return  0.743902;}
     if(fabs(LepEta) >= 1.2 && fabs(LepEta) < 1.6) {return  0.637325;}
     if(fabs(LepEta) >= 1.6 && fabs(LepEta) < 2.1) {return  0.611946;}
-
   }
 }
 
