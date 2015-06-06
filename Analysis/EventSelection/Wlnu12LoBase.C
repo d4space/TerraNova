@@ -214,10 +214,9 @@ int Wlnu12LoBase::ZbestSelect()
     if(AnaChannel == "TauHighPU")if(TauCutZ(iz) == -1) continue;
     if(AnaChannel == "Muon2012LoPU")if(MuonCutZ(iz) == -1) continue;
     if(AnaChannel == "Electron2012LoPU")if(ElectronCutZ(iz) == -1) continue;
-    //if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10)continue;//Wpt
-    //if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10)continue;//Wpt
-    if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 20)continue;//Zpt
-    if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 20)continue;//Zpt
+    if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10)continue;//Wpt
+    if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10)continue;//Wpt
+    //if(Mode =="ScaleMakeRD" || Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 20)continue; //Use this cuts for the Zmass study (Zpt used pt>20)
     if((Mode =="RecoilEvaRD")||(Mode == "RecoilEvaMC"))if((*Z_Lept2_pt)[iz] < 15)continue;
     
     Z.Pass=true;

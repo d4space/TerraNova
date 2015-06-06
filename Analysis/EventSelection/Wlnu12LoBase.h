@@ -51,7 +51,8 @@ public :
    double 	WptBins[NWptBinPlus]; //Wpt bins
    double 	LepPtBins[8]; //LepPt bins
    double 	LepEtaBins[11]; //LepEta bins
-   double 	ZmassEtaBins[7]; //LepEta bins
+   double 	ZmassEtaBins[ScaleBins+1]; //Zmass study LepEta bins
+   double 	ZmassPtBins[4]; //Zmass study LepPt bins
      
    Wlnu12LoBase(TTree *tree=0,double weight=1,
        TString OutNameBase_ = "Output",TString Mode="analysis",
@@ -126,7 +127,7 @@ protected:
   int RandomSeed;
   bool Debug;
   // Miscal
-  char histName[30];
+  char histName[50];
   TString mResultDir;
   TLorentzVector pfMEtTL, NoPuMEtTL, MVaMEtTL,
 		 genMEtTrueTL, genMEtCaloTL, genMEtCaloAndNonPromptTL;
@@ -520,6 +521,12 @@ Wlnu12LoBase::Wlnu12LoBase(TTree *Wlnu12LoBaseTree, double lumiweight,
    ZmassEtaBins[4] = 0.7;
    ZmassEtaBins[5] = 1.4;
    ZmassEtaBins[6] = 2.1;
+
+   //Zmass LepPt bins
+   ZmassPtBins[0] = 20;
+   ZmassPtBins[1] = 30;
+   ZmassPtBins[2] = 40;
+   ZmassPtBins[3] = 45;
 
    if (Wlnu12LoBaseTree == 0 ) {
      cout<<"Usage: Wlnu12LoBase(TTree*... ) "<<endl;

@@ -7,7 +7,7 @@
 using namespace std;
 
 //using namespace ROOT::Math;
-void WPtScaleSmearMakeHisto()
+void WtZmassMakeHisto()
 {
 //======================================
 // choose Mode and AnaChannel here  !!!
@@ -46,7 +46,7 @@ void WPtScaleSmearMakeHisto()
   Wlnu12LoScaleSmearCorr Wmunu12LoRD(
       TC_Muon_RD_LowPU,LumiW_Muon_RD_LowPU, Muon_RD_LowPU_BaseName,ModeRD,AnaChannelMu,0,RunOnRD,0x1235);
   Wmunu12LoRD.Loop();
-/*
+
 //DYToMuMu========================================
   cout<<"DYToMuMu_S8========================="<<endl;
   TChain *TC_DYToMuMu_S8	= new TChain("WMuNeu/tree","");
@@ -55,7 +55,7 @@ void WPtScaleSmearMakeHisto()
   Wlnu12LoScaleSmearCorr Wmunu12LoDYToMuMu(
       TC_DYToMuMu_S8,LumiW_Muon_DYToMuMu_S8, DYToMuMu_BaseName,ModeMC,AnaChannelMu,0,RunOnMC,0x1235);
   Wmunu12LoDYToMuMu.Loop();
-*/
+
 /*  
 //====================
 /////////// Electron LowPU

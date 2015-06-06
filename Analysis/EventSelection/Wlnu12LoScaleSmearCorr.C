@@ -114,8 +114,17 @@ void Wlnu12LoScaleSmearCorr::Loop()
     Fill_ZHisto();
     if(Mode == "ScaleMakeMC")
     {
-      Scale_corrZlep1Pt = 1.0/GetScaleCorr(Z.Lep1etaSC)*Z.Lep1Pt;
-      Scale_corrZlep2Pt = 1.0/GetScaleCorr(Z.Lep2etaSC)*Z.Lep2Pt;
+      //===================
+      //Wpt study apply shift correction to the Data
+      //=====================
+      //Scale_corrZlep1Pt = 1.0/GetScaleCorr(Z.Lep1etaSC)*Z.Lep1Pt;
+      //Scale_corrZlep2Pt = 1.0/GetScaleCorr(Z.Lep2etaSC)*Z.Lep2Pt;
+
+      //===================
+      //Zpt study did not apply shift correction to the Data. We don't apply shift correction to the Data
+      //=====================
+      Scale_corrZlep1Pt = Z.Lep1Pt;
+      Scale_corrZlep2Pt = Z.Lep2Pt;
       
       PtEtaPhiMLorentzVector Zlept1_4(Scale_corrZlep1Pt,Z.Lep1etaSC,Z.Lep1Phi,leptMass);
       PtEtaPhiMLorentzVector Zlept2_4(Scale_corrZlep2Pt,Z.Lep2etaSC,Z.Lep2Phi,leptMass);
@@ -216,16 +225,83 @@ int Wlnu12LoScaleSmearCorr::InitHistogram()
   h1_ZmassCorr_BE= new TH1D("h1_ZmassCorr_BE","Inv Mass for dilepts after Scale&Smear BE",20,80.,100.);
   h1_ZmassCorr_EE= new TH1D("h1_ZmassCorr_EE","Inv Mass for dilepts after Scale&Smear EE",20,80.,100.);
 
+  h1_ZLep1Pt = new TH1D("h1_ZLep1Pt","First lepton pt", 150,0,150);
+  h1_ZLep2Pt = new TH1D("h1_ZLep2Pt","Second lepton pt",150,0,150);
+  h1_ZLepPt_p = new TH1D("h1_ZLepPt_p","Lept^{+} pt", 150,0,150);
+  h1_ZLepPt_m = new TH1D("h1_ZLepPt_m","Lept^{-} pt", 150,0,150);
+
   for(int iBin(0);iBin<ScaleBins;iBin++){
-    sprintf(histName,"h1_Zmass_muP_%d",iBin);
-    h1_Zmass_muP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
-    sprintf(histName,"h1_Zmass_muM_%d",iBin);
-    h1_Zmass_muM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_Zmass_muEtaP_%d",iBin);
+    h1_Zmass_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_Zmass_muEtaM_%d",iBin);
+    h1_Zmass_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
     
-    sprintf(histName,"h1_ZmassCorr_muP_%d",iBin);
-    h1_ZmassCorr_muP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
-    sprintf(histName,"h1_ZmassCorr_muM_%d",iBin);
-    h1_ZmassCorr_muM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_ZmassCorr_muEtaP_%d",iBin);
+    h1_ZmassCorr_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_ZmassCorr_muEtaM_%d",iBin);
+    h1_ZmassCorr_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+
+    sprintf(histName,"h1_Zmass_noOverLap_muEtaP_%d",iBin);
+    h1_Zmass_noOverLap_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_Zmass_noOverLap_muEtaM_%d",iBin);
+    h1_Zmass_noOverLap_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    
+    sprintf(histName,"h1_ZmassCorr_noOverLap_muEtaP_%d",iBin);
+    h1_ZmassCorr_noOverLap_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_ZmassCorr_noOverLap_muEtaM_%d",iBin);
+    h1_ZmassCorr_noOverLap_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+
+    sprintf(histName,"h1_Zmass_LeadingLept_noOverLap_muEtaP_%d",iBin);
+    h1_Zmass_LeadingLept_noOverLap_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_Zmass_LeadingLept_noOverLap_muEtaM_%d",iBin);
+    h1_Zmass_LeadingLept_noOverLap_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    
+    sprintf(histName,"h1_ZmassCorr_LeadingLept_noOverLap_muEtaP_%d",iBin);
+    h1_ZmassCorr_LeadingLept_noOverLap_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_ZmassCorr_LeadingLept_noOverLap_muEtaM_%d",iBin);
+    h1_ZmassCorr_LeadingLept_noOverLap_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+
+    sprintf(histName,"h1_Zmass_LeadingLept_muEtaP_%d",iBin);
+    h1_Zmass_LeadingLept_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_Zmass_LeadingLept_muEtaM_%d",iBin);
+    h1_Zmass_LeadingLept_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    
+    sprintf(histName,"h1_ZmassCorr_LeadingLept_muEtaP_%d",iBin);
+    h1_ZmassCorr_LeadingLept_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_ZmassCorr_LeadingLept_muEtaM_%d",iBin);
+    h1_ZmassCorr_LeadingLept_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+
+    sprintf(histName,"h1_Zmass_TrailingLept_noOverLap_muEtaP_%d",iBin);
+    h1_Zmass_TrailingLept_noOverLap_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_Zmass_TrailingLept_noOverLap_muEtaM_%d",iBin);
+    h1_Zmass_TrailingLept_noOverLap_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    
+    sprintf(histName,"h1_ZmassCorr_TrailingLept_noOverLap_muEtaP_%d",iBin);
+    h1_ZmassCorr_TrailingLept_noOverLap_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_ZmassCorr_TrailingLept_noOverLap_muEtaM_%d",iBin);
+    h1_ZmassCorr_TrailingLept_noOverLap_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+
+    sprintf(histName,"h1_Zmass_TrailingLept_muEtaP_%d",iBin);
+    h1_Zmass_TrailingLept_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_Zmass_TrailingLept_muEtaM_%d",iBin);
+    h1_Zmass_TrailingLept_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    
+    sprintf(histName,"h1_ZmassCorr_TrailingLept_muEtaP_%d",iBin);
+    h1_ZmassCorr_TrailingLept_muEtaP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_ZmassCorr_TrailingLept_muEtaM_%d",iBin);
+    h1_ZmassCorr_TrailingLept_muEtaM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+  }
+
+  for(int iBin(0);iBin<4;iBin++){
+    sprintf(histName,"h1_Zmass_muPtP_%d",iBin);
+    h1_Zmass_muPtP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_Zmass_muPtM_%d",iBin);
+    h1_Zmass_muPtM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+
+    sprintf(histName,"h1_ZmassCorr_muPtP_%d",iBin);
+    h1_ZmassCorr_muPtP[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
+    sprintf(histName,"h1_ZmassCorr_muPtM_%d",iBin);
+    h1_ZmassCorr_muPtM[iBin]= new TH1D(histName,"Zmass",40,80.,100.);
   }
 
   if(Mode == "ScaleMakeMC" || Mode == "ScaleMakeRD")
@@ -257,6 +333,16 @@ int Wlnu12LoScaleSmearCorr::InitHistogram()
 int Wlnu12LoScaleSmearCorr::Fill_ZHisto()
 {
   h1_Zmass->Fill(Z.mass,mTTW);
+  h1_ZLep1Pt -> Fill(Z.Lep1Pt,mTTW);
+  h1_ZLep2Pt -> Fill(Z.Lep2Pt,mTTW);
+  if(Z.Lep1Charge>0)
+    h1_ZLepPt_p -> Fill(Z.Lep1Pt,mTTW);
+  if(Z.Lep2Charge>0)
+    h1_ZLepPt_p -> Fill(Z.Lep2Pt,mTTW);
+  if(Z.Lep1Charge<0)
+    h1_ZLepPt_m -> Fill(Z.Lep1Pt,mTTW);
+  if(Z.Lep2Charge<0)
+    h1_ZLepPt_m -> Fill(Z.Lep2Pt,mTTW);
   
   if( AnaChannel=="Electron2012LoPU")
   {
@@ -276,41 +362,307 @@ int Wlnu12LoScaleSmearCorr::Fill_ZHisto()
   if( AnaChannel=="Muon2012LoPU")
   {
     //Barrel Barrel
-    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.))
+    if((fabs(Z.Lep1etaSC) >= 0. && fabs(Z.Lep1etaSC) < 1.) && (fabs(Z.Lep2etaSC) >= 0. && fabs(Z.Lep2etaSC) < 1.))
       h1_Zmass_BB->Fill(Z.mass,mTTW);
     //Barrel Endcap
-    if((fabs(Z.Lep1etaSC) >= 0.0 && fabs(Z.Lep1etaSC) < 1.) && (fabs(Z.Lep2etaSC) >= 1. && fabs(Z.Lep2etaSC) < 2.4))
+    if((fabs(Z.Lep1etaSC) >= 0. && fabs(Z.Lep1etaSC) < 1.) && (fabs(Z.Lep2etaSC) >= 1. && fabs(Z.Lep2etaSC) < 2.4))
       h1_Zmass_BE->Fill(Z.mass,mTTW);
-    if((fabs(Z.Lep1etaSC) >= 1. && fabs(Z.Lep1etaSC) < 2.4) && (fabs(Z.Lep2etaSC) >= 0.0 && fabs(Z.Lep2etaSC) < 1.))
+    if((fabs(Z.Lep1etaSC) >= 1. && fabs(Z.Lep1etaSC) < 2.4) && (fabs(Z.Lep2etaSC) >= 0. && fabs(Z.Lep2etaSC) < 1.))
       h1_Zmass_BE->Fill(Z.mass,mTTW);
     // Endcap Endcap
     if((fabs(Z.Lep1etaSC) >= 1. && fabs(Z.Lep1etaSC) < 2.4) && (fabs(Z.Lep2etaSC) >= 1. && fabs(Z.Lep2etaSC) < 2.4))
       h1_Zmass_EE->Fill(Z.mass,mTTW);
     
+    //========================================
+    //Fill Zmass histograms at eta ranges
+    //========================================
     for(int iBin(0);iBin<ScaleBins;iBin++){
-      //Check muon Plus eta and fill Zmass
+      //========================================
+      //Check Charge Plus
       //========================================
       if(Z.Lep1Charge>0)
+      {
 	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
-	  h1_Zmass_muP[iBin]->Fill(Z.mass,mTTW);
+	{
+          //========================================
+          //Data: if low statistics
+	  //========================================
+	  //if(Mode == "ScaleMakeRD")
+	  //{
+	  //  if(Z.Lep1Pt > Z.Lep2Pt)
+	  //  {
+	  //    if(Z.Lep1etaSC < 0.35 || (Z.Lep1etaSC > 0.7 && Z.Lep1etaSC < 1.40))
+	  //      h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //    if(Z.Lep1etaSC > 1.75)
+	  //      h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //  }
+
+	  //  if(Z.Lep1Pt <= Z.Lep2Pt)
+	  //    if(Z.Lep1etaSC < 1.75)
+	  //      h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //}
+
+	  //if(Mode == "ScaleMakeMC")
+	  //  h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  
+	  h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+
+        //========================================
+        //Fill Charge Plus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
       
       if(Z.Lep2Charge>0)
+      {
 	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
-	  h1_Zmass_muP[iBin]->Fill(Z.mass,mTTW);
+	{
+          //========================================
+          //Data: if low statistics
+	  //========================================
+	  //if(Mode == "ScaleMakeRD")
+	  //{
+	  //  if(Z.Lep2Pt > Z.Lep1Pt)
+	  //  {
+	  //    if(Z.Lep2etaSC < 0.35 || (Z.Lep2etaSC > 0.7 && Z.Lep2etaSC < 1.40))
+	  //      h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //    if(Z.Lep2etaSC > 1.75)
+	  //      h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //  }
+
+	  //  if(Z.Lep2Pt <= Z.Lep1Pt)
+	  //    if(Z.Lep2etaSC < 1.75)
+	  //      h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //}
+
+	  //if(Mode == "ScaleMakeMC")
+	  //  h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  
+	  h1_Zmass_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+	
+        //========================================
+        //Fill Charge Plus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
 
       //========================================
-      //Check muon Plus eta and fill Zmass
+      //Check Charge Minus
       //========================================
       if(Z.Lep1Charge<0)
+      {
 	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
-	  h1_Zmass_muM[iBin]->Fill(Z.mass,mTTW);
+	  h1_Zmass_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
       
       if(Z.Lep2Charge<0)
+      {
 	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
-	  h1_Zmass_muM[iBin]->Fill(Z.mass,mTTW);
-      //========================================
+	  h1_Zmass_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
       }
+
+      //========================================
+      //Fill Leading lepton histo
+      //========================================
+      if(Z.Lep1Pt>Z.Lep2Pt && Z.Lep1Charge>0)
+      {
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_LeadingLept_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Plus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_LeadingLept_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+      
+      if(Z.Lep2Pt>Z.Lep1Pt && Z.Lep2Charge>0)
+      {
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_LeadingLept_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Plus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_LeadingLept_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+
+      //========================================
+      //Check Charge Minus
+      //========================================
+      if(Z.Lep1Pt>Z.Lep2Pt && Z.Lep1Charge<0)
+      {
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_LeadingLept_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_LeadingLept_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+      
+      if(Z.Lep2Pt>Z.Lep1Pt && Z.Lep2Charge<0)
+      {
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_LeadingLept_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_LeadingLept_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+
+      //========================================
+      //Fill Trailing lepton histo
+      //========================================
+      if(Z.Lep1Pt<Z.Lep2Pt && Z.Lep1Charge>0)
+      {
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_TrailingLept_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Plus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_TrailingLept_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+      
+      if(Z.Lep2Pt<Z.Lep1Pt && Z.Lep2Charge>0)
+      {
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_TrailingLept_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Plus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_TrailingLept_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+
+      //========================================
+      //Check Charge Minus
+      //========================================
+      if(Z.Lep1Pt<Z.Lep2Pt && Z.Lep1Charge<0)
+      {
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_TrailingLept_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_TrailingLept_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+      
+      if(Z.Lep2Pt<Z.Lep1Pt && Z.Lep2Charge<0)
+      {
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_Zmass_TrailingLept_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_Zmass_TrailingLept_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+    }
     
+    //========================================
+    //Fill Zmass histograms at pT ranges
+    //========================================
+    for(int iBin(0);iBin<4;iBin++){
+      //Check Charge Plus
+      //========================================
+      if(Z.Lep1Charge>0)
+      {
+	if(iBin<3) if(Z.Lep1Pt >= ZmassPtBins[iBin] && Z.Lep1Pt < ZmassPtBins[iBin+1])
+	  h1_Zmass_muPtP[iBin]->Fill(Z.mass,mTTW);
+	if(iBin==3) if(Z.Lep1Pt >= ZmassPtBins[iBin+1])
+	  h1_Zmass_muPtP[iBin]->Fill(Z.mass,mTTW);
+      }
+      
+      if(Z.Lep2Charge>0)
+      {
+	if(iBin<3) if(Z.Lep2Pt >= ZmassPtBins[iBin] && Z.Lep2Pt < ZmassPtBins[iBin+1])
+	  h1_Zmass_muPtP[iBin]->Fill(Z.mass,mTTW);
+	if(iBin==3) if(Z.Lep2Pt >= ZmassPtBins[iBin+1])
+	  h1_Zmass_muPtP[iBin]->Fill(Z.mass,mTTW);
+      }
+
+      //========================================
+      //Check Charge Minus
+      //========================================
+      if(Z.Lep1Charge<0)
+      {
+	if(iBin<3) if(Z.Lep1Pt >= ZmassPtBins[iBin] && Z.Lep1Pt < ZmassPtBins[iBin+1])
+	  h1_Zmass_muPtM[iBin]->Fill(Z.mass,mTTW);
+	if(iBin==3) if(Z.Lep1Pt >= ZmassPtBins[iBin+1])
+	  h1_Zmass_muPtM[iBin]->Fill(Z.mass,mTTW);
+      }
+      
+      if(Z.Lep2Charge<0)
+      {
+	if(iBin<3) if(Z.Lep2Pt >= ZmassPtBins[iBin] && Z.Lep2Pt < ZmassPtBins[iBin+1])
+	  h1_Zmass_muPtM[iBin]->Fill(Z.mass,mTTW);
+	if(iBin==3) if(Z.Lep2Pt >= ZmassPtBins[iBin+1])
+	  h1_Zmass_muPtM[iBin]->Fill(Z.mass,mTTW);
+      }
+    }
   }
   return 0;
 }
@@ -348,29 +700,297 @@ int Wlnu12LoScaleSmearCorr::Fill_CorrectedZHisto()
     if((fabs(Z.Lep1etaSC) >= 1. && fabs(Z.Lep1etaSC) < 2.4) && (fabs(Z.Lep2etaSC) >= 1. && fabs(Z.Lep2etaSC) < 2.4))
       h1_ZmassCorr_EE->Fill(Z.mass,mTTW);
     
+    //========================================
+    //Fill Zmass histograms at eta ranges
+    //========================================
     for(int iBin(0);iBin<ScaleBins;iBin++){
-      //Check muon Plus eta and fill Zmass
+      //========================================
+      //Check Charge Plus
       //========================================
       if(Z.Lep1Charge>0)
+      {
 	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
-	  h1_ZmassCorr_muP[iBin]->Fill(Z.mass,mTTW);
+	{
+          //========================================
+          //Data: if low statistics
+	  //========================================
+	  //if(Mode == "ScaleMakeRD")
+	  //{
+	  //  if(Z.Lep1Pt > Z.Lep2Pt)
+	  //  {
+	  //    if(Z.Lep1etaSC < 0.35 || (Z.Lep1etaSC > 0.7 && Z.Lep1etaSC < 1.40))
+	  //      h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //    if(Z.Lep1etaSC > 1.75)
+	  //      h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //  }
+	  //  
+	  //  if(Z.Lep1Pt <= Z.Lep2Pt)
+	  //    if(Z.Lep1etaSC < 1.75)
+	  //      h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //}
+	  //
+	  //if(Mode == "ScaleMakeMC")
+	  //  h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //========================================
+	  
+	  h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+
+        //========================================
+        //Fill Charge Plus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
       
       if(Z.Lep2Charge>0)
+      {
 	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
-	  h1_ZmassCorr_muP[iBin]->Fill(Z.mass,mTTW);
+	{
+	  //========================================
+          //Data: if low statistics
+	  //========================================
+	  //if(Mode == "ScaleMakeRD")
+	  //{
+	  //  if(Z.Lep2Pt > Z.Lep1Pt)
+	  //  {
+	  //    if(Z.Lep2etaSC < 0.35 || (Z.Lep2etaSC > 0.7 && Z.Lep2etaSC < 1.40))
+	  //      h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //    if(Z.Lep2etaSC > 1.75)
+	  //      h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //  }
+
+	  //  if(Z.Lep2Pt <= Z.Lep1Pt)
+	  //    if(Z.Lep2etaSC < 1.75)
+	  //      h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //}
+
+	  //if(Mode == "ScaleMakeMC")
+	  //  h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	  //========================================
+
+	  h1_ZmassCorr_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+        //========================================
+        //Fill Charge Plus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
 
       //========================================
-      //Check muon Plus eta and fill Zmass
+      //Check Charge Minus
       //========================================
       if(Z.Lep1Charge<0)
+      {
 	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
-	  h1_ZmassCorr_muM[iBin]->Fill(Z.mass,mTTW);
+	  h1_ZmassCorr_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
       
       if(Z.Lep2Charge<0)
+      {
 	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
-	  h1_ZmassCorr_muM[iBin]->Fill(Z.mass,mTTW);
-      //========================================
+	  h1_ZmassCorr_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
       }
+
+      //========================================
+      //Fill Leading lepton histo
+      //========================================
+      if(Z.Lep1Pt>Z.Lep2Pt && Z.Lep1Charge>0)
+      {
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_LeadingLept_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Plus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_LeadingLept_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+      
+      if(Z.Lep2Pt>Z.Lep1Pt && Z.Lep2Charge>0)
+      {
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_LeadingLept_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Plus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_LeadingLept_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+
+      //========================================
+      //Check Charge Minus
+      //========================================
+      if(Z.Lep1Pt>Z.Lep2Pt && Z.Lep1Charge<0)
+      {
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_LeadingLept_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_LeadingLept_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+      
+      if(Z.Lep2Pt>Z.Lep1Pt && Z.Lep2Charge<0)
+      {
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_LeadingLept_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_LeadingLept_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+
+      //========================================
+      //Fill Trailing lepton histo
+      //========================================
+      if(Z.Lep1Pt<Z.Lep2Pt && Z.Lep1Charge>0)
+      {
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_TrailingLept_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Plus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_TrailingLept_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+      
+      if(Z.Lep2Pt<Z.Lep1Pt && Z.Lep2Charge>0)
+      {
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_TrailingLept_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Plus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_TrailingLept_noOverLap_muEtaP[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+
+      //========================================
+      //Check Charge Minus
+      //========================================
+      if(Z.Lep1Pt<Z.Lep2Pt && Z.Lep1Charge<0)
+      {
+	if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_TrailingLept_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept1 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep1etaSC) < 0.9 || fabs(Z.Lep1etaSC) > 1.2)
+	{
+	  if(Z.Lep1etaSC >= ZmassEtaBins[iBin] && Z.Lep1etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_TrailingLept_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+      
+      if(Z.Lep2Pt<Z.Lep1Pt && Z.Lep2Charge<0)
+      {
+	if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	  h1_ZmassCorr_TrailingLept_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	
+        //========================================
+        //Fill Charge Minus Lept2 noOverLap histo
+        //========================================
+	if(fabs(Z.Lep2etaSC) < 0.9 || fabs(Z.Lep2etaSC) > 1.2)
+	{
+	  if(Z.Lep2etaSC >= ZmassEtaBins[iBin] && Z.Lep2etaSC < ZmassEtaBins[iBin+1])
+	    h1_ZmassCorr_TrailingLept_noOverLap_muEtaM[iBin]->Fill(Z.mass,mTTW);
+	}
+      }
+    }
+    
+    //========================================
+    //Fill Zmass histograms at pT ranges
+    //========================================
+    for(int iBin(0);iBin<4;iBin++){
+      //Check Charge Plus
+      //========================================
+      if(Z.Lep1Charge>0)
+      {
+	if(iBin<3) if(Z.Lep1Pt >= ZmassPtBins[iBin] && Z.Lep1Pt < ZmassPtBins[iBin+1])
+	  h1_ZmassCorr_muPtP[iBin]->Fill(Z.mass,mTTW);
+	if(iBin==3) if(Z.Lep1Pt >= ZmassPtBins[iBin+1])
+	  h1_ZmassCorr_muPtP[iBin]->Fill(Z.mass,mTTW);
+      }
+      
+      if(Z.Lep2Charge>0)
+      {
+	if(iBin<3) if(Z.Lep2Pt >= ZmassPtBins[iBin] && Z.Lep2Pt < ZmassPtBins[iBin+1])
+	  h1_ZmassCorr_muPtP[iBin]->Fill(Z.mass,mTTW);
+	if(iBin==3) if(Z.Lep2Pt >= ZmassPtBins[iBin+1])
+	  h1_ZmassCorr_muPtP[iBin]->Fill(Z.mass,mTTW);
+      }
+
+      //========================================
+      //Check Charge Minus
+      //========================================
+      if(Z.Lep1Charge<0)
+      {
+	if(iBin<3) if(Z.Lep1Pt >= ZmassPtBins[iBin] && Z.Lep1Pt < ZmassPtBins[iBin+1])
+	  h1_ZmassCorr_muPtM[iBin]->Fill(Z.mass,mTTW);
+	if(iBin==3) if(Z.Lep1Pt >= ZmassPtBins[iBin+1])
+	  h1_ZmassCorr_muPtM[iBin]->Fill(Z.mass,mTTW);
+      }
+      
+      if(Z.Lep2Charge<0)
+      {
+	if(iBin<3) if(Z.Lep2Pt >= ZmassPtBins[iBin] && Z.Lep2Pt < ZmassPtBins[iBin+1])
+	  h1_ZmassCorr_muPtM[iBin]->Fill(Z.mass,mTTW);
+	if(iBin==3) if(Z.Lep2Pt >= ZmassPtBins[iBin+1])
+	  h1_ZmassCorr_muPtM[iBin]->Fill(Z.mass,mTTW);
+      }
+    }
   }
   return 0;
 }
@@ -381,12 +1001,36 @@ int Wlnu12LoScaleSmearCorr::Write_ZHisto()
   h1_Zmass_BB->Write();
   h1_Zmass_BE->Write();
   h1_Zmass_EE->Write();
+  h1_ZLep1Pt -> Write();
+  h1_ZLep2Pt -> Write();
+  h1_ZLepPt_p-> Write();
+  h1_ZLepPt_m-> Write();
   for(int ieta=0;ieta<ScaleBins;ieta++)
   {
-    h1_Zmass_muP[ieta]->Write();
-    h1_Zmass_muM[ieta]->Write();
+    h1_Zmass_muEtaP[ieta]->Write();
+    h1_Zmass_muEtaM[ieta]->Write();
+    
+    h1_Zmass_noOverLap_muEtaP[ieta]->Write();
+    h1_Zmass_noOverLap_muEtaM[ieta]->Write();
+    
+    h1_Zmass_LeadingLept_noOverLap_muEtaP[ieta]->Write();
+    h1_Zmass_LeadingLept_noOverLap_muEtaM[ieta]->Write();
+    
+    h1_Zmass_LeadingLept_muEtaP[ieta]->Write();
+    h1_Zmass_LeadingLept_muEtaM[ieta]->Write();
+    
+    h1_Zmass_TrailingLept_noOverLap_muEtaP[ieta]->Write();
+    h1_Zmass_TrailingLept_noOverLap_muEtaM[ieta]->Write();
+    
+    h1_Zmass_TrailingLept_muEtaP[ieta]->Write();
+    h1_Zmass_TrailingLept_muEtaM[ieta]->Write();
   }
  
+  for(int ipt=0;ipt<4;ipt++)
+  {
+    h1_Zmass_muPtP[ipt]->Write();
+    h1_Zmass_muPtM[ipt]->Write();
+  }
   if(Mode == "ScaleMakeMC")
   {
     h1_ZmassCorr->Write();
@@ -395,8 +1039,28 @@ int Wlnu12LoScaleSmearCorr::Write_ZHisto()
     h1_ZmassCorr_EE->Write(); 
     for(int ieta=0;ieta<ScaleBins;ieta++)
     {
-      h1_ZmassCorr_muP[ieta]->Write();
-      h1_ZmassCorr_muM[ieta]->Write();
+      h1_ZmassCorr_muEtaP[ieta]->Write();
+      h1_ZmassCorr_muEtaM[ieta]->Write();
+    
+      h1_ZmassCorr_noOverLap_muEtaP[ieta]->Write();
+      h1_ZmassCorr_noOverLap_muEtaM[ieta]->Write();
+      
+      h1_ZmassCorr_LeadingLept_noOverLap_muEtaP[ieta]->Write();
+      h1_ZmassCorr_LeadingLept_noOverLap_muEtaM[ieta]->Write();
+      
+      h1_ZmassCorr_LeadingLept_muEtaP[ieta]->Write();
+      h1_ZmassCorr_LeadingLept_muEtaM[ieta]->Write();
+      
+      h1_ZmassCorr_TrailingLept_noOverLap_muEtaP[ieta]->Write();
+      h1_ZmassCorr_TrailingLept_noOverLap_muEtaM[ieta]->Write();
+      
+      h1_ZmassCorr_TrailingLept_muEtaP[ieta]->Write();
+      h1_ZmassCorr_TrailingLept_muEtaM[ieta]->Write();
+    }
+    for(int ipt=0;ipt<4;ipt++)
+    {
+      h1_ZmassCorr_muPtP[ipt]->Write();
+      h1_ZmassCorr_muPtM[ipt]->Write();
     }
   }
   

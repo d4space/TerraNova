@@ -1,0 +1,49 @@
+1. Create Zmass study histograms root file:
+================================
+Wpt study
+================================
+root -l -b -q WPtZmassMakeHisto.C
+
+================================
+Zpt study
+================================
+root.exe -b
+.x ZPtZmassMakeHisto.C++
+
+2. Draw pT binning histograms
+
+================================
+Wpt study
+================================
+python Wpt_ZmassCompPtBins_Gaus.py
+
+================================
+Zpt study
+================================
+python Zpt_ZmassCompPtBins_Gaus.py
+
+3. Draw eta binning histograms
+
+================================
+Wpt study
+================================
+python Wpt_ZmassCompEtaBins_Gaus.py
+
+================================
+Zpt study
+================================
+python Zpt_ZmassCompEtaBins_Gaus.py
+
+4. Draw muon pT histograms
+Wpt_muPtComp.py
+
+5. Draw different regions (Total,BB,BE,EE) histograms
+================================
+Wpt study
+================================
+python Wpt_ZmassComp_Gaus.py
+
+================================
+Zpt study
+================================
+python Zpt_ZmassComp_Gaus.py

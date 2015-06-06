@@ -63,14 +63,52 @@ protected:
   TH1D*	h1_ZmassCorr_BE;
   TH1D*	h1_ZmassCorr_EE;
   
-  TH1D*	h1_Zmass_muP[ScaleBins];
-  TH1D*	h1_Zmass_muM[ScaleBins];
-  TH1D*	h1_ZmassCorr_muP[ScaleBins];
-  TH1D*	h1_ZmassCorr_muM[ScaleBins];
+  // =========================
+  // Eta bin study
+  // =========================
+  TH1D*	h1_Zmass_muEtaP[ScaleBins];
+  TH1D*	h1_Zmass_muEtaM[ScaleBins];
+  TH1D*	h1_ZmassCorr_muEtaP[ScaleBins];
+  TH1D*	h1_ZmassCorr_muEtaM[ScaleBins];
+  
+  TH1D*	h1_Zmass_noOverLap_muEtaP[ScaleBins];
+  TH1D*	h1_Zmass_noOverLap_muEtaM[ScaleBins];
+  TH1D*	h1_ZmassCorr_noOverLap_muEtaP[ScaleBins];
+  TH1D*	h1_ZmassCorr_noOverLap_muEtaM[ScaleBins];
+  
+  TH1D*	h1_Zmass_LeadingLept_noOverLap_muEtaP[ScaleBins];
+  TH1D*	h1_Zmass_LeadingLept_noOverLap_muEtaM[ScaleBins];
+  TH1D*	h1_ZmassCorr_LeadingLept_noOverLap_muEtaP[ScaleBins];
+  TH1D*	h1_ZmassCorr_LeadingLept_noOverLap_muEtaM[ScaleBins];
+  
+  TH1D*	h1_Zmass_TrailingLept_noOverLap_muEtaP[ScaleBins];
+  TH1D*	h1_Zmass_TrailingLept_noOverLap_muEtaM[ScaleBins];
+  TH1D*	h1_ZmassCorr_TrailingLept_noOverLap_muEtaP[ScaleBins];
+  TH1D*	h1_ZmassCorr_TrailingLept_noOverLap_muEtaM[ScaleBins];
+  
+  TH1D*	h1_Zmass_LeadingLept_muEtaP[ScaleBins];
+  TH1D*	h1_Zmass_LeadingLept_muEtaM[ScaleBins];
+  TH1D*	h1_ZmassCorr_LeadingLept_muEtaP[ScaleBins];
+  TH1D*	h1_ZmassCorr_LeadingLept_muEtaM[ScaleBins];
+  
+  TH1D*	h1_Zmass_TrailingLept_muEtaP[ScaleBins];
+  TH1D*	h1_Zmass_TrailingLept_muEtaM[ScaleBins];
+  TH1D*	h1_ZmassCorr_TrailingLept_muEtaP[ScaleBins];
+  TH1D*	h1_ZmassCorr_TrailingLept_muEtaM[ScaleBins];
+  
+  TH1D*	h1_Zmass_muPtP[4];
+  TH1D*	h1_Zmass_muPtM[4];
+  TH1D*	h1_ZmassCorr_muPtP[4];
+  TH1D*	h1_ZmassCorr_muPtM[4];
   
   TH1D* h1_ZmassDaughEtaEle[ScElCombiBins];
   TH1D* h1_ZmassDaughEtaEleDiag[ScElCombiBinsDiag];
   TH1D* h1_ZmassDaughEtaMu[ScMuCombiBins];
+
+  TH1D*	h1_ZLep1Pt;
+  TH1D*	h1_ZLep2Pt;
+  TH1D*	h1_ZLepPt_p;
+  TH1D*	h1_ZLepPt_m;
 
   virtual Int_t EtaRange(double lep1Eta);
   virtual Int_t Fill_EleZmassDaughEta(int etaRange1, int etaRange2);
