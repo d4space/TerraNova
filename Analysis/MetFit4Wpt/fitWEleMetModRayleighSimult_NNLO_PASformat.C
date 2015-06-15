@@ -770,8 +770,8 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   }
   //Loop for each Wpt bins==============
   // 0 is the total
-  for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(3);ipt<4;ipt++)
+  //for(int ipt(0);ipt<NWptBinPlus;ipt++)
+  for( int ipt(0);ipt<1;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -2180,7 +2180,8 @@ cout << "check 2" << endl;
 cout << "check 3" << endl;
 
     //plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-    plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    //plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    plotMetDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
     plotMetDiff->setOutDir(CPlot::sOutDir);
     //plotMetDiff->AddHist1D(hMetDiff,"EX0",ratioColor);
     plotMetDiff->AddHist1D(hMetDiff,"",kAzure+1,1,1001);
@@ -2275,7 +2276,8 @@ cout << "check 4-1" << endl;
     plotAntiMet->Draw(c,kFALSE,format,1);
     
     //plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-    plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    //plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    plotAntiMetDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
     plotAntiMetDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetDiff->AddHist1D(hAntiMetDiff,"EX0",ratioColor);
     plotAntiMetDiff->AddHist1D(hAntiMetDiff,"",kAzure+1,1,1001);
@@ -2372,7 +2374,8 @@ cout << "check 5" << endl;
     plotMetp->Draw(c,kFALSE,format,1);
 
     //plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","#chi");
-    plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    //plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    plotMetpDiff=new CPlot (histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
     plotMetpDiff->setOutDir(CPlot::sOutDir);
     //plotMetpDiff->AddHist1D(hMetpDiff,"EX0",ratioColor);
     plotMetpDiff->AddHist1D(hMetpDiff,"",kAzure+1,1,1001);
@@ -2471,7 +2474,8 @@ cout << "check 5" << endl;
     
 cout << "check 6" << endl;
     //plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-    plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    //plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    plotAntiMetpDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
     plotAntiMetpDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
     plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"",kAzure+1,1,1001);
@@ -2568,7 +2572,8 @@ cout << "check 6" << endl;
     plotMetm->Draw(c,kFALSE,format,1);
 
     //plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-    plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    //plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    plotMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
     plotMetmDiff->setOutDir(CPlot::sOutDir);
     //plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
     plotMetmDiff->AddHist1D(hMetmDiff,"",kAzure+1,1,1001);
@@ -2667,13 +2672,14 @@ cout << "check 6" << endl;
     plotAntiMetm->Draw(c,kFALSE,format,1);
     
     //plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-    plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    //plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
+    plotAntiMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
     plotAntiMetmDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
     plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"",kAzure+1,1,1001);
     //plotAntiMetmDiff->SetYRange(-8,8);
-    plotAntiMetmDiff->SetYRange(-5,5);
-    //plotAntiMetmDiff->SetYRange(-3,3);
+    //plotAntiMetmDiff->SetYRange(-5,5);
+    plotAntiMetmDiff->SetYRange(-3,3);
     //plotAntiMetmDiff->SetXRange(0,85);
     plotAntiMetmDiff->SetXRange(0,70);
     //plotAntiMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
