@@ -476,7 +476,8 @@ int ZWratio_Zoom_logScale()
   tgRatioResbos->Draw("5 P");
   gPad->RedrawAxis();
 
-  C1->SaveAs("RatioNormZW_Fid_Zoom_logScale.png");
+  //C1->SaveAs("RatioNormZW_Fid_Zoom_logScale.png");
+  C1->SaveAs("RatioNormZW_Fid_Zoom_logScale.pdf");
 
   return 0;
 }

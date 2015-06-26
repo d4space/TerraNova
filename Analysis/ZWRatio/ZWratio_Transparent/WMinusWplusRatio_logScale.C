@@ -888,7 +888,8 @@ int WMinusWplusRatio_logScale()
   hWmWpratio_RD->GetYaxis()->SetTitleOffset(0.8);
   hWmWpratio_RD->GetYaxis()->SetLabelSize(0.035);
   hWmWpratio_RD->GetYaxis()->SetTitleSize(0.05);
-  hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{-}}} #frac{d#sigma^{W^{-}}}{p_{T}^{W^{-}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
+  //hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{-}}} #frac{d#sigma^{W^{-}}}{p_{T}^{W^{-}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
+  hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{#font[122]{\55}}}} #frac{d#sigma^{W^{#font[122]{\55}}}}{p_{T}^{W^{#font[122]{\55}}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
   hWmWpratio_RD->GetYaxis()->SetNdivisions(405);
   hWmWpratio_RD->GetXaxis()->SetTitleOffset(1.);
   hWmWpratio_RD->GetXaxis()->SetLabelSize(0.04);
@@ -1003,7 +1004,8 @@ int WMinusWplusRatio_logScale()
   tgRatioResbos->Draw("5 P");
   gPad->RedrawAxis();
 
-  C1->SaveAs("WmMuWpMuNormFid12Bin_logScale_New.png");
+  //C1->SaveAs("WmMuWpMuNormFid12Bin_logScale.png");
+  C1->SaveAs("WmMuWpMuNormFid12Bin_logScale.pdf");
   return 0;
 }
  
