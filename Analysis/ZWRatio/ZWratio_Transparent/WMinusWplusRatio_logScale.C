@@ -11,12 +11,44 @@
 
 using namespace std;
 
+const TString format("pdf");
 void FEWZ_PDFUncer(double *WmWpRatio, double *Err);
 void Powheg_PDFUncer(double *WmWpRatio, double *Err);
 
 //int WMinusWplusRatio()
 int WMinusWplusRatio_logScale()
 {
+  gROOT->LoadMacro("../../Utils/tdrstyle.C");
+  setTDRStyle();
+  gROOT->LoadMacro("../../Utils/CMS_lumi.C");
+  writeExtraText = "true";
+  extraText = "Preliminary";
+  lumi_8TeV = "18.4 pb^{-1}";
+
+  int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+  int iPos = 0;
+
+  int W = 800;
+  int H = 800;
+
+  //
+  // Simple example of macro: plot with CMS name and lumi text
+  //  (this script does not pretend to work in all configurations)
+  // iPeriod = 1*(0/1 7 TeV) + 2*(0/1 8 TeV)  + 4*(0/1 13 TeV)
+  // For instance:
+  //               iPeriod = 3 means: 7 TeV + 8 TeV
+  //               iPeriod = 7 means: 7 TeV + 8 TeV + 13 TeV
+  // Initiated by: Gautier Hamel de Monchenault (Saclay)
+  //
+  int H_ref = 600;
+  int W_ref = 800;
+
+  // references for T, B, L, R
+  float T = 0.08*H_ref;
+  float B = 0.12*H_ref;
+  float L = 0.12*W_ref;
+  float R = 0.04*W_ref;
+
   double BinWidth[14] ={0.0, 7.5-0, 12.5-7.5,17.5-12.5, 24.0-17.5, 30.0-24.0, 40.0-30.0, 50.0-40.0, 70.0-50.0, 110.0-70.0, 150.0-110.0     , 190.0-150.0, 250.0-190.0, 600.0-250.0};
   const int nBins = 13;
   //double WptBins[nBins] = {0.0,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
@@ -826,7 +858,7 @@ int WMinusWplusRatio_logScale()
   colRed->SetAlpha(0.2);
   colBlue->SetAlpha(0.2);
   colGreen->SetAlpha(0.2);
-  gStyle->SetOptStat(0); 
+  //gStyle->SetOptStat(0); 
 
   // Draw 
   TGraphErrors *tgWmWpratio_Powheg = new TGraphErrors(hWmWpratio_Powheg);
@@ -834,35 +866,22 @@ int WMinusWplusRatio_logScale()
   TGraphErrors *tgWmWpratio_Resbos = new TGraphErrors(hWmWpratio_Resbos_Central);
   TGraphErrors *tgWmWpratio_FEWZ = new TGraphErrors(hWmWpratio_FEWZ);
   
-  TLegend *L1 = new TLegend(0.2,0.65,0.5,0.85);L1->SetFillColor(0); L1->SetBorderSize(0);
+  TLegend *L1 = new TLegend(0.25,0.65,0.5,0.95);
+  L1->SetFillColor(0);
+  L1->SetBorderSize(0);
   L1->AddEntry(hWmWpratio_RD,"data","PL");
   L1->AddEntry(tgWmWpratio_Powheg,"Powheg","f");
   L1->AddEntry(tgWmWpratio_Resbos,"ResBos","f");
   L1->AddEntry(tgWmWpratio_FEWZ,"FEWZ","f");
   
-  TCanvas *C1 = new TCanvas("can","can",800,900);
+  TCanvas *C1 = new TCanvas("can","can",50,50,W,H);
+  CMS_lumi(C1,iPeriod,iPos);
   C1->Divide(1,2,0,0);
-  C1->cd(1)->SetPad(0,0.5,0.95,0.95);
+  C1->cd(1)->SetPad(0,0.52,0.98,0.95);
   C1->cd(1)->SetLogx();
-  C1->cd(1)->SetTopMargin(0.1);
-  C1->cd(1)->SetBottomMargin(0.01);
-  C1->cd(1)->SetLeftMargin(0.15);
-  C1->cd(1)->SetRightMargin(0.07);
   C1->cd(1)->SetTickx(1);
   C1->cd(1)->SetTicky(1);
  
-  TPaveText *cmspre = new TPaveText(0.70,0.93,0.95,0.95,"NDC");
-  cmspre->SetBorderSize(0);
-  cmspre->SetFillStyle(0);
-  cmspre->SetTextSize(0.06);
-  cmspre->AddText("CMS Preliminary");
-  
-  TPaveText *lumi = new TPaveText(0.35,0.83,0.8,0.85,"NDC");
-  lumi->SetBorderSize(0);
-  lumi->SetFillStyle(0);
-  lumi->SetTextSize(0.05);
-  lumi->AddText("L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV");
-  
   TPaveText *Wchannel = new TPaveText(0.2,0.35,0.4,0.35,"NDC");
   Wchannel->SetBorderSize(0);
   Wchannel->SetFillStyle(0);
@@ -886,8 +905,8 @@ int WMinusWplusRatio_logScale()
 
   hWmWpratio_RD->GetYaxis()->SetRangeUser(0.5,1.5);
   hWmWpratio_RD->GetYaxis()->SetTitleOffset(0.8);
-  hWmWpratio_RD->GetYaxis()->SetLabelSize(0.035);
-  hWmWpratio_RD->GetYaxis()->SetTitleSize(0.05);
+  hWmWpratio_RD->GetYaxis()->SetLabelSize(0.07);
+  hWmWpratio_RD->GetYaxis()->SetTitleSize(0.07);
   //hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{-}}} #frac{d#sigma^{W^{-}}}{p_{T}^{W^{-}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
   hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{#font[122]{\55}}}} #frac{d#sigma^{W^{#font[122]{\55}}}}{p_{T}^{W^{#font[122]{\55}}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
   hWmWpratio_RD->GetYaxis()->SetNdivisions(405);
@@ -912,8 +931,6 @@ int WMinusWplusRatio_logScale()
   tgWmWpratio_Resbos->Draw("5");
 
   L1->Draw();
-  cmspre->Draw();
-  lumi->Draw();
   //Wchannel->Draw();
   //Zchannel->Draw();
   //LeptonCut->Draw();
@@ -945,13 +962,8 @@ int WMinusWplusRatio_logScale()
   
   //gStyle->SetLineWidth(2); 
   gPad->RedrawAxis();
-  
 
-  C1->cd(2)->SetPad(0,0.1,0.95,0.5);
-  C1->cd(2)->SetTopMargin(0.1);
-  C1->cd(2)->SetBottomMargin(0.1);
-  C1->cd(2)->SetLeftMargin(0.15);
-  C1->cd(2)->SetRightMargin(0.07);
+  C1->cd(2)->SetPad(0,0.1,0.98,0.5);
   C1->cd(2)->SetTickx(1);
   C1->cd(2)->SetTicky(1);
   C1->cd(2)->SetLogx(1);
@@ -967,15 +979,15 @@ int WMinusWplusRatio_logScale()
   hRatioDummy->GetYaxis()->SetRangeUser(0.5,1.5);
   hRatioDummy->GetYaxis()->SetTitle("Theory / Data");
   hRatioDummy->GetYaxis()->CenterTitle();
-  hRatioDummy->GetYaxis()->SetTitleSize(0.07);
-  hRatioDummy->GetYaxis()->SetTitleOffset(0.58);
-  hRatioDummy->GetYaxis()->SetLabelSize(0.04);
+  hRatioDummy->GetYaxis()->SetTitleSize(0.08);
+  hRatioDummy->GetYaxis()->SetTitleOffset(0.78);
+  hRatioDummy->GetYaxis()->SetLabelSize(0.09);
   hRatioDummy->GetYaxis()->SetNdivisions(605);
   
   hRatioDummy->GetXaxis()->SetTitle("p_{T}^{V} [GeV]");
-  hRatioDummy->GetXaxis()->SetTitleOffset(0.5);
-  hRatioDummy->GetXaxis()->SetTitleSize(0.07);
-  hRatioDummy->GetXaxis()->SetLabelSize(0.05);
+  hRatioDummy->GetXaxis()->SetTitleOffset(0.6);
+  hRatioDummy->GetXaxis()->SetTitleSize(0.08);
+  hRatioDummy->GetXaxis()->SetLabelSize(0.07);
 
   // FEWZ Ratio plot setting
   tgRatioData->SetFillColor(kGray+2);
@@ -1004,8 +1016,7 @@ int WMinusWplusRatio_logScale()
   tgRatioResbos->Draw("5 P");
   gPad->RedrawAxis();
 
-  //C1->SaveAs("WmMuWpMuNormFid12Bin_logScale.png");
-  C1->SaveAs("WmMuWpMuNormFid12Bin_logScale.pdf");
+  C1->SaveAs("WmMuWpMuNormFid12Bin."+format);
   return 0;
 }
  
