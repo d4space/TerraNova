@@ -9,6 +9,9 @@
 #include "../../../Utils/const.h"
 #include <TMath.h>
 
+//const TString format("png");
+const TString format("pdf");
+
 const int nBins = 14;
 double WptLogBins[nBins] = {1.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
 double WptBins[nBins] = {0.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
@@ -24,6 +27,37 @@ void NormDiffToyErr(double *_Xsec, double *_Err, double *_NormDiff_Err);
 
 int theoryStudy_separate(const TString BaseName)
 {
+  gROOT->LoadMacro("../../../Utils/tdrstyle.C");
+  setTDRStyle();
+  gROOT->LoadMacro("../../../Utils/CMS_lumi.C");
+  writeExtraText = "true";
+  extraText = "Preliminary";
+  lumi_8TeV = "18.4 pb^{-1}";
+
+  int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+  int iPos = 0;
+
+  int H = 800;
+  int W = 800;
+
+  //
+  // Simple example of macro: plot with CMS name and lumi text
+  //  (this script does not pretend to work in all configurations)
+  // iPeriod = 1*(0/1 7 TeV) + 2*(0/1 8 TeV)  + 4*(0/1 13 TeV)
+  // For instance:
+  //               iPeriod = 3 means: 7 TeV + 8 TeV
+  //               iPeriod = 7 means: 7 TeV + 8 TeV + 13 TeV
+  // Initiated by: Gautier Hamel de Monchenault (Saclay)
+  //
+  int H_ref = 600;
+  int W_ref = 800;
+
+  // references for T, B, L, R
+  float T = 0.08*H_ref;
+  float B = 0.12*H_ref;
+  float L = 0.12*W_ref;
+  float R = 0.04*W_ref;
+
   TString tmpTStr;
   char tmpName[30],tmpName_org[30];
   int Numb;
@@ -502,48 +536,44 @@ int theoryStudy_separate(const TString BaseName)
   colGreenp3->SetAlpha(0.6); 
   colGreenp10->SetAlpha(0.4); 
   
-
-  TPaveText *cmspre = new TPaveText(0.6,0.90,0.95,0.95,"NDC");
-  cmspre->SetBorderSize(0);
-  cmspre->SetTextSize(0.04);
-  cmspre->SetFillStyle(0);
-  cmspre->AddText("CMS preliminary");
-
   TLegend *lL =new TLegend(0.2,0.17,0.52,0.40); lL->SetFillColor(0); lL->SetBorderSize(0);
   lL->AddEntry(Data_Xsec_Born,"data","PLE1");
   lL->AddEntry(Powheg_Xsec_Born,"POWHEG CT10 NLO","f");
   lL->AddEntry(FEWZ_Xsec,"FEWZ CT10 NNLO","f");
   lL->AddEntry(Resb30_NormDiffXsec,"ResBos CT10 NNLL","f");
 
-  TPaveText *tb = new TPaveText(0.2,0.42,0.52,0.58,"NDC");
-  tb->SetBorderSize(0);
-  tb->SetFillStyle(0);
-  tb->AddText("L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV");
-
+  TPaveText *channel = new TPaveText(0.25,0.42,0.42,0.48,"NDC");
+  channel->SetBorderSize(0);
+  channel->SetFillStyle(0);
   if (BaseName=="WInclToMuNu")
-    tb->AddText("W #rightarrow #mu #nu");
+    channel->AddText("W #rightarrow #mu #nu");
   if (BaseName=="WInclToEleNu")
-    tb->AddText("W #rightarrow e #nu");
+    channel->AddText("W #rightarrow e #nu");
 
   // Canvas for distribution
-  TCanvas *lC1 = new TCanvas("Can","Can",800,840); lC1->cd(); lC1->SetLogy();
-  lC1->cd(1)->SetPad(0.05,0.05,0.95,0.95);
-  lC1->cd(1)->SetTopMargin(0.1);
-  lC1->cd(1)->SetBottomMargin(0.1);
-  lC1->cd(1)->SetLeftMargin(0.17);
-  lC1->cd(1)->SetRightMargin(0.07);
-  lC1->cd(1)->SetTickx(1);
-  lC1->cd(1)->SetTicky(1);
-  gPad->SetLogx(1);
-  gPad->SetLogy(1);
+  TCanvas *lC1 = new TCanvas("Can","Can",50,50,W,H);
+  lC1->SetFillColor(0);
+  lC1->SetBorderMode(0);
+  lC1->SetFrameFillStyle(0);
+  lC1->SetFrameBorderMode(0);
+  //lC1->SetLeftMargin( L/W );
+  lC1->SetLeftMargin( 0.15 );
+  lC1->SetRightMargin( R/W );
+  lC1->SetTopMargin( T/H );
+  lC1->SetBottomMargin( B/H );
+  lC1->SetTickx(0);
+  lC1->SetTicky(0);
+  lC1->SetLogx();
+  lC1->SetLogy();
 
   // Frame setting 
   Powheg_Xsec_Born->GetYaxis()->SetRangeUser(1e-7,5*hResb30_NormDiffXsec[1]);
   Powheg_Xsec_Born->SetTitle("");
   //Powheg_Xsec_Born->GetYaxis()->SetTitle("1/#sigma d#sigma/dp_{T}^{W} [pb/GeV]");
   Powheg_Xsec_Born->GetYaxis()->SetTitle("1/#sigma d#sigma/dp_{T}^{W} [GeV]^{-1}");
-  Powheg_Xsec_Born->GetYaxis()->SetTitleOffset(1.45);
-  Powheg_Xsec_Born->GetYaxis()->SetTitleSize(0.04);
+  Powheg_Xsec_Born->GetYaxis()->SetTitleOffset(1.25);
+  Powheg_Xsec_Born->GetYaxis()->SetTitleSize(0.05);
+  Powheg_Xsec_Born->GetYaxis()->SetLabelSize(0.03);
 
   Powheg_Xsec_Born->GetXaxis()->SetLabelSize(0.03);
   Powheg_Xsec_Born->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
@@ -564,16 +594,19 @@ int theoryStudy_separate(const TString BaseName)
   Data_Xsec_Born->Draw("P");
 
   lL->Draw();
-  tb->Draw();
-  cmspre->Draw();
-
+  channel->Draw();
+  CMS_lumi(lC1,iPeriod,iPos);
+  lC1->Update();
+  lC1->RedrawAxis();
+  lC1->GetFrame()->Draw();
+  
   if(BaseName=="WInclToMuNu")
-    //sprintf(tmpName,"winclmnCrossSec.png");
-    sprintf(tmpName,"winclmnCrossSec.pdf");
+    sprintf(tmpName,"winclmnCrossSec.");
+    //sprintf(tmpName,"winclmnCrossSec.pdf");
   if(BaseName=="WInclToEleNu")
-    //sprintf(tmpName,"winclenCrossSec.png");
-    sprintf(tmpName,"winclenCrossSec.pdf");
-  lC1->SaveAs(tmpName);
+    sprintf(tmpName,"winclenCrossSec.");
+    //sprintf(tmpName,"winclenCrossSec.pdf");
+  lC1->SaveAs(tmpName+format);
 
   // Ratio plot style 
   RatioDataStatErrBand->SetMarkerStyle(20);
@@ -622,51 +655,42 @@ int theoryStudy_separate(const TString BaseName)
   //RatioFEWZStatPDFScaleErrBand->SetFillStyle(3001);
 
 // Canvas for Theory/data Ratio
-  TCanvas *lC2 = new TCanvas("Can","Can",800,800); lC2->cd(); lC2->SetLogy();
+  TCanvas *lC2 = new TCanvas("Can","Can",50,50,W,H); 
+  lC2->SetFillColor(0);
+  lC2->SetBorderMode(0);
+  lC2->SetFrameFillStyle(0);
+  lC2->SetFrameBorderMode(0);
+  lC2->SetLeftMargin( L/W );
+  lC2->SetRightMargin( R/W );
+  lC2->SetTopMargin( T/H );
+  lC2->SetBottomMargin( B/H );
+  CMS_lumi(lC2,iPeriod,iPos);
+  
   lC2->Divide(1,3,0,0);
-  lC2->cd(1)->SetPad(0,0.67,0.95,0.95);
-  lC2->cd(1)->SetTopMargin(0.15);
-  lC2->cd(1)->SetBottomMargin(0.01);
-  lC2->cd(1)->SetLeftMargin(0.15);
-  lC2->cd(1)->SetRightMargin(0.07);
+  lC2->cd(1)->SetPad(0,0.66,0.96,0.945);
+  //lC2->cd(1)->SetFillColor(2);
   lC2->cd(1)->SetTickx(1);
   lC2->cd(1)->SetTicky(1);
   lC2->cd(1)->SetLogx(1);
 
-  TPaveText *tb1 = new TPaveText(0.15,0.72,0.35,0.82,"NDC");
-  tb1->SetBorderSize(0);
-  tb1->SetFillStyle(0);
-  tb1->SetTextSize(0.12);
-  tb1->AddText("ResBos");
-  TLegend *rL1 =new TLegend(0.2,0.1,0.58,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
+  TLegend *rL1 =new TLegend(0.18,0.05,0.53,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
   rL1-> SetNColumns(2);
   rL1->AddEntry(RatioResbosErrBand,"Theory syst","F");
   rL1->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   hRatioDataStatErr->SetTitle("");
   rL1->AddEntry(hRatioDataStatErr,"","");
   rL1->AddEntry(DataRatio,"Data stat+syst","F");
-  rL1->SetTextSize(0.07);
+  rL1->SetTextSize(0.08);
 
-  TLegend *tL1 =new TLegend(0.17,0.72,0.37,0.82); tL1->SetFillColor(0); tL1->SetBorderSize(0);
+  TLegend *tL1 =new TLegend(0.18,0.82,0.37,0.92); tL1->SetFillColor(0); tL1->SetBorderSize(0);
   tL1->AddEntry(RatioResbosErrBand,"ResBos","F");
   tL1->SetTextSize(0.12);
   tL1->SetTextFont(2);
 
-  TPaveText *cmspre2 = new TPaveText(0.65,0.90,0.98,0.95,"NDC");
-  cmspre2->SetBorderSize(0);
-  cmspre2->SetFillStyle(0);
-  cmspre2->SetTextSize(0.10);
-  cmspre2->AddText("CMS Preliminary");
-
-  TPaveText *lumi = new TPaveText(0.10,0.57,0.60,0.67,"NDC");
-  lumi->SetBorderSize(0);
-  lumi->SetFillStyle(0);
-  lumi->SetTextSize(0.10);
-  lumi->AddText("L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV");
-
-  TPaveText *tb4 = new TPaveText(0.35,0.72,0.67,0.83,"NDC");
+  TPaveText *tb4 = new TPaveText(0.35,0.82,0.67,0.93,"NDC");
   tb4->SetBorderSize(0);
   tb4->SetFillStyle(0);
+  tb4->SetTextSize(0.12);
   if (BaseName=="WInclToMuNu")
     tb4->AddText("W #rightarrow #mu #nu");
   if (BaseName=="WInclToEleNu")
@@ -690,34 +714,23 @@ int theoryStudy_separate(const TString BaseName)
   rL1->Draw();
   tL1->Draw();
   tb4->Draw();
-  cmspre2->Draw();
-  lumi->Draw();
 
   //Powheg Ratio plot
-  lC2->cd(2)->SetPad(0,0.39,0.95,0.65);
-  lC2->cd(2)->SetTopMargin(0.01);
-  lC2->cd(2)->SetBottomMargin(0.01);
-  lC2->cd(2)->SetLeftMargin(0.15);
-  lC2->cd(2)->SetRightMargin(0.07);
+  lC2->cd(2)->SetPad(0,0.39,0.96,0.64);
+  //lC2->cd(2)->SetFillColor(4);
   lC2->cd(2)->SetTickx(1);
   lC2->cd(2)->SetTicky(1);
   lC2->cd(2)->SetLogx(1);
 
-  TPaveText *tb2 = new TPaveText(0.15,0.82,0.35,0.92,"NDC");
-  tb2->SetBorderSize(0);
-  tb2->SetFillStyle(0);
-  tb2->SetTextSize(0.12);
-  tb2->AddText("Powheg");
-  
-  TLegend *rL2 =new TLegend(0.2,0.05,0.68,0.30); rL2->SetFillColor(0); rL2->SetBorderSize(0);
+  TLegend *rL2 =new TLegend(0.18,0.05,0.53,0.34); rL2->SetFillColor(0); rL2->SetBorderSize(0);
   rL2-> SetNColumns(2);
   rL2->AddEntry(RatioPowhegStatErrBand,"stat","F");
   rL2->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   rL2->AddEntry(RatioPowhegStatPDFErrBand,"PDF    ","F");
   rL2->AddEntry(DataRatio,"Data stat+syst","F");
-  rL2->SetTextSize(0.07);
+  rL2->SetTextSize(0.09);
 
-  TLegend *tL2 =new TLegend(0.17,0.85,0.37,0.95); tL2->SetFillColor(0); tL2->SetBorderSize(0);
+  TLegend *tL2 =new TLegend(0.18,0.82,0.37,0.92); tL2->SetFillColor(0); tL2->SetBorderSize(0);
   tL2->AddEntry(RatioPowhegStatErrBand,"POWHEG","F");
   tL2->SetTextSize(0.12);
   tL2->SetTextFont(2);
@@ -726,8 +739,8 @@ int theoryStudy_separate(const TString BaseName)
   hRatioPowhegDummy->GetYaxis()->SetRangeUser(0.5,1.5);
   hRatioPowhegDummy->GetYaxis()->SetTitle("Theory/Data");
   hRatioPowhegDummy->GetYaxis()->CenterTitle();
-  hRatioPowhegDummy->GetYaxis()->SetTitleOffset(0.4);
-  hRatioPowhegDummy->GetYaxis()->SetTitleSize(0.12);
+  hRatioPowhegDummy->GetYaxis()->SetTitleOffset(0.35);
+  hRatioPowhegDummy->GetYaxis()->SetTitleSize(0.14);
   hRatioPowhegDummy->GetYaxis()->SetLabelSize(0.10);
   hRatioPowhegDummy->GetYaxis()->SetNdivisions(405);
   hRatioPowhegDummy->GetXaxis()->SetTitleOffset(0.6);
@@ -742,46 +755,39 @@ int theoryStudy_separate(const TString BaseName)
   tL2->Draw();
 
   // FEWZ Ratio Plot
-  lC2->cd(3)->SetPad(0,0.07,0.95,0.37);
-  lC2->cd(3)->SetTopMargin(0.01);
-  lC2->cd(3)->SetBottomMargin(0.15);
-  lC2->cd(3)->SetLeftMargin(0.15);
-  lC2->cd(3)->SetRightMargin(0.07);
+  lC2->cd(3)->SetPad(0,0,0.96,0.37);
+  lC2->cd(3)->SetBottomMargin(0.26);
+  //lC2->cd(3)->SetFillColor(3);
   lC2->cd(3)->SetTickx(1);
   lC2->cd(3)->SetTicky(1);
   lC2->cd(3)->SetLogx(1);
 
-  TPaveText *tb3 = new TPaveText(0.15,0.82,0.35,0.92,"NDC");
-  tb3->SetBorderSize(0);
-  tb3->SetFillStyle(0);
-  tb3->SetTextSize(0.12);
-  tb3->AddText("Fewz");
-  TLegend *rL3 =new TLegend(0.2,0.20,0.58,0.40); rL3->SetFillColor(0); rL3->SetBorderSize(0);
+  TLegend *rL3 =new TLegend(0.18,0.29,0.58,0.55); rL3->SetFillColor(0); rL3->SetBorderSize(0);
   rL3-> SetNColumns(2);
   rL3->AddEntry(RatioFEWZStatErrBand,"stat","F");
   rL3->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   rL3->AddEntry(RatioFEWZStatPDFErrBand,"PDF","F");
   rL3->AddEntry(DataRatio,"Data stat+syst","F");
   rL3->AddEntry(RatioFEWZStatPDFScaleErrBand,"QCD scales","F");
-  rL3->SetTextSize(0.07);
+  rL3->SetTextSize(0.06);
 
   TLegend *tL3 =new TLegend(0.17,0.85,0.37,0.95); tL3->SetFillColor(0); tL3->SetBorderSize(0);
   tL3->AddEntry(RatioFEWZStatErrBand,"FEWZ","F");
-  tL3->SetTextSize(0.12);
+  tL3->SetTextSize(0.09);
   tL3->SetTextFont(2);
 
   TH1D* hRatioFEWZDummy = new TH1D("","",nBins-1,WptLogBins);
   hRatioFEWZDummy->GetYaxis()->SetRangeUser(0.5,1.5);
   hRatioFEWZDummy->GetYaxis()->SetTitle("Theory/Data");
   hRatioFEWZDummy->GetYaxis()->CenterTitle();
-  hRatioFEWZDummy->GetYaxis()->SetTitleOffset(0.4);
-  hRatioFEWZDummy->GetYaxis()->SetTitleSize(0.12);
-  hRatioFEWZDummy->GetYaxis()->SetLabelSize(0.10);
+  hRatioFEWZDummy->GetYaxis()->SetTitleOffset(0.50);
+  hRatioFEWZDummy->GetYaxis()->SetTitleSize(0.095);
+  hRatioFEWZDummy->GetYaxis()->SetLabelSize(0.07);
   hRatioFEWZDummy->GetYaxis()->SetNdivisions(405);
   hRatioFEWZDummy->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
   hRatioFEWZDummy->GetXaxis()->SetTitleOffset(0.6);
-  hRatioFEWZDummy->GetXaxis()->SetTitleSize(0.08);
-  hRatioFEWZDummy->GetXaxis()->SetLabelSize(0.08);
+  hRatioFEWZDummy->GetXaxis()->SetTitleSize(0.11);
+  hRatioFEWZDummy->GetXaxis()->SetLabelSize(0.09);
   hRatioFEWZDummy->Draw();
   DataRatio->Draw("2");
   RatioDataStatErrBand->Draw("P E");
@@ -792,12 +798,10 @@ int theoryStudy_separate(const TString BaseName)
   tL3->Draw();
 
   if(BaseName=="WInclToMuNu")
-    //sprintf(tmpName,"winclmnRatioTheoData.png");
-    sprintf(tmpName,"winclmnRatioTheoData.pdf");
+    sprintf(tmpName,"winclmnRatioTheoData.");
   if(BaseName=="WInclToEleNu")
-    //sprintf(tmpName,"winclenRatioTheoData.png");
-    sprintf(tmpName,"winclenRatioTheoData.pdf");
-  lC2->SaveAs(tmpName);
+    sprintf(tmpName,"winclenRatioTheoData.");
+  lC2->SaveAs(tmpName+format);
 
 
 
