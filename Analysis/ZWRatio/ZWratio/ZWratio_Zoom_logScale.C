@@ -5,49 +5,80 @@
 #include <TGraphErrors.h>             // graph class
 #include <TGraphAsymmErrors.h>        // graph class
 #include <TLatex.h>
-//#include "./Utils/const.h"
 using namespace std;
+
+const TString format("pdf");
 
 void FEWZ_PDFUncer(double *ZWRatio, double *Err);
 void Powheg_PDFUncer(double *ZWRatio, double *Err);
 
 int ZWratio_Zoom_logScale()
 {
+  gROOT->LoadMacro("../../Utils/tdrstyle.C");
+  setTDRStyle();
+  gROOT->LoadMacro("../../Utils/CMS_lumi.C");
+  writeExtraText = "true";
+  extraText = "Preliminary";
+  lumi_8TeV = "18.4 pb^{-1}";
+
+  int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+  int iPos = 0;
+
+  int W = 800;
+  int H = 800;
+
+  //
+  // Simple example of macro: plot with CMS name and lumi text
+  //  (this script does not pretend to work in all configurations)
+  // iPeriod = 1*(0/1 7 TeV) + 2*(0/1 8 TeV)  + 4*(0/1 13 TeV)
+  // For instance:
+  //               iPeriod = 3 means: 7 TeV + 8 TeV
+  //               iPeriod = 7 means: 7 TeV + 8 TeV + 13 TeV
+  // Initiated by: Gautier Hamel de Monchenault (Saclay)
+  //
+  int H_ref = 600;
+  int W_ref = 800;
+
+  // references for T, B, L, R
+  float T = 0.08*H_ref;
+  float B = 0.12*H_ref;
+  float L = 0.12*W_ref;
+  float R = 0.04*W_ref;
+
   const int nBins = 13;
   //double WptBins[nBins] = {0.0,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
   double WptBins[nBins] = {1.0,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
 
-
   ///Data
   TFile *f_WinclMu_RD = new TFile("../WptIncl_NormDiffXsec_InFid/Wpt_NormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
   TFile *f_ZinclMu_RD = new TFile("../Zpt_RealData_12Bin/ZptXsecErrors/ZptXsecErrors_FidVolume.root");
-  TH1D* hWpt_RD = f_WinclMu_RD->Get("hData_Xsec_BornLogScaleNorm");
-  TH1D* hZpt_RD = f_ZinclMu_RD->Get("hZptDiffXsec12BinInFidNorm");
+  TH1D* hWpt_RD = (TH1D*)f_WinclMu_RD->Get("hData_Xsec_BornLogScaleNorm");
+  TH1D* hZpt_RD = (TH1D*)f_ZinclMu_RD->Get("hZptDiffXsec12BinInFidNorm");
   TH1D* hWZratio_RD = new TH1D("W/Z ratio", "", nBins-1,WptBins);
   
   ///Powheg
   TFile *f_WinclMu_Powheg = new TFile("../Wpt_PowhegPreFSR_12Bin/root/InclWToMuNu_PowhegWpt.root");
   TFile *f_ZinclMu_Powheg = new TFile("../Zpt_PowhegPreFSR_12Bin/root/ZToMuMu_Powheg.root");
-  TH1D* hWpt_Powheg = f_WinclMu_Powheg->Get("hxsec_NormDiff");
-  TH1D* hZpt_Powheg = f_ZinclMu_Powheg->Get("hxsec_NormDiff");
+  TH1D* hWpt_Powheg = (TH1D*)f_WinclMu_Powheg->Get("hxsec_NormDiff");
+  TH1D* hZpt_Powheg = (TH1D*)f_ZinclMu_Powheg->Get("hxsec_NormDiff");
   TH1D* hWZratio_Powheg = new TH1D("W/Z ratio", "", nBins-1,WptBins);
-  
+ 
   ///ResBos
   TFile *f_WinclMu_Resbos = new TFile("../WpT_Resbos_12Bin/root/WpTincl_Resbos.root");
   TFile *f_ZinclMu_Resbos = new TFile("../ZpT_Resbos_12Bin/root/ZToMuMu_Resbos.root");
-  TH1D* hWpt_Resbos = f_WinclMu_Resbos->Get("NormDiffXsec_Resbos_12bin");
-  TH1D* hZpt_Resbos = f_ZinclMu_Resbos->Get("NormDiffXsec");
-  TH1D* hWZratio_Resbos = new TH1D("W/Z ratio", "", nBins-1,WptBins);
+  TH1D* hWpt_Resbos = (TH1D*)f_WinclMu_Resbos->Get("NormDiffXsec_Resbos");
+  TH1D* hZpt_Resbos = (TH1D*)f_ZinclMu_Resbos->Get("NormDiffXsec");
+  TH1D* hWZratio_Resbos = new TH1D("W/Z ratio", "", nBins-1,WptBins); 
 
   ///FEWZ
   TFile *f_ZinclMu_FEWZ = new TFile("../ZpT_FEWZ_12Bin/root/ZToMuMu_FEWZ.root");
   TFile *f_WinclMu_FEWZ = new TFile("../WpT_FEWZ_12Bin/root/WinclToMuNu_FEWZ.root");
-  TH1D* hZpt_FEWZ = f_ZinclMu_FEWZ->Get("hxsec_NormDiff");
-  TH1D* hWpt_FEWZ = f_WinclMu_FEWZ->Get("hxsec_NormDiff");
-  TH1D* hZpt_Up_FEWZ = f_ZinclMu_FEWZ->Get("hxsec_NormDiff_up");
-  TH1D* hZpt_Down_FEWZ = f_ZinclMu_FEWZ->Get("hxsec_NormDiff_down");
-  TH1D* hWpt_Up_FEWZ = f_WinclMu_FEWZ->Get("hxsec_NormDiff_up");
-  TH1D* hWpt_Down_FEWZ = f_WinclMu_FEWZ->Get("hxsec_NormDiff_down");
+  TH1D* hZpt_FEWZ = (TH1D*)f_ZinclMu_FEWZ->Get("hxsec_NormDiff");
+  TH1D* hWpt_FEWZ = (TH1D*)f_WinclMu_FEWZ->Get("hxsec_NormDiff");
+  TH1D* hZpt_Up_FEWZ = (TH1D*)f_ZinclMu_FEWZ->Get("hxsec_NormDiff_up");
+  TH1D* hZpt_Down_FEWZ = (TH1D*)f_ZinclMu_FEWZ->Get("hxsec_NormDiff_down");
+  TH1D* hWpt_Up_FEWZ = (TH1D*)f_WinclMu_FEWZ->Get("hxsec_NormDiff_up");
+  TH1D* hWpt_Down_FEWZ = (TH1D*)f_WinclMu_FEWZ->Get("hxsec_NormDiff_down");
   TH1D* hWZratio_FEWZ = new TH1D("W/Z ratio", "", nBins-1,WptBins);
   
   double Wpt_RD[12]={0};
@@ -225,8 +256,8 @@ int ZWratio_Zoom_logScale()
     hWZratio_Powheg->SetBinError(i+1,WZratioTotalErr_Powheg[i]);
   
     hWZratio_Resbos->SetBinContent(i+1,WZratio_Resbos[i]);
-    //hWZratio_Resbos->SetBinError(i+1,WZratioErr_Resbos[i]);
-    hWZratio_Resbos->SetBinError(i+1,0);
+    hWZratio_Resbos->SetBinError(i+1,WZratioErr_Resbos[i]);
+    //hWZratio_Resbos->SetBinError(i+1,0);
     
     hWZratio_FEWZ->SetBinContent(i+1,WZratio_FEWZ[i]);
     hWZratio_FEWZ->SetBinError(i+1,WZratioTotalErr_FEWZ[i]);
@@ -247,8 +278,8 @@ int ZWratio_Zoom_logScale()
     hRatioPowhegTotalErr->SetBinError(i+1,WZratioTotalErr_Powheg[i] /WZratio_RD[i]);
 
     hRatioResbosTotalErr->SetBinContent(i+1,WZratio_Resbos[i] / WZratio_RD[i]);
-    //hRatioResbosTotalErr->SetBinError(i+1,WZratioErr_Resbos[i] / WZratio_RD[i]);
-    hRatioResbosTotalErr->SetBinError(i+1,0);
+    hRatioResbosTotalErr->SetBinError(i+1,WZratioErr_Resbos[i] / WZratio_RD[i]);
+    //hRatioResbosTotalErr->SetBinError(i+1,0);
 
     hRatioFEWZTotalErr->SetBinContent(i+1,WZratio_FEWZ[i] / WZratio_RD[i]);
     hRatioFEWZTotalErr->SetBinError(i+1,WZratioTotalErr_FEWZ[i] / WZratio_RD[i]);
@@ -257,7 +288,17 @@ int ZWratio_Zoom_logScale()
   TFile *f_out = new TFile("./RatioZW.root","recreate");
   f_out->cd();
   hWZratio_RD->Write();
- 
+
+
+  //Color Transparent
+  TColor *colRed = gROOT->GetColor(kRed);
+  TColor *colBlue = gROOT->GetColor(kBlue);
+  TColor *colGreen = gROOT->GetColor(kGreen);
+  colRed->SetAlpha(0.2);
+  colBlue->SetAlpha(0.2);
+  colGreen->SetAlpha(0.2);
+  //gStyle->SetOptStat(0); 
+
   // Draw
   TGraphErrors *tgWZratio_Powheg = new TGraphErrors(hWZratio_Powheg);
   TGraphErrors *tgWZratio_Resbos = new TGraphErrors(hWZratio_Resbos);
@@ -268,44 +309,22 @@ int ZWratio_Zoom_logScale()
   TGraphErrors* tgRatioResbos = new TGraphErrors(hRatioResbosTotalErr);
   TGraphErrors* tgRatioFEWZ = new TGraphErrors(hRatioFEWZTotalErr);
  
-  //TLegend *L1 = new TLegend(0.2,0.85,0.4,0.7);L1->SetFillColor(0); L1->SetBorderSize(0);
-  TLegend *L1 = new TLegend(0.2,0.80,0.4,0.65); L1->SetFillColor(0); L1->SetBorderSize(0);
-  L1->AddEntry(hWZratio_RD,"Data","PL");
+  TLegend *L1 = new TLegend(0.25,0.65,0.5,0.95);
+  L1->SetFillColor(0);
+  L1->SetBorderSize(0);
+  L1->AddEntry(hWZratio_RD,"data","PL");
   L1->AddEntry(tgWZratio_Powheg,"Powheg","f");
   L1->AddEntry(tgWZratio_Resbos,"ResBos","f");
   L1->AddEntry(tgWZratio_FEWZ,"FEWZ","f");
-  
-  TCanvas *C1 = new TCanvas("can1","can1",800,900);
+
+  TCanvas *C1 = new TCanvas("can1","can1",50,50,W,H);
+  CMS_lumi(C1,iPeriod,iPos);
   C1->Divide(1,4,0,0);
   
-  C1->cd(1)->SetPad(0,0.50,1.0,1.0);
-  C1->cd(1)->SetTopMargin(0.1);
-  C1->cd(1)->SetBottomMargin(0.01);
-  C1->cd(1)->SetLeftMargin(0.15);
-  C1->cd(1)->SetRightMargin(0.07);
-  C1->cd(1)->SetTickx(1);
-  //C1->cd(1)->SetTicky(1);
-  C1->cd(1)->SetTicky(2);
+  C1->cd(1)->SetPad(0,0.52,0.98,0.95);
+  C1->cd(1)->SetFillColor(0);
   C1->cd(1)->SetLogx(1);
 
-
-  //TPaveText *cmspre = new TPaveText(0.35,0.96,0.8,0.96,"NDC");
-  //cmspre->SetBorderSize(0);
-  //cmspre->SetFillStyle(0);
-  //cmspre->SetTextSize(0.04);
-  //cmspre->AddText("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8 TeV");
-  TPaveText *cmspre = new TPaveText(0.7,0.94,0.92,0.94,"NDC");
-  cmspre->SetBorderSize(0);
-  cmspre->SetFillStyle(0);
-  cmspre->SetTextSize(0.06);
-  cmspre->AddText("CMS Preliminary");
-  
-  TPaveText *lumi18 = new TPaveText(0.35,0.80,0.8,0.80,"NDC");
-  lumi18->SetBorderSize(0);
-  lumi18->SetFillStyle(0);
-  lumi18->SetTextSize(0.055);
-  lumi18->AddText("L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV");
-  
   TPaveText *Wchannel = new TPaveText(0.2,0.65,0.4,0.65,"NDC");
   Wchannel->SetBorderSize(0);
   Wchannel->SetFillStyle(0);
@@ -327,13 +346,10 @@ int ZWratio_Zoom_logScale()
   LeptonCut->SetTextColor(kBlue);
   LeptonCut->AddText("p_{T}>20 GeV, |#eta |<2.1");
 
-  hWZratio_RD->GetYaxis()->SetRangeUser(-1.2,6.);
-  //hWZratio_RD->GetYaxis()->SetTitleOffset(1.2);
+  hWZratio_RD->GetYaxis()->SetRangeUser(-1.2,6.5);
   hWZratio_RD->GetYaxis()->SetTitleOffset(0.8);
-  //hWZratio_RD->GetYaxis()->SetLabelSize(0.035);
-  hWZratio_RD->GetYaxis()->SetLabelSize(0.033);
-  hWZratio_RD->GetYaxis()->SetTitleSize(0.053);
-  //hWZratio_RD->GetYaxis()->SetNdivisions(405);
+  hWZratio_RD->GetYaxis()->SetLabelSize(0.07);
+  hWZratio_RD->GetYaxis()->SetTitleSize(0.07);
   hWZratio_RD->GetYaxis()->SetNdivisions(410);
   hWZratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{Z}} #frac{d#sigma^{Z}}{p_{T}^{Z}})/(#frac{1}{#sigma^{W}} #frac{d#sigma^{W}}{p_{T}^{W}})");
   hWZratio_RD->GetXaxis()->SetTitleOffset(0.6);
@@ -346,15 +362,15 @@ int ZWratio_Zoom_logScale()
   hWZratio_RD->Draw("E1");
 
  // Draw TGraph style
-  tgWZratio_Powheg->SetFillStyle(3004);
+  //tgWZratio_Powheg->SetFillStyle(3004);
   tgWZratio_Powheg->SetFillColor(kRed);
   tgWZratio_Powheg->SetLineColor(kRed+2);
 
-  tgWZratio_Resbos->SetFillStyle(3013);
+  //tgWZratio_Resbos->SetFillStyle(3013);
   tgWZratio_Resbos->SetFillColor(kBlue);
   tgWZratio_Resbos->SetLineColor(kBlue+2);
 
-  tgWZratio_FEWZ->SetFillStyle(3005);
+  //tgWZratio_FEWZ->SetFillStyle(3005);
   tgWZratio_FEWZ->SetFillColor(kGreen);
   tgWZratio_FEWZ->SetLineColor(kGreen+2);
   
@@ -363,50 +379,21 @@ int ZWratio_Zoom_logScale()
   tgWZratio_Resbos->Draw("5");
   
   L1->Draw();
-  cmspre->Draw();
-  lumi18->Draw();
-  
-  TLine *Line_XminYMax = new TLine(1.,-1.2,1,6);
-  Line_XminYMax->SetLineWidth(2);
-  Line_XminYMax->SetLineColor(kBlack);
-  Line_XminYMax->SetLineStyle(1);
-  Line_XminYMax->Draw("same");
-  
-  TLine *Line_XminXMax = new TLine(1.,-1.2,600,-1.2);
-  Line_XminXMax->SetLineWidth(2);
-  Line_XminXMax->SetLineColor(kBlack);
-  Line_XminXMax->SetLineStyle(1);
-  Line_XminXMax->Draw("same");
-  
-  TLine *Line_XmaxYMin = new TLine(600.,-1.2,600,6);
-  Line_XmaxYMin->SetLineWidth(2);
-  Line_XmaxYMin->SetLineColor(kBlack);
-  Line_XmaxYMin->SetLineStyle(1);
-  Line_XmaxYMin->Draw("same");
-  
-  TLine *Line_XmaxYMax = new TLine(1.,6,600,6);
-  Line_XmaxYMax->SetLineWidth(2);
-  Line_XmaxYMax->SetLineColor(kBlack);
-  Line_XmaxYMax->SetLineStyle(1);
-  Line_XmaxYMax->Draw("same");
   //Wchannel->Draw();
   //Zchannel->Draw();
   //LeptonCut->Draw();
   
-  //C1->cd(2)->SetPad(0.028,0.505,0.76,0.805);
-  //C1->cd(2)->SetPad(0.028,0.505,0.76,0.770);
-  //C1->cd(2)->SetPad(0.028,0.505,0.76,0.760);
-  C1->cd(2)->SetPad(0.028,0.505,0.76,0.750);
-  
+  C1->cd(2)->SetPad(0.060,0.520,0.722,0.730);
+  C1->cd(2)->SetFillColor(0);
   C1->cd(2)->SetLogx(1);
-
+  
   TH1D* hWZratio_RD_Zoom = (TH1D*)hWZratio_RD->Clone("hWZratio_RD_Zoom");
   
   hWZratio_RD_Zoom->GetYaxis()->SetTitle("");
   hWZratio_RD_Zoom->GetXaxis()->SetRangeUser(1,150);
-  hWZratio_RD_Zoom->GetYaxis()->SetRangeUser(0.5,1.7);
+  hWZratio_RD_Zoom->GetYaxis()->SetRangeUser(0.4,1.7);
   //hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.05);
-  hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.065);
+  hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.095);
   hWZratio_RD_Zoom->GetYaxis()->SetNdivisions(405);
   hWZratio_RD_Zoom->GetXaxis()->SetTitle("");
   hWZratio_RD_Zoom->Draw(" E1");
@@ -414,26 +401,11 @@ int ZWratio_Zoom_logScale()
   tgWZratio_Powheg->Draw("5");
   tgWZratio_Resbos->Draw("5");
   tgWZratio_FEWZ->Draw("5");
-  
-  TLine *Line_XminYMaxZoom = new TLine(1.,0.5,1,1.7);
-  Line_XminYMaxZoom->SetLineWidth(2);
-  Line_XminYMaxZoom->SetLineColor(kBlack);
-  Line_XminYMaxZoom->SetLineStyle(1);
-  Line_XminYMaxZoom->Draw("same");
-  
-  TLine *Line_XminXMaxZoom = new TLine(1.,0.5,150,0.5);
-  Line_XminXMaxZoom->SetLineWidth(2);
-  Line_XminXMaxZoom->SetLineColor(kBlack);
-  Line_XminXMaxZoom->SetLineStyle(1);
-  Line_XminXMaxZoom->Draw("same");
-  
   gPad->RedrawAxis();
   
-  C1->cd(3)->SetPad(0,0.1,1,0.5);
-  C1->cd(3)->SetTopMargin(0.1);
-  C1->cd(3)->SetBottomMargin(0.01);
-  C1->cd(3)->SetLeftMargin(0.15);
-  C1->cd(3)->SetRightMargin(0.07);
+  C1->cd(3)->SetPad(0.,0.1,0.98,0.5);
+  C1->cd(3)->SetFillColor(0);
+  C1->cd(3)->SetBottomMargin(0.125);
   C1->cd(3)->SetTickx(1);
   C1->cd(3)->SetTicky(1);
   C1->cd(3)->SetLogx(1);
@@ -441,37 +413,34 @@ int ZWratio_Zoom_logScale()
   TH1D *hRatioDummy = new TH1D("hRatioDummy","",nBins-1,WptBins);
   
   // set canvas range and XY axis title
-  hRatioDummy->GetYaxis()->SetRangeUser(0.1,3);
- // hRatioDummy->GetYaxis()->SetTitle("Theory / Data");
-  hRatioDummy->GetXaxis()->SetTitle("p_{T}^{V} [GeV]");
+  hRatioDummy->GetYaxis()->SetRangeUser(0.1,2.8);
   hRatioDummy->GetYaxis()->SetTitleSize(0.07);
   hRatioDummy->GetYaxis()->SetTitleOffset(0.58);
-  //hRatioDummy->GetYaxis()->SetLabelSize(0.05);
-  hRatioDummy->GetYaxis()->SetLabelSize(0.045);
+  hRatioDummy->GetYaxis()->SetLabelSize(0.07);
   hRatioDummy->GetYaxis()->SetNdivisions(605);
   hRatioDummy->GetYaxis()->CenterTitle();
-  hRatioDummy->GetXaxis()->SetTitleSize(0.07);
-  hRatioDummy->GetXaxis()->SetLabelSize(0.05);
+  
+  hRatioDummy->GetXaxis()->SetTitleSize(0.08);
+  hRatioDummy->GetXaxis()->SetTitleOffset(0.5);
+  hRatioDummy->GetXaxis()->SetLabelSize(0);
+  hRatioDummy->GetXaxis()->SetTitle("p_{T}^{V} [GeV]");
 
   // FEWZ Ratio plot setting
-  tgRatioData->SetFillColor(kBlack);
-  tgRatioData->SetFillStyle(3001);
+  tgRatioData->SetFillColor(kGray+2);
+  tgRatioData->SetFillStyle(3354);
 
   tgRatioPowheg->SetFillColor(kRed);
   tgRatioPowheg->SetLineColor(kRed+2);
-  tgRatioPowheg->SetFillStyle(3004);
   tgRatioPowheg->SetMarkerStyle(22);
   tgRatioPowheg->SetMarkerColor(kRed+2);
 
   tgRatioResbos->SetFillColor(kBlue);
   tgRatioResbos->SetLineColor(kBlue+2);
-  tgRatioResbos->SetFillStyle(3013);
   tgRatioResbos->SetMarkerStyle(20);
   tgRatioResbos->SetMarkerColor(kBlue+2);
 
   tgRatioFEWZ->SetFillColor(kGreen);
   tgRatioFEWZ->SetLineColor(kGreen+2);
-  tgRatioFEWZ->SetFillStyle(3005);
   tgRatioFEWZ->SetMarkerStyle(21);
   tgRatioFEWZ->SetMarkerColor(kGreen+2);
  
@@ -482,49 +451,24 @@ int ZWratio_Zoom_logScale()
   tgRatioFEWZ->Draw("5 P");  
   tgRatioPowheg->Draw("5 P");
   tgRatioResbos->Draw("5 P");
-  
-  TLine *Line_XminYMaxRatio = new TLine(1.,0.1,1,3);
-  Line_XminYMaxRatio->SetLineWidth(2);
-  Line_XminYMaxRatio->SetLineColor(kBlack);
-  Line_XminYMaxRatio->SetLineStyle(1);
-  Line_XminYMaxRatio->Draw("same");
-  
-  TLine *Line_XminXMaxRatio = new TLine(1.,0.1,600,0.1);
-  Line_XminXMaxRatio->SetLineWidth(2);
-  Line_XminXMaxRatio->SetLineColor(kBlack);
-  Line_XminXMaxRatio->SetLineStyle(1);
-  Line_XminXMaxRatio->Draw("same");
-  
-  TLine *Line_XmaxYMinRatio = new TLine(600.,0.1,600,3);
-  Line_XmaxYMinRatio->SetLineWidth(2);
-  Line_XmaxYMinRatio->SetLineColor(kBlack);
-  Line_XmaxYMinRatio->SetLineStyle(1);
-  Line_XmaxYMinRatio->Draw("same");
-  
-  TLine *Line_XmaxYMaxRatio = new TLine(1.,3,600,3);
-  Line_XmaxYMaxRatio->SetLineWidth(2);
-  Line_XmaxYMaxRatio->SetLineColor(kBlack);
-  Line_XmaxYMaxRatio->SetLineStyle(1);
-  Line_XmaxYMaxRatio->Draw("same");
-  
   gPad->RedrawAxis();
  
   // Set Zoomed Ratio plot
   //C1->cd(4)->SetPad(0.028,0.056,0.76,0.405);
-  C1->cd(4)->SetPad(0.028,0.065,0.76,0.344);
+  C1->cd(4)->SetPad(0.060,0.115,0.722,0.364);
   
   C1->cd(4)->SetLogx(1);
- 
-  gStyle->SetTitleY(0.9);
+  
   TH1D *hRatioDummy_Zoom = (TH1D*)hRatioDummy->Clone("hRatioDummy_Zoom");
   hRatioDummy_Zoom->GetYaxis()->SetRangeUser(0.5,1.5); // Y axis range
   hRatioDummy_Zoom->GetXaxis()->SetRangeUser(1,150); // X axis range
-  hRatioDummy_Zoom->GetYaxis()->SetTitleSize(0.1);
   hRatioDummy_Zoom->GetYaxis()->SetTitle("Theory / Data");
-  hRatioDummy_Zoom->GetYaxis()->SetTitleOffset(0.63);
-  hRatioDummy_Zoom->GetYaxis()->SetLabelSize(0.06);
+  hRatioDummy_Zoom->GetYaxis()->SetTitleOffset(0.53);
+  hRatioDummy_Zoom->GetYaxis()->SetTitleSize(0.13);
+  hRatioDummy_Zoom->GetYaxis()->SetLabelSize(0.09);
   //hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.05);
-  hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.065);
+  
+  hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.10);
   hRatioDummy_Zoom->GetXaxis()->SetTitle("");
   
   hRatioDummy_Zoom->Draw();
@@ -532,21 +476,9 @@ int ZWratio_Zoom_logScale()
   tgRatioFEWZ->Draw("5 P");  
   tgRatioPowheg->Draw("5 P");
   tgRatioResbos->Draw("5 P");
-  
-  TLine *Line_XminYMaxRatioZoom = new TLine(1.,0.5,1,1.5);
-  Line_XminYMaxRatioZoom->SetLineWidth(2);
-  Line_XminYMaxRatioZoom->SetLineColor(kBlack);
-  Line_XminYMaxRatioZoom->SetLineStyle(1);
-  Line_XminYMaxRatioZoom->Draw("same");
-  
-  TLine *Line_XminXMaxRatioZoom = new TLine(1.,0.5,150,0.5);
-  Line_XminXMaxRatioZoom->SetLineWidth(2);
-  Line_XminXMaxRatioZoom->SetLineColor(kBlack);
-  Line_XminXMaxRatioZoom->SetLineStyle(1);
-  Line_XminXMaxRatioZoom->Draw("same");
   gPad->RedrawAxis();
 
-  C1->SaveAs("RatioNormZW_Fid_Zoom_logScale.png");
+  C1->SaveAs("RatioNormZW_Fid_Zoom."+format);
 
   return 0;
 }
