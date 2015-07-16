@@ -66,8 +66,8 @@ int ZWratio_Zoom_logScale()
   ///ResBos
   TFile *f_WinclMu_Resbos = new TFile("../WpT_Resbos_12Bin/root/WpTincl_Resbos.root");
   TFile *f_ZinclMu_Resbos = new TFile("../ZpT_Resbos_12Bin/root/ZToMuMu_Resbos.root");
-  TH1D* hWpt_Resbos = f_WinclMu_Resbos->Get("NormDiffXsec_Resbos_12bin");
-  TH1D* hZpt_Resbos = f_ZinclMu_Resbos->Get("NormDiffXsec");
+  TH1D* hWpt_Resbos = (TH1D*)f_WinclMu_Resbos->Get("NormDiffXsec_Resbos");
+  TH1D* hZpt_Resbos = (TH1D*)f_ZinclMu_Resbos->Get("NormDiffXsec");
   TH1D* hWZratio_Resbos = new TH1D("W/Z ratio", "", nBins-1,WptBins); 
 
   ///FEWZ
@@ -256,8 +256,8 @@ int ZWratio_Zoom_logScale()
     hWZratio_Powheg->SetBinError(i+1,WZratioTotalErr_Powheg[i]);
   
     hWZratio_Resbos->SetBinContent(i+1,WZratio_Resbos[i]);
-    //hWZratio_Resbos->SetBinError(i+1,WZratioErr_Resbos[i]);
-    hWZratio_Resbos->SetBinError(i+1,0);
+    hWZratio_Resbos->SetBinError(i+1,WZratioErr_Resbos[i]);
+    //hWZratio_Resbos->SetBinError(i+1,0);
     
     hWZratio_FEWZ->SetBinContent(i+1,WZratio_FEWZ[i]);
     hWZratio_FEWZ->SetBinError(i+1,WZratioTotalErr_FEWZ[i]);
@@ -278,8 +278,8 @@ int ZWratio_Zoom_logScale()
     hRatioPowhegTotalErr->SetBinError(i+1,WZratioTotalErr_Powheg[i] /WZratio_RD[i]);
 
     hRatioResbosTotalErr->SetBinContent(i+1,WZratio_Resbos[i] / WZratio_RD[i]);
-    //hRatioResbosTotalErr->SetBinError(i+1,WZratioErr_Resbos[i] / WZratio_RD[i]);
-    hRatioResbosTotalErr->SetBinError(i+1,0);
+    hRatioResbosTotalErr->SetBinError(i+1,WZratioErr_Resbos[i] / WZratio_RD[i]);
+    //hRatioResbosTotalErr->SetBinError(i+1,0);
 
     hRatioFEWZTotalErr->SetBinContent(i+1,WZratio_FEWZ[i] / WZratio_RD[i]);
     hRatioFEWZTotalErr->SetBinError(i+1,WZratioTotalErr_FEWZ[i] / WZratio_RD[i]);
@@ -399,7 +399,7 @@ int ZWratio_Zoom_logScale()
   hWZratio_RD_Zoom->Draw(" E1");
   
   tgWZratio_Powheg->Draw("5");
-  //tgWZratio_Resbos->Draw("5");
+  tgWZratio_Resbos->Draw("5");
   tgWZratio_FEWZ->Draw("5");
   gPad->RedrawAxis();
   
