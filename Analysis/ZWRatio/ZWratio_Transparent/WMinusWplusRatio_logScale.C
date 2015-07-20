@@ -1016,7 +1016,7 @@ int WMinusWplusRatio_logScale()
   tgRatioResbos->Draw("5 P");
   gPad->RedrawAxis();
 
-  C1->SaveAs("WmMuWpMuNormFid12Bin."+format);
+  //C1->SaveAs("WmMuWpMuNormFid12Bin."+format);
   return 0;
 }
  
