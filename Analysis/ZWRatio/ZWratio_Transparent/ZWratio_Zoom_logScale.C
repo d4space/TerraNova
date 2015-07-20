@@ -66,6 +66,7 @@ int ZWratio_Zoom_logScale()
   ///ResBos
   TFile *f_WinclMu_Resbos = new TFile("../WpT_Resbos_12Bin/root/WpTincl_Resbos.root");
   TFile *f_ZinclMu_Resbos = new TFile("../ZpT_Resbos_12Bin/root/ZToMuMu_Resbos.root");
+  //TFile *f_ZinclMu_Resbos = new TFile("../ZpT_Resbos_12Bin/root_binMerge/ZToMuMu_Resbos.root");
   TH1D* hWpt_Resbos = (TH1D*)f_WinclMu_Resbos->Get("NormDiffXsec_Resbos");
   TH1D* hZpt_Resbos = (TH1D*)f_ZinclMu_Resbos->Get("NormDiffXsec");
   TH1D* hWZratio_Resbos = new TH1D("W/Z ratio", "", nBins-1,WptBins); 
@@ -478,7 +479,7 @@ int ZWratio_Zoom_logScale()
   tgRatioResbos->Draw("5 P");
   gPad->RedrawAxis();
 
-  C1->SaveAs("RatioNormZW_Fid_Zoom."+format);
+  //C1->SaveAs("RatioNormZW_Fid_Zoom."+format);
 
   return 0;
 }
