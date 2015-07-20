@@ -23,12 +23,40 @@
 #include<TPad.h>
 #include<TLatex.h>
 using namespace std;
-
+#include "../Utils/tdrstyle.C"
+#include "../Utils/CMS_lumi.C"
 #include "selections.h"
 #include "_unfoldData.h"
 #include "systematics.h"
 
 TH1F* ConvertGraphToHisto(TGraph *pGraph);
+
+const TString format("pdf");
+//const TString format("png");
+
+int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+int iPos = 0;
+
+//
+// Simple example of macro: plot with CMS name and lumi text
+//  (this script does not pretend to work in all configurations)
+// iPeriod = 1*(0/1 7 TeV) + 2*(0/1 8 TeV)  + 4*(0/1 13 TeV)
+// For instance:
+//               iPeriod = 3 means: 7 TeV + 8 TeV
+//               iPeriod = 7 means: 7 TeV + 8 TeV + 13 TeV
+// Initiated by: Gautier Hamel de Monchenault (Saclay)
+//
+int W = 800;
+int H = 800;
+
+int H_ref = 600;
+int W_ref = 800;
+
+// references for T, B, L, R
+float T = 0.08*H_ref;
+float B = 0.12*H_ref;
+float L = 0.12*W_ref;
+float R = 0.04*W_ref;
 
 void PrintIt(TPad *pad, TString title);
 
@@ -104,7 +132,7 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
 		   TLegend* leg2=NULL, 
 		   TLegend* leg3=NULL, 
 		   
-		   TLatex* tex=NULL, TLatex* tex1=NULL, TLatex* tex2=NULL);
+		   TLatex* tex=NULL);
 
 void axis1F(TH1F  *histo,
             TAxis *xaxis,
@@ -119,6 +147,14 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
                     double mLow           =   60,  // Z mass
                     double mHigh          =  120,  // Z mass
                     bool   isSave         = !true) {
+
+  gROOT->LoadMacro("../Utils/tdrstyle.C");
+  setTDRStyle();
+  gROOT->LoadMacro("../Utils/CMS_lumi.C");
+  writeExtraText = "true";
+  extraText = "Preliminary";
+  lumi_8TeV = "18.4 pb^{-1}";
+
   
   gROOT->Clear();
   gStyle->SetOptStat(0);  
@@ -305,6 +341,11 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
   // ------------------------------------------------------------------------------
   // 1. Subtract the bkg
   hPtData -> Sumw2();
+  for(int i(0); i<18; i++)
+  {
+    cout << "hPtData : " << hPtData->GetBinContent(i+1) << endl;
+  }
+    
   hPtData -> Add(hPtMC_allBkg, -1);
   
   
@@ -332,11 +373,11 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
   // 3. Unfolding Resolution
   hXSec -> Sumw2();
   applyMatrix(hXSec, hPtData);
-  
+
   // FSR correction
   hXSecFSR -> Sumw2();
   applyMatrixFSR(hXSecFSR, hXSec);
-  
+ 
   //=========================================================================
   // without FSR correction=============================  
   //4. Correct by Bin Width and Normalize
@@ -448,7 +489,7 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
   tl1->SetTextFont(42);
   tl1->SetFillColor(0);
   tl1->SetBorderSize(0);
-  //tl1->AddEntry(grResbos,"Resbos", "f");
+  tl1->AddEntry(grResbos,"Resbos", "f");
   tl1->AddEntry(gXSecWithSyst, "data",    "lp");
 
   //TLegend* tl2 = new TLegend(0.5,0.2,0.4,0.48);
@@ -469,21 +510,6 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
   pave -> SetTextFont(42);
   pave->SetTextSize(0.05);
   pave -> SetTextAlign(22);
-
-  //TLatex *pave1 = new TLatex(0.69,0.8, "#int 18.4 pb^{-1} at #sqrt{s} = 8 TeV");
-  TLatex *pave1 = new TLatex(0.3,0.6, "#int 18.4 pb^{-1} at #sqrt{s} = 8 TeV");
-  pave1 -> SetNDC();
-  pave1 -> SetTextColor(kBlack);
-  pave1 -> SetTextFont(42);
-  pave1->SetTextSize(0.05);
-  pave1 -> SetTextAlign(22);
-  
-  TLatex *pave2= new TLatex(0.3,0.7, "CMS Preliminary");
-  pave2-> SetNDC();
-  pave2-> SetTextColor(kBlack);
-  pave2-> SetTextFont(42);
-  pave2-> SetTextSize(0.05);
-  pave2-> SetTextAlign(22);
 
   gXSecWithSyst -> SetMarkerSize(0.8);
   gXSecWithSyst -> SetMarkerStyle(20);
@@ -612,9 +638,9 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
   //DrawWithRatio(c11, cTitle, gXSecWithSyst, grMadgraph, band12, line12, tl2, pave, pave1);
   
   
-  //TCanvas* ctot = new TCanvas("ctot","",800,0,800,700);
-  //TCanvas* ctot = new TCanvas("ctot","",800,0,700,500);
-  TCanvas* ctot = new TCanvas("ctot","",800,0,800,800);
+  //TCanvas* ctot = new TCanvas("ctot","",800,0,800,800);
+
+  TCanvas* ctot = new TCanvas("ctot","",50,50,W,H);
   ctot->SetFillColor(0);
   DrawWithRatioTotal(ctot, cTitle, gXSecWithSyst, 
       				   grPowheg, 
@@ -625,9 +651,9 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
 				   band111,  band11,   band12, 
 				   tl11,     tl1,      tl2,
 				   
-				   pave, pave1,pave2);
+				   pave);
  
-     ctot->SaveAs("diffXSec_PowhegResBosMadgraphFEWZ.png");
+     ctot->SaveAs("diffXSec_PowhegResBosFEWZ."+format);
 }
 
 
@@ -708,7 +734,8 @@ TGraphAsymmErrors* Powheg(){
     error_y[i] = sqrt(errorStat_y[i]*errorStat_y[i] + errorPDF_y[i]*errorPDF_y[i]); 
      //std::cout<<"Powhed:  errorPDF_y[i]\t"<<errorPDF_y[i]<<"\terrorStat_y[i]\t"<<errorStat_y[i]<<"\t error_y[i]\t"<<error_y[i]<< std::endl;
      //std::cout<<"Powhed:  errorPDF_y[i]\t"<<100*errorPDF_y[i]/y[i]<<"\terrorStat_y[i]\t"<<100*errorStat_y[i]/y[i]<<"\t error_y[i]\t"<<error_y[i]<< std::endl;
-     printf("Powheg PDF% : %.2f \t Stat % : %.2f \n ",100*errorPDF_y[i]/y[i] , 100*errorStat_y[i]/y[i]);
+     //printf("Powheg PDF% : %.2f \t Stat % : %.2f \n ",100*errorPDF_y[i]/y[i] , 100*errorStat_y[i]/y[i]);
+    std::cout << "Powheg PDF : " << 100*errorPDF_y[i]/y[i] << "\t Stat : " << 100*errorStat_y[i]/y[i] << endl;
   }
 
    //double error_x[18];
@@ -740,43 +767,129 @@ TGraphAsymmErrors* Resbos(){
    double x[n];
    
 
-   double y[18] = {0.02957739, 
-                   0.05620224, 
-                   0.04961592, 
-                   0.04050349, 
-                   0.03325381, 
-                   0.02725463, 
-                   0.02253389, 
-                   0.01862596, 
-                   0.01237984, 
-                   0.00664593, 
-                   0.00393008, 
-                   0.00200304, 
-                   0.00085508, 
-                   0.00041032, 
-                   0.00017656, 
-                   0.00006332, 
-                   0.00002423, 
-                   0.00000115};
-   double error_y[18] = {0.00514001, 
-                         0.00707116,
-                         0.00664392, 
-                         0.00600288,
-                         0.00543919, 
-                         0.00492418, 
-                         0.00447746, 
-                         0.00407074, 
-                         0.00165936, 
-                         0.00121580, 
-                         0.00093494, 
-                         0.00047197, 
-                         0.00030837, 
-                         0.00021361, 
-                         0.00009908, 
-                         0.00005934, 
-                         0.00002997, 
-                         0.00000270};
+   double y[18] = {
+ // Nadeesha PAS
+//        0.02957739, 
+//	0.05620224, 
+//	0.04961592, 
+//	0.04050349, 
+//	0.03325381, 
+//	0.02725463, 
+//	0.02253389, 
+//	0.01862596, 
+//	0.01237984, 
+//	0.00664593, 
+//	0.00393008, 
+//	0.00200304, 
+//	0.00085508, 
+//	0.00041032, 
+//	0.00017656, 
+//	0.00006332, 
+//	0.00002423, 
+//	0.00000115};
 
+     // Hammid resbos cp
+             //0.03223331, 
+             //0.06286445,
+             //0.05278694,
+             //0.04188681,
+             //0.03321407,
+             //0.02650710,
+             //0.02134491,
+             //0.01716620,
+             //0.01144344,
+             //0.00580740,
+             //0.00346440,
+             //0.00182813,
+             //0.00082492,
+             //0.00040398,
+             //0.00017512,
+             //0.00006440,
+             //0.00002296,
+             //0.00000211}; 
+
+	// Hammid resbos p
+		  // 0.03801042,	
+                  // 0.05823305,	
+                  // 0.05171227,	
+                  // 0.04158588,	
+                  // 0.03318528,	
+                  // 0.02647431,	
+                  // 0.02130071,	
+                  // 0.01728264,	
+                  // 0.01103833,	
+                  // 0.00592830,	
+                  // 0.00353564,	
+                  // 0.00188739,	
+                  // 0.00085679,	
+                  // 0.00042180,	
+                  // 0.00018299,	
+                  // 0.00006782,	
+                  // 0.00002363,	
+                  // 0.00000213};	
+	
+	// Hammid resbos latest
+	0.03335570, 	
+        0.05909690, 	
+        0.05080043, 	
+        0.04145975, 	
+        0.03394089, 	
+        0.02773926, 	
+        0.02220695, 	
+        0.01779636, 	
+        0.01131978, 	
+        0.00601003, 	
+        0.00357902, 	
+        0.00188844, 	
+        0.00085224, 	
+        0.00041736, 	
+        0.00018092, 	
+        0.00006654, 	
+        0.00002372, 	
+        0.00000218
+		 };
+// Nadeesha error	
+//double error_y[18] = {0.00514001, 
+   //                      0.00707116,
+   //                      0.00664392, 
+   //                      0.00600288,
+   //                      0.00543919, 
+   //                      0.00492418, 
+   //                      0.00447746, 
+   //                      0.00407074, 
+   //                      0.00165936, 
+   //                      0.00121580, 
+   //                      0.00093494, 
+   //                      0.00047197, 
+   //                      0.00030837, 
+   //                      0.00021361, 
+   //                      0.00009908, 
+   //                      0.00005934, 
+   //                      0.00002997, 
+   //                      0.00000270};
+   double error_y[18] = {
+    0.0016    , 
+    0.005159  ,
+    0.002507  ,
+    0.001694  , 
+    0.001229  ,
+    0.001077  ,
+    0.0007222 ,
+    0.0008553 ,
+    0.0008644 ,
+    0.0005975 ,
+    0.000323  ,
+    0.0001294 ,
+    6.811e-05 ,
+    3.703e-05 ,
+    2.108e-05 ,
+    8.465e-06 ,
+    3.175e-06 ,
+    3.199e-07 
+   };
+     
+     
+     
    //double error_x[18];
    double error_xlow[n];
    double error_xhigh[n];
@@ -879,7 +992,7 @@ TGraphAsymmErrors* Madgraph(){
     error_y[i] = sqrt(errorStat_y[i]*errorStat_y[i] + errorPDF_y[i]*errorPDF_y[i]); 
      //std::cout<<"Madgraph:   errorPDF_y[i]\t"<<errorPDF_y[i]<<"\terrorStat_y[i]\t"<<errorStat_y[i]<<"\t error_y[i]\t"<<error_y[i]<< std::endl;
      //std::cout<<"Madgraph:  errorPDF_y[i]\t"<<100*errorPDF_y[i]/y[i]<<"\terrorStat_y[i]\t"<<100*errorStat_y[i]/y[i]<<"\t error_y[i]\t"<<error_y[i]<< std::endl;
-     printf("Madgraph PDF % : %.2f \t Stat % : %.2f \n ",100*errorPDF_y[i]/y[i] , 100*errorStat_y[i]/y[i]);
+     //printf("Madgraph PDF % : %.2f \t Stat % : %.2f \n ",100*errorPDF_y[i]/y[i] , 100*errorStat_y[i]/y[i]);
   }
 
 
@@ -914,28 +1027,27 @@ TGraphAsymmErrors* FEWZ(){
    //double error_ylow[18] = {0,0,0,0,0,0,0,0,0.000260501,0.00013212,7.60136E-05,3.86252E-05,1.65916E-05,7.78994E-06,3.33908E-06,1.20556E-06,3.89959E-07,4.13802E-08};
    //double error_yhigh[18] = {0,0,0,0,0,0,0,0,0.00031118,0.00015371,8.64209E-05,4.26788E-05,1.75198E-05,8.01257E-06,3.36195E-06,1.27319E-06,4.68827E-07,5.67557E-08};
 double y[18];
-y[0] = 100; //-0.08005877 ; 
-y[1] = 100; //0.12748182  ; 
-y[2] = 0.07877656  ; 
-y[3] = 0.05332600  ; 
-y[4] = 0.03845661  ; 
-y[5] = 0.02904814  ; 
-y[6] = 0.02265475  ; 
-y[7] = 0.01805065  ; 
-y[8] = 0.01135670  ; 
-y[9] = 0.00594296  ; 
-y[10] = 0.00353301 ; 
-y[11] = 0.00185758 ; 
-y[12] = 0.00082569 ; 
-y[13] = 0.00039315 ; 
-y[14] = 0.00016611 ; 
-y[15] = 0.00005898 ; 
-y[16] = 0.00001959 ; 
-y[17] = 0.00000179 ; 
-  
-
-double errorStat_y[18] = {0.,//0.00094095, 
-                            0.,//0.00039520, 
+y[0] = 100;//-0.08005877; 
+y[1] = 100;//0.12748182 ; 
+y[2] = 0.07877656 ; 
+y[3] = 0.05332600 ; 
+y[4] = 0.03845661 ; 
+y[5] = 0.02904814 ; 
+y[6] = 0.02265475 ; 
+y[7] = 0.01805065 ; 
+y[8] = 0.01135670 ; 
+y[9] = 0.00594296 ; 
+y[10] = 0.00353301; 
+y[11] = 0.00185758; 
+y[12] = 0.00082569; 
+y[13] = 0.00039315; 
+y[14] = 0.00016611; 
+y[15] = 0.00005898; 
+y[16] = 0.00001959; 
+y[17] = 0.00000179; 
+ 
+  double errorStat_y[18] = {0.0,//0.00094095, 
+                            0.0,//0.00039520, 
                             0.00024179,
                             0.00016486,
                             0.00012112,
@@ -952,66 +1064,63 @@ double errorStat_y[18] = {0.,//0.00094095,
                             0.00000082,
                             0.00000031,
                             0.00000004};
-
        /////normalized PDF syst in %, convert it to number
-  double errorPDF_ylow[18] = {0,//-6.7678 , 
-                              0,//1.0464 , 
-                               0.7600 , 
-                               1.0219 , 
-                               1.2630 , 
-                               1.4623 , 
-                               1.6461 , 
-                               1.8262 , 
-                               2.1995 , 
-                               2.7651 , 
-                               3.2279 , 
-                               3.8587 , 
-                               4.6700 , 
-                               5.4480 , 
-                               6.4558 , 
-                               7.8312 , 
-                               9.3764 , 
-                               11.4845, }; 
-         
-  double errorPDF_yhigh[18] = {0,//-6.4288, 
-                               0,//1.8289 , 
-                               1.3007 ,
-                               1.2656 ,
-                               1.3277 ,
-                               1.4084 ,
-                               1.5036 ,
-                               1.6060 ,
-                               1.8347 ,
-                               2.2177 ,
-                                2.5401,
-                                2.9723,
-                                3.4925,
-                                3.9540,
-                                4.4901,
-                                5.1299,
-                                5.7526,
-                                6.6129}; 
-
+  double errorPDF_ylow[18] = { 0.0,//-6.7678 , 
+                               0.0,//1.0464, 
+                                 0.7600 ,
+                                 1.0219 ,
+                                 1.2630 ,
+                                 1.4623 ,
+                                 1.6461 ,
+                                 1.8262 ,
+                                 2.1995 ,
+                                 2.7651 ,
+                                 3.2279 ,
+                                 3.8587 ,
+                                 4.6700 ,
+                                 5.4480 ,
+                                 6.4558 ,
+                                 7.8312 ,
+                                 9.3764 ,
+                                 11.4845}; 
+  double errorPDF_yhigh[18] = {0.0,// -6.4288, 
+                               0.0,// 1.8289 , 
+                               1.3007  ,
+                               1.2656  ,
+                               1.3277  ,
+                               1.4084  ,
+                               1.5036  ,
+                               1.6060  ,
+                               1.8347  ,
+                               2.2177  ,
+                                2.5401 ,
+                                2.9723 ,
+                                3.4925 ,
+                                3.9540 ,
+                                4.4901 ,
+                                5.1299 ,
+                                5.7526 ,
+                                6.6129 }; 
   double errorScale[18] = {
-	    0,//0.00842947  , 
-	    0,//0.0106515   ,
-	    0.00266521  ,
-	    0.000428617 ,
-	    0.000114661 ,
-	    0.000205532 ,
-	    0.000345275 ,
-	    0.000297941 ,
-	    0.000323374 ,
-	    0.000210461 ,
-	    0.000147318 ,
-	    9.51447e-05 ,
-	    4.73258e-05 ,
-	    2.47657e-05 ,
-	    1.03102e-05 ,
-	    4.30353e-06 ,
-	    1.45553e-06 ,
-	    1.5117e-07  };
-	     
+	     0.0,//0.00842947        , 
+	     0.0,//0.0106515         ,
+	     0.00266521 ,
+	     0.000428617,
+	     0.000114661,
+	     0.000205532,
+	     0.000345275,
+	     0.000297941,
+	     0.000323374,
+	     0.000210461,
+	     0.000147318,
+	     9.51447e-05,
+	     4.73258e-05,
+	     2.47657e-05,
+	     1.03102e-05,
+	     4.30353e-06,
+	     1.45553e-06,
+	     1.5117e-07 };
+  
   double error_yhigh[n];
   double error_ylow[n];
   for (int i=0;i<n;i++)
@@ -1022,7 +1131,7 @@ double errorStat_y[18] = {0.,//0.00094095,
     error_yhigh[i] = sqrt(errorStat_y[i]*errorStat_y[i] + errorPDF_yhigh[i]*errorPDF_yhigh[i] + errorScale[i]*errorScale[i]); 
      //std::cout<<"FEWZ:   errorPDF_ylow[i]\t"<<errorPDF_ylow[i]<<"\terrorStat_y[i]\t"<<errorStat_y[i]<<"\t error_ylow[i]\t"<<error_ylow[i]<< std::endl;
      //std::cout<<"FEWZ:  errorPDF_y[i]\t"<<100*TMath::Max(errorPDF_ylow[i],errorPDF_yhigh[i])/y[i]<<"\terrorStat_y[i]\t"<<100*errorStat_y[i]/y[i]<<"\terrorScale_y[i]\t"<<100*errorScale[i]/y[i]<< std::endl;
-     printf("FEWZ PDF % : %.2f \t Stat % : %.2f Scale % : %.2f \n ",100*TMath::Max(errorPDF_ylow[i],errorPDF_yhigh[i])/y[i] , 100*errorStat_y[i]/y[i], 100*errorScale[i]/y[i]);
+     //printf("FEWZ PDF % : %.2f \t Stat % : %.2f Scale % : %.2f \n ",100*TMath::Max(errorPDF_ylow[i],errorPDF_yhigh[i])/y[i] , 100*errorStat_y[i]/y[i], 100*errorScale[i]/y[i]);
   }
  
    //double error_x[18];
@@ -1088,13 +1197,15 @@ void fillHistos(TTree* tree,
    
     if ( (iEvt % 500000)==0 ) cout << "event " << iEvt << endl;
     tree -> GetEntry(iEvt);
-
+/*
     // additional selection cuts
     if (reco1.charge == reco2.charge) continue;
+    
 
     if (recoCandMass <  mLow) continue;
     if (recoCandMass > mHigh) continue;
 
+    
     if (reco1.pt < 20 || reco2.pt < 20) continue;
     if (fabs(reco1.eta) > 2.1 || fabs(reco2.eta) > 2.1) continue;
      
@@ -1107,12 +1218,33 @@ void fillHistos(TTree* tree,
     // remove duplicates
     pairOfInt runEvent(eventInfo.run,eventInfo.event);
     if( !uniqueEventsReco.insert( runEvent ).second ) continue;
+*/
+    
+    // additional selection cuts
+    if (reco1.charge == reco2.charge) false;
+    
 
+    if (recoCandMass <  mLow) false;
+    if (recoCandMass > mHigh) false;
+
+    
+    if (reco1.pt < 20 || reco2.pt < 20) false;
+    if (fabs(reco1.eta) > 2.1 || fabs(reco2.eta) > 2.1) false;
+     
+    if (angleDiMuons > TMath::Pi()-0.02) false;
+
+    // both muons tight
+    if( !isKinTight_2012(reco1) || !isKinTight_2012(reco2) ) false;
+  
+    if( !reco1.isHltMatched[0] && !reco2.isHltMatched[0]) false; 
+    // remove duplicates
+    pairOfInt runEvent(eventInfo.run,eventInfo.event);
+    if( !uniqueEventsReco.insert( runEvent ).second ) false;
+ 
     hPt       -> Fill( recoCandPt );
 
   }
-  //std::cout << " DONE!" << std::endl;
-  std::cout << " Total hPt : " << hPt->Integral() << std::endl;
+  std::cout << " DONE!" << std::endl;
   return;
 }
 
@@ -1372,7 +1504,7 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
 		   TLegend* leg, 
 		   TLegend* leg2, 
 		   TLegend* leg3, 
-		   TLatex* tex, TLatex* tex1, TLatex* tex2) {
+		   TLatex* tex) {
   
   // sanity check
   if (gNum->GetN() != gDen->GetN()){
@@ -1571,17 +1703,18 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   TPad* pad1;
   TPad* pad2;
 
-  pad1 = new TPad("pad1","This is pad1",0.02,0.50,0.98,0.98,0);
-  pad2 = new TPad("pad2","This is pad2",0.02,0.01,0.98,0.49,0);
+  pad1 = new TPad("pad1","This is pad1",0.00,0.42,1.0,0.98);
+  pad2 = new TPad("pad2","This is pad2",0.00,0.01,1.0,0.49);
   
   pad1->SetLogx();
   pad1->SetLogy();
-  pad1->SetBottomMargin(0.01);
+  pad1->SetTickx(1);
+  pad1->SetTicky(1);
+  pad1->SetTopMargin(0.1);
+  
   pad2->SetLogx();
-  //pad2->SetBottomMargin(0.33);
-  //pad2->SetTopMargin   (0.10);
-  pad2->SetBottomMargin(0.13);
-  pad2->SetTopMargin   (0.01);
+  pad2->SetTickx(1);
+  pad2->SetTicky(1);
 
   pad1->Draw(); // Projections pad
   pad2->Draw(); // Residuals   pad
@@ -1618,18 +1751,20 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   //hDen3->Draw("histo same");
 */
 
-  TH1F* hDen_dummy = (TH1F*)hDen->Clone();
+  //TH1F* hDen_dummy = (TH1F*)hDen->Clone();
+  TH1F* hDen_dummy = new TH1F("","",18,0.5,600);
   hDen_dummy->Reset();
   hDen_dummy->SetMaximum(10E-2);
-  hDen_dummy->SetMinimum(10E-7);
+  hDen_dummy->SetMinimum(5*10E-8);
   hDen_dummy->SetTitle("");
-  hDen_dummy -> GetYaxis() -> SetTitle("#frac{1}{#sigma} #frac{d#sigma}{dp_{T}^{Z}} [GeV]^{-1}");
-  hDen_dummy -> GetYaxis() -> SetTitleSize(0.04);
-  hDen_dummy -> GetYaxis() -> SetTitleOffset(0.15);
-  hDen_dummy -> GetYaxis() -> SetLabelSize(0.045);
+  //hDen_dummy -> GetYaxis() -> SetTitle("#frac{1}{#sigma} #frac{d#sigma}{dp_{T}^{Z}} [GeV]^{-1}");
+  hDen_dummy -> GetYaxis() -> SetTitleSize(0.08);
+  hDen_dummy -> GetYaxis() -> SetTitleOffset(0.7);
+  hDen_dummy -> GetYaxis() -> SetTitle("1/#sigma d#sigma/dp_{T}^{Z} [GeV]^{-1}");
+  //hDen_dummy -> GetYaxis() -> SetLabelSize(0.045);
+  hDen_dummy -> GetYaxis() -> SetLabelSize(0.05);
   hDen_dummy -> GetXaxis() -> SetLabelSize(0);
-  hDen_dummy -> GetYaxis() -> SetTitleOffset(1.2);
-  hDen_dummy -> GetXaxis() -> SetRangeUser(0,600); // here control Xrange
+  hDen_dummy -> GetXaxis() -> SetRangeUser(0.5,600); // here control Xrange
   hDen_dummy->Draw();
   
   //grMadgraphDist->Draw("P");
@@ -1644,42 +1779,68 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   // hDummy -> Draw();
   //hDen -> GetYaxis() -> SetTitle("#frac{1}{#sigma} #frac{d#sigma}{dq_{T}} [GeV/c]^{-1}");
   hDen -> GetYaxis() -> SetTitle("#frac{1}{#sigma} #frac{d#sigma}{dp_{T}^{Z}} [GeV]^{-1}");
-  hDen -> GetYaxis() -> SetTitleSize(0.20);
-  hDen -> GetYaxis() -> SetLabelSize(0.045);
+  hDen -> GetYaxis() -> SetTitleSize(0.30);
+  hDen -> GetYaxis() -> SetLabelSize(0.055);
   hDen -> GetYaxis() -> SetTitleOffset(1.2);
   //gDen->Draw("C same");
 
-  gDen->SetFillStyle(3004);
-  gDen->SetFillColor(kGreen+2);
-  gDen->SetLineColor(kGreen+2);
-  
-  gDen2->SetFillStyle(3005);
+  //Color Transparent
+  TColor *colRed = gROOT->GetColor(kRed);
+  TColor *colBlue = gROOT->GetColor(kBlue);
+  TColor *colViolet = gROOT->GetColor(kViolet);
+  TColor *colGreen = gROOT->GetColor(kGreen);
+  colRed->SetAlpha(0.2);
+  colBlue->SetAlpha(0.2);
+  colViolet->SetAlpha(0.2);
+  colGreen->SetAlpha(0.2);
+
+  //// Now design and Draw
+  gStyle->SetLineWidth(2.);
+  gStyle->SetOptStat(0);
+  gStyle->SetHatchesSpacing(0.75);
+  gStyle->SetHatchesLineWidth(2);
+
+// Powheg Draw   
+  //gDen->SetFillStyle(3004);
+  //gDen->SetFillColor(kGreen+2);
+  //gDen->SetLineColor(kGreen+2);
+  gDen->SetFillColor(kRed);
+  gDen->SetLineColor(kRed+2);
+
+// Resbos Draw   
+  //gDen2->SetFillStyle(3005);
+  //gDen2->SetFillColor(kBlue);
+  //gDen2->SetLineColor(kBlue);
   gDen2->SetFillColor(kBlue);
-  gDen2->SetLineColor(kBlue);
+  gDen2->SetLineColor(kBlue+2);
   
-  gDen3->SetFillStyle(3013);
+// Madgraph Draw   
+  //gDen3->SetFillStyle(3013);
+  //gDen3->SetFillColor(kViolet);
+  //gDen3->SetLineColor(kViolet);
   gDen3->SetFillColor(kViolet);
-  gDen3->SetLineColor(kViolet);
+  gDen3->SetLineColor(kViolet+2);
   
-  gDen4->SetFillStyle(3002);
-  gDen4->SetFillColor(kRed);
-  gDen4->SetLineColor(kRed);
+// FEWZ Draw   
+  //gDen4->SetFillStyle(3002);
+  //gDen4->SetFillColor(kGreen);
+  //gDen4->SetLineColor(kGreen);
+  gDen4->SetFillColor(kGreen);
+  gDen4->SetLineColor(kGreen+2);
   
   gDen->Draw("5"); // Powheg Distribution
-  //gDen2->Draw("5"); // Resbos dist
-  gDen3->Draw("5"); // Madgraph dist
+  gDen2->Draw("5"); // Resbos dist
+  //gDen3->Draw("5"); // Madgraph dist
   gDen4->Draw("5"); // FEWZ dist
   gNum->Draw("P ");  // data dist
 
-  cout << "Data(gNum) print" << endl;
+  cout << "gNum print" << endl;
   gNum->Print();
 
-  cout << "Powheg(gDen) print" << endl;
+  cout << "gDen print" << endl;
   gDen->Print();
 
-  cout << "FEWZ(gDen4) print" << endl;
-  gDen4->Print();
-  
+  CMS_lumi(pad1,iPeriod,iPos);
   pad1->RedrawAxis();
 
 
@@ -1715,8 +1876,8 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   tlTotal -> SetFillColor(0);
   tlTotal -> SetBorderSize(0);
   tlTotal -> AddEntry(gDen,"Pythia/Powheg","f");
-  //tlTotal -> AddEntry(gDen2,"Resbos","f");
-  tlTotal -> AddEntry(gDen3,"Madgraph","f");
+  tlTotal -> AddEntry(gDen2,"Resbos","f");
+  //tlTotal -> AddEntry(gDen3,"Madgraph","f");
   tlTotal -> AddEntry(gDen4,"FEWZ","f");
   tlTotal -> AddEntry(gNum,"data","lp");
   tlTotal->Draw("same");
@@ -1736,8 +1897,6 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   //if (line3) line3 ->Draw("L same");
   
   
-  if (tex1) tex1 ->Draw("same");
-  if (tex2) tex2 ->Draw("same");
   //----------------------------------------------------------------------------
   // Residuals pad
   //----------------------------------------------------------------------------
@@ -1775,7 +1934,7 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   hPull->GetYaxis()->CenterTitle(1);
   hPull->GetYaxis()->SetTitleOffset(0.38);
   //hPull->GetYaxis()->SetTitleSize  (0.10);
-  hPull->GetYaxis()->SetTitleSize  (0.07);
+  hPull->GetYaxis()->SetTitleSize  (0.52);
 
   hPull->SetMaximum(2.7);
   hPull->SetMinimum(0.2);
@@ -1794,37 +1953,59 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   hPull3->SetMarkerColor(kViolet);
   hPull3->SetLineColor(kViolet);
  
-  TH1F *hPull_dummy = (TH1F*)hPull->Clone();
+  //TH1F *hPull_dummy = (TH1F*)hPull->Clone();
+  TH1F *hPull_dummy = new TH1F("","",18,0.5,600);
   hPull_dummy->Reset();
-  hPull_dummy->GetXaxis()->SetRangeUser(0,600);
+  hPull_dummy->GetXaxis()->SetLabelOffset(0.005);
+  hPull_dummy->GetXaxis()->SetLabelSize  (0.06);
+  hPull_dummy->GetXaxis()->SetTitleOffset(0.50);
+  hPull_dummy->GetXaxis()->SetTitleSize  (0.07);
+  hPull_dummy->GetXaxis()->SetNdivisions(7);
+  hPull_dummy->GetXaxis()->SetTitle("p_{T}^{Z} [GeV]");
+  hPull_dummy->GetYaxis()->SetLabelSize  (0.06);
+  hPull_dummy->GetYaxis()->CenterTitle(1);
+  hPull_dummy->GetYaxis()->SetTitle("Theory / Data");
+  hPull_dummy->GetYaxis()->SetTitleOffset(0.78);
+  hPull_dummy->GetYaxis()->SetTitleSize  (0.08);
+  hPull_dummy->SetMaximum(2.9);
+  hPull_dummy->SetMinimum(0.2);
+  hPull_dummy->GetXaxis()->SetRangeUser(0.5,600);
   hPull_dummy->Draw();
 
-  
-  grRatioData->SetFillStyle(3001);
-  grRatioData->SetFillColor(kBlack);
+ // Data Ratio draw 
+  grRatioData->SetFillStyle(3354);
+  grRatioData->SetFillColor(kGray+2);
   grRatioData->SetLineColor(kBlack);
+
+// Powheg Ratio draw 
+  grRatioPowheg->SetMarkerStyle(22); // triangle
+  grRatioPowheg->SetMarkerColor(kRed+2);
+  grRatioPowheg->SetFillColor(kRed);
+  grRatioPowheg->SetLineColor(kRed+2);
  
-  grRatioPowheg->SetFillStyle(3004);
-  grRatioPowheg->SetFillColor(kGreen+2);
-  grRatioPowheg->SetLineColor(kGreen+2);
- 
-  grRatioResbos->SetFillStyle(3005);
+  // Resbos Ratio draw
+  grRatioResbos->SetMarkerStyle(20); // circle
+  grRatioResbos->SetMarkerColor(kBlue+2);
   grRatioResbos->SetFillColor(kBlue);
-  grRatioResbos->SetLineColor(kBlue);
-  
-  grRatioMadgraph->SetFillStyle(3013);
+  grRatioResbos->SetLineColor(kBlue+2);
+ 
+// Madgraph Ratio draw 
+  grRatioMadgraph->SetMarkerStyle(34); // cross
+  grRatioMadgraph->SetMarkerColor(kViolet+2);
   grRatioMadgraph->SetFillColor(kViolet);
-  grRatioMadgraph->SetLineColor(kViolet);
-  
-  grRatioFEWZ->SetFillStyle(3002);
-  grRatioFEWZ->SetFillColor(kRed);
-  grRatioFEWZ->SetLineColor(kRed);
+  grRatioMadgraph->SetLineColor(kViolet+2);
+ 
+// FEWZ Ratio draw 
+  grRatioFEWZ->SetMarkerStyle(21); // squre
+  grRatioFEWZ->SetMarkerColor(kGreen+2);
+  grRatioFEWZ->SetFillColor(kGreen);
+  grRatioFEWZ->SetLineColor(kGreen+2);
   
   grRatioData->Draw("2");
-  //grRatioResbos->Draw("5");
-  grRatioPowheg->Draw("5");
-  grRatioMadgraph->Draw("5");
-  grRatioFEWZ->Draw("5");
+  grRatioResbos->Draw("5 P");
+  grRatioPowheg->Draw("5 P");
+  //grRatioMadgraph->Draw("5 P");
+  grRatioFEWZ->Draw("5 P");
 
 /*
   // draw green band
@@ -1881,28 +2062,25 @@ void axis1F(TH1F  *histo,
   xaxis = histo->GetXaxis();
   yaxis = histo->GetYaxis();
 
-  xaxis->SetLabelFont(42);
+  yaxis->SetTitle(ytitle);
   yaxis->SetLabelFont(42);
-  xaxis->SetLabelOffset(0.005);
-  yaxis->SetLabelOffset(0.005);
-  //xaxis->SetLabelSize(0.04);
-  yaxis->SetLabelSize(0.04);
+  yaxis->SetLabelOffset(0.01);
+  yaxis->SetLabelSize(0.05);
+  yaxis->SetNdivisions(505);
+  yaxis->SetTitleColor(kBlack);
+  yaxis->SetTitleFont(42);
+  yaxis->SetTitleOffset(1.5);
+  yaxis->SetTitleSize(0.17);
+  yaxis->CenterTitle(kTRUE);
 
   xaxis->SetNdivisions(505);
- 
-  yaxis->SetNdivisions(505);
-
+  xaxis->SetLabelFont(42);
+  xaxis->SetLabelOffset(0.005);
   xaxis->SetTitle(xtitle);
-  yaxis->SetTitle(ytitle);
   xaxis->SetTitleColor(kBlack);
-  yaxis->SetTitleColor(kBlack);
   xaxis->SetTitleFont(42);
-  yaxis->SetTitleFont(42);
   xaxis->SetTitleOffset(1.0);
-  yaxis->SetTitleOffset(1.3);
-  //xaxis->SetTitleSize(0.045);
-  //yaxis->SetTitleSize(0.045);
-  yaxis->CenterTitle(kTRUE);
+  xaxis->SetTitleSize(0.045);
 }
 
 
