@@ -441,7 +441,7 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
 //-------------------------------------------------------
 //event counting before scaling
   std::cout << "Event Counting before luminosity rescaling:" << std::endl;
-  outLatex(hMassData, "Data");
+  outLatex(hMassData, "data");
   outLatex(hMassMC_dymumu, "DYToMuMu");
   outLatex(hMassMC_ttbarjets, "TTJets");
   outLatex(hMassMC_ztautau, "Ztautau");
@@ -525,7 +525,7 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   
 */
   std::cout << "Event Counting after luminosity rescaling:" << std::endl;
-  outLatex(hMassData, "Data");
+  outLatex(hMassData, "data");
   outLatex(hMassMC_dymumu, "DYToMuMu");
   outLatex(hMassMC_ttbarjets, "TTJets");
   outLatex(hMassMC_ztautau, "Ztautau");
@@ -568,7 +568,7 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   tl->AddEntry(hPtMC_WJetsToLNu," WJets","f");
   tl->AddEntry(hPtMC_ztautau  ,"DYToTauTau","f");
   tl->AddEntry(hPtMC_ttbarjets," t #bar{t}","f");
-  tl->AddEntry(hPtData ," Data","lp");
+  tl->AddEntry(hPtData ," data","lp");
 
   // define MC contribution color and style
   //mass
@@ -700,7 +700,8 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
     
   // ------------------------------------------------------------------------------
   // Mass Plot Linear Scale
-  TCanvas* cmass1 = new TCanvas("cmass1","",0,0,750,700);
+  //TCanvas* cmass1 = new TCanvas("cmass1","",0,0,750,700);
+  TCanvas* cmass1 = new TCanvas("cmass1","",800,800);
   cmass1->cd();
     cmass1 -> SetLogy();
   
@@ -737,7 +738,7 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   
   // Mass Plot With Pulls
   TCanvas* cmass2 = new TCanvas("cmass2","",700,0,750,700);
-  DrawWithRes(cmass2, cmspreliminary, hMassData, hMassMC_allBkg, sMassMC_allBkg, tl, true);
+  //DrawWithRes(cmass2, cmspreliminary,"", hMassData, hMassMC_allBkg, sMassMC_allBkg, tl, true);
 
  // ------------------------------------------------------------------------------
 // Pt with equal bin with 5GeV
@@ -745,6 +746,8 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   TCanvas* cpt20B1 = new TCanvas("cpt20B1","",0,0,600,500);
   cpt20B1->cd();
   cpt20B1 -> SetLogy();
+  cpt20B1 -> SetTicky(1);
+  cpt20B1 -> SetTickx(1);
   
   //hPt20BData -> GetXaxis() -> SetTitle("q_{T}  [GeV/c]");
   hPt20BData -> GetXaxis() -> SetTitle("p_{T}^{Z}  [GeV]");
@@ -781,22 +784,29 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   TCanvas* cpt1 = new TCanvas("cpt1","",0,0,750,600);
   cpt1->cd();
     cpt1 -> SetLogy();
-  hPtData -> SetTitle("#int 18.4 pb^{-1} at #sqrt{s}=8 TeV"); 
+    cpt1 -> SetTicky(1);
+    cpt1 -> SetTickx(1);
+  //hPtData -> SetTitle("#int 18.4 pb^{-1} at #sqrt{s}=8 TeV"); 
+  //hPtData -> SetTitle("L = 18.4 pb^{-1}, #sqrt{s}=8 TeV"); 
+  hPtData -> SetTitle("18.4 pb^{-1} (8 TeV)"); 
   //hPtData -> GetXaxis() -> SetTitle("q_{T}  [GeV/c]");
   hPtData -> GetXaxis() -> SetTitle("p_{T}^{Z}  [GeV]");
   hPtData -> GetYaxis() -> SetTitle("Events");
-  hPtData -> GetYaxis() -> SetTitleOffset(1.2);
-  
+  hPtData -> GetYaxis() -> SetTitleSize(0.05);
+  hPtData -> GetYaxis() -> SetTitleOffset(1.0);
+ 
   hPtData -> SetMarkerSize(1);
   hPtData -> SetMarkerStyle(20);
-  hPtData -> SetMinimum(0.01);
+  hPtData -> SetMinimum(5*0.001);
 
   hPtData -> Draw("pe");
   sPtMC_allBkg -> Draw("same");
   hPtData -> Draw("pe same");   
   hPtData -> Draw("AXIS same");
 
+  
   tl->Draw("same");
+  
  
   hPtMC_allBkg->Add(hPtMC_ttbarjets);   sPtMC_allBkg->Add(hPtMC_ttbarjets);
   hPtMC_allBkg->Add(hPtMC_ztautau);     sPtMC_allBkg->Add(hPtMC_ztautau);
@@ -809,7 +819,10 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
    
  // pt Plot With Pulls
   TCanvas* cpt2 = new TCanvas("cpt2","",700,0,750,700);
-  DrawWithRes(cpt2, cmspreliminary, hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
+    cpt2 -> SetTicky(1);
+    cpt2 -> SetTickx(1);
+  //DrawWithRes(cpt2, cmspreliminary, hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
+  DrawWithRes(cpt2, "#font[61]{CMS}", "#font[52]{Preliminary}", hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
 
  // ------------------------------------------------------------------------------
 // Rapidity plots
@@ -817,6 +830,8 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
  TCanvas* cra1 = new TCanvas("cra1","",0,0,600,500);
   cra1->cd();
   cra1 -> SetLogy();
+  cra1 -> SetTicky(1);
+  cra1 -> SetTickx(1);
 
   hRapidityData -> GetXaxis() -> SetTitle("Y (#mu#mu) ");
   hRapidityData -> GetYaxis() -> SetTitle(yAxisNameRapidity);
