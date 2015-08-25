@@ -31,7 +31,8 @@ int theoryStudy_separate(const TString BaseName)
   setTDRStyle();
   gROOT->LoadMacro("../../../Utils/CMS_lumi.C");
   writeExtraText = "true";
-  extraText = "Preliminary";
+  //extraText = "Preliminary";
+  extraText = "";
   lumi_8TeV = "18.4 pb^{-1}";
 
   int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
