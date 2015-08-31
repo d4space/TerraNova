@@ -152,7 +152,8 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
   setTDRStyle();
   gROOT->LoadMacro("../Utils/CMS_lumi.C");
   writeExtraText = "true";
-  extraText = "Preliminary";
+  //extraText = "Preliminary";
+  extraText = "";
   lumi_8TeV = "18.4 pb^{-1}";
 
   
@@ -405,7 +406,7 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
   
   std::cout << "Stats Only\n";
   for(int bin=1; bin<=hXSecFSR->GetNbinsX(); bin++){
-
+    std::cout << "Z xsec : " << hXSecFSR->GetBinContent(bin) / 18.429 << std::endl;
     double value = hXSecFSR->GetBinContent(bin)/(hXSecFSR->GetBinWidth(bin) * hXSecFSR -> Integral()); 
     double sigma = hXSecFSR->GetBinError(bin)  /(hXSecFSR->GetBinWidth(bin) * hXSecFSR -> Integral()); 
      
@@ -415,9 +416,9 @@ void diffXSecResAcc_Powheg_Madgraph_ResBos_FEWZ(double intLumi_invpb  =   18.424
     //    FerrorXSec);  
     //end systematics fractional error on diffXSec
    
-      printf("%2d) %5.2f | %8.8f +/- %8.8f | %6.6f | %6.6f\n", 
+    //printf("%2d) %5.2f | %8.8f +/- %8.8f | %6.6f | %6.6f\n", 
     //bin, hXSecFSR->GetXaxis()->GetBinCenter(bin), value, sigma);
-      bin, point[bin-1], value, sigma, error_xbinsl[bin-1], error_xbinsh[bin-1] );
+    //  bin, point[bin-1], value, sigma, error_xbinsl[bin-1], error_xbinsh[bin-1] );
     
     //gXSec->SetPoint(bin-1,hXSecFSR->GetXaxis()->GetBinCenter(bin),value);
     //For Nadeesha: here I put the error on the x-axis 
@@ -1028,7 +1029,7 @@ TGraphAsymmErrors* FEWZ(){
    //double error_yhigh[18] = {0,0,0,0,0,0,0,0,0.00031118,0.00015371,8.64209E-05,4.26788E-05,1.75198E-05,8.01257E-06,3.36195E-06,1.27319E-06,4.68827E-07,5.67557E-08};
 double y[18];
 y[0] = 100;//-0.08005877; 
-y[1] = 100;//0.12748182 ; 
+y[1] = 0.12748182 ; 
 y[2] = 0.07877656 ; 
 y[3] = 0.05332600 ; 
 y[4] = 0.03845661 ; 
@@ -1047,7 +1048,7 @@ y[16] = 0.00001959;
 y[17] = 0.00000179; 
  
   double errorStat_y[18] = {0.0,//0.00094095, 
-                            0.0,//0.00039520, 
+                            0.00039520, 
                             0.00024179,
                             0.00016486,
                             0.00012112,
@@ -1066,7 +1067,7 @@ y[17] = 0.00000179;
                             0.00000004};
        /////normalized PDF syst in %, convert it to number
   double errorPDF_ylow[18] = { 0.0,//-6.7678 , 
-                               0.0,//1.0464, 
+                               1.0464, 
                                  0.7600 ,
                                  1.0219 ,
                                  1.2630 ,
@@ -1084,7 +1085,7 @@ y[17] = 0.00000179;
                                  9.3764 ,
                                  11.4845}; 
   double errorPDF_yhigh[18] = {0.0,// -6.4288, 
-                               0.0,// 1.8289 , 
+                               1.8289 , 
                                1.3007  ,
                                1.2656  ,
                                1.3277  ,
@@ -1103,7 +1104,7 @@ y[17] = 0.00000179;
                                 6.6129 }; 
   double errorScale[18] = {
 	     0.0,//0.00842947        , 
-	     0.0,//0.0106515         ,
+	     0.0106515         ,
 	     0.00266521 ,
 	     0.000428617,
 	     0.000114661,
@@ -1754,7 +1755,7 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   //TH1F* hDen_dummy = (TH1F*)hDen->Clone();
   TH1F* hDen_dummy = new TH1F("","",18,0.5,600);
   hDen_dummy->Reset();
-  hDen_dummy->SetMaximum(10E-2);
+  hDen_dummy->SetMaximum(5*10E-2);
   hDen_dummy->SetMinimum(5*10E-8);
   hDen_dummy->SetTitle("");
   //hDen_dummy -> GetYaxis() -> SetTitle("#frac{1}{#sigma} #frac{d#sigma}{dp_{T}^{Z}} [GeV]^{-1}");
