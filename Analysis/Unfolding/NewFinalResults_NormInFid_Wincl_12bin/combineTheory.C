@@ -28,24 +28,12 @@ int combineTheory(const TString BaseName)
 
   if(BaseName == "WInclToMuNu")
   {
-    //f_Fewz_1 = new TFile("../../RstFEWZ/Wp_Mu_NNLO.root");
-    //f_Fewz_2 = new TFile("../../RstFEWZ/Wm_Mu_NNLO.root");
     f_Fewz_1 = new TFile("../../RstFEWZ_12Bin_Fiducial_dynamic/WpToMuNu_dynamic_NNLO.root");
     f_Fewz_2 = new TFile("../../RstFEWZ_12Bin_Fiducial_dynamic/WmToMuNu_dynamic_NNLO.root");
 
-    f_Resbos_1 = new TFile("../../RstResbos_12Bin/Resbos_WpToMuNu_12Bin.root");
-    f_Resbos_2 = new TFile("../../RstResbos_12Bin/Resbos_WmToMuNu_12Bin.root");
+    f_Resbos_1 = new TFile("../../RstResbos_12BinFidVol/Resbos_Wplus.root");
+    f_Resbos_2 = new TFile("../../RstResbos_12BinFidVol/Resbos_Wminus.root");
 
-  }
-  if(BaseName == "WInclToEleNu")
-  {
-    //f_Fewz_1 = new TFile("../../RstFEWZ/Wp_Ele_NNLO.root");
-    //f_Fewz_2 = new TFile("../../RstFEWZ/Wm_Ele_NNLO.root");
-    f_Fewz_1 = new TFile("../../RstFEWZ_12Bin/Wp_NNLO_FullPhase.root");
-    f_Fewz_2 = new TFile("../../RstFEWZ_12Bin/Wm_NNLO_FullPhase.root");
-    
-    f_Resbos_1 = new TFile("../../RstResbos_12Bin/Resbos_WpToEleNu_12Bin.root");
-    f_Resbos_2 = new TFile("../../RstResbos_12Bin/Resbos_WmToEleNu_12Bin.root");
   }
   
   TH1D* lFewz_1;
