@@ -21,7 +21,8 @@ int WMinusWplusRatio_logScale()
   gROOT->LoadMacro("../../Utils/tdrstyle.C");
   setTDRStyle();
   gROOT->LoadMacro("../../Utils/CMS_lumi.C");
-  writeExtraText = "true";
+  //writeExtraText = "true";
+  writeExtraText = false;
   extraText = "Preliminary";
   lumi_8TeV = "18.4 pb^{-1}";
 
@@ -481,19 +482,19 @@ int WMinusWplusRatio_logScale()
  
 
   double UnfBiasSyst[14] = {0.,};
-  UnfBiasSyst[1]  =0.4191   ;
-  UnfBiasSyst[2]  =0.2183   ;
-  UnfBiasSyst[3]  =0.0528   ;
-  UnfBiasSyst[4]  =0.2758   ;
-  UnfBiasSyst[5]  =0.4692   ;
-  UnfBiasSyst[6]  =0.6307   ;
-  UnfBiasSyst[7]  =0.7704   ;
-  UnfBiasSyst[8]  =0.8857   ;
-  UnfBiasSyst[9]  =0.9657   ;
-  UnfBiasSyst[10] = 1.0084 ;
-  UnfBiasSyst[11] = 1.0270 ;
-  UnfBiasSyst[12] = 1.0355 ;
-  UnfBiasSyst[13] = 1.0382 ;
+  UnfBiasSyst[1]  = 0.69 ;
+  UnfBiasSyst[2]  = 0.56 ;
+  UnfBiasSyst[3]  = 0.62 ;
+  UnfBiasSyst[4]  = 0.93 ;
+  UnfBiasSyst[5]  = 1.24 ;
+  UnfBiasSyst[6]  = 1.45 ;
+  UnfBiasSyst[7]  = 1.81 ;
+  UnfBiasSyst[8]  = 2.49 ;
+  UnfBiasSyst[9]  = 2.77 ;
+  UnfBiasSyst[10] = 2.49 ;
+  UnfBiasSyst[11] = 2.47 ;
+  UnfBiasSyst[12] = 2.86 ;
+  UnfBiasSyst[13] = 3.07 ;
   
   double UnfBiasSystMerge[14] = {0};
   UnfBiasSystMerge[4]=(
@@ -1016,7 +1017,7 @@ int WMinusWplusRatio_logScale()
   tgRatioResbos->Draw("5 P");
   gPad->RedrawAxis();
 
-  //C1->SaveAs("WmMuWpMuNormFid12Bin."+format);
+  C1->SaveAs("WmMuWpMuNormFid12Bin."+format);
   return 0;
 }
  

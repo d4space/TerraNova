@@ -17,7 +17,8 @@ int ZWratio_Zoom_logScale()
   gROOT->LoadMacro("../../Utils/tdrstyle.C");
   setTDRStyle();
   gROOT->LoadMacro("../../Utils/CMS_lumi.C");
-  writeExtraText = "true";
+  //writeExtraText = "true";
+  writeExtraText = false;
   extraText = "Preliminary";
   lumi_8TeV = "18.4 pb^{-1}";
 
@@ -286,9 +287,9 @@ int ZWratio_Zoom_logScale()
     hRatioFEWZTotalErr->SetBinError(i+1,WZratioTotalErr_FEWZ[i] / WZratio_RD[i]);
   }
 
-  TFile *f_out = new TFile("./RatioZW.root","recreate");
-  f_out->cd();
-  hWZratio_RD->Write();
+ // TFile *f_out = new TFile("./RatioZW.root","recreate");
+ // f_out->cd();
+ // hWZratio_RD->Write();
 
 
   //Color Transparent
