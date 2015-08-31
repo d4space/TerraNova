@@ -429,7 +429,9 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   THStack* sPt20BMC_allBkg = new THStack("sPt20BMC_allBkg","");
 
   TH1F* hPtMC_allBkg    = new TH1F("hPtMC_allBkg",   "", nptBins, xbins_pt);
+  TH1F* hPtMC_EWKBkg    = new TH1F("hPtMC_EWKBkg",   "", nptBins, xbins_pt);
   THStack* sPtMC_allBkg = new THStack("sPtMC_allBkg","");
+  THStack* sPtMC_EWKBkg = new THStack("sPtMC_EWKBkg","");
 
   TH1F* hRapidityMC_allBkg   = new TH1F("hRapidityMC_allBkg", "", rBins, rLow, rHigh);
   THStack* sRapidityMC_allBkg = new THStack("sRapidityMC_allBkg","");
@@ -555,19 +557,26 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   char yAxisNameVertex[128];
   sprintf(yAxisNameVertex,"Entries/%3.2f",entriesPerBinVertex);
 
+  hPtMC_EWKBkg->Add(hPtMC_ttbarjets); 	sPtMC_EWKBkg->Add(hPtMC_ttbarjets);
+  hPtMC_EWKBkg->Add(hPtMC_ztautau); 	sPtMC_EWKBkg->Add(hPtMC_ztautau);
+  hPtMC_EWKBkg->Add(hPtMC_WJetsToLNu);  sPtMC_EWKBkg->Add(hPtMC_WJetsToLNu);
+  hPtMC_EWKBkg->Add(hPtMC_ZZ);          sPtMC_EWKBkg->Add(hPtMC_ZZ);
+  hPtMC_EWKBkg->Add(hPtMC_WZ);          sPtMC_EWKBkg->Add(hPtMC_WZ);
+  hPtMC_EWKBkg->Add(hPtMC_WW);          sPtMC_EWKBkg->Add(hPtMC_WW);
 
   // define the tlegend
   TLegend* tl = new TLegend(0.71, 0.62, 0.90, 0.90);
   tl->SetFillColor(0);
   tl->SetLineColor(0);
   tl->AddEntry(hPtMC_dymumu,"DYToMuMu","f");
-  tl->AddEntry(hPtMC_WW," WW","f");
-  tl->AddEntry(hPtMC_WZ," WZ","f");
-  tl->AddEntry(hPtMC_ZZ," ZZ","f");
-  tl->AddEntry(hPtMC_QCD," QCD","f");
-  tl->AddEntry(hPtMC_WJetsToLNu," WJets","f");
-  tl->AddEntry(hPtMC_ztautau  ,"DYToTauTau","f");
-  tl->AddEntry(hPtMC_ttbarjets," t #bar{t}","f");
+  //tl->AddEntry(hPtMC_QCD," QCD","f");
+  tl->AddEntry(hPtMC_EWKBkg,"EWK+t#bar{t}","f");
+  //tl->AddEntry(hPtMC_WW," WW","f");
+  //tl->AddEntry(hPtMC_WZ," WZ","f");
+  //tl->AddEntry(hPtMC_ZZ," ZZ","f");
+  //tl->AddEntry(hPtMC_WJetsToLNu," WJets","f");
+  //tl->AddEntry(hPtMC_ztautau  ,"DYToTauTau","f");
+  //tl->AddEntry(hPtMC_ttbarjets," t #bar{t}","f");
   tl->AddEntry(hPtData ," data","lp");
 
   // define MC contribution color and style
@@ -621,6 +630,9 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
 
   hPtMC_QCD   -> SetFillColor(kMagenta+3);//
   hPtMC_QCD   -> SetFillStyle(1001);
+
+  hPtMC_EWKBkg   -> SetFillColor(kOrange+7);//
+  hPtMC_EWKBkg   -> SetFillStyle(1001);
 
 //pt 20 bin
   hPt20BMC_dymumu -> SetFillColor(798);//yellow
@@ -717,15 +729,15 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
     hMassData -> SetMarkerSize(1);
   hMassData -> SetMarkerStyle(20);
   hMassData -> SetMinimum(0.01);
-  hMassData -> Draw("pe");
-  sMassMC_allBkg -> Draw("same");
-  hMassData -> Draw("pe same");
-  hMassData -> Draw("AXIS same");
+  //hMassData -> Draw("pe");
+  //sMassMC_allBkg -> Draw("same");
+  //hMassData -> Draw("pe same");
+  //hMassData -> Draw("AXIS same");
 
   zrap_Prelim(0.85,0.9,0.4,0.17);
   zrap_Lumi(0.35,0.89,36);
 
-  tl->Draw("same");
+  //tl->Draw("same");
  
   hMassMC_allBkg->Add(hMassMC_ttbarjets);   sMassMC_allBkg->Add(hMassMC_ttbarjets);
   hMassMC_allBkg->Add(hMassMC_ztautau);     sMassMC_allBkg->Add(hMassMC_ztautau);
@@ -757,12 +769,12 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   hPt20BData -> SetMarkerSize(0.7);
   hPt20BData -> SetMarkerStyle(20);
   hPt20BData -> SetMinimum(0.01);
-  hPt20BData -> Draw("pe");
-  sPt20BMC_allBkg -> Draw("same");
-  hPt20BData -> Draw("pe same");
-  hPt20BData -> Draw("AXIS same");
+  //hPt20BData -> Draw("pe");
+  //sPt20BMC_allBkg -> Draw("same");
+  //hPt20BData -> Draw("pe same");
+  //hPt20BData -> Draw("AXIS same");
 
-  tl->Draw("same");
+  //tl->Draw("same");
 
   hPt20BMC_allBkg->Add(hPt20BMC_ttbarjets);   sPt20BMC_allBkg->Add(hPt20BMC_ttbarjets);
   hPt20BMC_allBkg->Add(hPt20BMC_ztautau);     sPt20BMC_allBkg->Add(hPt20BMC_ztautau);
@@ -789,7 +801,9 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   //hPtData -> SetTitle("#int 18.4 pb^{-1} at #sqrt{s}=8 TeV"); 
   //hPtData -> SetTitle("L = 18.4 pb^{-1}, #sqrt{s}=8 TeV"); 
   hPtData -> SetTitle("18.4 pb^{-1} (8 TeV)"); 
+  hPtData -> SetTitleSize(0.0); 
   //hPtData -> GetXaxis() -> SetTitle("q_{T}  [GeV/c]");
+  hPtData -> GetXaxis() -> SetLabelSize(0);
   hPtData -> GetXaxis() -> SetTitle("p_{T}^{Z}  [GeV]");
   hPtData -> GetYaxis() -> SetTitle("Events");
   hPtData -> GetYaxis() -> SetTitleSize(0.05);
@@ -806,8 +820,12 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
 
   
   tl->Draw("same");
-  
  
+  hPtMC_allBkg->Add(hPtMC_QCD);         sPtMC_allBkg->Add(hPtMC_QCD);
+  hPtMC_allBkg->Add(hPtMC_EWKBkg);      sPtMC_allBkg->Add(hPtMC_EWKBkg);
+  hPtMC_allBkg->Add(hPtMC_dymumu);      sPtMC_allBkg->Add(hPtMC_dymumu);
+
+  /*
   hPtMC_allBkg->Add(hPtMC_ttbarjets);   sPtMC_allBkg->Add(hPtMC_ttbarjets);
   hPtMC_allBkg->Add(hPtMC_ztautau);     sPtMC_allBkg->Add(hPtMC_ztautau);
   hPtMC_allBkg->Add(hPtMC_WJetsToLNu);  sPtMC_allBkg->Add(hPtMC_WJetsToLNu);
@@ -816,13 +834,13 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   hPtMC_allBkg->Add(hPtMC_WZ);          sPtMC_allBkg->Add(hPtMC_WZ);
   hPtMC_allBkg->Add(hPtMC_WW);          sPtMC_allBkg->Add(hPtMC_WW);
   hPtMC_allBkg->Add(hPtMC_dymumu);      sPtMC_allBkg->Add(hPtMC_dymumu);
-   
+   */
  // pt Plot With Pulls
   TCanvas* cpt2 = new TCanvas("cpt2","",700,0,750,700);
     cpt2 -> SetTicky(1);
     cpt2 -> SetTickx(1);
   //DrawWithRes(cpt2, cmspreliminary, hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
-  DrawWithRes(cpt2, "#font[61]{CMS}", "#font[52]{Preliminary}", hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
+  DrawWithRes(cpt2, "#font[61]{CMS}", "", hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
 
  // ------------------------------------------------------------------------------
 // Rapidity plots
@@ -841,12 +859,12 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   hRapidityData -> SetMarkerStyle(20);
   hRapidityData -> SetMinimum(0.01);
 
-  hRapidityData -> Draw("pe");
-  sRapidityMC_allBkg -> Draw("same");
-  hRapidityData -> Draw("pe same");
-  hRapidityData -> Draw("AXIS same");
+  //hRapidityData -> Draw("pe");
+  //sRapidityMC_allBkg -> Draw("same");
+  //hRapidityData -> Draw("pe same");
+  //hRapidityData -> Draw("AXIS same");
 
-  tl->Draw("same");
+  //tl->Draw("same");
 
   hRapidityMC_allBkg->Add(hRapidityMC_ttbarjets);   sRapidityMC_allBkg->Add(hRapidityMC_ttbarjets);
   hRapidityMC_allBkg->Add(hRapidityMC_ztautau);     sRapidityMC_allBkg->Add(hRapidityMC_ztautau);
@@ -878,12 +896,12 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   hVertexData -> SetMarkerStyle(20);
   hVertexData -> SetMinimum(0.01);
 
-  hVertexData -> Draw("pe");
-  sVertexMC_allBkg -> Draw("same");
-  hVertexData -> Draw("pe same");
-  hVertexData -> Draw("AXIS same");
+  //hVertexData -> Draw("pe");
+  //sVertexMC_allBkg -> Draw("same");
+  //hVertexData -> Draw("pe same");
+  //hVertexData -> Draw("AXIS same");
 
-  tl->Draw("same");
+  //tl->Draw("same");
 
   hVertexMC_allBkg->Add(hVertexMC_ttbarjets);   sVertexMC_allBkg->Add(hVertexMC_ttbarjets);
   hVertexMC_allBkg->Add(hVertexMC_ztautau);     sVertexMC_allBkg->Add(hVertexMC_ztautau);

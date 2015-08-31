@@ -42,7 +42,9 @@ void loadGeneral() {
 
   // intLumi is in include/datasets.h
   //sprintf(lumiString, "#int L=%4.2f pb^{-1}", intLumi_invpb);
-  sprintf(lumiString, "#int L=%3.1f pb^{-1}", 18.424);
+  //sprintf(lumiString, "#int L=%3.1f pb^{-1}", 18.424);
+  sprintf(lumiString, "L=%3.1f pb^{-1}", 18.424);
+  //sprintf(lumiString, "18.4 pb^{-1}");
 
   lumi->SetTextFont (  42);
   lumi->SetTextSize(0.040);
@@ -77,7 +79,7 @@ void PrintIt(TPad *pad, TString title)//char *title)
   if (pad->GetLogy())  ypos = pow(10,ypos);
   if (pad->GetLogx())  xpos = pow(10,xpos);
 
-  latex->SetTextAlign(22);
+  //latex->SetTextAlign(22);
   latex->DrawLatex(xpos,ypos,title);
 }
 
@@ -122,7 +124,7 @@ void axis1F(TH1F  *histo,
   yaxis->CenterTitle(kTRUE);
 }
 
-void DrawWithRes(TCanvas* canvas, char* title, 
+void DrawWithRes(TCanvas* canvas, char* title, char* title2, 
                  TH1F *hData, TH1F *hMC, THStack *sMC, 
                  TLegend *tl=NULL, bool isLogScaleY=false, bool isLogScaleX=false)
                  //TLegend *tl=NULL, bool isLogScaleY=true, bool isLogScaleX=false)
@@ -184,7 +186,13 @@ cout << i << ", " << ratio << endl;
   if (isLogScaleX) pad1->SetLogx();
   pad1->SetBottomMargin(0.01);
   pad2->SetBottomMargin(0.33);
-  pad2->SetTopMargin   (0.10);
+  //pad2->SetTopMargin   (0.10);
+  pad2->SetTopMargin   (0.05);
+
+  pad1->SetTicky(1);
+  pad1->SetTickx(1);
+  pad2->SetTicky(1);
+  pad2->SetTickx(1);
 
   pad1->Draw(); // Projections pad
   pad2->Draw(); // Residuals   pad
@@ -200,7 +208,7 @@ cout << i << ", " << ratio << endl;
   energy->SetNDC();
   lumi  ->SetTextSize(0.060);
   energy->SetTextSize(0.060);
-    
+   
 /*   TString name(hMC->GetName()); */
 /*   if (name.Contains("Mass")) { */
 /*     lumi  ->DrawLatex(0.35,0.80, lumiString); */
@@ -213,6 +221,7 @@ cout << i << ", " << ratio << endl;
 /*   }    */
 
   PrintIt(pad1, title);
+  PrintIt(pad1, title2);
 
   if (tl) tl ->Draw("same");
 
@@ -238,10 +247,10 @@ cout << i << ", " << ratio << endl;
   axis1F(hPull,xPull,yPull,xAxisName,"mc/data");  
 //if (hPull->GetMaximum() > 100) {
     std::cout << "Setting the hPull boundaries!\n";
-  //hPull->SetMinimum(-5);
-  //hPull->SetMaximum( 5);
-  hPull->SetMinimum(-1);
+  hPull->SetMinimum(-1); // After bin9
   hPull->SetMaximum(3);
+  //hPull->SetMinimum(0.6); //From bin1
+  //hPull->SetMaximum(1.2);
   //}
 
 
