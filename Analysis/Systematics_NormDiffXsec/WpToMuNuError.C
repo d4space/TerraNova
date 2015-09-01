@@ -648,34 +648,34 @@
   musvdunfmMerge[4]=TMath::Max(musvdunfm[4 ], musvdunfm[5 ]);
   
   double muBiasp[14] = {0};
-  muBiasp[1 ] =0.1529   ;
-  muBiasp[2 ] =0.1290   ;
-  muBiasp[3 ] =0.1524   ;
-  muBiasp[4 ] =0.1167   ;
-  muBiasp[5 ] =0.1466   ;
-  muBiasp[6 ] =0.2724   ;
-  muBiasp[7 ] =0.4469   ;
-  muBiasp[8 ] =0.6328   ;
-  muBiasp[9 ] =0.7921   ;
-  muBiasp[10] = 0.9076  ;
-  muBiasp[11] = 0.9938  ;
-  muBiasp[12] = 1.0502  ;
-  muBiasp[13] = 1.0794  ;
+  muBiasp[1 ] = 0.406375 ; //0.1529  ;
+  muBiasp[2 ] = 0.215225 ; //0.1290  ;
+  muBiasp[3 ] = 0.58285  ; //0.1524  ;
+  muBiasp[4 ] = 0.807175 ; //0.1167  ;
+  muBiasp[5 ] = 0.754975 ; //0.1466  ;
+  muBiasp[6 ] = 0.475275 ; //0.2724  ;
+  muBiasp[7 ] = 1.0775   ; //0.4469  ;
+  muBiasp[8 ] = 1.9759   ; //0.6328  ;
+  muBiasp[9 ] = 2.303175 ; //0.7921  ;
+  muBiasp[10] = 1.882175 ; //0.9076  ;
+  muBiasp[11] = 1.781375 ; //0.9938  ;
+  muBiasp[12] = 2.1049   ; //1.0502  ;
+  muBiasp[13] = 2.2486   ; //1.0794  ;
 
   double muBiasm[14]={0};
-  muBiasm[1 ] =0.3856   ;
-  muBiasm[2 ] =0.2950   ;
-  muBiasm[3 ] =0.1037   ;
-  muBiasm[4 ] =0.1694   ;
-  muBiasm[5 ] =0.4341   ;
-  muBiasm[6 ] =0.7133   ;
-  muBiasm[7 ] =0.9562   ;
-  muBiasm[8 ] =1.1874   ;
-  muBiasm[9 ] =1.3588   ;
-  muBiasm[10] = 1.4642  ;
-  muBiasm[11] = 1.5321  ;
-  muBiasm[12] = 1.5702  ;
-  muBiasm[13] = 1.5877  ;
+  muBiasm[1 ] = 0.5592   ; // 0.3856  ;
+  muBiasm[2 ] = 0.5205   ; // 0.2950  ;
+  muBiasm[3 ] = 0.2124   ; // 0.1037  ;
+  muBiasm[4 ] = 0.458675 ; // 0.1694  ;
+  muBiasm[5 ] = 0.9899   ; // 0.4341  ;
+  muBiasm[6 ] = 1.37345  ; // 0.7133  ;
+  muBiasm[7 ] = 1.45635  ; // 0.9562  ;
+  muBiasm[8 ] = 1.520475 ; // 1.1874  ;
+  muBiasm[9 ] = 1.5361   ; // 1.3588  ;
+  muBiasm[10] = 1.624825 ; // 1.4642  ;
+  muBiasm[11] = 1.7121   ; // 1.5321  ;
+  muBiasm[12] = 1.9342   ; // 1.5702  ;
+  muBiasm[13] = 2.09645  ; // 1.5877  ;
 
   double muBiaspMerge[14] = {0};
   double muBiasmMerge[14] = {0};
@@ -1094,78 +1094,54 @@
   ///Write all errors to root
     
     TH1D* h_tracksig = new TH1D("h_tracksig","h_tracksig",13,0,13);
-    //TH1D* h_mutracksigm = new TH1D("h_mutracksigm","h_mutracksigm",13,0,13);
     
     TH1D* h_trackbck = new TH1D("h_trackbck","h_trackbck",13,0,13);
-    //TH1D* h_mutrackbckm = new TH1D("h_mutrackbckm","h_mutrackbckm",13,0,13);
 
     TH1D* h_idisosig = new TH1D("h_idisosig","h_idisosig",13,0,13);
-    //TH1D* h_muidisosigm = new TH1D("h_muidisosigm","h_muidisosigm",13,0,13);
   
     TH1D* h_idisobck = new TH1D("h_idisobck","h_idisobck",13,0,13);
-    //TH1D* h_muidisobckm = new TH1D("h_muidisobckm","h_muidisobckm",13,0,13);
   
     TH1D* h_track = new TH1D("h_track","h_track",13,0,13);
-    //TH1D* h_mutrackm = new TH1D("h_mutrackm","h_mutrackm",13,0,13);
 
     TH1D* h_idiso = new TH1D("h_idiso","h_idiso",13,0,13);
-    //TH1D* h_muidisom = new TH1D("h_muidisom","h_muidisom",13,0,13);
     
     TH1D* h_toy = new TH1D("h_toy","h_toy",13,0,13);
-    //TH1D* h_mutoym = new TH1D("h_mutoym","h_mutoym",13,0,13);
     
     TH1D* h_POG = new TH1D("h_POG","h_POG",13,0,13);
-    //TH1D* h_muPOGm = new TH1D("h_muPOGm","h_muPOGm",13,0,13);
     
     TH1D* h_TotalEff = new TH1D("h_TotalEff","h_TotalEff",13,0,13);
-    //TH1D* h_TotalEffm = new TH1D("h_TotalEffm","h_TotalEffm",13,0,13);
     
     TH1D* h_Stat = new TH1D("h_Stat","h_Stat",13,0,13);
-    //TH1D* h_Statm = new TH1D("h_Statm","h_Statm",13,0,13);
     
     TH1D* h_met = new TH1D("h_met","h_met",13,0,13);
-    //TH1D* h_metm = new TH1D("h_metm","h_metm",13,0,13);
     
     TH1D* h_scale = new TH1D("h_scale","h_scale",13,0,13);
-    //TH1D* h_scalem = new TH1D("h_scalem","h_scalem",13,0,13);
     
     TH1D* h_smear = new TH1D("h_smear","h_smear",13,0,13);
-    //TH1D* h_smearm = new TH1D("h_smearm","h_smearm",13,0,13);
     
     TH1D* h_EnMomRes = new TH1D("h_EnMomRes","h_EnMomRes",13,0,13);
-    //TH1D* h_EnMomResm = new TH1D("h_EnMomResm","h_EnMomResm",13,0,13);
     
     TH1D* h_qcdbckgr = new TH1D("h_qcdbckgr","h_qcdbckgr",13,0,13);
-    //TH1D* h_qcdbckgrm = new TH1D("h_qcdbckgrm","h_qcdbckgrm",13,0,13);
     
     TH1D* h_qcdshape = new TH1D("h_qcdshape","h_qcdshape",13,0,13);
-    //TH1D* h_qcdshapem = new TH1D("h_qcdshapem","h_qcdshapem",13,0,13);
     
     TH1D* h_ewk = new TH1D("h_ewk","h_ewk",13,0,13);
-    //TH1D* h_ewkm = new TH1D("h_ewkm","h_ewkm",13,0,13);
     
     TH1D* h_fsr = new TH1D("h_fsr","h_fsr",13,0,13);
-    //TH1D* h_fsrm = new TH1D("h_fsrm","h_fsrm",13,0,13);
     
     TH1D* h_SvdUnf = new TH1D("h_SvdUnf","h_SvdUnf",13,0,13);
-    //TH1D* h_SvdUnfm = new TH1D("h_SvdUnfm","h_SvdUnfm",13,0,13);
     
     TH1D* h_UnfoldBias = new TH1D("h_UnfoldBias","h_UnfoldBias",13,0,13);
-    //TH1D* h_UnfoldBiasm = new TH1D("h_UnfoldBiasm","h_UnfoldBiasm",13,0,13);
     
     TH1D* h_TotalSyst = new TH1D("h_TotalSyst","h_TotalSyst",13,0,13);
-    //TH1D* h_TotalSystm = new TH1D("h_TotalSystm","h_TotalSystm",13,0,13);
     
     TH1D* h_TotalUncer = new TH1D("h_TotalUncer","h_TotalUncer",13,0,13);
-    //TH1D* h_TotalUncerm = new TH1D("h_muTotalUncerm","h_muTotalUncerm",13,0,13);
     
 
     TH1D* h_LumiSyst = new TH1D("h_LumiSyst","h_LumiSyst",13,0,13);
-    //TH1D* h_LumiSystm = new TH1D("h_LumiSystm","h_LumiSystm",13,0,13);
    
     
     TH1D* h_PowhegPDF = new TH1D("h_PowhegPDF","h_PowhegPDF",12,0,12);
-    //TH1D* h_PowhegPDFm = new TH1D("h_muPowhegPDFm","h_muPowhegPDFm",13,0,13);
    
     //normalized PowhegPDF 12 Bin error
     double PowhegPDFp[13];
@@ -1192,148 +1168,99 @@
     for(int i(1);i<14;i++)
     {
       h_tracksig->SetBinContent(i,mutracksigp[i]);
-      //h_mutracksigm->SetBinContent(i,mutracksigm[i]);
    
       h_trackbck->SetBinContent(i,mutrackbckp[i]);
-      //h_mutrackbckm->SetBinContent(i,mutrackbckm[i]);
       
       h_idisosig->SetBinContent(i,muidisosigp[i]);
-      //h_muidisosigm->SetBinContent(i,muidisosigm[i]);
    
       h_idisobck->SetBinContent(i,muidisobckp[i]);
-      //h_muidisobckm->SetBinContent(i,muidisobckm[i]);
    
       h_track->SetBinContent(i,mutrackp[i]);
-      //h_mutrackm->SetBinContent(i,mutrackm[i]);
    
       h_idiso->SetBinContent(i,muidisop[i]);
-      //h_muidisom->SetBinContent(i,muidisom[i]);
    
       h_toy->SetBinContent(i,mutoyp[i]);
-      //h_mutoym->SetBinContent(i,mutoym[i]);
    
       h_POG->SetBinContent(i,muPOGp[i]);
-      //h_muPOGm->SetBinContent(i,muPOGm[i]);
    
       h_TotalEff->SetBinContent(i,mutotaleffp[i]);
-      //h_TotalEffm->SetBinContent(i,mutotaleffm[i]);
    
       h_Stat->SetBinContent(i,mustatp[i]);
-      //h_Statm->SetBinContent(i,mustatm[i]);
    
       h_met->SetBinContent(i,mumetp[i]);
-      //h_metm->SetBinContent(i,mumetm[i]);
    
       h_scale->SetBinContent(i,muscalep[i]);
-      //h_scalem->SetBinContent(i,muscalem[i]);
    
       h_smear->SetBinContent(i,musmearp[i]);
-      //h_smearm->SetBinContent(i,musmearm[i]);
    
       h_EnMomRes->SetBinContent(i,muMomResp[i]);
-      //h_EnMomResm->SetBinContent(i,muMomResm[i]);
    
       h_qcdbckgr->SetBinContent(i,muqcdbckgrp[i]);
-      //h_qcdbckgrm->SetBinContent(i,muqcdbckgrm[i]);
    
       h_qcdshape->SetBinContent(i,muqcdshapep[i]);
-      //h_qcdshapem->SetBinContent(i,muqcdshapem[i]);
    
       h_ewk->SetBinContent(i,muewkp[i]);
-      //h_ewkm->SetBinContent(i,muewkm[i]);
    
       h_fsr->SetBinContent(i,mufsrp[i]);
-      //h_fsrm->SetBinContent(i,mufsrm[i]);
    
       h_SvdUnf->SetBinContent(i,musvdunfp[i]);
-      //h_SvdUnfm->SetBinContent(i,musvdunfm[i]);
    
       h_UnfoldBias->SetBinContent(i,muBiasp[i]);
-      //h_UnfoldBiasm->SetBinContent(i,muBiasm[i]);
    
       h_TotalSyst->SetBinContent(i,systtotalp[i]);
-      //h_TotalSystm->SetBinContent(i,systtotalm[i]);
    
       h_TotalUncer->SetBinContent(i,totaluncerp[i]);
-      //h_TotalUncerm->SetBinContent(i,totaluncerm[i]);
    
-     
       h_LumiSyst->SetBinContent(i,2.6);
-      //h_LumiSystm->SetBinContent(i,2.6);
 
     }
 
     h_tracksig->Write();
-    //h_mutracksigm->Write();
-                     // */
+    
     h_trackbck->Write();
-    //h_mutrackbckm->Write();
     
     h_idisosig->Write();
-    //h_muidisosigm->Write();
                    
     h_idisobck->Write();
-    //h_muidisobckm->Write();
                    
     h_track->Write();
-    //h_mutrackm->Write();
                    
     h_idiso->Write();
-    //h_muidisom->Write();
                    
     h_toy->Write();
-    //h_mutoym->Write();
                    
     h_POG->Write();
-    //h_muPOGm->Write();
                    
     h_TotalEff->Write();
-    //h_TotalEffm->Write();
                    
     h_Stat->Write();
-    //h_Statm->Write();
                    
     h_met->Write();
-    //h_metm->Write();
                    
     h_scale->Write();
-    //h_scalem->Write();
                    
     h_smear->Write();
-    //h_smearm->Write();
                    
     h_EnMomRes->Write();
-    //h_EnMomResm->Write();
                    
     h_qcdbckgr->Write();
-    //h_qcdbckgrm->Write();
                    
     h_qcdshape->Write();
-    //h_qcdshapem->Write();
                    
     h_ewk->Write();
-    //h_ewkm->Write();
                    
     h_fsr->Write();
-    //h_fsrm->Write();
                    
     h_SvdUnf->Write();
-    //h_SvdUnfm->Write();
                    
     h_UnfoldBias->Write();
-    //h_UnfoldBiasm->Write();
                    
     h_TotalSyst->Write();
-    //h_TotalSystm->Write();
                    
     h_TotalUncer->Write();
-    //h_TotalUncerm->Write();
 
     h_PowhegPDF->Write();
-    //h_PowhegPDFm->Write();
     
     h_LumiSyst->Write();
-    //h_LumiSystm->Write();
-
 
 }
