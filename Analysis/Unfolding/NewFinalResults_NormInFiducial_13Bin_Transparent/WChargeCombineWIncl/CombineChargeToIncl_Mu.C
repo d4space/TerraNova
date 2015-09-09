@@ -273,19 +273,19 @@ void CombineChargeToIncl_Mu()
   musvdunfm[13] = 0.7420;
 
   double muUnfBiasErri[14] = {0};
-  muUnfBiasErri[1 ] =0.31   ;
-  muUnfBiasErri[2 ] =0.33   ;
-  muUnfBiasErri[3 ] =0.40   ;
-  muUnfBiasErri[4 ] =0.38   ;
-  muUnfBiasErri[5 ] =0.36   ;
-  muUnfBiasErri[6 ] =0.67   ;
-  muUnfBiasErri[7 ] =1.20   ;
-  muUnfBiasErri[8 ] =1.67   ;
-  muUnfBiasErri[9 ] =1.72   ;
-  muUnfBiasErri[10] =1.43   ;
-  muUnfBiasErri[11] =1.72   ;
-  muUnfBiasErri[12] =1.81   ;
-  muUnfBiasErri[13] =2.04   ;
+  muUnfBiasErri[1 ] = 0.9277 ;  //0.31   ;
+  muUnfBiasErri[2 ] = 1.7211 ;  //0.33   ;
+  muUnfBiasErri[3 ] = 1.1504 ;  //0.40   ;
+  muUnfBiasErri[4 ] = 0.3039 ;  //0.38   ;
+  muUnfBiasErri[5 ] = 0.6472 ;  //0.36   ;
+  muUnfBiasErri[6 ] = 0.2676 ;  //0.67   ;
+  muUnfBiasErri[7 ] = 0.4361 ;  //1.20   ;
+  muUnfBiasErri[8 ] = 0.7751 ;  //1.67   ;
+  muUnfBiasErri[9 ] = 1.9656 ;  //1.72   ;
+  muUnfBiasErri[10] = 1.9656 ;  //1.43   ;
+  muUnfBiasErri[11] = 1.9656 ;  //1.72   ;
+  muUnfBiasErri[12] = 5.4563 ;  //1.81   ;
+  muUnfBiasErri[13] = 5.4563 ;  //2.04   ;
 
   // Make Incl
   //*

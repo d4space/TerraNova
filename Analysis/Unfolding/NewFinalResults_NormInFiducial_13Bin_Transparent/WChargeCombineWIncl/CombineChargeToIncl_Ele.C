@@ -249,19 +249,19 @@ void CombineChargeToIncl_Ele()
   elesvdunfm[13] = 0.3816;
 
   double eleUnfBiasErri[14] = {0};
-  eleUnfBiasErri[1 ] = 0.39 ;
-  eleUnfBiasErri[2 ] = 0.39 ;
-  eleUnfBiasErri[3 ] = 0.46 ;
-  eleUnfBiasErri[4 ] = 0.39 ;
-  eleUnfBiasErri[5 ] = 0.61 ;
-  eleUnfBiasErri[6 ] = 0.83 ;
-  eleUnfBiasErri[7 ] = 1.14 ;
-  eleUnfBiasErri[8 ] = 1.55 ;
-  eleUnfBiasErri[9 ] = 1.92 ;
-  eleUnfBiasErri[10] = 2.15 ;
-  eleUnfBiasErri[11] = 2.29 ;
-  eleUnfBiasErri[12] = 2.43 ;
-  eleUnfBiasErri[13] = 2.42 ;
+  eleUnfBiasErri[1 ] = 0.7531 ; // 0.39 ;
+  eleUnfBiasErri[2 ] = 1.4299 ; // 0.39 ;
+  eleUnfBiasErri[3 ] = 1.1139 ; // 0.46 ;
+  eleUnfBiasErri[4 ] = 0.3641 ; // 0.39 ;
+  eleUnfBiasErri[5 ] = 0.5756 ; // 0.61 ;
+  eleUnfBiasErri[6 ] = 0.2923 ; // 0.83 ;
+  eleUnfBiasErri[7 ] = 0.3374 ; // 1.14 ;
+  eleUnfBiasErri[8 ] = 0.4686 ; // 1.55 ;
+  eleUnfBiasErri[9 ] = 2.3000 ; // 1.92 ;
+  eleUnfBiasErri[10] = 2.3104 ; // 2.15 ;
+  eleUnfBiasErri[11] = 4.5665 ; // 2.29 ;
+  eleUnfBiasErri[12] = 2.9609 ; // 2.43 ;
+  eleUnfBiasErri[13] = 2.9609 ; // 2.42 ;
 
   // Make Incl
   //*
