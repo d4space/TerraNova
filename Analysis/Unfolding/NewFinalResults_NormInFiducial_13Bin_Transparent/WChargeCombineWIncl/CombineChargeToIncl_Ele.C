@@ -261,7 +261,7 @@ void CombineChargeToIncl_Ele()
   eleUnfBiasErri[10] = 2.3104 ; // 2.15 ;
   eleUnfBiasErri[11] = 4.5665 ; // 2.29 ;
   eleUnfBiasErri[12] = 2.9609 ; // 2.43 ;
-  eleUnfBiasErri[13] = 2.9609 ; // 2.42 ;
+  eleUnfBiasErri[13] = 4.0689 ; // 2.42 ;
 
   // Make Incl
   //*

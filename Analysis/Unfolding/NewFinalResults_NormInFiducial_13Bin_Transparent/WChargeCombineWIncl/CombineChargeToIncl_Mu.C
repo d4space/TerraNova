@@ -282,10 +282,10 @@ void CombineChargeToIncl_Mu()
   muUnfBiasErri[7 ] = 0.4361 ;  //1.20   ;
   muUnfBiasErri[8 ] = 0.7751 ;  //1.67   ;
   muUnfBiasErri[9 ] = 1.9656 ;  //1.72   ;
-  muUnfBiasErri[10] = 1.9656 ;  //1.43   ;
-  muUnfBiasErri[11] = 1.9656 ;  //1.72   ;
+  muUnfBiasErri[10] = 4.3227 ;  //1.43   ;
+  muUnfBiasErri[11] = 3.0739 ;  //1.72   ;
   muUnfBiasErri[12] = 5.4563 ;  //1.81   ;
-  muUnfBiasErri[13] = 5.4563 ;  //2.04   ;
+  muUnfBiasErri[13] = 4.9397 ;  //2.04   ;
 
   // Make Incl
   //*
