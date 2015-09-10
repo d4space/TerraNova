@@ -124,28 +124,31 @@ int theoryStudy_separate(const TString BaseName)
   TFile *f_Data_PowhegErr;
 
   f_Resbos = new TFile("../../RstResbos/Resbos_"+BaseName+".root");
-  f_Resbos_12 = new TFile("../../RstResbos_12Bin/Resbos_"+BaseName+"_12Bin.root");
   f_Data = new TFile("../Result"+BaseName+"/Result_"+BaseName+".root");
   //f_Data_PowhegErr = new TFile("../../Systematics/WptXsecErrors/"+BaseName+"Errors.root");
   f_Data_PowhegErr = new TFile("../../Systematics_NormDiffXsec/WptXsecErrors/"+BaseName+"Errors.root");
 
   if (BaseName=="WpToMuNu")
   {
-    f_Fewz = new TFile("../../RstFEWZ/Wp_Mu_NNLO.root");
+    f_Fewz = new TFile("../../RstFEWZ/WpToMuNu_13bin_dynamic_NNLO.root");
     f_Fewz_12 = new TFile("../../RstFEWZ_12Bin_Fiducial_dynamic/WpToMuNu_dynamic_NNLO.root");
+    f_Resbos_12 = new TFile("../../RstResbos_12BinFidVol/Resbos_Wplus.root");
   }
   if (BaseName=="WmToMuNu")
   {
-    f_Fewz = new TFile("../../RstFEWZ/Wm_Mu_NNLO.root");
+    f_Fewz = new TFile("../../RstFEWZ/WmToMuNu_13bin_dynamic_NNLO.root");
     f_Fewz_12 = new TFile("../../RstFEWZ_12Bin_Fiducial_dynamic/WmToMuNu_dynamic_NNLO.root");
+    f_Resbos_12 = new TFile("../../RstResbos_12BinFidVol/Resbos_Wminus.root");
   }
   if (BaseName=="WpToEleNu")
   {
-    f_Fewz = new TFile("../../RstFEWZ/Wp_Ele_NNLO.root");
+    f_Fewz = new TFile("../../RstFEWZ/WpToEleNu_13bin_dynamic_NNLO.root");
+    f_Resbos_12 = new TFile("../../RstResbos_12BinFidVol/Resbos_Wplus.root");
   }
   if (BaseName=="WmToEleNu")
   {
-    f_Fewz = new TFile("../../RstFEWZ/Wm_Ele_NNLO.root");
+    f_Fewz = new TFile("../../RstFEWZ/WmToEleNu_13bin_dynamic_NNLO.root");
+    f_Resbos_12 = new TFile("../../RstResbos_12BinFidVol/Resbos_Wminus.root");
   }
 
   TFile f_out("Wpt_"+BaseName+"NormDiffXsec_InFid_RDResBosPowhegFEWZ.root","recreate");
