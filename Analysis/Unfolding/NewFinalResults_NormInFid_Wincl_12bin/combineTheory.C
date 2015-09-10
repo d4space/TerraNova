@@ -50,21 +50,21 @@ int combineTheory(const TString BaseName)
   TH1D *ScaleError_12Bin   = new TH1D("ScaleErr","ScaleErr",nBins-1,Wpt12Bins);
   TH1D *PDFError_12Bin   = new TH1D("PDFErr","PDFErr",nBins-1,Wpt12Bins);
 
-  Double_t Scale11[nBins],PDF11[nBins];
-  Double_t Scale22[nBins],PDF22[nBins];
+  Double_t Scale11[nBins-1],PDF11[nBins-1];
+  Double_t Scale22[nBins-1],PDF22[nBins-1];
 
-  for( int ipt(1);ipt<nBins;ipt++)
+  for( int ipt(0);ipt<nBins-1;ipt++)
   {
-    lFewz_1_12Bin->SetBinContent(ipt,lFewz_1->GetBinContent(ipt));
-    lFewz_2_12Bin->SetBinContent(ipt,lFewz_2->GetBinContent(ipt));
+    lFewz_1_12Bin->SetBinContent(ipt+1,lFewz_1->GetBinContent(ipt+1));
+    lFewz_2_12Bin->SetBinContent(ipt+1,lFewz_2->GetBinContent(ipt+1));
 
-    Scale11[ipt]=0.01*Scale1->GetBinError(ipt)*lFewz_1->GetBinContent(ipt);
-    Scale22[ipt]=0.01*Scale2->GetBinError(ipt)*lFewz_2->GetBinContent(ipt);
-    PDF11[ipt]=0.01*PDF1->GetBinError(ipt)*lFewz_1->GetBinContent(ipt);
-    PDF22[ipt]=0.01*PDF1->GetBinError(ipt)*lFewz_2->GetBinContent(ipt);
+    Scale11[ipt]=0.01*Scale1->GetBinError(ipt+1)*lFewz_1->GetBinContent(ipt+1);
+    Scale22[ipt]=0.01*Scale2->GetBinError(ipt+1)*lFewz_2->GetBinContent(ipt+1);
+    PDF11[ipt]=0.01*PDF1->GetBinError(ipt+1)*lFewz_1->GetBinContent(ipt+1);
+    PDF22[ipt]=0.01*PDF1->GetBinError(ipt+1)*lFewz_2->GetBinContent(ipt+1);
 
-    ScaleError_12Bin->SetBinError(ipt, Scale11[ipt] + Scale22[ipt]);
-    PDFError_12Bin->SetBinError(ipt, sqrt(PDF11[ipt]*PDF11[ipt] + PDF22[ipt]*PDF22[ipt]));
+    ScaleError_12Bin->SetBinError(ipt+1, Scale11[ipt] + Scale22[ipt]);
+    PDFError_12Bin->SetBinError(ipt+1, sqrt(PDF11[ipt]*PDF11[ipt] + PDF22[ipt]*PDF22[ipt]));
   }
 
   TH1D* lResbos1[7];
