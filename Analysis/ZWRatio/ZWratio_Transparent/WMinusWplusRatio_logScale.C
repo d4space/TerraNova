@@ -482,19 +482,19 @@ int WMinusWplusRatio_logScale()
  
 
   double UnfBiasSyst[14] = {0.,};
-  UnfBiasSyst[1]  = 0.69 ;
-  UnfBiasSyst[2]  = 0.56 ;
-  UnfBiasSyst[3]  = 0.62 ;
-  UnfBiasSyst[4]  = 0.93 ;
-  UnfBiasSyst[5]  = 1.24 ;
-  UnfBiasSyst[6]  = 1.45 ;
-  UnfBiasSyst[7]  = 1.81 ;
-  UnfBiasSyst[8]  = 2.49 ;
-  UnfBiasSyst[9]  = 2.77 ;
-  UnfBiasSyst[10] = 2.49 ;
-  UnfBiasSyst[11] = 2.47 ;
-  UnfBiasSyst[12] = 2.86 ;
-  UnfBiasSyst[13] = 3.07 ;
+  UnfBiasSyst[1]  = 0.8286 ;  // 0.69 ;
+  UnfBiasSyst[2]  = 0.1332 ;  // 0.56 ;
+  UnfBiasSyst[3]  = 1.2219 ;  // 0.62 ;
+  UnfBiasSyst[4]  = 1.1937 ;  // 0.93 ;
+  UnfBiasSyst[5]  = 2.0407 ;  // 1.24 ;
+  UnfBiasSyst[6]  = 0.7443 ;  // 1.45 ;
+  UnfBiasSyst[7]  = 0.3415 ;  // 1.81 ;
+  UnfBiasSyst[8]  = 1.2224 ;  // 2.49 ;
+  UnfBiasSyst[9]  = 1.9469 ;  // 2.77 ;
+  UnfBiasSyst[10] = 1.7871 ;  // 2.49 ;
+  UnfBiasSyst[11] = 8.7839 ;  // 2.47 ;
+  UnfBiasSyst[12] = 3.3604 ;  // 2.86 ;
+  UnfBiasSyst[13] = 4.4327 ;  // 3.07 ;
   
   double UnfBiasSystMerge[14] = {0};
   UnfBiasSystMerge[4]=(
