@@ -124,7 +124,6 @@ int theoryStudy_separate(const TString BaseName)
 
   TH1D *hWptBins_LinScale   = new TH1D("hWptBins_LinScale","hWptBins_LinScale",nBins-1,WptBins);hWptBins_LinScale->Sumw2();
   TH1D *hWptBins_LogScale   = new TH1D("hWptBins_LogScale","hWptBins_LogScale",nBins-1,WptLogBins);hWptBins_LogScale->Sumw2();
-  
 
   ///=============Reading related stat, syst errors starts here==============
   //  
@@ -361,8 +360,8 @@ int theoryStudy_separate(const TString BaseName)
   }
 
   //Errors
-  double Data_Xsec_BornStatErr[nBins-1];
-  double Data_Xsec_BornTotalErr[nBins-1];
+  double Data_Xsec_BornStatErr[nBins];
+  double Data_Xsec_BornTotalErr[nBins];
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     Data_Xsec_BornStatErr[ipt] = hData_Xsec_BornLinScale->GetBinContent(ipt) * ( hData_Yield_ReconLinScale->GetBinError(ipt)/hData_Yield_ReconLinScale->GetBinContent(ipt) );
@@ -464,8 +463,8 @@ int theoryStudy_separate(const TString BaseName)
   hPowheg_Yield_BornAfterFidCut = (TH1D*)f_Data->Get("hPowheg_Yield_BornAfterFidCut")->Clone("hPowheg_Yield_BornAfterFidCut");
 
   //Errors
-  double Powheg_Xsec_BornStatErr[nBins-1];
-  double Powheg_Xsec_BornTotalErr[nBins-1];
+  double Powheg_Xsec_BornStatErr[nBins];
+  double Powheg_Xsec_BornTotalErr[nBins];
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     Powheg_Xsec_BornStatErr[ipt] = hPowheg_StatErr->GetBinContent(ipt);
@@ -540,9 +539,9 @@ int theoryStudy_separate(const TString BaseName)
   TH1D* hFEWZ_Xsec_PDFError;
   hFEWZ_Xsec_PDFError = (TH1D*)f_Fewz->Get("PDFErr")->Clone("hFEWZ_Xsec_PDFError");
   
-  double FEWZ_Xsec_ScaleErr[nBins-1];
-  double FEWZ_Xsec_PDFErr[nBins-1];
-  double FEWZ_Xsec_TotalErr[nBins-1];
+  double FEWZ_Xsec_ScaleErr[nBins];
+  double FEWZ_Xsec_PDFErr[nBins];
+  double FEWZ_Xsec_TotalErr[nBins];
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     FEWZ_Xsec_ScaleErr[ipt] = hFEWZ_Xsec_ScaleError->GetBinError(ipt);
