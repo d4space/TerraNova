@@ -143,11 +143,13 @@ int theoryStudy_separate(const TString BaseName)
   if (BaseName=="WpToEleNu")
   {
     f_Fewz = new TFile("../../RstFEWZ/WpToEleNu_13bin_dynamic_NNLO.root");
+    f_Fewz_12 = new TFile("../../RstFEWZ_12Bin_Fiducial_dynamic/WpToMuNu_dynamic_NNLO.root");
     f_Resbos_12 = new TFile("../../RstResbos_12BinFidVol/Resbos_Wplus.root");
   }
   if (BaseName=="WmToEleNu")
   {
     f_Fewz = new TFile("../../RstFEWZ/WmToEleNu_13bin_dynamic_NNLO.root");
+    f_Fewz_12 = new TFile("../../RstFEWZ_12Bin_Fiducial_dynamic/WmToMuNu_dynamic_NNLO.root");
     f_Resbos_12 = new TFile("../../RstResbos_12BinFidVol/Resbos_Wminus.root");
   }
 
@@ -504,11 +506,18 @@ else if(BaseName== "WpToEleNu" || BaseName== "WmToEleNu")
 //    	  ) ;
 
   } 
-  hData_TrackSigShapeSystErr12->Write();
-  hData_TrackBkgrShapeSystErr12->Write();
-  hData_IDIsoSigShapeSystErr12->Write();
+  if(BaseName== "WpToMuNu" || BaseName== "WmToMuNu")
+  {
+    hData_TrackSigShapeSystErr12->Write();
+    hData_TrackBkgrShapeSystErr12->Write();
+    hData_MuonPOGSystErr12->Write();
+  }
+  else if(BaseName== "WpToEleNu" || BaseName== "WmToEleNu")
+  {
+    hData_BinningSystErr12->Write();
+  }
+  hData_IDIsoSigShapeSystErr12->Write(); 
   hData_IDIsoBkgrShapeSystErr12->Write();
-  hData_MuonPOGSystErr12->Write();
   hData_EffiToySystErr12->Write();
   hData_StatErr12->Write();
   hData_MetResolSystErr12->Write(); 
