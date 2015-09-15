@@ -8,19 +8,19 @@ void EleSFApply(TString BaseName){
   TFile *f_in;
   if (BaseName=="WpToMuNu")
   {
-    f_in = new TFile("./inputfile/Wpt_WpToMuNuNormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
+    f_in = new TFile("../WptCharge_NormDiffXsec_InFid/Wpt_WpToMuNuNormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
   }
   if (BaseName=="WmToMuNu")
   {
-    f_in = new TFile("./inputfile/Wpt_WmToMuNuNormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
+    f_in = new TFile("../WptCharge_NormDiffXsec_InFid/Wpt_WmToMuNuNormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
   }
   if (BaseName=="WpToEleNu")
   {
-    f_in = new TFile("./inputfile/Wpt_WpToEleNuNormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
+    f_in = new TFile("../WptCharge_NormDiffXsec_InFid/Wpt_WpToEleNuNormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
   }
   if (BaseName=="WmToEleNu")
   {
-    f_in = new TFile("./inputfile/Wpt_WmToEleNuNormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
+    f_in = new TFile("../WptCharge_NormDiffXsec_InFid/Wpt_WmToEleNuNormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
   }
 
   // Get NormDiff xsec histogram
