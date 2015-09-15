@@ -89,7 +89,6 @@ void MuEleCombineRatio()
   double tmp_CombPErr[13] = {0};
   double tmp_CombMErr[13] = {0};
   double tmp_CombErr[13] = {0};
-
   for(int i(1); i<13; i++)
   {
     WpToMuNu[i] = h_WpToMuNu->GetBinContent(i);
@@ -187,9 +186,9 @@ void MuEleCombineRatio()
   double WmWpratioScaleErr_FEWZ[13]={0}; // W-/W+ scale error
   double WmWpratioTotalErr_FEWZ[13]={0}; // sqrt(StatErr^2 + PDFErr^2 + ScaleErr^2)
  
-  Double_t Resb_errMax[nBins-1];
-  Double_t Resb_errMin[nBins-1];
-  Double_t Resb_err[nBins-1];
+  Double_t Resb_errMax[nBins];
+  Double_t Resb_errMin[nBins];
+  Double_t Resb_err[nBins];
  
   cout << fixed << setprecision(10) << endl;
   cout << " ===== Wpt minus and Wptplus Normalilzed Differntial cross-section and errors In Fiducial Volume ==="<< endl;
@@ -200,8 +199,8 @@ void MuEleCombineRatio()
   {
     // RD Ratio and Error
     WmWpratio_RD[i] = CombM[i]/CombP[i];
-    tmp_CombErr[i] = 1.0/(CombMErr[i]*CombMErr[i]) + 1.0/(CombPErr[i]*CombPErr[i]);
-    CombErr[i] = sqrt(1.0/tmp_CombErr[i]);
+    //tmp_CombErr[i] = 1.0/(CombMErr[i]*CombMErr[i]) + 1.0/(CombPErr[i]*CombPErr[i]);
+    //CombErr[i] = sqrt(1.0/tmp_CombErr[i]);
     WmWpratioErr_RD_Total[i] = WmWpratio_RD[i] * sqrt(
 	  CombMErr[i]*CombMErr[i]/CombM[i]/CombM[i]
 	+ CombPErr[i]*CombPErr[i]/CombP[i]/CombP[i]
@@ -255,6 +254,7 @@ void MuEleCombineRatio()
     ///Total powheg error calculated here
     WmWpratioTotalErr_Powheg[i] = sqrt(WmWpratioStatErr_Powheg[i]*WmWpratioStatErr_Powheg[i] +WmWpratioPDFErr_Powheg[i]*WmWpratioPDFErr_Powheg[i]);
 
+cout << "hahahahaha" << endl;
      // Resbos ratio error in normdiff stage
     double tmpVal,tmpDiff;
     double nomVal = hWmWpratio_Resbos[1]->GetBinContent(i);
@@ -269,7 +269,7 @@ void MuEleCombineRatio()
       if( tmpDiff > Resb_errMax[i]) Resb_errMax[i] = tmpDiff;
       if( tmpDiff < Resb_errMin[i]) Resb_errMin[i] = tmpDiff;
     }
-//    cout << "Resbos center ratio : " << hWmWpratio_Resbos[1]->GetBinContent(i+1) << "\t error+ : " << Resb_errMax[i] << "\t error - : " << Resb_errMin[i] << endl;
+//    cout << "Resbos center ratio : " << hWmWpratio_Resbos[1]->GetBinContent(i) << "\t error+ : " << Resb_errMax[i] << "\t error - : " << Resb_errMin[i] << endl;
 
     if (Resb_errMax[i] < 0) Resb_errMax[i] = 0.;
     if (Resb_errMin[i] > 0) Resb_errMin[i] = 0.;
@@ -348,7 +348,7 @@ void MuEleCombineRatio()
     
     hWmWpratio_Resbos_Central->SetBinContent(i,hWmWpratio_Resbos[1]->GetBinContent(i));
     hWmWpratio_Resbos_Central->SetBinError(i,Resb_err[i]);
-    //hWmWpratio_Resbos[1]->SetBinError(i+1,Resb_err[i]);
+    //hWmWpratio_Resbos[1]->SetBinError(i,Resb_err[i]);
     
     hWmWpratio_FEWZ->SetBinContent(i,WmWpratio_FEWZ[i]);
     hWmWpratio_FEWZ->SetBinError(i,WmWpratioTotalErr_FEWZ[i]);
@@ -360,21 +360,21 @@ void MuEleCombineRatio()
   TH1D *hRatioResbosTotalErr = new TH1D("hRatioResbosTotalErr","hRatioResbosTotalErr",nBins-1,WptBins);
   TH1D *hRatioFEWZTotalErr = new TH1D("hRatioFEWZTotalErr","hRatioFEWZTotalErr",nBins-1,WptBins);
 
-  for(int i(0); i<nBins-1; i++)
+  for(int i(1); i<nBins; i++)
   {
-    hRatioDataTotalErr->SetBinContent(i+1,1.);
-    hRatioDataTotalErr->SetBinError(i+1,WmWpratioErr_RD_Total[i] / WmWpratio_RD[i]);
+    hRatioDataTotalErr->SetBinContent(i,1.);
+    hRatioDataTotalErr->SetBinError(i,WmWpratioErr_RD_Total[i] / WmWpratio_RD[i]);
     
-    hRatioPowhegTotalErr->SetBinContent(i+1,WmWpratio_Powheg[i] / WmWpratio_RD[i]);
-    hRatioPowhegTotalErr->SetBinError(i+1,WmWpratioTotalErr_Powheg[i] / WmWpratio_RD[i]);
+    hRatioPowhegTotalErr->SetBinContent(i,WmWpratio_Powheg[i] / WmWpratio_RD[i]);
+    hRatioPowhegTotalErr->SetBinError(i,WmWpratioTotalErr_Powheg[i] / WmWpratio_RD[i]);
 
-    //hRatioResbosTotalErr->SetBinContent(i+1,hWmWpratio_Resbos[1]->GetBinContent(i+1) / WmWpratio_RD[i]);
-    //hRatioResbosTotalErr->SetBinError(i+1,hWmWpratio_Resbos[1]->GetBinError(i+1) / WmWpratio_RD[i]);
-    hRatioResbosTotalErr->SetBinContent(i+1,hWmWpratio_Resbos_Central->GetBinContent(i+1) / WmWpratio_RD[i]);
-    hRatioResbosTotalErr->SetBinError(i+1,hWmWpratio_Resbos_Central->GetBinError(i+1) / WmWpratio_RD[i]);
+    //hRatioResbosTotalErr->SetBinContent(i,hWmWpratio_Resbos[1]->GetBinContent(i) / WmWpratio_RD[i]);
+    //hRatioResbosTotalErr->SetBinError(i,hWmWpratio_Resbos[1]->GetBinError(i) / WmWpratio_RD[i]);
+    hRatioResbosTotalErr->SetBinContent(i,hWmWpratio_Resbos_Central->GetBinContent(i) / WmWpratio_RD[i]);
+    hRatioResbosTotalErr->SetBinError(i,hWmWpratio_Resbos_Central->GetBinError(i) / WmWpratio_RD[i]);
     
-    hRatioFEWZTotalErr->SetBinContent(i+1,WmWpratio_FEWZ[i] / WmWpratio_RD[i]);
-    hRatioFEWZTotalErr->SetBinError(i+1,WmWpratioTotalErr_FEWZ[i] / WmWpratio_RD[i]);
+    hRatioFEWZTotalErr->SetBinContent(i,WmWpratio_FEWZ[i] / WmWpratio_RD[i]);
+    hRatioFEWZTotalErr->SetBinError(i,WmWpratioTotalErr_FEWZ[i] / WmWpratio_RD[i]);
   }
 
   //Color Transparent
