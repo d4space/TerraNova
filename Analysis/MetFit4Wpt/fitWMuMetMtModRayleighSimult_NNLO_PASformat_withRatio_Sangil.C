@@ -67,13 +67,13 @@ void makeHTML(const TString outDir);
 //=== MAIN MACRO ================================================ 
 
 //void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output directory
-void fitWMuMetMtModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // output directory
+void fitWMuMetMtModRayleighSimult_NNLO_PASformat_withRatio_Sangil(const TString  outputDir,   // output directory
            const TString  filetype,		// Select input root files for Nominal, Up, Down and Before Recoil Correction
            const Double_t lumi,        // integrated luminosity (/fb)
 	   const Double_t nsigma=0     // vary MET corrections by n-sigmas (nsigma=0 means nominal correction)
 )
 {
-  gBenchmark->Start("fitWMuMetMtModRayleighSimult_NNLO");
+  gBenchmark->Start("fitWMuMetMtModRayleighSimult_NNLO_PASformat_withRatio_Sangil");
 
   //------------------
   // Settings 
@@ -3576,7 +3576,20 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   hQCD_Sig-> Write();
   hQCD_SigPlus-> Write();
   hQCD_SigMinus-> Write();
-  
+
+  hDYToMuMu   ->Write();
+  hWToTauNu   ->Write();
+  hTTJets     ->Write();
+  hDYToTauTau ->Write();
+  hDYToMuMuP  ->Write();
+  hWToTauNuP  ->Write();
+  hTTJetsP    ->Write();
+  hDYToTauTauP->Write();
+  hDYToMuMuM  ->Write();
+  hWToTauNuM  ->Write();
+  hTTJetsM    ->Write();
+  hDYToTauTauM->Write();
+
   //hAntiQCD_Sig-> Write();
   //hAntiQCD_SigPlus-> Write();
   //hAntiQCD_SigMinus-> Write();
@@ -3634,21 +3647,6 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   CPlot* plotWPptDiffLog;
   CPlot* plotWMptDiffLog;
 
-  // New canvas
-  TCanvas *c1;
-  c1 = MakeCanvas("c1","c1",800,800);
-  c1->SetPad(0,0,1.0,1.0);
-  c1->SetTopMargin(0.07);
-  c1->SetBottomMargin(0.14);
-  c1->SetLeftMargin(0.15);  
-  c1->SetRightMargin(0.07);  
-  c1->SetTickx(1);
-  c1->SetTicky(1);  
-  c1->SetTickx(1);
-  c1->SetTicky(1);
-  gStyle->SetTitleOffset(0.8,"Y");
-  TGaxis::SetMaxDigits(3);
-/*
 //Inclusive W pt distribution
   TH1D* hWptMC = (TH1D*)hDYToTauTau->Clone("hWptMC");
   hWptMC->Add(hTTJets);
@@ -3687,7 +3685,7 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWptDiff->AddLine(0, 0,600, 0,kBlack,1);
   //plotWptDiff->AddLine(0, 0.05,600, 0.05,kBlack,3);
   //plotWptDiff->AddLine(0,-0.05,600,-0.05,kBlack,3);
-  //plotWptDiff->Draw(c,kTRUE,format,2);
+  plotWptDiff->Draw(c,kTRUE,format,2);
 
   //sprintf(histName,"FitWDistribution_MuonLog");
   //plotWptDiff->SetName(histName);
@@ -3696,7 +3694,7 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   //plotWpt->Draw(c,kFALSE,format,1);
   //gPad->RedrawAxis();
   //plotWptDiff->Draw(c,kTRUE,format,2);
- */ 
+  
   double WptBinsLog[14]={1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
   double x1,x2,x3,x4,x5,x6,x7,err;
   TH1D *hDYToTauTauLog = new TH1D("hDYToTauTauLog","",13,WptBinsLog);
@@ -3725,7 +3723,7 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     hdataWptLog->Fill(xaxis->GetBinCenter(i),x7);
     hdataWptLog->SetBinError(i,err);
   }
-  /*
+  
   TH1D* hWptMCLog = (TH1D*)hDYToTauTauLog->Clone("hWptMCLog");
   hWptMCLog->Add(hTTJetsLog);
   hWptMCLog->Add(hWToTauNuLog);
@@ -3780,7 +3778,7 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   //plotWptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiffLog->SetLogx();
   plotWptDiffLog->Draw(c,kTRUE,format,2);
-*/
+
 //W plus pt distribution
   TH1D* hWptMC_p = (TH1D*)hDYToTauTauP->Clone("hWptMC_p");
   hWptMC_p->Add(hTTJetsP);
@@ -3793,7 +3791,7 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   hWptDiff_p->SetMarkerSize(0.9);
 
   sprintf(histName,"FitWDistribution_MuonP");
-  plotWpt_p=new CPlot(histName,"","p_{T}^{W} [GeV]","Events");
+  plotWpt_p=new CPlot(histName,"","","Events");
   plotWpt_p->setOutDir(CPlot::sOutDir);
   plotWpt_p->AddToStack(hDYToTauTauP,"#font[42]{Z/#gamma^{*}#rightarrow#tau#tau}",kSpring+5,kSpring+3);
   plotWpt_p->AddToStack(hTTJetsP,"#font[42]{t#bar{t}}",kAzure-5,kAzure-1);
@@ -3806,15 +3804,12 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWpt_p->SetLegend(0.75,0.65,.98,0.88);
   plotWpt_p->SetYRange(0.1,1.1*(hWptMC_p->GetMaximum()));
   //plotWpt_p->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
-    plotWpt_p->AddTextBox(CMStext,0.15,0.93,0.24,0.98,0);
+    plotWpt_p->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
     //plotWpt_p->AddTextBox(Preliminarytext,0.24,0.91,0.40,0.96,0);
-    plotWpt_p->AddTextBox(lumitext,0.70,0.93,0.95,0.98,0);
-  //plotWpt_p->Draw(c,kFALSE,format,1);
+    plotWpt_p->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
+  plotWpt_p->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
-  plotWpt_p->Draw(c1,kTRUE,format);
-  //c1->delete;
-  //c1->RedrawAxis();
-/*
+
   //plotWptDiff_p=new CPlot(histName,"","p_{T} [GeV]","#chi");
   plotWptDiff_p=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
   plotWptDiff_p->setOutDir(CPlot::sOutDir);
@@ -3826,7 +3821,7 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWptDiff_p->AddLine(0, 0,600, 0,kBlack,1);
   //plotWptDiff_p->AddLine(0, 0.05,600, 0.05,kBlack,3);
   //plotWptDiff_p->AddLine(0,-0.05,600,-0.05,kBlack,3);
-  //plotWptDiff_p->Draw(c,kTRUE,format,2);
+  plotWptDiff_p->Draw(c,kTRUE,format,2);
   
   //sprintf(histName,"FitWDistribution_MuonPLog");
   //plotWptDiff_p->SetName(histName);
@@ -3835,7 +3830,7 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   //plotWpt_p->Draw(c,kFALSE,format,1);
   //gPad->RedrawAxis();
   //plotWptDiff_p->Draw(c,kTRUE,format,2);
-  */
+  
   TH1D *hDYToTauTauLogP = new TH1D("hDYToTauTauLogP","",13,WptBinsLog);
   TH1D *hTTJetsLogP = new TH1D("hTTJetsLogP","",13,WptBinsLog);
   TH1D *hWToTauNuLogP = new TH1D("hWToTauNuLogP","",13,WptBinsLog);
@@ -3869,11 +3864,6 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   hWPptMCLog->Add(hQCDWptLogP);
   hWPptMCLog->Add(hSigWptLogP);
   
-  TH1D* hWPptEWKLog = (TH1D*)hDYToTauTauLogP->Clone("hWPptEWKLog");
-  hWPptEWKLog->Add(hTTJetsLogP);
-  hWPptEWKLog->Add(hWToTauNuLogP);
-  hWPptEWKLog->Add(hDYToMuMuLogP);
-  
   for (int i=1; i<=hSigWPpt->GetNbinsX(); i++)
   {
     double xEWKp=0,xQCDp=0,xSigp=0;
@@ -3888,33 +3878,28 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   hWPptDiffLog->SetMarkerSize(0.9);
   
   sprintf(histName,"FitWDistribution_MuonPLog");
-  plotWPptLog=new CPlot(histName,"","p_{T}^{W} [GeV]","Events");
+  plotWPptLog=new CPlot(histName,"","","Events");
   plotWPptLog->setOutDir(CPlot::sOutDir);
-  //plotWPptLog->AddToStack(hDYToTauTauLogP,"#font[42]{Z/#gamma^{*}#rightarrow#tau#tau}",kSpring+5,kSpring+3);
-  //plotWPptLog->AddToStack(hTTJetsLogP,"#font[42]{t#bar{t}}",kAzure-5,kAzure-1);
-  //plotWPptLog->AddToStack(hWToTauNuLogP,"#font[42]{W#rightarrow#tau#nu}",kCyan-9,kCyan-6);
-  //plotWPptLog->AddToStack(hDYToMuMuLogP,"#font[42]{Z/#gamma^{*}#rightarrow #mu#mu}",fillcolorEWK,linecolorEWK);
-  plotWPptLog->AddToStack(hWPptEWKLog,"#font[42]{EWK+t#bar{t}}",fillcolorEWK,linecolorEWK);
+  plotWPptLog->AddToStack(hDYToTauTauLogP,"#font[42]{Z/#gamma^{*}#rightarrow#tau#tau}",kSpring+5,kSpring+3);
+  plotWPptLog->AddToStack(hTTJetsLogP,"#font[42]{t#bar{t}}",kAzure-5,kAzure-1);
+  plotWPptLog->AddToStack(hWToTauNuLogP,"#font[42]{W#rightarrow#tau#nu}",kCyan-9,kCyan-6);
+  plotWPptLog->AddToStack(hDYToMuMuLogP,"#font[42]{Z/#gamma^{*}#rightarrow #mu#mu}",fillcolorEWK,linecolorEWK);
   plotWPptLog->AddToStack(hQCDWptLogP,"#font[42]{QCD}",fillcolorQCD,linecolorQCD);
   plotWPptLog->AddToStack(hSigWptLogP,"#font[42]{W^{+}#rightarrow #mu^{+}#nu}",fillcolorW,linecolorW);
   plotWPptLog->AddHist1D(hdataWptLogP,"#font[42]{data}","E");
-  //plotWPptLog->SetLegend(0.75,0.65,.98,0.88);
-  plotWPptLog->SetLegend(0.75,0.66,.90,0.86);
+  plotWPptLog->SetLegend(0.75,0.65,.98,0.88);
   //plotWPptLog->SetYRange(5e-6*(hWptMC_p->GetMaximum()),1.4*(hWptMC_p->GetMaximum()));
   plotWPptLog->SetYRange(0.25,1.4*(hWptMC_p->GetMaximum()));
   plotWPptLog->SetLogx();
   plotWPptLog->SetLogy();
   //plotWPptLog->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
   //plotWPptLog->AddTextBox("CMS Preliminary, L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV ",0.40,0.91,0.95,0.97,0);
-    plotWPptLog->AddTextBox(CMStext,0.15,0.93,0.24,0.98,0);
+    plotWPptLog->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
    // plotWPptLog->AddTextBox(Preliminarytext,0.24,0.91,0.40,0.96,0);
-    plotWPptLog->AddTextBox(lumitext,0.70,0.93,0.95,0.98,0);
-  //plotWPptLog->Draw(c,kFALSE,format,1);
+    plotWPptLog->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
+  plotWPptLog->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
-  plotWPptLog->Draw(c1,kTRUE,format);
-  //c1->delete;
-  //c1->RedrawAxis();
-/*  
+  
   //plotWPptDiffLog=new CPlot(histName,"","p_{T} [GeV]","#chi");
   //plotWPptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
   plotWPptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","mc / data ");
@@ -3934,9 +3919,8 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWPptDiffLog->AddLine(0, 1.2,600, 1.2,kBlack,3);
   plotWPptDiffLog->AddLine(0, 0.8,600, 0.8,kBlack,3);
   plotWPptDiffLog->SetLogx();
-  //plotWPptDiffLog->Draw(c,kTRUE,format,2);
-*/
-/*
+  plotWPptDiffLog->Draw(c,kTRUE,format,2);
+
 //W minus pt distribution
   TH1D* hWptMC_m = (TH1D*)hDYToTauTauM->Clone("hWptMC_m");
   hWptMC_m->Add(hTTJetsM);
@@ -4069,10 +4053,10 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWMptDiffLog->AddLine(0, 0.8,600, 0.8,kBlack,3);
   plotWMptDiffLog->SetLogx();
   plotWMptDiffLog->Draw(c,kTRUE,format,2);
-*/		    
+		    
   makeHTML(outputDir);
 
-  gBenchmark->Show("fitWMuMetMtModRayleighSimult_NNLO");
+  gBenchmark->Show("fitWMuMetMtModRayleighSimult_NNLO_PASformat_withRatio_Sangil");
 }
 
 
