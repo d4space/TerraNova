@@ -2353,10 +2353,12 @@ aqcdMsigma2[ipt]->setVal(2.69409);
 
     //plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotMetDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotMetDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotMetDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     if(ipt>8)
       //plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
-      plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      //plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","(Data-Fit)/#sigma_{Data}");
     plotMetDiff->setOutDir(CPlot::sOutDir);
     //plotMetDiff->AddHist1D(hMetDiff,"EX0",ratioColor);
     plotMetDiff->AddHist1D(hMetDiff,"",kAzure+1,1,1001);
@@ -2456,7 +2458,8 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     
     //plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotAntiMetDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotAntiMetDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotAntiMetDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     if(ipt>8)
       plotAntiMetDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
     plotAntiMetDiff->setOutDir(CPlot::sOutDir);
@@ -2570,9 +2573,11 @@ aqcdMsigma2[ipt]->setVal(2.69409);
 
     //plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotMetpDiff=new CPlot (histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotMetpDiff=new CPlot (histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotMetpDiff=new CPlot (histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     if(ipt>8)
-      plotMetpDiff=new CPlot (histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      //plotMetpDiff=new CPlot (histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      plotMetpDiff=new CPlot (histName,"","M_{T} [GeV]","(Data-Fit)/#sigma_{Data}");
     plotMetpDiff->setOutDir(CPlot::sOutDir);
     //plotMetpDiff->AddHist1D(hMetpDiff,"EX0",ratioColor);
     plotMetpDiff->AddHist1D(hMetpDiff,"",kAzure+1,1,1001);
@@ -2684,10 +2689,12 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     
     //plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotAntiMetpDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotAntiMetpDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotAntiMetpDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     if(ipt>8)
       //plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
-      plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      //plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","(Data-Fit)/#sigma_{Data}");
     plotAntiMetpDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
     plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"",kAzure+1,1,1001);
@@ -2805,10 +2812,12 @@ aqcdMsigma2[ipt]->setVal(2.69409);
 
     //plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     if(ipt>8)
       //plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
-      plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      //plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(Data-Fit)/#sigma_{Data}");
     plotMetmDiff->setOutDir(CPlot::sOutDir);
     //plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
     plotMetmDiff->AddHist1D(hMetmDiff,"",kAzure+1,1,1001);
@@ -2924,10 +2933,12 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     
     //plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotAntiMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotAntiMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotAntiMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     if(ipt>8)
       //plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
-      plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      //plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
+      plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(Data-Fit)/#sigma_{Data}");
     plotAntiMetmDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
     plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"",kAzure+1,1,1001);
