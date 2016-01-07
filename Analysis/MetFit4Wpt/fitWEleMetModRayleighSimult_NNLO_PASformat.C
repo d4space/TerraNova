@@ -90,7 +90,8 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   const Double_t ETA_CUT = 2.1;
 
   // file format for output plots
-  const TString format("png"); 
+  //const TString format("png"); 
+  const TString format("pdf"); 
    /************************** 
   // recoil correction
   RecoilCorrector recoilCorr("../Recoil/ZmmData/fits.root");//, (!) uncomment to perform corrections to recoil from W-MC/Z-MC
@@ -579,8 +580,13 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   char lumitext[100];
   //if(lumi<0.1) sprintf(lumitext,"%.1f pb^{-1}  at  #sqrt{s} = 8 TeV",lumi*1000.);
   //else         sprintf(lumitext,"%.2f fb^{-1}  at  #sqrt{s} = 8 TeV",lumi);
-  if(lumi<0.1) sprintf(lumitext,"L = %.1f pb^{-1}, #sqrt{s} = 8 TeV",lumi*1000.);
+  //if(lumi<0.1) sprintf(lumitext,"L = %.1f pb^{-1}, #sqrt{s} = 8 TeV",lumi*1000.);
+  if(lumi<0.1) sprintf(lumitext,"%.1f pb^{-1} (8 TeV)",lumi*1000.);
   else         sprintf(lumitext,"L = %.2f fb^{-1}, #sqrt{s} = 8 TeV",lumi);
+  char CMStext[100];
+  sprintf(CMStext,"#font[61]{CMS}");
+  char Preliminarytext[100];
+  sprintf(Preliminarytext,"#font[52]{Preliminary}");
   char binlabel[50];
   
   // plot colors
@@ -770,8 +776,8 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   }
   //Loop for each Wpt bins==============
   // 0 is the total
-  //for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  for( int ipt(0);ipt<1;ipt++)
+  for(int ipt(0);ipt<NWptBinPlus;ipt++)
+  //for( int ipt(0);ipt<4;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -2480,8 +2486,8 @@ cout << "check 6" << endl;
     //plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
     plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"",kAzure+1,1,1001);
     //plotAntiMetpDiff->SetYRange(-8,8);
-    //plotAntiMetpDiff->SetYRange(-5,5);
-    plotAntiMetpDiff->SetYRange(-3,3);
+    plotAntiMetpDiff->SetYRange(-5,5);
+    //plotAntiMetpDiff->SetYRange(-3,3);
     plotAntiMetpDiff->SetXRange(0,85);
     //plotAntiMetpDiff->SetXRange(0,70);
     //plotAntiMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
@@ -2678,8 +2684,8 @@ cout << "check 6" << endl;
     //plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
     plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"",kAzure+1,1,1001);
     //plotAntiMetmDiff->SetYRange(-8,8);
-    //plotAntiMetmDiff->SetYRange(-5,5);
-    plotAntiMetmDiff->SetYRange(-3,3);
+    plotAntiMetmDiff->SetYRange(-5,5);
+    //plotAntiMetmDiff->SetYRange(-3,3);
     //plotAntiMetmDiff->SetXRange(0,85);
     plotAntiMetmDiff->SetXRange(0,70);
     //plotAntiMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
@@ -3096,6 +3102,22 @@ cout << "check 6" << endl;
   hQCDWPpt-> Write();
   hQCDWMpt-> Write();
   
+  hDYToMuMu   ->Write();
+  hWToTauNu   ->Write();
+  hTTJets     ->Write();
+  hDYToTauTau ->Write();
+  hDYToMuMuP  ->Write();
+  hWToTauNuP  ->Write();
+  hTTJetsP    ->Write();
+  hDYToTauTauP->Write();
+  hDYToMuMuM  ->Write();
+  hWToTauNuM  ->Write();
+  hTTJetsM    ->Write();
+  hDYToTauTauM->Write();
+  hdataWpt  -> Write();
+  hdataWPpt -> Write();
+  hdataWMpt -> Write();
+
   //TF1 *f111 = new TF1("f111","[0]*TMath::Exp(-x/[1])+[2]",50.,600.);
   //f111->SetParameter(0,1);
   //f111->SetParameter(1,0.3);
@@ -3344,20 +3366,24 @@ cout << "check 6" << endl;
   sprintf(histName,"FitWDistribution_ElePLog");
   plotWPptLog=new CPlot(histName,"","","Events");
   plotWPptLog->setOutDir(CPlot::sOutDir);
-  plotWPptLog->AddToStack(hDYToTauTauLogP,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
-  plotWPptLog->AddToStack(hTTJetsLogP,"t#bar{t}",kAzure-5,kAzure-1);
-  plotWPptLog->AddToStack(hWToTauNuLogP,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
-  plotWPptLog->AddToStack(hDYToMuMuLogP,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
-  plotWPptLog->AddToStack(hQCDWptLogP,"QCD",fillcolorQCD,linecolorQCD);
-  plotWPptLog->AddToStack(hSigWptLogP,"W^{+}#rightarrow e^{+}#nu",fillcolorW,linecolorW);
-  plotWPptLog->AddHist1D(hdataWptLogP,"Data","E");
-  plotWPptLog->SetLegend(0.78,0.65,.98,0.88);
+  plotWPptLog->AddToStack(hDYToTauTauLogP,"#font[42]{Z/#gamma^{*}#rightarrow#tau#tau}",kSpring+5,kSpring+3);
+  plotWPptLog->AddToStack(hTTJetsLogP,"#font[42]{t#bar{t}}",kAzure-5,kAzure-1);
+  plotWPptLog->AddToStack(hWToTauNuLogP,"#font[42]{W#rightarrow#tau#nu}",kCyan-9,kCyan-6);
+  plotWPptLog->AddToStack(hDYToMuMuLogP,"#font[42]{Z/#gamma^{*}#rightarrow ee}",fillcolorEWK,linecolorEWK);
+  plotWPptLog->AddToStack(hQCDWptLogP,"#font[42]{QCD}",fillcolorQCD,linecolorQCD);
+  plotWPptLog->AddToStack(hSigWptLogP,"#font[42]{W^{+}#rightarrow e^{+}#nu}",fillcolorW,linecolorW);
+  plotWPptLog->AddHist1D(hdataWptLogP,"#font[42]{data}","E");
+  //plotWPptLog->SetLegend(0.78,0.65,.98,0.88);
+  plotWPptLog->SetLegend(0.75,0.65,.98,0.88);
   //plotWPptLog->SetYRange(5e-6*(hWptMC_p->GetMaximum()),1.4*(hWptMC_p->GetMaximum()));
   plotWPptLog->SetYRange(0.25,1.4*(hWptMC_p->GetMaximum()));
   plotWPptLog->SetLogx();
   plotWPptLog->SetLogy();
   //plotWPptLog->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
-  plotWPptLog->AddTextBox("CMS Preliminary, L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV ",0.40,0.91,0.95,0.97,0);
+  //plotWPptLog->AddTextBox("CMS Preliminary, L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV ",0.40,0.91,0.95,0.97,0);
+    plotWPptLog->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    //plotWPptLog->AddTextBox(Preliminarytext,0.24,0.91,0.40,0.96,0);
+    plotWPptLog->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
   plotWPptLog->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
   
@@ -3471,20 +3497,24 @@ cout << "check 6" << endl;
   sprintf(histName,"FitWDistribution_EleMLog");
   plotWMptLog=new CPlot(histName,"","","Events");
   plotWMptLog->setOutDir(CPlot::sOutDir);
-  plotWMptLog->AddToStack(hDYToTauTauLogM,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
-  plotWMptLog->AddToStack(hTTJetsLogM,"t#bar{t}",kAzure-5,kAzure-1);
-  plotWMptLog->AddToStack(hWToTauNuLogM,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
-  plotWMptLog->AddToStack(hDYToMuMuLogM,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
-  plotWMptLog->AddToStack(hQCDWptLogM,"QCD",fillcolorQCD,linecolorQCD);
-  plotWMptLog->AddToStack(hSigWptLogM,"W^{-}#rightarrow e^{-} #bar{#nu}",fillcolorW,linecolorW);
-  plotWMptLog->AddHist1D(hdataWptLogM,"Data","E");
-  plotWMptLog->SetLegend(0.78,0.65,.98,0.88);
+  plotWMptLog->AddToStack(hDYToTauTauLogM,"#font[42]{Z/#gamma^{*}#rightarrow#tau#tau}",kSpring+5,kSpring+3);
+  plotWMptLog->AddToStack(hTTJetsLogM,"#font[42]{t#bar{t}}",kAzure-5,kAzure-1);
+  plotWMptLog->AddToStack(hWToTauNuLogM,"#font[42]{W#rightarrow#tau#nu}",kCyan-9,kCyan-6);
+  plotWMptLog->AddToStack(hDYToMuMuLogM,"#font[42]{Z/#gamma^{*}#rightarrow ee}",fillcolorEWK,linecolorEWK);
+  plotWMptLog->AddToStack(hQCDWptLogM,"#font[42]{QCD}",fillcolorQCD,linecolorQCD);
+  plotWMptLog->AddToStack(hSigWptLogM,"#font[42]{W^{-}#rightarrow e^{-} #bar{#nu}}",fillcolorW,linecolorW);
+  plotWMptLog->AddHist1D(hdataWptLogM,"#font[42]{data}","E");
+  //plotWMptLog->SetLegend(0.78,0.65,.98,0.88);
+  plotWMptLog->SetLegend(0.75,0.65,.98,0.88);
   //plotWMptLog->SetYRange(5e-6*(hWptMC_m->GetMaximum()),1.4*(hWptMC_m->GetMaximum()));
   plotWMptLog->SetYRange(0.25,1.4*(hWptMC_p->GetMaximum()));
   plotWMptLog->SetLogx();
   plotWMptLog->SetLogy();
   //plotWMptLog->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
-  plotWMptLog->AddTextBox("CMS Preliminary, L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV ",0.40,0.91,0.95,0.97,0);
+  //plotWMptLog->AddTextBox("CMS Preliminary, L = 18.4 pb^{-1}, #sqrt{s} = 8 TeV ",0.40,0.91,0.95,0.97,0);
+    plotWMptLog->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    //plotWMptLog->AddTextBox(Preliminarytext,0.24,0.91,0.40,0.96,0);
+    plotWMptLog->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
   plotWMptLog->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
 
