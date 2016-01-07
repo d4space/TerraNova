@@ -47,8 +47,8 @@ void Wpt_PASformat(const TString  outputDir,   // output directory
   // Settings 
   //==================   
   
-  const TString format("png"); 
-  //const TString format("pdf"); 
+  //const TString format("png"); 
+  const TString format("pdf"); 
 
   // input ntuple file names
   TString fname = "MuonFitResultsModRayleighSimultNominal/RstMuon/SigYields_Nominal.root";
@@ -64,7 +64,7 @@ void Wpt_PASformat(const TString  outputDir,   // output directory
   // Create output directory
   gSystem->mkdir(outputDir,kTRUE);
   CPlot::sOutDir = outputDir;  
-  
+  cout << "check 1" << endl; 
   //
   // Declare MET histograms
   // 0 is for total
@@ -86,7 +86,9 @@ void Wpt_PASformat(const TString  outputDir,   // output directory
   
   char histName[30],histName_org[30];
 
+  cout << "check 2" << endl; 
   hdataWPpt    = (TH1D*)infile->Get("hdataWPpt")    -> Clone("hdataWPpt");
+  cout << "check 3" << endl; 
   hdataWMpt    = (TH1D*)infile->Get("hdataWMpt")    -> Clone("hdataWMpt");
   hSigWPpt     = (TH1D*)infile->Get("hSigWPpt")     -> Clone("hSigWPpt");
   hSigWMpt     = (TH1D*)infile->Get("hSigWMpt")     -> Clone("hSigWMpt");
@@ -205,15 +207,17 @@ void Wpt_PASformat(const TString  outputDir,   // output directory
     plotName = "FitWDistribution_ElePLog";
   plotWPptLog=new CPlot(plotName,"","p_{T}^{W} [GeV]","Events");
   plotWPptLog->setOutDir(CPlot::sOutDir);
+  plotWPptLog->AddHist1D(hdataWptLogP,"#font[42]{Data}","E");
   plotWPptLog->AddToStack(hEwkWPptLog,"#font[42]{EWK+t#bar{t}}",fillcolorEWK,linecolorEWK);
   plotWPptLog->AddToStack(hQCDWptLogP,"#font[42]{QCD}",fillcolorQCD,linecolorQCD);
   if(filetype == "Muon")
     plotWPptLog->AddToStack(hSigWptLogP,"#font[42]{W^{+}#rightarrow #mu^{+}#nu}",fillcolorW,linecolorW);
   if(filetype == "Electron")
     plotWPptLog->AddToStack(hSigWptLogP,"#font[42]{W^{+}#rightarrow e^{+}#nu}",fillcolorW,linecolorW);
-  plotWPptLog->AddHist1D(hdataWptLogP,"#font[42]{data}","E");
-  plotWPptLog->SetLegend(0.75,0.78,.98,0.88);
-  plotWPptLog->SetYRange(0.25,1.4*(hWptMC_p->GetMaximum()));
+  //plotWPptLog->SetLegend(0.75,0.78,.98,0.88);
+  plotWPptLog->SetLegend(0.67,0.70,.98,0.88);
+  //plotWPptLog->SetYRange(0.25,1.4*(hWptMC_p->GetMaximum()));
+  plotWPptLog->SetYRange(1,50*(hWptMC_p->GetMaximum()));
   plotWPptLog->SetLogx();
   plotWPptLog->SetLogy();
   plotWPptLog->AddTextBox(CMStext,0.14,0.90,0.24,0.97,0);
@@ -269,15 +273,19 @@ void Wpt_PASformat(const TString  outputDir,   // output directory
     plotName = "FitWDistribution_EleMLog";
   plotWMptLog=new CPlot(plotName,"","p_{T}^{W} [GeV]","Events");
   plotWMptLog->setOutDir(CPlot::sOutDir);
+  plotWMptLog->AddHist1D(hdataWptLogM,"#font[42]{Data}","E");
   plotWMptLog->AddToStack(hEwkWMptLog,"#font[42]{EWK+t#bar{t}}",fillcolorEWK,linecolorEWK);
   plotWMptLog->AddToStack(hQCDWptLogM,"#font[42]{QCD}",fillcolorQCD,linecolorQCD);
   if(filetype == "Muon")
-    plotWMptLog->AddToStack(hSigWptLogM,"#font[42]{W^{-}#rightarrow #mu^{-} #bar{#nu}}",fillcolorW,linecolorW);
+    //plotWMptLog->AddToStack(hSigWptLogM,"#font[42]{W^{-}#rightarrow #mu^{-} #bar{#nu}}",fillcolorW,linecolorW);
+    plotWMptLog->AddToStack(hSigWptLogM,"#font[42]{W^{#font[122]{-}}#rightarrow #mu^{#font[122]{-}} #bar{#nu}}",fillcolorW,linecolorW);
   if(filetype == "Electron")
-    plotWMptLog->AddToStack(hSigWptLogM,"#font[42]{W^{-}#rightarrow e^{-} #bar{#nu}}",fillcolorW,linecolorW);
-  plotWMptLog->AddHist1D(hdataWptLogM,"#font[42]{data}","E");
-  plotWMptLog->SetLegend(0.75,0.78,.98,0.88);
-  plotWMptLog->SetYRange(0.25,1.4*(hWptMC_m->GetMaximum()));
+    //plotWMptLog->AddToStack(hSigWptLogM,"#font[42]{W^{-}#rightarrow e^{-} #bar{#nu}}",fillcolorW,linecolorW);
+    plotWMptLog->AddToStack(hSigWptLogM,"#font[42]{W^{#font[122]{-}}#rightarrow e^{#font[122]{-}} #bar{#nu}}",fillcolorW,linecolorW);
+  //plotWMptLog->SetLegend(0.75,0.78,.98,0.88);
+  plotWMptLog->SetLegend(0.67,0.70,.98,0.88);
+  //plotWMptLog->SetYRange(0.25,1.4*(hWptMC_m->GetMaximum()));
+  plotWMptLog->SetYRange(1,50*(hWptMC_m->GetMaximum()));
   plotWMptLog->SetLogx();
   plotWMptLog->SetLogy();
   plotWMptLog->AddTextBox(CMStext,0.14,0.90,0.24,0.97,0);

@@ -13,6 +13,7 @@ os.system(cmd_string)
 cmd_string = "rm *.so *.d"
 print "command %s is running" %cmd_string
 os.system(cmd_string)
+
 cmd_string = "root -l -q Wpt_PASformat.C+\(\\\"Wpt_plots\\\",\\\"Electron\\\",%f,0\)" %LUMI
 os.system(cmd_string)
 cmd_string = "rm *.so *.d"
