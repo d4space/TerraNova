@@ -895,8 +895,8 @@ void fitWMuMetMtModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // 
 
   //Loop for each Wpt bins==============
   // 0 is the total
-  for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for(int ipt(4);ipt<5;ipt++)
+  //for(int ipt(0);ipt<NWptBinPlus;ipt++)
+  for(int ipt(4);ipt<5;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -2922,7 +2922,8 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     //plotAntiMetm->SetLegend(0.68,0.50,0.93,0.70);
     plotAntiMetm->SetLegend(0.63,0.48,0.93,0.70);
     plotAntiMetm->GetLegend()->AddEntry(hDummyData," #font[42]{Data}","PL");
-    plotAntiMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{-}#rightarrow #mu^{-}#bar{#nu} }","F");
+    //plotAntiMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{-}#rightarrow #mu^{-}#bar{#nu} }","F");
+    plotAntiMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{#font[122]{-}}#rightarrow #mu^{#font[122]{-}}#bar{#nu} }","F");
     plotAntiMetm->GetLegend()->AddEntry(hDummyEWK," #font[42]{EWK+t#bar{t}}","F");
     plotAntiMetm->GetLegend()->AddEntry(hDummyQCD," #font[42]{QCD}","F");
     plotAntiMetm->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
