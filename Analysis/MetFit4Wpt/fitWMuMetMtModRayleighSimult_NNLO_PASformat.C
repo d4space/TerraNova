@@ -688,8 +688,8 @@ void fitWMuMetMtModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // 
   c->Divide(1,2,0,0);
   c->cd(1)->SetPad(0,0.3,1.0,1.0);
   c->cd(1)->SetTopMargin(0.1);
-  //c->cd(1)->SetBottomMargin(0.01);
-  c->cd(1)->SetBottomMargin(0.02);
+  c->cd(1)->SetBottomMargin(0.01);
+  //c->cd(1)->SetBottomMargin(0.02);
   c->cd(1)->SetLeftMargin(0.15);  
   c->cd(1)->SetRightMargin(0.07);  
   c->cd(1)->SetTickx(1);
@@ -895,8 +895,8 @@ void fitWMuMetMtModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // 
 
   //Loop for each Wpt bins==============
   // 0 is the total
-  //for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  for(int ipt(4);ipt<5;ipt++)
+  for(int ipt(0);ipt<NWptBinPlus;ipt++)
+  //for(int ipt(4);ipt<5;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -4109,7 +4109,8 @@ TH1D *makeDiffHist(TH1D* hData, TH1D* hFit, const TString name)
   hDiff->GetYaxis()->SetTitleOffset(0.55);
   //hDiff->GetYaxis()->SetTitleSize(0.13);
   hDiff->GetYaxis()->SetTitleSize(0.10);
-  hDiff->GetYaxis()->SetLabelSize(0.10);
+  //hDiff->GetYaxis()->SetLabelSize(0.10);
+  hDiff->GetYaxis()->SetLabelSize(0.12);
   hDiff->GetYaxis()->SetNdivisions(104);
   hDiff->GetYaxis()->CenterTitle();
   hDiff->GetXaxis()->SetTitleOffset(1.2);
