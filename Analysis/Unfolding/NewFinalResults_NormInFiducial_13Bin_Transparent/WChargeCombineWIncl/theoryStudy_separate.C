@@ -538,19 +538,23 @@ int theoryStudy_separate(const TString BaseName)
   colGreenp3->SetAlpha(0.6); 
   colGreenp10->SetAlpha(0.4); 
   
-  TLegend *lL =new TLegend(0.2,0.17,0.52,0.40); lL->SetFillColor(0); lL->SetBorderSize(0);
-  lL->AddEntry(Data_Xsec_Born,"data","PLE1");
+  //TLegend *lL =new TLegend(0.2,0.17,0.52,0.40); lL->SetFillColor(0); lL->SetBorderSize(0);
+  TLegend *lL =new TLegend(0.25,0.17,0.57,0.40); lL->SetFillColor(0); lL->SetBorderSize(0);
+  lL->AddEntry(Data_Xsec_Born,"Data","PLE1");
   lL->AddEntry(Powheg_Xsec_Born,"POWHEG CT10 NLO","f");
   lL->AddEntry(FEWZ_Xsec,"FEWZ CT10 NNLO","f");
   lL->AddEntry(Resb30_NormDiffXsec,"ResBos CT10 NNLL","f");
 
-  TPaveText *channel = new TPaveText(0.25,0.42,0.42,0.48,"NDC");
+  //TPaveText *channel = new TPaveText(0.25,0.42,0.42,0.48,"NDC");
+  TPaveText *channel = new TPaveText(0.30,0.42,0.47,0.48,"NDC");
   channel->SetBorderSize(0);
   channel->SetFillStyle(0);
   if (BaseName=="WInclToMuNu")
-    channel->AddText("W #rightarrow #mu #nu");
+    channel->AddText("W #rightarrow #mu#nu");
+    //channel->AddText("#font[42]{W#rightarrow #mu#nu}");
   if (BaseName=="WInclToEleNu")
-    channel->AddText("W #rightarrow e #nu");
+    channel->AddText("W #rightarrow e#nu");
+    //channel->AddText("#font[42]{W#rightarrow e#nu}");
 
   // Canvas for distribution
   TCanvas *lC1 = new TCanvas("Can","Can",50,50,W,H);
@@ -559,7 +563,8 @@ int theoryStudy_separate(const TString BaseName)
   lC1->SetFrameFillStyle(0);
   lC1->SetFrameBorderMode(0);
   //lC1->SetLeftMargin( L/W );
-  lC1->SetLeftMargin( 0.15 );
+  //lC1->SetLeftMargin( 0.15 );
+  lC1->SetLeftMargin( 0.20 );
   lC1->SetRightMargin( R/W );
   lC1->SetTopMargin( T/H );
   lC1->SetBottomMargin( B/H );
@@ -573,14 +578,16 @@ int theoryStudy_separate(const TString BaseName)
   Powheg_Xsec_Born->SetTitle("");
   //Powheg_Xsec_Born->GetYaxis()->SetTitle("1/#sigma d#sigma/dp_{T}^{W} [pb/GeV]");
   Powheg_Xsec_Born->GetYaxis()->SetTitle("1/#sigma d#sigma/dp_{T}^{W} [GeV]^{-1}");
-  Powheg_Xsec_Born->GetYaxis()->SetTitleOffset(1.25);
+  Powheg_Xsec_Born->GetYaxis()->SetTitleOffset(1.5);
   Powheg_Xsec_Born->GetYaxis()->SetTitleSize(0.05);
-  Powheg_Xsec_Born->GetYaxis()->SetLabelSize(0.03);
+  //Powheg_Xsec_Born->GetYaxis()->SetLabelSize(0.03);
+  Powheg_Xsec_Born->GetYaxis()->SetLabelSize(0.04);
 
-  Powheg_Xsec_Born->GetXaxis()->SetLabelSize(0.03);
   Powheg_Xsec_Born->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
   Powheg_Xsec_Born->GetXaxis()->SetTitleSize(0.04);
   Powheg_Xsec_Born->GetXaxis()->SetTitleOffset(0.55);
+  //Powheg_Xsec_Born->GetXaxis()->SetLabelSize(0.03);
+  Powheg_Xsec_Born->GetXaxis()->SetLabelSize(0.04);
 
   //Data
 
@@ -694,9 +701,11 @@ int theoryStudy_separate(const TString BaseName)
   tb4->SetFillStyle(0);
   tb4->SetTextSize(0.12);
   if (BaseName=="WInclToMuNu")
-    tb4->AddText("W #rightarrow #mu #nu");
+    tb4->AddText("W #rightarrow #mu#nu");
+    //tb4->AddText("#font[42]{W#rightarrow #mu#nu}");
   if (BaseName=="WInclToEleNu")
-    tb4->AddText("W #rightarrow e #nu");
+    tb4->AddText("W #rightarrow e#nu");
+    //tb4->AddText("#font[42]{W#rightarrow e#nu}");
 
   TH1D* hRatioResbosDummy = new TH1D("","",nBins-1,WptLogBins);
   hRatioResbosDummy->GetYaxis()->SetRangeUser(0.5,1.5);
@@ -726,7 +735,7 @@ int theoryStudy_separate(const TString BaseName)
 
   TLegend *rL2 =new TLegend(0.18,0.05,0.53,0.34); rL2->SetFillColor(0); rL2->SetBorderSize(0);
   rL2-> SetNColumns(2);
-  rL2->AddEntry(RatioPowhegStatErrBand,"stat","F");
+  rL2->AddEntry(RatioPowhegStatErrBand,"Stat","F");
   rL2->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   rL2->AddEntry(RatioPowhegStatPDFErrBand,"PDF    ","F");
   rL2->AddEntry(DataRatio,"Data stat+syst","F");
@@ -766,7 +775,7 @@ int theoryStudy_separate(const TString BaseName)
 
   TLegend *rL3 =new TLegend(0.18,0.29,0.58,0.55); rL3->SetFillColor(0); rL3->SetBorderSize(0);
   rL3-> SetNColumns(2);
-  rL3->AddEntry(RatioFEWZStatErrBand,"stat","F");
+  rL3->AddEntry(RatioFEWZStatErrBand,"Stat","F");
   rL3->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   rL3->AddEntry(RatioFEWZStatPDFErrBand,"PDF","F");
   rL3->AddEntry(DataRatio,"Data stat+syst","F");
