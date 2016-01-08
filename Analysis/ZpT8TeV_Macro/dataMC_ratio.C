@@ -568,7 +568,8 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   TLegend* tl = new TLegend(0.71, 0.62, 0.90, 0.90);
   tl->SetFillColor(0);
   tl->SetLineColor(0);
-  tl->AddEntry(hPtMC_dymumu,"DYToMuMu","f");
+  //tl->AddEntry(hPtMC_dymumu,"DYToMuMu","f");
+  tl->AddEntry(hPtMC_dymumu,"DY#rightarrow #mu^{+}#mu^{-}","f");
   //tl->AddEntry(hPtMC_QCD," QCD","f");
   tl->AddEntry(hPtMC_EWKBkg,"EWK+t#bar{t}","f");
   //tl->AddEntry(hPtMC_WW," WW","f");
@@ -577,7 +578,7 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   //tl->AddEntry(hPtMC_WJetsToLNu," WJets","f");
   //tl->AddEntry(hPtMC_ztautau  ,"DYToTauTau","f");
   //tl->AddEntry(hPtMC_ttbarjets," t #bar{t}","f");
-  tl->AddEntry(hPtData ," data","lp");
+  tl->AddEntry(hPtData ," Data","lp");
 
   // define MC contribution color and style
   //mass
@@ -795,9 +796,9 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
 
   TCanvas* cpt1 = new TCanvas("cpt1","",0,0,750,600);
   cpt1->cd();
-    cpt1 -> SetLogy();
-    cpt1 -> SetTicky(1);
-    cpt1 -> SetTickx(1);
+  cpt1 -> SetLogy();
+  cpt1 -> SetTicky(1);
+  cpt1 -> SetTickx(1);
   //hPtData -> SetTitle("#int 18.4 pb^{-1} at #sqrt{s}=8 TeV"); 
   //hPtData -> SetTitle("L = 18.4 pb^{-1}, #sqrt{s}=8 TeV"); 
   hPtData -> SetTitle("18.4 pb^{-1} (8 TeV)"); 
@@ -806,8 +807,11 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   hPtData -> GetXaxis() -> SetLabelSize(0);
   hPtData -> GetXaxis() -> SetTitle("p_{T}^{Z}  [GeV]");
   hPtData -> GetYaxis() -> SetTitle("Events");
-  hPtData -> GetYaxis() -> SetTitleSize(0.05);
-  hPtData -> GetYaxis() -> SetTitleOffset(1.0);
+  //hPtData -> GetYaxis() -> SetTitleSize(0.05);
+  hPtData -> GetYaxis() -> SetTitleSize(0.07);
+  //hPtData -> GetYaxis() -> SetTitleOffset(1.0);
+  hPtData -> GetYaxis() -> SetTitleOffset(0.8);
+  hPtData -> GetYaxis() -> SetLabelSize(0.05);
  
   hPtData -> SetMarkerSize(1);
   hPtData -> SetMarkerStyle(20);

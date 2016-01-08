@@ -185,9 +185,11 @@ cout << i << ", " << ratio << endl;
   if (isLogScaleY) pad1->SetLogy();
   if (isLogScaleX) pad1->SetLogx();
   pad1->SetBottomMargin(0.01);
-  pad2->SetBottomMargin(0.33);
-  //pad2->SetTopMargin   (0.10);
+  pad1->SetLeftMargin(0.12);
   pad2->SetTopMargin   (0.05);
+  pad2->SetBottomMargin(0.33);
+  pad2->SetLeftMargin(0.12);
+  //pad2->SetTopMargin   (0.10);
 
   pad1->SetTicky(1);
   pad1->SetTickx(1);
@@ -244,7 +246,8 @@ cout << i << ", " << ratio << endl;
   char xAxisName[200];
   sprintf(xAxisName,"%s",hData->GetXaxis()->GetTitle());
   //axis1F(hPull,xPull,yPull,xAxisName,"(data-mc)/#sigma_{data}");
-  axis1F(hPull,xPull,yPull,xAxisName,"mc/data");  
+  //axis1F(hPull,xPull,yPull,xAxisName,"mc/data");  
+  axis1F(hPull,xPull,yPull,xAxisName,"MC/Data");  
 //if (hPull->GetMaximum() > 100) {
     std::cout << "Setting the hPull boundaries!\n";
   hPull->SetMinimum(-1); // After bin9
@@ -261,9 +264,10 @@ cout << i << ", " << ratio << endl;
   hPull->GetXaxis()->SetTitleSize  (0.12);
   hPull->GetXaxis()->SetNdivisions(510);
 
-  hPull->GetYaxis()->SetLabelSize  (0.09);
+  hPull->GetYaxis()->SetLabelSize  (0.12);
   hPull->GetYaxis()->CenterTitle(1);
-  hPull->GetYaxis()->SetTitleOffset(0.3);
+  //hPull->GetYaxis()->SetTitleOffset(0.3);
+  hPull->GetYaxis()->SetTitleOffset(0.4);
   hPull->GetYaxis()->SetTitleSize  (0.12);
 
   //hPull->SetFillColor(856);
@@ -271,12 +275,17 @@ cout << i << ", " << ratio << endl;
   //hPull->SetFillStyle(1001);
   //hPull->Draw("histo b");
   hPull->SetMarkerColor(2);
-  hPull->SetMarkerStyle(22);
+  hPull->SetMarkerStyle(20);
   hPull->SetMarkerSize(1.0);
-  
+ 
+  TColor *colBlue = gROOT->GetColor(kBlue+1);
+  colBlue->SetAlpha(0.3);
+
   TGraphAsymmErrors* tgDataErrBand = new TGraphAsymmErrors(hData_Clone);
-  tgDataErrBand->SetFillStyle(3001); 
-  tgDataErrBand->SetFillColor(kBlack); 
+  //tgDataErrBand->SetFillStyle(3001); 
+  //tgDataErrBand->SetFillStyle(0); 
+  //tgDataErrBand->SetFillColor(kBlack); 
+  tgDataErrBand->SetFillColor(kBlue+1); 
   tgDataErrBand->SetLineColor(kBlack); 
 
   hPull->Draw("P");
