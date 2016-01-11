@@ -62,7 +62,8 @@ void PrintIt(TPad *pad, TString title)//char *title)
 {
   TLatex *latex = new TLatex();
   latex->SetTextFont(  42);
-  latex->SetTextSize(0.05);
+  //latex->SetTextSize(0.05);
+  latex->SetTextSize(0.07);
 
   // Get the most recent changes
   pad->Update();
@@ -90,7 +91,8 @@ void PrintIt2(TPad *pad, TString title)//char *title)
 {
   TLatex *latex = new TLatex();
   latex->SetTextFont(  42);
-  latex->SetTextSize(0.05);
+  //latex->SetTextSize(0.05);
+  latex->SetTextSize(0.07);
 
   // Get the most recent changes
   pad->Update();
@@ -101,7 +103,7 @@ void PrintIt2(TPad *pad, TString title)//char *title)
   double ymin = pad->GetUymin();
   double ymax = pad->GetUymax();
 
-  double xpos = xmax - 0.28*(xmax - xmin);
+  double xpos = xmax - 0.38*(xmax - xmin);
   double ypos = ymax + 0.02*(ymax - ymin);
 
   if (pad->GetLogy())  ypos = pow(10,ypos);
@@ -153,8 +155,8 @@ void axis1F(TH1F  *histo,
 
 void DrawWithRes(TCanvas* canvas, char* title, char* title2, 
                  TH1F *hData, TH1F *hMC, THStack *sMC, 
-                 TLegend *tl=NULL, bool isLogScaleY=false, bool isLogScaleX=false) // From bin1
-                 //TLegend *tl=NULL, bool isLogScaleY=true, bool isLogScaleX=false) // After bin9
+                 //TLegend *tl=NULL, bool isLogScaleY=false, bool isLogScaleX=false) // From bin1
+                 TLegend *tl=NULL, bool isLogScaleY=true, bool isLogScaleX=false) // After bin9
 {
 
   // sanity check
@@ -277,10 +279,10 @@ cout << i << ", " << ratio << endl;
   axis1F(hPull,xPull,yPull,xAxisName,"MC/Data");  
 //if (hPull->GetMaximum() > 100) {
     std::cout << "Setting the hPull boundaries!\n";
-  //hPull->SetMinimum(-1); // After bin9
-  //hPull->SetMaximum(3);
-  hPull->SetMinimum(0.6); //From bin1
-  hPull->SetMaximum(1.2);
+  //hPull->SetMinimum(0.6); // From bin1
+  //hPull->SetMaximum(1.2); // From bin1
+  hPull->SetMinimum(-1); // After bin9
+  hPull->SetMaximum(3); // After bin9
   //}
 
 
