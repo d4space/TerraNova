@@ -73,8 +73,11 @@ void PrintIt(TPad *pad, TString title)//char *title)
   double ymin = pad->GetUymin();
   double ymax = pad->GetUymax();
 
-  double xpos = xmin + 0.50*(xmax - xmin);
-  double ypos = ymax + 0.05*(ymax - ymin);
+  //double xpos = xmin + 0.50*(xmax - xmin);
+  //double ypos = ymax + 0.05*(ymax - ymin);
+  //double xpos = xmin + 0.005*(xmax - xmin);
+  double xpos = xmin;
+  double ypos = ymax + 0.02*(ymax - ymin);
 
   if (pad->GetLogy())  ypos = pow(10,ypos);
   if (pad->GetLogx())  xpos = pow(10,xpos);
@@ -83,6 +86,30 @@ void PrintIt(TPad *pad, TString title)//char *title)
   latex->DrawLatex(xpos,ypos,title);
 }
 
+void PrintIt2(TPad *pad, TString title)//char *title)
+{
+  TLatex *latex = new TLatex();
+  latex->SetTextFont(  42);
+  latex->SetTextSize(0.05);
+
+  // Get the most recent changes
+  pad->Update();
+
+
+  double xmin = pad->GetUxmin();
+  double xmax = pad->GetUxmax();
+  double ymin = pad->GetUymin();
+  double ymax = pad->GetUymax();
+
+  double xpos = xmax - 0.28*(xmax - xmin);
+  double ypos = ymax + 0.02*(ymax - ymin);
+
+  if (pad->GetLogy())  ypos = pow(10,ypos);
+  if (pad->GetLogx())  xpos = pow(10,xpos);
+
+  //latex->SetTextAlign(22);
+  latex->DrawLatex(xpos,ypos,title);
+}
 
 //------------------------------------------------------------------------------
 // Draw projections and residuals
@@ -126,8 +153,8 @@ void axis1F(TH1F  *histo,
 
 void DrawWithRes(TCanvas* canvas, char* title, char* title2, 
                  TH1F *hData, TH1F *hMC, THStack *sMC, 
-                 TLegend *tl=NULL, bool isLogScaleY=false, bool isLogScaleX=false)
-                 //TLegend *tl=NULL, bool isLogScaleY=true, bool isLogScaleX=false)
+                 TLegend *tl=NULL, bool isLogScaleY=false, bool isLogScaleX=false) // From bin1
+                 //TLegend *tl=NULL, bool isLogScaleY=true, bool isLogScaleX=false) // After bin9
 {
 
   // sanity check
@@ -223,7 +250,7 @@ cout << i << ", " << ratio << endl;
 /*   }    */
 
   PrintIt(pad1, title);
-  PrintIt(pad1, title2);
+  PrintIt2(pad1, title2);
 
   if (tl) tl ->Draw("same");
 
@@ -250,10 +277,10 @@ cout << i << ", " << ratio << endl;
   axis1F(hPull,xPull,yPull,xAxisName,"MC/Data");  
 //if (hPull->GetMaximum() > 100) {
     std::cout << "Setting the hPull boundaries!\n";
-  hPull->SetMinimum(-1); // After bin9
-  hPull->SetMaximum(3);
-  //hPull->SetMinimum(0.6); //From bin1
-  //hPull->SetMaximum(1.2);
+  //hPull->SetMinimum(-1); // After bin9
+  //hPull->SetMaximum(3);
+  hPull->SetMinimum(0.6); //From bin1
+  hPull->SetMaximum(1.2);
   //}
 
 

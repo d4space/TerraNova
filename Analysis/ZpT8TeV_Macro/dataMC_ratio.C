@@ -86,8 +86,8 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
 
   //double xbins_pt[nptBins+1] = {0.001, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 30, 40, 50, 70, 90, 110, 150, 190, 250, 600};
 
-     double xbins_pt[nptBins+1] = {30, 40, 50, 70, 90, 110, 150, 190, 250, 600};
-     //double xbins_pt[nptBins+1] = {0.001, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 30};
+     double xbins_pt[nptBins+1] = {0.001, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 30}; // From bin1
+     //double xbins_pt[nptBins+1] = {30, 40, 50, 70, 90, 110, 150, 190, 250, 600}; // After bin9
   
   
  TFile *Hist_out = new TFile("histo_withecalreprocessing.root","RECREATE");
@@ -565,13 +565,14 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   hPtMC_EWKBkg->Add(hPtMC_WW);          sPtMC_EWKBkg->Add(hPtMC_WW);
 
   // define the tlegend
-  TLegend* tl = new TLegend(0.71, 0.62, 0.90, 0.90);
+  //TLegend* tl = new TLegend(0.71, 0.62, 0.90, 0.90);
+  TLegend* tl = new TLegend(0.60, 0.57, 0.86, 0.86);
   tl->SetFillColor(0);
   tl->SetLineColor(0);
   //tl->AddEntry(hPtMC_dymumu,"DYToMuMu","f");
   tl->AddEntry(hPtMC_dymumu,"DY#rightarrow #mu^{+}#mu^{-}","f");
   //tl->AddEntry(hPtMC_QCD," QCD","f");
-  tl->AddEntry(hPtMC_EWKBkg,"EWK+t#bar{t}","f");
+  tl->AddEntry(hPtMC_EWKBkg,"EW+t#bar{t}","f");
   //tl->AddEntry(hPtMC_WW," WW","f");
   //tl->AddEntry(hPtMC_WZ," WZ","f");
   //tl->AddEntry(hPtMC_ZZ," ZZ","f");
@@ -801,8 +802,8 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   cpt1 -> SetTickx(1);
   //hPtData -> SetTitle("#int 18.4 pb^{-1} at #sqrt{s}=8 TeV"); 
   //hPtData -> SetTitle("L = 18.4 pb^{-1}, #sqrt{s}=8 TeV"); 
-  hPtData -> SetTitle("18.4 pb^{-1} (8 TeV)"); 
-  hPtData -> SetTitleSize(0.0); 
+  //hPtData -> SetTitle("18.4 pb^{-1} (8 TeV)"); 
+  //hPtData -> SetTitleSize(0.0); 
   //hPtData -> GetXaxis() -> SetTitle("q_{T}  [GeV/c]");
   hPtData -> GetXaxis() -> SetLabelSize(0);
   hPtData -> GetXaxis() -> SetTitle("p_{T}^{Z}  [GeV]");
@@ -844,7 +845,8 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
     cpt2 -> SetTicky(1);
     cpt2 -> SetTickx(1);
   //DrawWithRes(cpt2, cmspreliminary, hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
-  DrawWithRes(cpt2, "#font[61]{CMS}", "", hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
+  //DrawWithRes(cpt2, "#font[61]{CMS}", "", hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
+  DrawWithRes(cpt2, "#font[61]{CMS}", "18.4 pb^{-1} (8 TeV)", hPtData, hPtMC_allBkg, sPtMC_allBkg, tl);
 
  // ------------------------------------------------------------------------------
 // Rapidity plots
