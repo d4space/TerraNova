@@ -690,7 +690,8 @@ void fitWMuMetMtModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // 
   c->cd(1)->SetTopMargin(0.1);
   c->cd(1)->SetBottomMargin(0.01);
   //c->cd(1)->SetBottomMargin(0.02);
-  c->cd(1)->SetLeftMargin(0.15);  
+  //c->cd(1)->SetLeftMargin(0.15);  
+  c->cd(1)->SetLeftMargin(0.18);  
   c->cd(1)->SetRightMargin(0.07);  
   c->cd(1)->SetTickx(1);
   c->cd(1)->SetTicky(1);  
@@ -698,7 +699,8 @@ void fitWMuMetMtModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // 
   //c->cd(2)->SetTopMargin(0.05);
   c->cd(2)->SetTopMargin(0.07);
   c->cd(2)->SetBottomMargin(0.45);
-  c->cd(2)->SetLeftMargin(0.15);
+  //c->cd(2)->SetLeftMargin(0.15);
+  c->cd(2)->SetLeftMargin(0.18);
   c->cd(2)->SetRightMargin(0.07);
   c->cd(2)->SetTickx(1);
   c->cd(2)->SetTicky(1);
@@ -2545,7 +2547,10 @@ aqcdMsigma2[ipt]->setVal(2.69409);
 	,Components(RooArgSet(*pdfWmp[ipt]))
 	,LineColor(linecolorW),LineStyle(2));
     dataMetp[ipt]->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
-    
+   
+    //Test
+    wmpframe->GetYaxis()->SetLabelSize(0.05);
+    wmpframe->GetYaxis()->SetTitleSize(0.07);
     sprintf(ylabel,"Events / %.1f GeV",hDataMetp[ipt]->GetBinWidth(1));
     sprintf(histName,"WpMuNu_%d",ipt);
     plotMetp=new CPlot (histName,wmpframe,"","",ylabel);
@@ -2555,7 +2560,7 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     plotMetp->SetLegend(0.63,0.48,0.93,0.70);
     plotMetp->GetLegend()->AddEntry(hDummyData," #font[42]{Data}","PL");
     plotMetp->GetLegend()->AddEntry(hDummyW," #font[42]{W^{+}#rightarrow #mu^{+}#nu }","F");
-    plotMetp->GetLegend()->AddEntry(hDummyEWK," #font[42]{EWK+t#bar{t}}","F");
+    plotMetp->GetLegend()->AddEntry(hDummyEWK," #font[42]{EW+t#bar{t}}","F");
     plotMetp->GetLegend()->AddEntry(hDummyQCD," #font[42]{QCD}","F");
     //plotMetp->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
     //plotMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
@@ -2565,10 +2570,12 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     //plotMetp->AddTextBox(Preliminarytext,0.70,0.73,0.90,0.79,0);
     //plotMetp->AddTextBox(binlabel,0.55,0.62,0.90,0.67,0);
     //plotMetp->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
-    plotMetp->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    //plotMetp->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    plotMetp->AddTextBox(CMStext,0.17,0.91,0.27,0.98,0);
    // plotMetp->AddTextBox(Preliminarytext,0.24,0.91,0.40,0.96,0);
     plotMetp->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
-    plotMetp->AddTextBox(binlabel,0.57,0.75,0.92,0.80,0);
+    //plotMetp->AddTextBox(binlabel,0.57,0.75,0.92,0.80,0);
+    plotMetp->AddTextBox(binlabel,0.55,0.75,0.92,0.81,0);
     plotMetp->SetYRange(0.1,1.1*(hDataMetp[ipt]->GetMaximum()));
     plotMetp->SetXRange(0,100);
     if(ipt>10)
@@ -2662,6 +2669,8 @@ aqcdMsigma2[ipt]->setVal(2.69409);
         ,LineColor(linecolorW),LineStyle(2));
     antiMetp[ipt]->plotOn(awmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
+    awmpframe->GetYaxis()->SetLabelSize(0.05);
+    awmpframe->GetYaxis()->SetTitleSize(0.07);
     sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetp[ipt]->GetBinWidth(1));
     sprintf(histName,"WpMuNu_cont_%d",ipt);
     plotAntiMetp=new CPlot (histName,awmpframe,"","",ylabel);
@@ -2675,12 +2684,14 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     plotAntiMetp->SetLegend(0.63,0.48,0.93,0.70);
     plotAntiMetp->GetLegend()->AddEntry(hDummyData," #font[42]{Data}","PL");
     plotAntiMetp->GetLegend()->AddEntry(hDummyW," #font[42]{W^{+}#rightarrow #mu^{+}#nu }","F");
-    plotAntiMetp->GetLegend()->AddEntry(hDummyEWK," #font[42]{EWK+t#bar{t}}","F");
+    plotAntiMetp->GetLegend()->AddEntry(hDummyEWK," #font[42]{EW+t#bar{t}}","F");
     plotAntiMetp->GetLegend()->AddEntry(hDummyQCD," #font[42]{QCD}","F");
-    plotAntiMetp->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    //plotAntiMetp->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    plotAntiMetp->AddTextBox(CMStext,0.17,0.91,0.27,0.98,0);
     //plotAntiMetp->AddTextBox(Preliminarytext,0.24,0.91,0.40,0.96,0);
     plotAntiMetp->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
-    plotAntiMetp->AddTextBox(binlabel,0.57,0.75,0.92,0.80,0);
+    //plotAntiMetp->AddTextBox(binlabel,0.57,0.75,0.92,0.80,0);
+    plotAntiMetp->AddTextBox(binlabel,0.55,0.75,0.92,0.81,0);
     plotAntiMetp->SetYRange(0.1,1.1*(hAntiDataMetp[ipt]->GetMaximum()));
     plotAntiMetp->SetXRange(0,60);
     if(ipt==0)
@@ -2787,6 +2798,8 @@ aqcdMsigma2[ipt]->setVal(2.69409);
 	,LineColor(linecolorW),LineStyle(2));
     dataMetm[ipt]->plotOn(wmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
+    wmmframe->GetYaxis()->SetLabelSize(0.05);
+    wmmframe->GetYaxis()->SetTitleSize(0.07);
     sprintf(ylabel,"Events / %.1f GeV",hDataMetm[ipt]->GetBinWidth(1));
     sprintf(histName,"WmMuNu_%d",ipt);
     plotMetm=new CPlot(histName,wmmframe,"","",ylabel);
@@ -2805,12 +2818,14 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     //plotMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{-}#rightarrow #mu^{-}#bar{#nu} }","F");
     //plotMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{#scale[1.5]{-}}#rightarrow #mu^{#scale[1.5]{-}}#bar{#nu} }","F");
     plotMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{#font[122]{-}}#rightarrow #mu^{#font[122]{-}}#bar{#nu} }","F");
-    plotMetm->GetLegend()->AddEntry(hDummyEWK," #font[42]{EWK+t#bar{t}}","F");
+    plotMetm->GetLegend()->AddEntry(hDummyEWK," #font[42]{EW+t#bar{t}}","F");
     plotMetm->GetLegend()->AddEntry(hDummyQCD," #font[42]{QCD}","F");
-    plotMetm->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    //plotMetm->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    plotMetm->AddTextBox(CMStext,0.17,0.91,0.27,0.98,0);
     //plotMetm->AddTextBox(Preliminarytext,0.24,0.91,0.40,0.96,0);
     plotMetm->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
-    plotMetm->AddTextBox(binlabel,0.57,0.75,0.92,0.80,0);
+    //plotMetm->AddTextBox(binlabel,0.57,0.75,0.92,0.80,0);
+    plotMetm->AddTextBox(binlabel,0.55,0.75,0.92,0.81,0);
     plotMetm->SetYRange(0.1,1.1*(hDataMetm[ipt]->GetMaximum()));
     plotMetm->SetXRange(0,100);
     if(ipt>10)
@@ -2907,6 +2922,8 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     antiMetm[ipt]->plotOn(awmmframe
         ,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
+    awmmframe->GetYaxis()->SetLabelSize(0.05);
+    awmmframe->GetYaxis()->SetTitleSize(0.07);
     sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetm[ipt]->GetBinWidth(1));
     sprintf(histName,"WmMuNu_cont_%d",ipt);
     plotAntiMetm=new CPlot(histName,awmmframe,"","",ylabel);
@@ -2924,12 +2941,14 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     plotAntiMetm->GetLegend()->AddEntry(hDummyData," #font[42]{Data}","PL");
     //plotAntiMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{-}#rightarrow #mu^{-}#bar{#nu} }","F");
     plotAntiMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{#font[122]{-}}#rightarrow #mu^{#font[122]{-}}#bar{#nu} }","F");
-    plotAntiMetm->GetLegend()->AddEntry(hDummyEWK," #font[42]{EWK+t#bar{t}}","F");
+    plotAntiMetm->GetLegend()->AddEntry(hDummyEWK," #font[42]{EW+t#bar{t}}","F");
     plotAntiMetm->GetLegend()->AddEntry(hDummyQCD," #font[42]{QCD}","F");
-    plotAntiMetm->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    //plotAntiMetm->AddTextBox(CMStext,0.14,0.91,0.24,0.98,0);
+    plotAntiMetm->AddTextBox(CMStext,0.17,0.91,0.27,0.98,0);
     //plotAntiMetm->AddTextBox(Preliminarytext,0.24,0.91,0.40,0.96,0);
     plotAntiMetm->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
-    plotAntiMetm->AddTextBox(binlabel,0.57,0.75,0.92,0.80,0);
+    //plotAntiMetm->AddTextBox(binlabel,0.57,0.75,0.92,0.80,0);
+    plotAntiMetm->AddTextBox(binlabel,0.55,0.75,0.92,0.81,0);
     plotAntiMetm->SetYRange(0.1,1.1*(hAntiDataMetm[ipt]->GetMaximum()));
     plotAntiMetm->SetXRange(0,60);
     if(ipt==0)

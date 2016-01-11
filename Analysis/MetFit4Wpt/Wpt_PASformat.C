@@ -208,7 +208,7 @@ void Wpt_PASformat(const TString  outputDir,   // output directory
   plotWPptLog=new CPlot(plotName,"","p_{T}^{W} [GeV]","Events");
   plotWPptLog->setOutDir(CPlot::sOutDir);
   plotWPptLog->AddHist1D(hdataWptLogP,"#font[42]{Data}","E");
-  plotWPptLog->AddToStack(hEwkWPptLog,"#font[42]{EWK+t#bar{t}}",fillcolorEWK,linecolorEWK);
+  plotWPptLog->AddToStack(hEwkWPptLog,"#font[42]{EW+t#bar{t}}",fillcolorEWK,linecolorEWK);
   plotWPptLog->AddToStack(hQCDWptLogP,"#font[42]{QCD}",fillcolorQCD,linecolorQCD);
   if(filetype == "Muon")
     plotWPptLog->AddToStack(hSigWptLogP,"#font[42]{W^{+}#rightarrow #mu^{+}#nu}",fillcolorW,linecolorW);
@@ -274,7 +274,7 @@ void Wpt_PASformat(const TString  outputDir,   // output directory
   plotWMptLog=new CPlot(plotName,"","p_{T}^{W} [GeV]","Events");
   plotWMptLog->setOutDir(CPlot::sOutDir);
   plotWMptLog->AddHist1D(hdataWptLogM,"#font[42]{Data}","E");
-  plotWMptLog->AddToStack(hEwkWMptLog,"#font[42]{EWK+t#bar{t}}",fillcolorEWK,linecolorEWK);
+  plotWMptLog->AddToStack(hEwkWMptLog,"#font[42]{EW+t#bar{t}}",fillcolorEWK,linecolorEWK);
   plotWMptLog->AddToStack(hQCDWptLogM,"#font[42]{QCD}",fillcolorQCD,linecolorQCD);
   if(filetype == "Muon")
     //plotWMptLog->AddToStack(hSigWptLogM,"#font[42]{W^{-}#rightarrow #mu^{-} #bar{#nu}}",fillcolorW,linecolorW);
