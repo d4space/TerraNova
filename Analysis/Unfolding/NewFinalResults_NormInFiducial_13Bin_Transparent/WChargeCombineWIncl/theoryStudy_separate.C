@@ -727,8 +727,8 @@ int theoryStudy_separate(const TString BaseName)
   hRatioResbosDummy->GetYaxis()->SetTitle("Theory/Data");
   hRatioResbosDummy->GetYaxis()->CenterTitle();
   hRatioResbosDummy->GetYaxis()->SetTitleOffset(0.4);
-  hRatioResbosDummy->GetYaxis()->SetTitleSize(0.12);
-  hRatioResbosDummy->GetYaxis()->SetLabelSize(0.10);
+  hRatioResbosDummy->GetYaxis()->SetTitleSize(0.14);
+  hRatioResbosDummy->GetYaxis()->SetLabelSize(0.11);
   hRatioResbosDummy->GetYaxis()->SetNdivisions(405);
   hRatioResbosDummy->GetXaxis()->SetTitleOffset(0.6);
   hRatioResbosDummy->GetXaxis()->SetTitleSize(0.08);
@@ -770,8 +770,8 @@ int theoryStudy_separate(const TString BaseName)
   hRatioPowhegDummy->GetYaxis()->SetTitle("Theory/Data");
   hRatioPowhegDummy->GetYaxis()->CenterTitle();
   hRatioPowhegDummy->GetYaxis()->SetTitleOffset(0.35);
-  hRatioPowhegDummy->GetYaxis()->SetTitleSize(0.14);
-  hRatioPowhegDummy->GetYaxis()->SetLabelSize(0.10);
+  hRatioPowhegDummy->GetYaxis()->SetTitleSize(0.16);
+  hRatioPowhegDummy->GetYaxis()->SetLabelSize(0.13);
   hRatioPowhegDummy->GetYaxis()->SetNdivisions(405);
   hRatioPowhegDummy->GetXaxis()->SetTitleOffset(0.6);
   hRatioPowhegDummy->GetXaxis()->SetTitleSize(0.08);
@@ -815,13 +815,13 @@ int theoryStudy_separate(const TString BaseName)
   hRatioFEWZDummy->GetYaxis()->SetTitle("Theory/Data");
   hRatioFEWZDummy->GetYaxis()->CenterTitle();
   hRatioFEWZDummy->GetYaxis()->SetTitleOffset(0.50);
-  hRatioFEWZDummy->GetYaxis()->SetTitleSize(0.095);
-  hRatioFEWZDummy->GetYaxis()->SetLabelSize(0.07);
+  hRatioFEWZDummy->GetYaxis()->SetTitleSize(0.11);
+  hRatioFEWZDummy->GetYaxis()->SetLabelSize(0.09);
   hRatioFEWZDummy->GetYaxis()->SetNdivisions(405);
   hRatioFEWZDummy->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
   hRatioFEWZDummy->GetXaxis()->SetTitleOffset(0.6);
   hRatioFEWZDummy->GetXaxis()->SetTitleSize(0.11);
-  hRatioFEWZDummy->GetXaxis()->SetLabelSize(0.09);
+  hRatioFEWZDummy->GetXaxis()->SetLabelSize(0.10);
   hRatioFEWZDummy->Draw();
   DataRatio->Draw("2");
   //RatioDataStatErrBand->Draw("P E");
