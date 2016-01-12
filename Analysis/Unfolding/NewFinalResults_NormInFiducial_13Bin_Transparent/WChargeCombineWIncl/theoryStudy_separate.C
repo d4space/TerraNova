@@ -515,38 +515,60 @@ int theoryStudy_separate(const TString BaseName)
   TGraphErrors* ResBosRatio = new TGraphErrors(hResBosRatio); 
 
   /////==========ResBos related stuff Finished here=========================================
-  
-  
-  
+ 
+
+
   //// Now design and Draw 
   gStyle->SetLineWidth(2.);
   gStyle->SetOptStat(0);
   gStyle->SetHatchesSpacing(0.75);
   gStyle->SetHatchesLineWidth(2);
 
-  //Color Transparent
-  TColor *colRedp2 = gROOT->GetColor(kRed+2);
-  TColor *colRed = gROOT->GetColor(kRed);
-  TColor *colBlue = gROOT->GetColor(kBlue);
-  TColor *colGreen = gROOT->GetColor(kGreen);
-  TColor *colGreenp3 = gROOT->GetColor(kGreen+3);
-  TColor *colGreenp10 = gROOT->GetColor(kGreen+10);
+  // Marker Color
+  Color_t MarkerColor_ResBos = kBlue+2;
+  Color_t MarkerColor_POWHEG = kRed+3;
+  Color_t MarkerColor_FEWZ = kGreen+4;
+
+  // Marker Style (circle:20  square:21  triangle:22)
+  Style_t MarkerStyle_ResBos = 21;
+  Style_t MarkerStyle_POWHEG = 21;
+  Style_t MarkerStyle_FEWZ = 21;
+
+  // Band Color Transparent
+  TColor *colBlue = gROOT->GetColor(kBlue);		// Used ResBos distribution and ratio band
+  TColor *colRed = gROOT->GetColor(kRed);		// Used Powheg distribution
+  TColor *colRedp2 = gROOT->GetColor(kRed+2);		// used Powheg ratio band
+  TColor *colYellow = gROOT->GetColor(kYellow);		// used Powheg ratio band
+  TColor *colGreen = gROOT->GetColor(kGreen);		// used FEWZ distribution
+  TColor *colGreenp1 = gROOT->GetColor(kGreen+1);	// used FEWZ stat ratio band
+  TColor *colGreenp3 = gROOT->GetColor(kGreen+3);	// used FEWZ PDF ratio band
+  TColor *colCyanm9 = gROOT->GetColor(kCyan-9);		// used FEWZ scale ratio band
   colRedp2->SetAlpha(0.6);
   colRed->SetAlpha(0.2);
   colBlue->SetAlpha(0.3);
-  colGreen->SetAlpha(0.2); 
-  colGreenp3->SetAlpha(0.6); 
-  colGreenp10->SetAlpha(0.4); 
+  colYellow->SetAlpha(0.6);
+  colGreen->SetAlpha(0.5); 
+  colGreenp1->SetAlpha(0.6); 
+  colGreenp3->SetAlpha(0.7); 
+  colCyanm9->SetAlpha(0.7); 
+
+  Color_t BandColor_ResBos = kBlue;
+  Color_t BandColor_POWHEG_stat = kRed+2;
+  Color_t BandColor_POWHEG_PDF = kYellow;
+  Color_t BandColor_FEWZ_stat = kGreen+3;
+  Color_t BandColor_FEWZ_PDF = kGreen+1;
+  Color_t BandColor_FEWZ_scale = kCyan-9;
   
+
   //TLegend *lL =new TLegend(0.2,0.17,0.52,0.40); lL->SetFillColor(0); lL->SetBorderSize(0);
-  TLegend *lL =new TLegend(0.25,0.17,0.57,0.40); lL->SetFillColor(0); lL->SetBorderSize(0);
+  TLegend *lL =new TLegend(0.25,0.17,0.65,0.45); lL->SetFillColor(0); lL->SetBorderSize(0);
   lL->AddEntry(Data_Xsec_Born,"Data","PLE1");
+  lL->AddEntry(Resb30_NormDiffXsec,"ResBos CT10 NNLL","f");
   lL->AddEntry(Powheg_Xsec_Born,"POWHEG CT10 NLO","f");
   lL->AddEntry(FEWZ_Xsec,"FEWZ CT10 NNLO","f");
-  lL->AddEntry(Resb30_NormDiffXsec,"ResBos CT10 NNLL","f");
 
   //TPaveText *channel = new TPaveText(0.25,0.42,0.42,0.48,"NDC");
-  TPaveText *channel = new TPaveText(0.30,0.42,0.47,0.48,"NDC");
+  TPaveText *channel = new TPaveText(0.30,0.48,0.47,0.54,"NDC");
   channel->SetBorderSize(0);
   channel->SetFillStyle(0);
   if (BaseName=="WInclToMuNu")
@@ -611,10 +633,8 @@ int theoryStudy_separate(const TString BaseName)
   
   if(BaseName=="WInclToMuNu")
     sprintf(tmpName,"winclmnCrossSec.");
-    //sprintf(tmpName,"winclmnCrossSec.pdf");
   if(BaseName=="WInclToEleNu")
     sprintf(tmpName,"winclenCrossSec.");
-    //sprintf(tmpName,"winclenCrossSec.pdf");
   lC1->SaveAs(tmpName+format);
 
   // Ratio plot style 
@@ -625,43 +645,36 @@ int theoryStudy_separate(const TString BaseName)
   RatioDataStatErrBand->SetLineColor(kBlack);
 
   DataRatio->SetFillStyle(3354);
-  DataRatio->SetFillColor(kGray);
+  DataRatio->SetFillColor(kGray+1);
 
 // Resbos Ratio plot style
-  RatioResbosErrBand->SetMarkerStyle(20);
-  RatioResbosErrBand->SetMarkerSize(0.7);
-  RatioResbosErrBand->SetMarkerColor(kBlue+2);
-
-  RatioResbosErrBand->SetFillColor(kBlue);
-  //RatioResbosErrBand->SetFillStyle(3001);
+  RatioResbosErrBand->SetMarkerColor(MarkerColor_ResBos);
+  RatioResbosErrBand->SetMarkerStyle(MarkerStyle_ResBos);
+  //RatioResbosErrBand->SetMarkerSize(0.7);
+  RatioResbosErrBand->SetFillColor(BandColor_ResBos);
 
 // Powheg Ratio plot style
-  RatioPowhegStatErrBand->SetMarkerStyle(22);
-  RatioPowhegStatErrBand->SetMarkerColor(kRed+3);
+  RatioPowhegStatErrBand->SetMarkerColor(MarkerColor_POWHEG);
+  RatioPowhegStatErrBand->SetMarkerStyle(MarkerStyle_POWHEG);
+  RatioPowhegStatErrBand->SetFillColor(BandColor_POWHEG_stat);
 
-  RatioPowhegStatErrBand->SetFillColor(kRed+2);
-  //RatioPowhegStatErrBand->SetFillStyle(3001);
-
-  //RatioPowhegStatPDFErrBand->SetFillColor(kRed);
-  RatioPowhegStatPDFErrBand->SetFillColor(kGreen);
-  //RatioPowhegStatPDFErrBand->SetFillStyle(3001);
+  RatioPowhegStatPDFErrBand->SetMarkerColor(MarkerColor_POWHEG);
+  RatioPowhegStatPDFErrBand->SetMarkerStyle(MarkerStyle_POWHEG);
+  RatioPowhegStatPDFErrBand->SetFillColor(BandColor_POWHEG_PDF);
 
 // FEWZ Ratio plot style
-  RatioFEWZStatErrBand->SetMarkerStyle(21);
-  RatioFEWZStatErrBand->SetMarkerSize(0.7);
-  RatioFEWZStatErrBand->SetMarkerColor(kGreen+10);
+  RatioFEWZStatErrBand->SetMarkerColor(MarkerColor_FEWZ);
+  RatioFEWZStatErrBand->SetMarkerStyle(MarkerStyle_FEWZ);
+  //RatioFEWZStatErrBand->SetMarkerSize(0.7);
+  RatioFEWZStatErrBand->SetFillColor(BandColor_FEWZ_stat);
+
+  RatioFEWZStatPDFErrBand->SetMarkerColor(MarkerColor_FEWZ);
+  RatioFEWZStatPDFErrBand->SetMarkerStyle(MarkerStyle_FEWZ);
+  RatioFEWZStatPDFErrBand->SetFillColor(BandColor_FEWZ_PDF);
   
-  RatioFEWZStatErrBand->SetFillColor(kGreen+3);
-  //RatioFEWZStatErrBand->SetFillStyle(3001);
-
-  RatioFEWZStatPDFErrBand->SetFillColor(kGreen);
-  //RatioFEWZStatPDFErrBand->SetFillStyle(3001);
-
-  //RatioFEWZStatPDFScaleErrBand->SetFillColor(kGreen+10);
-  RatioFEWZStatPDFScaleErrBand->SetFillColor(kBlue);
-  //RatioFEWZStatPDFScaleErrBand->SetFillColor(kYellow);
-  //RatioFEWZStatPDFScaleErrBand->SetFillColor(kViolet);
-  //RatioFEWZStatPDFScaleErrBand->SetFillStyle(3001);
+  RatioFEWZStatPDFScaleErrBand->SetMarkerColor(MarkerColor_FEWZ);
+  RatioFEWZStatPDFScaleErrBand->SetMarkerStyle(MarkerStyle_FEWZ);
+  RatioFEWZStatPDFScaleErrBand->SetFillColor(BandColor_FEWZ_scale);
 
 // Canvas for Theory/data Ratio
   TCanvas *lC2 = new TCanvas("Can","Can",50,50,W,H); 
@@ -682,17 +695,19 @@ int theoryStudy_separate(const TString BaseName)
   lC2->cd(1)->SetTicky(1);
   lC2->cd(1)->SetLogx(1);
 
-  TLegend *rL1 =new TLegend(0.18,0.05,0.53,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
+  TLegend *rL1 =new TLegend(0.18,0.05,0.60,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
   rL1-> SetNColumns(2);
-  rL1->AddEntry(RatioResbosErrBand,"Theory syst","F");
-  rL1->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
+  //rL1->AddEntry(RatioResbosErrBand,"ResBos syst","F");
+  rL1->AddEntry(RatioResbosErrBand,"ResBos syst","FP");
+  //rL1->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   hRatioDataStatErr->SetTitle("");
-  rL1->AddEntry(hRatioDataStatErr,"","");
   rL1->AddEntry(DataRatio,"Data stat+syst","F");
+  rL1->AddEntry(hRatioDataStatErr,"","");
   rL1->SetTextSize(0.08);
 
   TLegend *tL1 =new TLegend(0.18,0.82,0.37,0.92); tL1->SetFillColor(0); tL1->SetBorderSize(0);
-  tL1->AddEntry(RatioResbosErrBand,"ResBos","F");
+  //tL1->AddEntry(RatioResbosErrBand,"ResBos","F");
+  tL1->AddEntry(RatioResbosErrBand,"ResBos","");
   tL1->SetTextSize(0.12);
   tL1->SetTextFont(2);
 
@@ -720,7 +735,7 @@ int theoryStudy_separate(const TString BaseName)
   hRatioResbosDummy->GetXaxis()->SetLabelSize(0);
   hRatioResbosDummy->Draw();
   DataRatio->Draw("2");
-  RatioDataStatErrBand->Draw("P E");
+  //RatioDataStatErrBand->Draw("P E");
   RatioResbosErrBand->Draw("2 P");
   rL1->Draw();
   tL1->Draw();
@@ -733,16 +748,20 @@ int theoryStudy_separate(const TString BaseName)
   lC2->cd(2)->SetTicky(1);
   lC2->cd(2)->SetLogx(1);
 
-  TLegend *rL2 =new TLegend(0.18,0.05,0.53,0.34); rL2->SetFillColor(0); rL2->SetBorderSize(0);
+  TLegend *rL2 =new TLegend(0.18,0.04,0.60,0.34); rL2->SetFillColor(0); rL2->SetBorderSize(0);
   rL2-> SetNColumns(2);
-  rL2->AddEntry(RatioPowhegStatErrBand,"Stat","F");
-  rL2->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
-  rL2->AddEntry(RatioPowhegStatPDFErrBand,"PDF    ","F");
+  //rL2->AddEntry(RatioPowhegStatErrBand,"POWHEG stat","F");
+  rL2->AddEntry(RatioPowhegStatErrBand,"POWHEG stat","FP");
   rL2->AddEntry(DataRatio,"Data stat+syst","F");
+  //rL2->AddEntry(RatioPowhegStatPDFErrBand,"POWHEG PDF    ","F");
+  rL2->AddEntry(RatioPowhegStatPDFErrBand,"POWHEG PDF    ","FP");
+  //rL2->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
+  rL2->AddEntry(hRatioDataStatErr,"","");
   rL2->SetTextSize(0.09);
 
   TLegend *tL2 =new TLegend(0.18,0.82,0.37,0.92); tL2->SetFillColor(0); tL2->SetBorderSize(0);
-  tL2->AddEntry(RatioPowhegStatErrBand,"POWHEG","F");
+  //tL2->AddEntry(RatioPowhegStatErrBand,"POWHEG","F");
+  tL2->AddEntry(RatioPowhegStatErrBand,"POWHEG","");
   tL2->SetTextSize(0.12);
   tL2->SetTextFont(2);
 
@@ -759,7 +778,7 @@ int theoryStudy_separate(const TString BaseName)
   hRatioPowhegDummy->GetXaxis()->SetLabelSize(0);
   hRatioPowhegDummy->Draw();
   DataRatio->Draw("2");
-  RatioDataStatErrBand->Draw("P E");
+  //RatioDataStatErrBand->Draw("P E");
   RatioPowhegStatPDFErrBand->Draw("2");
   RatioPowhegStatErrBand->Draw("2 P");
   rL2->Draw();
@@ -773,17 +792,21 @@ int theoryStudy_separate(const TString BaseName)
   lC2->cd(3)->SetTicky(1);
   lC2->cd(3)->SetLogx(1);
 
-  TLegend *rL3 =new TLegend(0.18,0.29,0.58,0.55); rL3->SetFillColor(0); rL3->SetBorderSize(0);
+  TLegend *rL3 =new TLegend(0.18,0.28,0.58,0.52); rL3->SetFillColor(0); rL3->SetBorderSize(0);
   rL3-> SetNColumns(2);
-  rL3->AddEntry(RatioFEWZStatErrBand,"Stat","F");
-  rL3->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
-  rL3->AddEntry(RatioFEWZStatPDFErrBand,"PDF","F");
+  //rL3->AddEntry(RatioFEWZStatErrBand,"FEWZ stat","F");
+  rL3->AddEntry(RatioFEWZStatErrBand,"FEWZ stat","FP");
+  //rL3->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   rL3->AddEntry(DataRatio,"Data stat+syst","F");
-  rL3->AddEntry(RatioFEWZStatPDFScaleErrBand,"QCD scales","F");
+  //rL3->AddEntry(RatioFEWZStatPDFErrBand,"FEWZ PDF","F");
+  //rL3->AddEntry(RatioFEWZStatPDFScaleErrBand,"FEWZ scales","F");
+  rL3->AddEntry(RatioFEWZStatPDFErrBand,"FEWZ PDF","FP");
+  rL3->AddEntry(RatioFEWZStatPDFScaleErrBand,"FEWZ scales","FP");
   rL3->SetTextSize(0.06);
 
   TLegend *tL3 =new TLegend(0.17,0.85,0.37,0.95); tL3->SetFillColor(0); tL3->SetBorderSize(0);
-  tL3->AddEntry(RatioFEWZStatErrBand,"FEWZ","F");
+  //tL3->AddEntry(RatioFEWZStatErrBand,"FEWZ","F");
+  tL3->AddEntry(RatioFEWZStatErrBand,"FEWZ","");
   tL3->SetTextSize(0.09);
   tL3->SetTextFont(2);
 
@@ -801,7 +824,7 @@ int theoryStudy_separate(const TString BaseName)
   hRatioFEWZDummy->GetXaxis()->SetLabelSize(0.09);
   hRatioFEWZDummy->Draw();
   DataRatio->Draw("2");
-  RatioDataStatErrBand->Draw("P E");
+  //RatioDataStatErrBand->Draw("P E");
   RatioFEWZStatPDFScaleErrBand->Draw("2");
   RatioFEWZStatPDFErrBand->Draw("2");
   RatioFEWZStatErrBand->Draw("2 P");
