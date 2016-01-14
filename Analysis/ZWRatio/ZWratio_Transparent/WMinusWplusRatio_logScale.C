@@ -905,11 +905,12 @@ int WMinusWplusRatio_logScale()
   LeptonCut->AddText("p_{T}>20 Gev, |#eta |<2.1");
 
   hWmWpratio_RD->GetYaxis()->SetRangeUser(0.5,1.5);
-  hWmWpratio_RD->GetYaxis()->SetTitleOffset(0.8);
-  hWmWpratio_RD->GetYaxis()->SetLabelSize(0.07);
+  hWmWpratio_RD->GetYaxis()->SetTitleOffset(0.9);
+  hWmWpratio_RD->GetYaxis()->SetLabelSize(0.09);
   hWmWpratio_RD->GetYaxis()->SetTitleSize(0.07);
   //hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{-}}} #frac{d#sigma^{W^{-}}}{p_{T}^{W^{-}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
   hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{#font[122]{\55}}}} #frac{d#sigma^{W^{#font[122]{\55}}}}{p_{T}^{W^{#font[122]{\55}}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
+
   hWmWpratio_RD->GetYaxis()->SetNdivisions(405);
   hWmWpratio_RD->GetXaxis()->SetTitleOffset(1.);
   hWmWpratio_RD->GetXaxis()->SetLabelSize(0.04);
@@ -964,7 +965,9 @@ int WMinusWplusRatio_logScale()
   //gStyle->SetLineWidth(2); 
   gPad->RedrawAxis();
 
-  C1->cd(2)->SetPad(0,0.1,0.98,0.5);
+  //C1->cd(2)->SetPad(0,0.1,0.98,0.5);
+  C1->cd(2)->SetPad(0,0.00,0.98,0.5);
+  C1->cd(2)->SetBottomMargin(0.2);
   C1->cd(2)->SetTickx(1);
   C1->cd(2)->SetTicky(1);
   C1->cd(2)->SetLogx(1);
@@ -982,13 +985,13 @@ int WMinusWplusRatio_logScale()
   hRatioDummy->GetYaxis()->CenterTitle();
   hRatioDummy->GetYaxis()->SetTitleSize(0.08);
   hRatioDummy->GetYaxis()->SetTitleOffset(0.78);
-  hRatioDummy->GetYaxis()->SetLabelSize(0.09);
+  hRatioDummy->GetYaxis()->SetLabelSize(0.08);
   hRatioDummy->GetYaxis()->SetNdivisions(605);
   
   hRatioDummy->GetXaxis()->SetTitle("p_{T}^{V} [GeV]");
   hRatioDummy->GetXaxis()->SetTitleOffset(0.6);
-  hRatioDummy->GetXaxis()->SetTitleSize(0.08);
-  hRatioDummy->GetXaxis()->SetLabelSize(0.07);
+  hRatioDummy->GetXaxis()->SetTitleSize(0.09);
+  hRatioDummy->GetXaxis()->SetLabelSize(0.09);
 
   // FEWZ Ratio plot setting
   tgRatioData->SetFillColor(kGray+2);

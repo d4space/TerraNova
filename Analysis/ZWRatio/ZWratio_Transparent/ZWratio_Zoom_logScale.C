@@ -350,7 +350,7 @@ int ZWratio_Zoom_logScale()
 
   hWZratio_RD->GetYaxis()->SetRangeUser(-1.2,6.5);
   hWZratio_RD->GetYaxis()->SetTitleOffset(0.8);
-  hWZratio_RD->GetYaxis()->SetLabelSize(0.07);
+  hWZratio_RD->GetYaxis()->SetLabelSize(0.09);
   hWZratio_RD->GetYaxis()->SetTitleSize(0.07);
   hWZratio_RD->GetYaxis()->SetNdivisions(410);
   hWZratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{Z}} #frac{d#sigma^{Z}}{p_{T}^{Z}})/(#frac{1}{#sigma^{W}} #frac{d#sigma^{W}}{p_{T}^{W}})");
@@ -395,7 +395,8 @@ int ZWratio_Zoom_logScale()
   hWZratio_RD_Zoom->GetXaxis()->SetRangeUser(1,150);
   hWZratio_RD_Zoom->GetYaxis()->SetRangeUser(0.4,1.7);
   //hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.05);
-  hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.095);
+  //hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.095);
+  hWZratio_RD_Zoom->GetYaxis()->SetLabelSize(0.15);
   hWZratio_RD_Zoom->GetYaxis()->SetNdivisions(405);
   hWZratio_RD_Zoom->GetXaxis()->SetTitle("");
   hWZratio_RD_Zoom->Draw(" E1");
@@ -405,9 +406,11 @@ int ZWratio_Zoom_logScale()
   tgWZratio_FEWZ->Draw("5");
   gPad->RedrawAxis();
   
-  C1->cd(3)->SetPad(0.,0.1,0.98,0.5);
+  //C1->cd(3)->SetPad(0.,0.1,0.98,0.5);
+  C1->cd(3)->SetPad(0.,0.00,0.98,0.5);
   C1->cd(3)->SetFillColor(0);
-  C1->cd(3)->SetBottomMargin(0.125);
+  //C1->cd(3)->SetBottomMargin(0.125);
+  C1->cd(3)->SetBottomMargin(0.2);
   C1->cd(3)->SetTickx(1);
   C1->cd(3)->SetTicky(1);
   C1->cd(3)->SetLogx(1);
@@ -418,12 +421,12 @@ int ZWratio_Zoom_logScale()
   hRatioDummy->GetYaxis()->SetRangeUser(0.1,2.8);
   hRatioDummy->GetYaxis()->SetTitleSize(0.07);
   hRatioDummy->GetYaxis()->SetTitleOffset(0.58);
-  hRatioDummy->GetYaxis()->SetLabelSize(0.07);
+  hRatioDummy->GetYaxis()->SetLabelSize(0.09);
   hRatioDummy->GetYaxis()->SetNdivisions(605);
   hRatioDummy->GetYaxis()->CenterTitle();
   
-  hRatioDummy->GetXaxis()->SetTitleSize(0.08);
-  hRatioDummy->GetXaxis()->SetTitleOffset(0.5);
+  hRatioDummy->GetXaxis()->SetTitleSize(0.09);
+  hRatioDummy->GetXaxis()->SetTitleOffset(0.6);
   hRatioDummy->GetXaxis()->SetLabelSize(0);
   hRatioDummy->GetXaxis()->SetTitle("p_{T}^{V} [GeV]");
 
@@ -457,7 +460,9 @@ int ZWratio_Zoom_logScale()
  
   // Set Zoomed Ratio plot
   //C1->cd(4)->SetPad(0.028,0.056,0.76,0.405);
-  C1->cd(4)->SetPad(0.060,0.115,0.722,0.364);
+  //C1->cd(4)->SetPad(0.060,0.115,0.722,0.364);
+  C1->cd(4)->SetPad(0.060,0.042,0.722,0.364);
+  C1->cd(4)->SetBottomMargin(0.18);
   
   C1->cd(4)->SetLogx(1);
   
@@ -465,12 +470,12 @@ int ZWratio_Zoom_logScale()
   hRatioDummy_Zoom->GetYaxis()->SetRangeUser(0.5,1.5); // Y axis range
   hRatioDummy_Zoom->GetXaxis()->SetRangeUser(1,150); // X axis range
   hRatioDummy_Zoom->GetYaxis()->SetTitle("Theory / Data");
-  hRatioDummy_Zoom->GetYaxis()->SetTitleOffset(0.53);
+  hRatioDummy_Zoom->GetYaxis()->SetTitleOffset(0.63);
   hRatioDummy_Zoom->GetYaxis()->SetTitleSize(0.13);
-  hRatioDummy_Zoom->GetYaxis()->SetLabelSize(0.09);
-  //hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.05);
+  hRatioDummy_Zoom->GetYaxis()->SetLabelSize(0.12);
   
-  hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.10);
+  //hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.10);
+  hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.14);
   hRatioDummy_Zoom->GetXaxis()->SetTitle("");
   
   hRatioDummy_Zoom->Draw();
