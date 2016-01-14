@@ -988,7 +988,8 @@ int WMinusWplusRatio_logScale()
   hRatioDummy->GetYaxis()->SetLabelSize(0.08);
   hRatioDummy->GetYaxis()->SetNdivisions(605);
   
-  hRatioDummy->GetXaxis()->SetTitle("p_{T}^{V} [GeV]");
+  //hRatioDummy->GetXaxis()->SetTitle("p_{T}^{V} [GeV]");
+  hRatioDummy->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
   hRatioDummy->GetXaxis()->SetTitleOffset(0.6);
   hRatioDummy->GetXaxis()->SetTitleSize(0.09);
   hRatioDummy->GetXaxis()->SetLabelSize(0.09);
