@@ -867,7 +867,7 @@ int WMinusWplusRatio_logScale()
   TGraphErrors *tgWmWpratio_Resbos = new TGraphErrors(hWmWpratio_Resbos_Central);
   TGraphErrors *tgWmWpratio_FEWZ = new TGraphErrors(hWmWpratio_FEWZ);
   
-  TLegend *L1 = new TLegend(0.25,0.62,0.55,0.95);
+  TLegend *L1 = new TLegend(0.25,0.52,0.44,0.95);
   L1->SetFillColor(0);
   L1->SetBorderSize(0);
   L1->AddEntry(hWmWpratio_RD,"Data","PL");

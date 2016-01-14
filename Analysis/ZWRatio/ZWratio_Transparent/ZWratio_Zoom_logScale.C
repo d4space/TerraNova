@@ -311,7 +311,7 @@ int ZWratio_Zoom_logScale()
   TGraphErrors* tgRatioResbos = new TGraphErrors(hRatioResbosTotalErr);
   TGraphErrors* tgRatioFEWZ = new TGraphErrors(hRatioFEWZTotalErr);
  
-  TLegend *L1 = new TLegend(0.25,0.62,0.55,0.95);
+  TLegend *L1 = new TLegend(0.25,0.52,0.44,0.95);
   L1->SetFillColor(0);
   L1->SetBorderSize(0);
   L1->AddEntry(hWZratio_RD,"Data","PL");
