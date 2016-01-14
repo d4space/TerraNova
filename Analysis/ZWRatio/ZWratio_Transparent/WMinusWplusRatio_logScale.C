@@ -867,12 +867,12 @@ int WMinusWplusRatio_logScale()
   TGraphErrors *tgWmWpratio_Resbos = new TGraphErrors(hWmWpratio_Resbos_Central);
   TGraphErrors *tgWmWpratio_FEWZ = new TGraphErrors(hWmWpratio_FEWZ);
   
-  TLegend *L1 = new TLegend(0.25,0.65,0.5,0.95);
+  TLegend *L1 = new TLegend(0.25,0.62,0.55,0.95);
   L1->SetFillColor(0);
   L1->SetBorderSize(0);
-  L1->AddEntry(hWmWpratio_RD,"data","PL");
-  L1->AddEntry(tgWmWpratio_Powheg,"Powheg","f");
+  L1->AddEntry(hWmWpratio_RD,"Data","PL");
   L1->AddEntry(tgWmWpratio_Resbos,"ResBos","f");
+  L1->AddEntry(tgWmWpratio_Powheg,"POWHEG","f");
   L1->AddEntry(tgWmWpratio_FEWZ,"FEWZ","f");
   
   TCanvas *C1 = new TCanvas("can","can",50,50,W,H);
@@ -996,12 +996,12 @@ int WMinusWplusRatio_logScale()
 
   tgRatioPowheg->SetFillColor(kRed);
   tgRatioPowheg->SetLineColor(kRed+2);
-  tgRatioPowheg->SetMarkerStyle(22);
+  tgRatioPowheg->SetMarkerStyle(21);
   tgRatioPowheg->SetMarkerColor(kRed+2);
   
   tgRatioResbos->SetFillColor(kBlue);
   tgRatioResbos->SetLineColor(kBlue+2);
-  tgRatioResbos->SetMarkerStyle(20);
+  tgRatioResbos->SetMarkerStyle(21);
   tgRatioResbos->SetMarkerColor(kBlue+2);
   
   tgRatioFEWZ->SetFillColor(kGreen);

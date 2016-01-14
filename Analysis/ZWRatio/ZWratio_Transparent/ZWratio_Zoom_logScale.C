@@ -311,12 +311,12 @@ int ZWratio_Zoom_logScale()
   TGraphErrors* tgRatioResbos = new TGraphErrors(hRatioResbosTotalErr);
   TGraphErrors* tgRatioFEWZ = new TGraphErrors(hRatioFEWZTotalErr);
  
-  TLegend *L1 = new TLegend(0.25,0.65,0.5,0.95);
+  TLegend *L1 = new TLegend(0.25,0.62,0.55,0.95);
   L1->SetFillColor(0);
   L1->SetBorderSize(0);
-  L1->AddEntry(hWZratio_RD,"data","PL");
-  L1->AddEntry(tgWZratio_Powheg,"Powheg","f");
+  L1->AddEntry(hWZratio_RD,"Data","PL");
   L1->AddEntry(tgWZratio_Resbos,"ResBos","f");
+  L1->AddEntry(tgWZratio_Powheg,"POWHEG","f");
   L1->AddEntry(tgWZratio_FEWZ,"FEWZ","f");
 
   TCanvas *C1 = new TCanvas("can1","can1",50,50,W,H);
@@ -433,12 +433,12 @@ int ZWratio_Zoom_logScale()
 
   tgRatioPowheg->SetFillColor(kRed);
   tgRatioPowheg->SetLineColor(kRed+2);
-  tgRatioPowheg->SetMarkerStyle(22);
+  tgRatioPowheg->SetMarkerStyle(21);
   tgRatioPowheg->SetMarkerColor(kRed+2);
 
   tgRatioResbos->SetFillColor(kBlue);
   tgRatioResbos->SetLineColor(kBlue+2);
-  tgRatioResbos->SetMarkerStyle(20);
+  tgRatioResbos->SetMarkerStyle(21);
   tgRatioResbos->SetMarkerColor(kBlue+2);
 
   tgRatioFEWZ->SetFillColor(kGreen);
@@ -480,7 +480,7 @@ int ZWratio_Zoom_logScale()
   tgRatioResbos->Draw("5 P");
   gPad->RedrawAxis();
 
-  //C1->SaveAs("RatioNormZW_Fid_Zoom."+format);
+  C1->SaveAs("RatioNormZW_Fid_Zoom."+format);
 
   return 0;
 }
