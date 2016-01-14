@@ -1979,25 +1979,25 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   grRatioData->SetLineColor(kBlack);
 
 // Powheg Ratio draw 
-  grRatioPowheg->SetMarkerStyle(22); // triangle
+  grRatioPowheg->SetMarkerStyle(21);
   grRatioPowheg->SetMarkerColor(kRed+2);
   grRatioPowheg->SetFillColor(kRed);
   grRatioPowheg->SetLineColor(kRed+2);
  
   // Resbos Ratio draw
-  grRatioResbos->SetMarkerStyle(20); // circle
+  grRatioResbos->SetMarkerStyle(21);
   grRatioResbos->SetMarkerColor(kBlue+2);
   grRatioResbos->SetFillColor(kBlue);
   grRatioResbos->SetLineColor(kBlue+2);
  
 // Madgraph Ratio draw 
-  grRatioMadgraph->SetMarkerStyle(34); // cross
+  grRatioMadgraph->SetMarkerStyle(21);
   grRatioMadgraph->SetMarkerColor(kViolet+2);
   grRatioMadgraph->SetFillColor(kViolet);
   grRatioMadgraph->SetLineColor(kViolet+2);
  
 // FEWZ Ratio draw 
-  grRatioFEWZ->SetMarkerStyle(21); // squre
+  grRatioFEWZ->SetMarkerStyle(21);
   grRatioFEWZ->SetMarkerColor(kGreen+2);
   grRatioFEWZ->SetFillColor(kGreen);
   grRatioFEWZ->SetLineColor(kGreen+2);
