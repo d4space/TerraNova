@@ -113,6 +113,31 @@ void PrintIt2(TPad *pad, TString title)//char *title)
   latex->DrawLatex(xpos,ypos,title);
 }
 
+void PrintIt3(TPad *pad, TString title)//char *title)
+{
+  TLatex *latex = new TLatex();
+  latex->SetTextFont(  42);
+  //latex->SetTextSize(0.05);
+  latex->SetTextSize(0.07);
+
+  // Get the most recent changes
+  pad->Update();
+
+
+  double xmin = pad->GetUxmin();
+  double xmax = pad->GetUxmax();
+  double ymin = pad->GetUymin();
+  double ymax = pad->GetUymax();
+
+  double xpos = xmax - 0.58*(xmax - xmin);
+  double ypos = ymax - 0.12*(ymax - ymin);
+
+  if (pad->GetLogy())  ypos = pow(10,ypos);
+  if (pad->GetLogx())  xpos = pow(10,xpos);
+
+  //latex->SetTextAlign(22);
+  latex->DrawLatex(xpos,ypos,title);
+}
 //------------------------------------------------------------------------------
 // Draw projections and residuals
 //------------------------------------------------------------------------------
@@ -155,8 +180,8 @@ void axis1F(TH1F  *histo,
 
 void DrawWithRes(TCanvas* canvas, char* title, char* title2, 
                  TH1F *hData, TH1F *hMC, THStack *sMC, 
-                 //TLegend *tl=NULL, bool isLogScaleY=false, bool isLogScaleX=false) // From bin1
-                 TLegend *tl=NULL, bool isLogScaleY=true, bool isLogScaleX=false) // After bin9
+                 TLegend *tl=NULL, bool isLogScaleY=false, bool isLogScaleX=false) // From bin1
+                 //TLegend *tl=NULL, bool isLogScaleY=true, bool isLogScaleX=false) // After bin9
 {
 
   // sanity check
@@ -208,8 +233,8 @@ cout << i << ", " << ratio << endl;
   TPad* pad1; 
   TPad* pad2; 
   
-  pad1 = new TPad("pad1","This is pad1",0.02,0.30,0.98,0.98,0); 
-  pad2 = new TPad("pad2","This is pad2",0.02,0.01,0.98,0.29,0); 
+  pad1 = new TPad("pad1","This is pad1",0.02,0.30,0.99,0.98,0); 
+  pad2 = new TPad("pad2","This is pad2",0.02,0.01,0.99,0.29,0); 
   
   if (isLogScaleY) pad1->SetLogy();
   if (isLogScaleX) pad1->SetLogx();
@@ -253,9 +278,20 @@ cout << i << ", " << ratio << endl;
 
   PrintIt(pad1, title);
   PrintIt2(pad1, title2);
+  PrintIt3(pad1, "p_{T}^{Z} < 30 GeV"); // From bin1
+  //PrintIt3(pad1, "p_{T}^{Z} #geq 30 GeV"); // After bin9
 
   if (tl) tl ->Draw("same");
 
+  // // Bin range text
+  //TPaveText *bintext = new TPaveText(0.7,0.9,0.96,0.95);
+  //bintext->AddBox(0.7,0.9,0.96,0.95);
+  //bintext->SetFillStyle(2);
+  //bintext->SetBorderSize(2);
+  //bintext->AddText("p_{T}^{Z} < 30 GeV");
+  //bintext->Draw("same");
+
+  
   //----------------------------------------------------------------------------
   // Residuals pad
   //----------------------------------------------------------------------------
@@ -279,10 +315,10 @@ cout << i << ", " << ratio << endl;
   axis1F(hPull,xPull,yPull,xAxisName,"MC/Data");  
 //if (hPull->GetMaximum() > 100) {
     std::cout << "Setting the hPull boundaries!\n";
-  //hPull->SetMinimum(0.6); // From bin1
-  //hPull->SetMaximum(1.2); // From bin1
-  hPull->SetMinimum(-1); // After bin9
-  hPull->SetMaximum(3); // After bin9
+  hPull->SetMinimum(0.6); // From bin1
+  hPull->SetMaximum(1.2); // From bin1
+  //hPull->SetMinimum(-1); // After bin9
+  //hPull->SetMaximum(3); // After bin9
   //}
 
 
