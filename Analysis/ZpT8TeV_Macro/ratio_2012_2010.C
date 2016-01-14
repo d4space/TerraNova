@@ -33,11 +33,13 @@ double computeErrRatio(double A,
 //------------------------------------------------------------------------------
 // Print the title of a histogram
 //------------------------------------------------------------------------------
-void PrintIt(TPad *pad, TString title)//char *title)
+void PrintIt(TPad *pad, TString title1, TString title2)//char *title)
 {
   TLatex *latex = new TLatex();
-  latex->SetTextFont(  42);
+  TLatex *latex2 = new TLatex();
+  //latex->SetTextFont(  42);
   latex->SetTextSize(0.05);
+  latex2->SetTextSize(0.04);
   
   // Get the most recent changes
   pad->Update();
@@ -55,14 +57,18 @@ void PrintIt(TPad *pad, TString title)//char *title)
   if (pad->GetLogx())  xpos = pow(10,xpos);
 
   latex->SetTextAlign(22);
-  latex->DrawLatex(xpos,ypos,title);
+  latex2->SetTextAlign(22);
+  latex->DrawLatex(xpos,ypos,title1);
+  latex2->DrawLatex(xpos,ypos,title2);
 }
 
 //
 void lumiInfo(double px, double py, const char* lept="l",double sizef=1.0) {
   char eta[40], pt[40], pdfSet[40], factScale[40], renormScale[40];
   
-  TLatex *plabel1 = new TLatex(px,py,"#int L = 36 pb^{-1} at #sqrt{s}=7 TeV");
+  //TLatex *plabel1 = new TLatex(px,py,"#int L = 36 pb^{-1} at #sqrt{s}=7 TeV");
+  //TLatex *plabel1 = new TLatex(px,py,"L = 36 pb^{-1}, #sqrt{s}=7 TeV");
+  TLatex *plabel1 = new TLatex(px,py,"#font[42]{18.4 pb^{-1} (8 TeV) + 36 pb^{-1} (7 TeV)}");
   plabel1 -> SetNDC();
   plabel1 -> SetTextFont(42);
   plabel1 -> SetTextColor(kBlack);
@@ -70,16 +76,17 @@ void lumiInfo(double px, double py, const char* lept="l",double sizef=1.0) {
   plabel1 -> SetTextAlign(22);
   plabel1 -> SetTextAngle(0);
 
-  TLatex *plabel2 = new TLatex(px+0.01,py-0.1,"#int L = 18.4 pb^{-1} at #sqrt{s}=8 TeV");
-  plabel2 -> SetNDC();
-  plabel2 -> SetTextFont(42);
-  plabel2 -> SetTextColor(kBlack);
-  plabel2 -> SetTextSize(0.05*sizef);
-  plabel2 -> SetTextAlign(22);
+  //TLatex *plabel2 = new TLatex(px+0.01,py-0.1,"L = 18.4 pb^{-1}, #sqrt{s}=8 TeV");
+  //TLatex *plabel2 = new TLatex(px+0.01,py-0.1,"#font[42]{18.4 pb^{-1} (8 TeV)}");
+  //plabel2 -> SetNDC();
+  //plabel2 -> SetTextFont(42);
+  //plabel2 -> SetTextColor(kBlack);
+  //plabel2 -> SetTextSize(0.05*sizef);
+  //plabel2 -> SetTextAlign(22);
 
   //Then for each plot, pick a nice spot and draw
   plabel1 -> Draw();
-  plabel2 -> Draw();
+  //plabel2 -> Draw();
 
 }
 
@@ -202,6 +209,8 @@ void ratio_2012_2010() {
   //c1->SetLogx();
   c1->SetRightMargin(0.02);
   c1->SetLeftMargin(0.20);
+  c1->SetTicky(1);
+  c1->SetTickx(1);
 
   ratioLowPt->SetTitle("");
   //ratioLowPt->GetXaxis()->SetTitle("q_{T} [GeV/c]");
@@ -230,7 +239,7 @@ void ratio_2012_2010() {
   lineLowPt -> SetLineWidth(2);
   lineLowPt -> Draw ("same");
 
-  TLegend* tlLowPt = new TLegend(0.28, 0.64, 0.47, 0.83);
+  TLegend* tlLowPt = new TLegend(0.28, 0.54, 0.47, 0.73);
   tlLowPt->SetFillStyle (0);            
   tlLowPt->SetBorderSize(0);
   tlLowPt->SetTextFont(42);
@@ -240,7 +249,8 @@ void ratio_2012_2010() {
   tlLowPt -> Draw("same");
 
   lumiInfo(0.69,0.80,"",0.75);
-  PrintIt(c1,"CMS Preliminary");
+  //PrintIt(c1,"CMS Preliminary");
+  PrintIt(c1,"#font[61]{CMS}", "#font[52]{Preliminary}");
   //c1->SaveAs("diffXSec_muons_2012_vs_muons_2010_lowPt.png");
 
 
@@ -249,6 +259,8 @@ void ratio_2012_2010() {
   c2->SetLogx();
   c2->SetRightMargin(0.02);
   c2->SetLeftMargin(0.20);
+  c2->SetTicky(1);
+  c2->SetTickx(1);
 
   ratioHighPt->SetTitle("");
   //ratioHighPt->GetXaxis()->SetTitle("q_{T} [GeV/c]");
@@ -280,7 +292,7 @@ void ratio_2012_2010() {
   lineHighPt -> SetLineWidth(2);
   lineHighPt -> Draw ("same");
 
-  TLegend* tlHighPt = new TLegend(0.28, 0.71, 0.47, 0.90);
+  TLegend* tlHighPt = new TLegend(0.28, 0.54, 0.47, 0.73);
   tlHighPt->SetFillStyle (0);            
   tlHighPt->SetBorderSize(0);
   tlHighPt->SetTextFont(42);
@@ -292,7 +304,8 @@ void ratio_2012_2010() {
 
 
   lumiInfo(0.42,0.62,"",0.75);
-  PrintIt(c2,"CMS Preliminary");
+  //PrintIt(c2,"CMS Preliminary");
+  PrintIt(c1,"#font[61]{CMS}", "#font[52]{Preliminary}");
 
   //c2->SaveAs("diffXSec_muons_2012_vs_muons_2010_highPt.png");
 }
