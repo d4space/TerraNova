@@ -1876,11 +1876,11 @@ void DrawWithRatioTotal(TCanvas *canvas, char *cTitle,
   tlTotal -> SetTextFont(42);
   tlTotal -> SetFillColor(0);
   tlTotal -> SetBorderSize(0);
+  tlTotal -> AddEntry(gNum,"Data","lp");
+  tlTotal -> AddEntry(gDen2,"ResBos","f");
   tlTotal -> AddEntry(gDen,"Pythia/Powheg","f");
-  tlTotal -> AddEntry(gDen2,"Resbos","f");
   //tlTotal -> AddEntry(gDen3,"Madgraph","f");
   tlTotal -> AddEntry(gDen4,"FEWZ","f");
-  tlTotal -> AddEntry(gNum,"data","lp");
   tlTotal->Draw("same");
   
   //if (leg) leg ->Draw("same");
