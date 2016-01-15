@@ -559,9 +559,10 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   c->Divide(1,2,0,0);
   c->cd(1)->SetPad(0,0.3,1.0,1.0);
   c->cd(1)->SetTopMargin(0.1);
-  //c->cd(1)->SetBottomMargin(0.01);
-  c->cd(1)->SetBottomMargin(0.02);
-  c->cd(1)->SetLeftMargin(0.15);  
+  c->cd(1)->SetBottomMargin(0.01);
+  //c->cd(1)->SetBottomMargin(0.02);
+  //c->cd(1)->SetLeftMargin(0.15);  
+  c->cd(1)->SetLeftMargin(0.18);  
   c->cd(1)->SetRightMargin(0.07);  
   c->cd(1)->SetTickx(1);
   c->cd(1)->SetTicky(1);  
@@ -569,7 +570,8 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   //c->cd(2)->SetTopMargin(0.05);
   c->cd(2)->SetTopMargin(0.07);
   c->cd(2)->SetBottomMargin(0.45);
-  c->cd(2)->SetLeftMargin(0.15);
+  //c->cd(2)->SetLeftMargin(0.15);
+  c->cd(2)->SetLeftMargin(0.18);
   c->cd(2)->SetRightMargin(0.07);
   c->cd(2)->SetTickx(1);
   c->cd(2)->SetTicky(1);
@@ -777,7 +779,7 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
   //Loop for each Wpt bins==============
   // 0 is the total
   for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(0);ipt<4;ipt++)
+  //for( int ipt(4);ipt<5;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -2108,7 +2110,8 @@ void fitWEleMetModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // o
       }
 
     if (ipt==0)
-      sprintf(binlabel,"0 < p_{T}^{W} < 600 GeV");
+      //sprintf(binlabel,"0 < p_{T}^{W} < 600 GeV");
+      sprintf(binlabel,"p_{T}^{W} < 600 GeV");
     else
       sprintf(binlabel,"%.1f < p_{T}^{W} < %.1f GeV",WptBins[ipt-1],WptBins[ipt]);
 cout << "check 1" << endl;
@@ -2359,39 +2362,50 @@ cout << "check 5" << endl;
 	,Components(RooArgSet(*pdfWmp[ipt]))
 	,LineColor(linecolorW),LineStyle(2));
     dataMetp[ipt]->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
-    
+  
+    // Met plots
+    wmpframe->GetYaxis()->SetLabelSize(0.05);
+    wmpframe->GetYaxis()->SetTitleSize(0.07);
     sprintf(ylabel,"Events / %.1f GeV",hDataMetp[ipt]->GetBinWidth(1));
     sprintf(histName,"WpElNu_%d",ipt);
     plotMetp=new CPlot (histName,wmpframe,"","",ylabel);
     plotMetp->setOutDir(CPlot::sOutDir);
-    plotMetp->SetLegend(0.68,0.55,0.93,0.73);
-    plotMetp->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow e^{+}#nu","F");
-    //plotMetp->GetLegend()->AddEntry(hDummyDotLineW,"W^{+}#rightarrow e^{+}#nu","L");
-    plotMetp->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-    plotMetp->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-    plotMetp->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
-    plotMetp->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
-    plotMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+    //plotMetp->SetLegend(0.68,0.55,0.93,0.73);
+    plotMetp->SetLegend(0.63,0.48,0.93,0.70);
+    plotMetp->GetLegend()->AddEntry(hDummyData," #font[42]{Data}","PL");
+    plotMetp->GetLegend()->AddEntry(hDummyW," #font[42]{W^{+}#rightarrow e^{+}#nu }","F");
+    plotMetp->GetLegend()->AddEntry(hDummyEWK," #font[42]{EW+t#bar{t}}","F");
+    plotMetp->GetLegend()->AddEntry(hDummyQCD," #font[42]{QCD}","F");
+    //plotMetp->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
+    //plotMetp->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
+    //plotMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+    plotMetp->AddTextBox(CMStext,0.17,0.91,0.27,0.98,0);
+    plotMetp->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
+    plotMetp->AddTextBox(binlabel,0.55,0.75,0.92,0.81,0);
     //plotMetp->SetYRange(0.1,1.1*(hDataMetp[ipt]->GetMaximum()));
-    plotMetp->SetYRange(0.1,1.3*(hDataMetp[ipt]->GetMaximum()));
-    plotMetp->SetXRange(0,85);
+    plotMetp->SetYRange(0.1,1.1*(hDataMetp[ipt]->GetMaximum()));
+    plotMetp->SetXRange(0,100);
+    //plotMetp->SetYRange(0.1,1.3*(hDataMetp[ipt]->GetMaximum()));
+    //plotMetp->SetXRange(0,85);
     //plotMetp->SetXRange(0,70);
     plotMetp->Draw(c,kFALSE,format,1);
 
     //plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotMetpDiff=new CPlot (histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotMetpDiff=new CPlot (histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotMetpDiff=new CPlot (histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     plotMetpDiff->setOutDir(CPlot::sOutDir);
     //plotMetpDiff->AddHist1D(hMetpDiff,"EX0",ratioColor);
     plotMetpDiff->AddHist1D(hMetpDiff,"",kAzure+1,1,1001);
     //plotMetpDiff->SetYRange(-8,8);
     plotMetpDiff->SetYRange(-5,5);
-    plotMetpDiff->SetXRange(0,85);
+    //plotMetpDiff->SetXRange(0,85);
+    plotMetpDiff->SetXRange(0,100);
     //plotMetpDiff->SetXRange(0,70);
     //plotMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
     //plotMetpDiff->AddLine(0, 0,70, 0,kBlack,1);
-    plotMetpDiff->AddLine(0, 0,85, 0,kBlack,1);
+    //plotMetpDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotMetpDiff->AddLine(0, 0,100, 0,kBlack,1);
     //plotMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetpDiff->Draw(c,kTRUE,format,2);
@@ -2451,7 +2465,10 @@ cout << "check 5" << endl;
         ,Components(RooArgSet(*apdfWmp[ipt]))
         ,LineColor(linecolorW),LineStyle(2));
     antiMetp[ipt]->plotOn(awmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-    
+   
+
+    awmpframe->GetYaxis()->SetLabelSize(0.05);
+    awmpframe->GetYaxis()->SetTitleSize(0.07);
     if (ipt<10)
       sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetp[ipt]->GetBinWidth(1));
     else
@@ -2459,21 +2476,29 @@ cout << "check 5" << endl;
     sprintf(histName,"WpElNu_cont_%d",ipt);
     plotAntiMetp=new CPlot (histName,awmpframe,"","",ylabel);
     plotAntiMetp->setOutDir(CPlot::sOutDir);
-    plotAntiMetp->SetLegend(0.68,0.55,0.93,0.73);
-    plotAntiMetp->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotAntiMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow e^{+}#nu","F");
+    //plotAntiMetp->SetLegend(0.68,0.55,0.93,0.73);
+    plotAntiMetp->SetLegend(0.63,0.48,0.93,0.70);
+    plotAntiMetp->GetLegend()->AddEntry(hDummyData," #font[42]{Data}","PL");
+    plotAntiMetp->GetLegend()->AddEntry(hDummyW," #font[42]{W^{+}#rightarrow e^{+}#nu }","F");
+    plotAntiMetp->GetLegend()->AddEntry(hDummyEWK," #font[42]{EW+t#bar{t}}","F");
+    plotAntiMetp->GetLegend()->AddEntry(hDummyQCD," #font[42]{QCD}","F");
+    //plotAntiMetp->GetLegend()->AddEntry(hDummyData,"data","PL");
+    //plotAntiMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow e^{+}#nu","F");
     //plotAntiMetp->GetLegend()->AddEntry(hDummyDotLineW,"W^{+}#rightarrow e^{+}#nu","L");
-    plotAntiMetp->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-    plotAntiMetp->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-    plotAntiMetp->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
-    plotAntiMetp->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
-    plotAntiMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+    //plotAntiMetp->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
+    //plotAntiMetp->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
+    plotAntiMetp->AddTextBox(CMStext,0.17,0.91,0.27,0.98,0);
+    plotAntiMetp->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
+    plotAntiMetp->AddTextBox(binlabel,0.55,0.75,0.92,0.81,0);
+    //plotAntiMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     if (ipt<10)
     {
       plotAntiMetp->SetYRange(0.1,1.1*(hAntiDataMetp[ipt]->GetMaximum()));
-      plotAntiMetp->SetXRange(0,85);
-      //plotAntiMetp->SetXRange(0,70);
+      //plotAntiMetp->SetXRange(0,85);
+      plotAntiMetp->SetXRange(0,60);
     }
+    else if(ipt==0)
+    plotAntiMetp->SetXRange(0,80);
     else
       plotAntiMetp->SetYRange(0.1,1.5*(hHighWpTAnti_DataMetp->GetMaximum()));
     plotAntiMetp->Draw(c,kFALSE,format,1);
@@ -2481,17 +2506,24 @@ cout << "check 5" << endl;
 cout << "check 6" << endl;
     //plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotAntiMetpDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotAntiMetpDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotAntiMetpDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     plotAntiMetpDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
     plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"",kAzure+1,1,1001);
     //plotAntiMetpDiff->SetYRange(-8,8);
     plotAntiMetpDiff->SetYRange(-5,5);
     //plotAntiMetpDiff->SetYRange(-3,3);
-    plotAntiMetpDiff->SetXRange(0,85);
+    //plotAntiMetpDiff->SetXRange(0,85);
+    plotAntiMetpDiff->SetXRange(0,60);
+    if(ipt==0)
+    plotAntiMetpDiff->SetXRange(0,80);
     //plotAntiMetpDiff->SetXRange(0,70);
     //plotAntiMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetpDiff->AddLine(0, 0,85, 0,kBlack,1);
+    //plotAntiMetpDiff->AddLine(0, 0,85, 0,kBlack,1);
+    plotAntiMetpDiff->AddLine(0, 0,60, 0,kBlack,1);
+    if(ipt==0)
+    plotAntiMetpDiff->AddLine(0, 0,80, 0,kBlack,1);
     //plotAntiMetpDiff->AddLine(0, 0,70, 0,kBlack,1);
     //plotAntiMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotAntiMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
@@ -2503,7 +2535,8 @@ cout << "check 6" << endl;
     if (ipt<10)
     {
       //plotAntiMetp->SetYRange(1e-3*(hAntiDataMetp[ipt]->GetMaximum()),10*(hAntiDataMetp[ipt]->GetMaximum()));
-      plotAntiMetp->SetYRange(0.1,10*(hAntiDataMetp[ipt]->GetMaximum()));
+      //plotAntiMetp->SetYRange(0.1,10*(hAntiDataMetp[ipt]->GetMaximum()));
+      plotAntiMetp->SetYRange(1e-3*(hAntiDataMetp[ipt]->GetMaximum()),10*(hAntiDataMetp[ipt]->GetMaximum()));
     }
     else
       plotAntiMetp->SetYRange(1e-3*(hHighWpTAnti_DataMetp->GetMaximum()),10*(hHighWpTAnti_DataMetp->GetMaximum()));
@@ -2562,24 +2595,34 @@ cout << "check 6" << endl;
 	,LineColor(linecolorW),LineStyle(2));
     dataMetm[ipt]->plotOn(wmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
+    wmmframe->GetYaxis()->SetLabelSize(0.05);
+    wmmframe->GetYaxis()->SetTitleSize(0.07);
     sprintf(ylabel,"Events / %.1f GeV",hDataMetm[ipt]->GetBinWidth(1));
     sprintf(histName,"WmElNu_%d",ipt);
     plotMetm=new CPlot(histName,wmmframe,"","",ylabel);
     plotMetm->setOutDir(CPlot::sOutDir);
-    plotMetm->SetLegend(0.68,0.55,0.93,0.73);
-    plotMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
-    plotMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-    plotMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-    plotMetm->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
-    plotMetm->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
-    plotMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+    //plotMetm->SetLegend(0.68,0.55,0.93,0.73);
+    plotMetm->SetLegend(0.63,0.48,0.93,0.70);
+    plotMetm->GetLegend()->AddEntry(hDummyData," #font[42]{Data}","PL");
+    plotMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{#font[122]{-}}#rightarrow e^{#font[122]{-}}#bar{#nu} }","F");
+    plotMetm->GetLegend()->AddEntry(hDummyEWK," #font[42]{EW+t#bar{t}}","F");
+    plotMetm->GetLegend()->AddEntry(hDummyQCD," #font[42]{QCD}","F");
+    //plotMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
+    //plotMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
+    //plotMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
+    //plotMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
+    plotMetm->AddTextBox(CMStext,0.17,0.91,0.27,0.98,0);
+    plotMetm->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
+    plotMetm->AddTextBox(binlabel,0.55,0.75,0.92,0.81,0);
+    //plotMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     plotMetm->SetYRange(0.1,1.1*(hDataMetm[ipt]->GetMaximum()));
+    plotMetm->SetXRange(0,100);
     plotMetm->Draw(c,kFALSE,format,1);
 
     //plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     plotMetmDiff->setOutDir(CPlot::sOutDir);
     //plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
     plotMetmDiff->AddHist1D(hMetmDiff,"",kAzure+1,1,1001);
@@ -2587,10 +2630,12 @@ cout << "check 6" << endl;
     plotMetmDiff->SetYRange(-5,5);
     //plotMetmDiff->SetYRange(-3,3);
     //plotMetmDiff->SetXRange(0,85);
-    plotMetmDiff->SetXRange(0,70);
+    //plotMetmDiff->SetXRange(0,70);
+    plotMetmDiff->SetXRange(0,100);
     //plotMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
     //plotMetmDiff->AddLine(0, 0,85, 0,kBlack,1);
-    plotMetmDiff->AddLine(0, 0,70, 0,kBlack,1);
+    //plotMetmDiff->AddLine(0, 0,70, 0,kBlack,1);
+    plotMetmDiff->AddLine(0, 0,100, 0,kBlack,1);
     //plotMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetmDiff->Draw(c,kTRUE,format,2);
@@ -2652,6 +2697,8 @@ cout << "check 6" << endl;
     antiMetm[ipt]->plotOn(awmmframe
         ,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
+    awmmframe->GetYaxis()->SetLabelSize(0.05);
+    awmmframe->GetYaxis()->SetTitleSize(0.07);
     if (ipt<10)
       sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetm[ipt]->GetBinWidth(1));
     else
@@ -2659,27 +2706,38 @@ cout << "check 6" << endl;
     sprintf(histName,"WmElNu_cont_%d",ipt);
     plotAntiMetm=new CPlot(histName,awmmframe,"","",ylabel);
     plotAntiMetm->setOutDir(CPlot::sOutDir);
-    plotAntiMetm->SetLegend(0.68,0.55,0.93,0.73);
-    plotAntiMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotAntiMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
+    //plotAntiMetm->SetLegend(0.68,0.55,0.93,0.73);
+    plotAntiMetm->SetLegend(0.63,0.48,0.93,0.70);
+    plotAntiMetm->GetLegend()->AddEntry(hDummyData," #font[42]{Data}","PL");
+    plotAntiMetm->GetLegend()->AddEntry(hDummyW," #font[42]{W^{#font[122]{-}}#rightarrow e^{#font[122]{-}}#bar{#nu} }","F");
+    plotAntiMetm->GetLegend()->AddEntry(hDummyEWK," #font[42]{EW+t#bar{t}}","F");
+    plotAntiMetm->GetLegend()->AddEntry(hDummyQCD," #font[42]{QCD}","F");
+    //plotAntiMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
     //plotAntiMetm->GetLegend()->AddEntry(hDummyDotLineW,"W^{-}#rightarrow e^{-}#bar{#nu}","L");
-    plotAntiMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-    plotAntiMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-    plotAntiMetm->AddTextBox(lumitext,0.55,0.82,0.90,0.87,0);
-    plotAntiMetm->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
-    plotAntiMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-    if (ipt<10)
-    {
-      plotAntiMetm->SetYRange(0.1,1.1*(hAntiDataMetm[ipt]->GetMaximum()));
-      plotAntiMetm->SetXRange(0,85);
-    }
-    else
-      plotAntiMetm->SetYRange(0.1,1.5*(hHighWpTAnti_DataMetm->GetMaximum()));
+    //plotAntiMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
+    //plotAntiMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
+    //plotAntiMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
+    plotAntiMetm->AddTextBox(CMStext,0.17,0.91,0.27,0.98,0);
+    plotAntiMetm->AddTextBox(lumitext,0.65,0.91,0.98,0.97,0);
+    plotAntiMetm->AddTextBox(binlabel,0.55,0.75,0.92,0.81,0);
+    //plotAntiMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+    plotAntiMetm->SetYRange(0.1,1.1*(hAntiDataMetm[ipt]->GetMaximum()));
+    plotAntiMetm->SetXRange(0,60);
+    if(ipt==0)
+    plotAntiMetm->SetXRange(0,80);
+    //if (ipt<10)
+    //{
+    //  plotAntiMetm->SetYRange(0.1,1.1*(hAntiDataMetm[ipt]->GetMaximum()));
+    //  plotAntiMetm->SetXRange(0,85);
+    //}
+    //else
+    //  plotAntiMetm->SetYRange(0.1,1.5*(hHighWpTAnti_DataMetm->GetMaximum()));
     plotAntiMetm->Draw(c,kFALSE,format,1);
     
     //plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
     //plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
-    plotAntiMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    //plotAntiMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(data-mc)/#sigma_{data}");
+    plotAntiMetmDiff=new CPlot(histName,"","E_{T}^{miss} [GeV]","(Data-Fit)/#sigma_{Data}");
     plotAntiMetmDiff->setOutDir(CPlot::sOutDir);
     //plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
     plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"",kAzure+1,1,1001);
@@ -2687,10 +2745,14 @@ cout << "check 6" << endl;
     plotAntiMetmDiff->SetYRange(-5,5);
     //plotAntiMetmDiff->SetYRange(-3,3);
     //plotAntiMetmDiff->SetXRange(0,85);
-    plotAntiMetmDiff->SetXRange(0,70);
+    plotAntiMetmDiff->SetXRange(0,60);
+    if(ipt==0)
+    plotAntiMetmDiff->SetXRange(0,80);
     //plotAntiMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
     //plotAntiMetmDiff->AddLine(0, 0,85, 0,kBlack,1);
-    plotAntiMetmDiff->AddLine(0, 0,70, 0,kBlack,1);
+    plotAntiMetmDiff->AddLine(0, 0,60, 0,kBlack,1);
+    if(ipt==0)
+    plotAntiMetmDiff->AddLine(0, 0,80, 0,kBlack,1);
     //plotAntiMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
     //plotAntiMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetmDiff->Draw(c,kTRUE,format,2);
@@ -2699,8 +2761,8 @@ cout << "check 6" << endl;
     plotAntiMetm->SetName(histName);
     plotAntiMetm->SetLogy();
     if (ipt<10)
-      //plotAntiMetm->SetYRange(1e-3*(hAntiDataMetm[ipt]->GetMaximum()),10*(hAntiDataMetm[ipt]->GetMaximum()));
-      plotAntiMetm->SetYRange(0.1,10*(hAntiDataMetm[ipt]->GetMaximum()));
+      plotAntiMetm->SetYRange(1e-3*(hAntiDataMetm[ipt]->GetMaximum()),10*(hAntiDataMetm[ipt]->GetMaximum()));
+      //plotAntiMetm->SetYRange(0.1,10*(hAntiDataMetm[ipt]->GetMaximum()));
     else
       plotAntiMetm->SetYRange(1e-3*(hHighWpTAnti_DataMetm->GetMaximum()),10*(hHighWpTAnti_DataMetm->GetMaximum()));
     plotAntiMetm->Draw(c,kTRUE,format,1);
@@ -3565,7 +3627,8 @@ TH1D *makeDiffHist(TH1D* hData, TH1D* hFit, const TString name)
   hDiff->GetYaxis()->SetTitleOffset(0.55);
   //hDiff->GetYaxis()->SetTitleSize(0.13);
   hDiff->GetYaxis()->SetTitleSize(0.10);
-  hDiff->GetYaxis()->SetLabelSize(0.10);
+  //hDiff->GetYaxis()->SetLabelSize(0.10);
+  hDiff->GetYaxis()->SetLabelSize(0.12);
   hDiff->GetYaxis()->SetNdivisions(104);
   hDiff->GetYaxis()->CenterTitle();
   hDiff->GetXaxis()->SetTitleOffset(1.2);
