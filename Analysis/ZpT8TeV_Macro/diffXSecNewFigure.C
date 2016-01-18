@@ -515,7 +515,7 @@ int diffXSecNewFigure()
   lC1->RedrawAxis();
   lC1->GetFrame()->Draw();
 
-  sprintf(tmpName,"ZpTdist.");
+  sprintf(tmpName,"ZptNormDiffXsec.");
   lC1->SaveAs(tmpName+format);
 
   // Ratio plot style 
@@ -670,7 +670,7 @@ int diffXSecNewFigure()
   rL3->Draw();
   tL3->Draw();
 
-  sprintf(tmpName,"ZptRatio.");
+  sprintf(tmpName,"ZptNormDiffXsecRatio.");
   lC2->SaveAs(tmpName+format);
   
   return 0;
