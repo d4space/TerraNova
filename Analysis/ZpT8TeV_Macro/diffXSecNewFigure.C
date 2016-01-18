@@ -125,25 +125,51 @@ int diffXSecNewFigure()
   Resbos[16]	=        0.00002372; 	
   Resbos[17]	=        0.00000218;
 
-  double ResbosSyst[18];
-  ResbosSyst[0]		=	0.001694 ;
-  ResbosSyst[1]		=       0.002232 ; 	
-  ResbosSyst[2]		=       0.001961 ; 	
-  ResbosSyst[3]		=       0.001568 ; 	
-  ResbosSyst[4]		=       0.001186 ; 	
-  ResbosSyst[5]		=       0.0008501; 	
-  ResbosSyst[6]		=       0.0003468; 	
-  ResbosSyst[7]		=       0.0006431; 	
-  ResbosSyst[8]		=       0.0008231; 	
-  ResbosSyst[9]		=       0.0005566; 	
-  ResbosSyst[10]	=       0.0002914; 	
-  ResbosSyst[11]	=       0.0001034; 	
-  ResbosSyst[12]	=       5.643e-05; 	
-  ResbosSyst[13]	=       3.159e-05; 	
-  ResbosSyst[14]	=       1.899e-05; 	
-  ResbosSyst[15]	=       7.658e-06; 	
-  ResbosSyst[16]	=       2.876e-06; 	
-  ResbosSyst[17]	=       2.919e-07;
+  double ResbosPDF[18];
+  ResbosPDF[0]		=	0.00110074 ;
+  ResbosPDF[1]		=       0.0014006  ; 	
+  ResbosPDF[2]		=       0.000624845; 	
+  ResbosPDF[3]		=       0.000302656; 	
+  ResbosPDF[4]		=       0.00024098 ; 	
+  ResbosPDF[5]		=       0.000257975; 	
+  ResbosPDF[6]		=       0.000322001; 	
+  ResbosPDF[7]		=       0.000284742; 	
+  ResbosPDF[8]		=       0.000196964; 	
+  ResbosPDF[9]		=       0.000123807; 	
+  ResbosPDF[10]		=       8.69702e-05; 	
+  ResbosPDF[11]		=       5.13656e-05; 	
+  ResbosPDF[12]		=       2.81239e-05; 	
+  ResbosPDF[13]		=       1.49415e-05; 	
+  ResbosPDF[14]		=       8.08712e-06; 	
+  ResbosPDF[15]		=       3.5732e-06 ; 	
+  ResbosPDF[16]		=       1.51808e-06; 	
+  ResbosPDF[17]		=       1.83338e-07;
+
+  double ResbosScale[18];
+  ResbosScale[0]	=	0.00128753 ;
+  ResbosScale[1]	=       0.00173745 ; 	
+  ResbosScale[2]	=       0.0018593  ; 	
+  ResbosScale[3]	=       0.00153816 ; 	
+  ResbosScale[4]	=       0.00116078 ; 	
+  ResbosScale[5]	=       0.000809986; 	
+  ResbosScale[6]	=       0.0001288  ; 	
+  ResbosScale[7]	=       0.000576602; 	
+  ResbosScale[8]	=       0.000799176; 	
+  ResbosScale[9]	=       0.000542706; 	
+  ResbosScale[10]	=       0.00027809 ; 	
+  ResbosScale[11]	=       8.97009e-05; 	
+  ResbosScale[12]	=       4.89186e-05; 	
+  ResbosScale[13]	=       2.78379e-05; 	
+  ResbosScale[14]	=       1.71874e-05; 	
+  ResbosScale[15]	=       6.77377e-06; 	
+  ResbosScale[16]	=       2.44316e-06; 	
+  ResbosScale[17]	=       2.27156e-07;
+
+  double ResbosTotalUnc[18];
+  for(int i=0;i<18;i++)
+  {
+    ResbosTotalUnc[i] = sqrt(ResbosPDF[i]*ResbosPDF[i] + ResbosScale[i]*ResbosScale[i]);
+  }
 
   double Powheg[18];
   Powheg[0]	=	 0.0232823816;
@@ -335,7 +361,7 @@ int diffXSecNewFigure()
 
   for(int i=0;i<18;i++)
   {
-    cout << "Resbos : " << Resbos[i] << " +- " << ResbosSyst[i] << endl;
+    cout << "Resbos : " << Resbos[i] << "\t PDF : " << ResbosPDF[i] << "\t Scale : " << ResbosScale[i] <<  endl;
   }
 
   for(int i=0;i<18;i++)
@@ -368,7 +394,8 @@ int diffXSecNewFigure()
   double DataRatioBand[18];
   double DataStatSystRatioBand[18];
   double ResbosRatioBand[18];
-  double ResbosSystRatioBand[18];
+  double ResbosPDFRatioBand[18];
+  double ResbosScaleRatioBand[18];
   double PowhegRatioBand[18];
   double PowhegStatRatioBand[18];
   double PowhegPDFRatioBand[18];
@@ -383,7 +410,8 @@ int diffXSecNewFigure()
     DataRatioBand[i] = Data[i] / Data[i] ;
     DataStatSystRatioBand[i] = DataStatSyst[i] / Data[i] ;
     ResbosRatioBand[i] = Resbos[i] / Data[i] ;
-    ResbosSystRatioBand[i] = ResbosSyst[i] / Data[i] ;
+    ResbosPDFRatioBand[i] = ResbosPDF[i] / Data[i] ;
+    ResbosScaleRatioBand[i] = (ResbosPDF[i] + ResbosScale[i]) / Data[i] ;
     PowhegRatioBand[i] = Powheg[i] / Data[i];
     PowhegStatRatioBand[i] = PowhegStat[i] / Data[i] ;
     PowhegPDFRatioBand[i] = (PowhegStat[i] + PowhegPDFNum[i]) / Data[i] ;
@@ -399,8 +427,9 @@ int diffXSecNewFigure()
   TGraphAsymmErrors *tgData = new TGraphAsymmErrors(n,point,Data,error_xlow,error_xhigh,DataStatSyst,DataStatSyst);
   TGraphAsymmErrors *tgDataStatSystRatioBand = new TGraphAsymmErrors(n,point,DataRatioBand,error_xlow,error_xhigh,DataStatSystRatioBand,DataStatSystRatioBand);
   
-  TGraphAsymmErrors *tgResbos = new TGraphAsymmErrors(n,point,Resbos,error_xlow,error_xhigh,ResbosSyst,ResbosSyst);
-  TGraphAsymmErrors *tgResbosSystRatioBand = new TGraphAsymmErrors(n,point,ResbosRatioBand,error_xlow,error_xhigh,ResbosSystRatioBand,ResbosSystRatioBand);
+  TGraphAsymmErrors *tgResbos = new TGraphAsymmErrors(n,point,Resbos,error_xlow,error_xhigh,ResbosTotalUnc,ResbosTotalUnc);
+  TGraphAsymmErrors *tgResbosPDFRatioBand = new TGraphAsymmErrors(n,point,ResbosRatioBand,error_xlow,error_xhigh,ResbosPDFRatioBand,ResbosPDFRatioBand);
+  TGraphAsymmErrors *tgResbosScaleRatioBand = new TGraphAsymmErrors(n,point,ResbosRatioBand,error_xlow,error_xhigh,ResbosScaleRatioBand,ResbosScaleRatioBand);
   
   TGraphAsymmErrors *tgPowheg = new TGraphAsymmErrors(n,point,Powheg,error_xlow,error_xhigh,PowhegTotalUnc,PowhegTotalUnc);
   TGraphAsymmErrors *tgPowhegStatRatioBand = new TGraphAsymmErrors(n,point,PowhegRatioBand,error_xlow,error_xhigh,PowhegStatRatioBand,PowhegStatRatioBand);
@@ -428,7 +457,8 @@ int diffXSecNewFigure()
   Style_t MarkerStyle_FEWZ = 21;
 
   // Band Color Transparent
-  TColor *colBlue = gROOT->GetColor(kBlue);		// Used ResBos distribution and ratio band
+  TColor *colBlue = gROOT->GetColor(kBlue);		// Used ResBos distribution and PDF ratio band
+  TColor *colViolet = gROOT->GetColor(kViolet);		// Used ResBos scale ratio band
   TColor *colRed = gROOT->GetColor(kRed);		// Used Powheg distribution
   TColor *colRedp2 = gROOT->GetColor(kRed+2);		// used Powheg ratio band
   TColor *colYellow = gROOT->GetColor(kYellow);		// used Powheg ratio band
@@ -436,16 +466,18 @@ int diffXSecNewFigure()
   TColor *colGreenp1 = gROOT->GetColor(kGreen+1);	// used FEWZ stat ratio band
   TColor *colGreenp3 = gROOT->GetColor(kGreen+3);	// used FEWZ PDF ratio band
   TColor *colCyanm9 = gROOT->GetColor(kCyan-9);		// used FEWZ scale ratio band
+  colBlue->SetAlpha(0.5);
+  colViolet->SetAlpha(0.2);
   colRedp2->SetAlpha(0.6);
   colRed->SetAlpha(0.2);
-  colBlue->SetAlpha(0.3);
   colYellow->SetAlpha(0.6);
   colGreen->SetAlpha(0.5); 
   colGreenp1->SetAlpha(0.6); 
   colGreenp3->SetAlpha(0.7); 
   colCyanm9->SetAlpha(0.7); 
 
-  Color_t BandColor_ResBos = kBlue;
+  Color_t BandColor_ResBos_PDF = kBlue;
+  Color_t BandColor_ResBos_scale = kViolet;
   Color_t BandColor_POWHEG_stat = kRed+2;
   Color_t BandColor_POWHEG_PDF = kYellow;
   Color_t BandColor_FEWZ_stat = kGreen+3;
@@ -529,9 +561,13 @@ int diffXSecNewFigure()
   tgDataStatSystRatioBand->SetFillColor(kGray+1);
 
   // Resbos Ratio plot style
-  tgResbosSystRatioBand->SetMarkerColor(MarkerColor_ResBos);
-  tgResbosSystRatioBand->SetMarkerStyle(MarkerStyle_ResBos);
-  tgResbosSystRatioBand->SetFillColor(BandColor_ResBos);
+  tgResbosPDFRatioBand->SetMarkerColor(MarkerColor_ResBos);
+  tgResbosPDFRatioBand->SetMarkerStyle(MarkerStyle_ResBos);
+  tgResbosPDFRatioBand->SetFillColor(BandColor_ResBos_PDF);
+
+  tgResbosScaleRatioBand->SetMarkerColor(MarkerColor_ResBos);
+  tgResbosScaleRatioBand->SetMarkerStyle(MarkerStyle_ResBos);
+  tgResbosScaleRatioBand->SetFillColor(BandColor_ResBos_scale);
 
   // Powheg Ratio plot style
   tgPowhegStatRatioBand->SetMarkerColor(MarkerColor_POWHEG);
@@ -574,15 +610,15 @@ int diffXSecNewFigure()
   lC2->cd(1)->SetTicky(1);
   lC2->cd(1)->SetLogx(1);
   
-  TLegend *rL1 =new TLegend(0.18,0.15,0.60,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
+  TLegend *rL1 =new TLegend(0.18,0.04,0.60,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
   rL1-> SetNColumns(2);
-  rL1->AddEntry(tgResbosSystRatioBand,"ResBos syst","FP");
+  rL1->AddEntry(tgResbosPDFRatioBand,"ResBos PDF","FP");
   rL1->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
-  //rL1->AddEntry(tgDataStatSystRatioBand,"","");
+  rL1->AddEntry(tgResbosScaleRatioBand,"ResBos scales","FP");
   rL1->SetTextSize(0.08);
 
   TLegend *tL1 =new TLegend(0.18,0.82,0.34,0.92); tL1->SetFillColor(0); tL1->SetBorderSize(0);
-  tL1->AddEntry(tgResbosSystRatioBand,"ResBos","");
+  tL1->AddEntry(tgResbosPDFRatioBand,"ResBos","");
   tL1->SetTextSize(0.12);
   tL1->SetTextFont(2);
 
@@ -607,7 +643,8 @@ int diffXSecNewFigure()
   tgDataStatSystRatioBand->GetXaxis()->SetTitleSize(20);
   tgDataStatSystRatioBand->GetXaxis()->SetLabelSize(0.11);
   tgDataStatSystRatioBand->Draw("2 A");
-  tgResbosSystRatioBand->Draw("2 P");
+  tgResbosPDFRatioBand->Draw("2 P");
+  tgResbosScaleRatioBand->Draw("2 P");
   rL1->Draw();
   tL1->Draw();
   tb4->Draw();
