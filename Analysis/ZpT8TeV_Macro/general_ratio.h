@@ -214,17 +214,14 @@ void DrawWithRes(TCanvas* canvas, char* title, char* title2,
     double resid = (error) ? ((data-mc)/error) : 0.0;
     if (fabs(resid) > 100) resid = 10;
   
-    //hPull->SetBinContent(i,resid);
-  // cout << i << ", " << resid << endl;
-     //double ratio = data/mc;
-     double ratio = mc/data;
+    hPull->SetBinContent(i,resid); // Chi2 style
+    //double ratio = mc/data; // MC/Data style
 
      double sigmaR = sqrt(((1/data)*(1/data))*(sigmaD*sigmaD)+ ((data/(mc*mc))*(data/(mc*mc)))*(sigmaM*sigmaM));
    //  std::cout << iBin << ") " << yNum << "/" << yDen << ", Ratio= " << ratio << std::endl;
-     //hPull->SetBinContent(i,resid);
-     hPull->SetBinContent(i,ratio);
-     //hPull->SetBinError(i,sigmaR);
-cout << i << ", " << ratio << endl;  
+     hPull->SetBinContent(i,resid); // Chi2 style 
+     hPull->SetBinError(i,sigmaR);  // Chi2 styl
+     //hPull->SetBinContent(i,ratio); // MC/Data style
 }
 
   //----------------------------------------------------------------------------
@@ -240,10 +237,10 @@ cout << i << ", " << ratio << endl;
   if (isLogScaleX) pad1->SetLogx();
   pad1->SetBottomMargin(0.01);
   pad1->SetLeftMargin(0.12);
-  pad2->SetTopMargin   (0.05);
+  pad2->SetTopMargin   (0.10); // Chi2 style
+  //pad2->SetTopMargin   (0.05); // MC/Data style
   pad2->SetBottomMargin(0.33);
   pad2->SetLeftMargin(0.12);
-  //pad2->SetTopMargin   (0.10);
 
   pad1->SetTicky(1);
   pad1->SetTickx(1);
@@ -310,15 +307,16 @@ cout << i << ", " << ratio << endl;
   TAxis *yPull = NULL;
   char xAxisName[200];
   sprintf(xAxisName,"%s",hData->GetXaxis()->GetTitle());
-  //axis1F(hPull,xPull,yPull,xAxisName,"(data-mc)/#sigma_{data}");
-  //axis1F(hPull,xPull,yPull,xAxisName,"mc/data");  
-  axis1F(hPull,xPull,yPull,xAxisName,"MC/Data");  
-//if (hPull->GetMaximum() > 100) {
-    std::cout << "Setting the hPull boundaries!\n";
-  hPull->SetMinimum(0.6); // From bin1
-  hPull->SetMaximum(1.2); // From bin1
-  //hPull->SetMinimum(-1); // After bin9
-  //hPull->SetMaximum(3); // After bin9
+  axis1F(hPull,xPull,yPull,xAxisName,"(Data-MC)/#sigma_{Data}"); // Chi2 style
+  //axis1F(hPull,xPull,yPull,xAxisName,"MC/Data"); // MC/Data style 
+  //if (hPull->GetMaximum() > 100) {
+  //std::cout << "Setting the hPull boundaries!\n";
+  hPull->SetMinimum(-5); // Chi2 style 
+  hPull->SetMaximum(5);  // Chi2 style
+  //hPull->SetMinimum(0.6); // MC/Data style , From bin1  
+  //hPull->SetMaximum(1.2); // MC/Data style , From bin1
+  //hPull->SetMinimum(-1); //  MC/Data style , After bin9
+  //hPull->SetMaximum(3); //   MC/Data style , After bin9
   //}
 
 
@@ -329,32 +327,32 @@ cout << i << ", " << ratio << endl;
   hPull->GetXaxis()->SetTitleSize  (0.12);
   hPull->GetXaxis()->SetNdivisions(510);
 
-  hPull->GetYaxis()->SetLabelSize  (0.12);
+  hPull->GetYaxis()->SetLabelSize(0.12);
+  hPull->GetYaxis()->SetNdivisions(104);
   hPull->GetYaxis()->CenterTitle(1);
   //hPull->GetYaxis()->SetTitleOffset(0.3);
   hPull->GetYaxis()->SetTitleOffset(0.4);
   hPull->GetYaxis()->SetTitleSize  (0.12);
 
-  //hPull->SetFillColor(856);
-  //hPull->SetFillColor(856);
-  //hPull->SetFillStyle(1001);
-  //hPull->Draw("histo b");
-  hPull->SetMarkerColor(2);
-  hPull->SetMarkerStyle(20);
-  hPull->SetMarkerSize(1.0);
+  hPull->SetFillColor(856);
+  hPull->SetFillStyle(1001);
+  hPull->Draw("histo b"); //
+  //hPull->SetMarkerColor(2);  // MC/Data style  
+  //hPull->SetMarkerStyle(20); // MC/Data style
+  //hPull->SetMarkerSize(1.0); // MC/Data style
  
-  TColor *colBlue = gROOT->GetColor(kBlue+1);
-  colBlue->SetAlpha(0.3);
+  //TColor *colBlue = gROOT->GetColor(kBlue+1);
+  //colBlue->SetAlpha(0.3);
 
   TGraphAsymmErrors* tgDataErrBand = new TGraphAsymmErrors(hData_Clone);
-  //tgDataErrBand->SetFillStyle(3001); 
-  //tgDataErrBand->SetFillStyle(0); 
-  //tgDataErrBand->SetFillColor(kBlack); 
-  tgDataErrBand->SetFillColor(kBlue+1); 
-  tgDataErrBand->SetLineColor(kBlack); 
+  tgDataErrBand->SetFillStyle(3001); 
+  tgDataErrBand->SetFillStyle(0); 
+  tgDataErrBand->SetFillColor(kBlack); 
+  //tgDataErrBand->SetFillColor(kBlue+1); // MC/Data style 
+  //tgDataErrBand->SetLineColor(kBlack);  // MC/Data style
 
-  hPull->Draw("P");
-  tgDataErrBand->Draw("2"); 
+  //hPull->Draw("P");
+  //tgDataErrBand->Draw("2"); 
 
   //pad2->Update();
   //pad2->GetFrame()->DrawClone();
