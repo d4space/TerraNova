@@ -349,11 +349,13 @@ int ZWratio_Zoom_logScale()
   LeptonCut->AddText("p_{T}>20 GeV, |#eta |<2.1");
 
   hWZratio_RD->GetYaxis()->SetRangeUser(-1.2,6.5);
-  hWZratio_RD->GetYaxis()->SetTitleOffset(0.8);
+  //hWZratio_RD->GetYaxis()->SetTitleOffset(0.8);
+  hWZratio_RD->GetYaxis()->SetTitleOffset(1.0);
   hWZratio_RD->GetYaxis()->SetLabelSize(0.09);
-  hWZratio_RD->GetYaxis()->SetTitleSize(0.07);
+  hWZratio_RD->GetYaxis()->SetTitleSize(0.069);
   hWZratio_RD->GetYaxis()->SetNdivisions(410);
-  hWZratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{Z}} #frac{d#sigma^{Z}}{p_{T}^{Z}})/(#frac{1}{#sigma^{W}} #frac{d#sigma^{W}}{p_{T}^{W}})");
+  //hWZratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{Z}} #frac{d#sigma^{Z}}{p_{T}^{Z}})/(#frac{1}{#sigma^{W}} #frac{d#sigma^{W}}{p_{T}^{W}})");
+  hWZratio_RD->GetYaxis()->SetTitle("#left(#frac{1}{#lower[0.30]{#sigma}} #frac{d#sigma}{#lower[0.10]{p_{T}^{Z}}}#right) #lower[0.5]{#scale[2]{/}}#left(#frac{1}{#lower[0.30]{#sigma}} #frac{d#sigma}{#lower[0.07]{p_{T}^{W}}}#right)");
   hWZratio_RD->GetXaxis()->SetTitleOffset(0.6);
   hWZratio_RD->GetXaxis()->SetTitleSize(0.1);
   hWZratio_RD->GetXaxis()->SetLabelSize(0);

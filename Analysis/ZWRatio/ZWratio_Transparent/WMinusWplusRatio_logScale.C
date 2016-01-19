@@ -905,11 +905,15 @@ int WMinusWplusRatio_logScale()
   LeptonCut->AddText("p_{T}>20 Gev, |#eta |<2.1");
 
   hWmWpratio_RD->GetYaxis()->SetRangeUser(0.5,1.5);
-  hWmWpratio_RD->GetYaxis()->SetTitleOffset(0.9);
+  hWmWpratio_RD->GetYaxis()->SetTitleOffset(1.2);
   hWmWpratio_RD->GetYaxis()->SetLabelSize(0.09);
-  hWmWpratio_RD->GetYaxis()->SetTitleSize(0.07);
+  hWmWpratio_RD->GetYaxis()->SetTitleSize(0.06);
   //hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{-}}} #frac{d#sigma^{W^{-}}}{p_{T}^{W^{-}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
-  hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{#font[122]{\55}}}} #frac{d#sigma^{W^{#font[122]{\55}}}}{p_{T}^{W^{#font[122]{\55}}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
+  //hWmWpratio_RD->GetYaxis()->SetTitle("(#frac{1}{#sigma^{W^{#font[122]{\55}}}} #frac{d#sigma^{W^{#font[122]{\55}}}}{p_{T}^{W^{#font[122]{\55}}}})/(#frac{1}{#sigma^{W^{+}}} #frac{d#sigma^{W^{+}}}{p_{T}^{W^{+}}})");
+  //hWmWpratio_RD->GetYaxis()->SetTitle("#left(#frac{1}{#sigma} #frac{d#sigma}{p_{T}^{W^{#font[122]{\55}}}}#right)/#left(#frac{1}{#sigma} #frac{d#sigma}{p_{T}^{W^{+}}}#right)");
+  //hWmWpratio_RD->GetYaxis()->SetTitle("#left(#frac{1}{#sigma} #frac{d#sigma}{p_{T}^{W-}}#right)/#left(#frac{1}{#sigma} #frac{d#sigma}{p_{T}^{W+}}#right)");
+  //hWmWpratio_RD->GetYaxis()->SetTitle("#left(#frac{1}{#sigma} #frac{d#sigma}{#lower[0.15]{p_{T}^{W^{#font[122]{\55}}}}}#right) #lower[0.4]{#scale[2]{/}}#left(#frac{1}{#sigma} #frac{d#sigma}{#lower[0.07]{p_{T}^{W^{+}}}}#right)");
+  hWmWpratio_RD->GetYaxis()->SetTitle("#left(#frac{1}{#lower[0.30]{#sigma}} #frac{d#sigma}{#lower[0.10]{p_{T}^{W#font[122]{\55}}}}#right) #lower[0.5]{#scale[2]{/}}#left(#frac{1}{#lower[0.30]{#sigma}} #frac{d#sigma}{#lower[0.07]{p_{T}^{W+}}}#right)");
 
   hWmWpratio_RD->GetYaxis()->SetNdivisions(405);
   hWmWpratio_RD->GetXaxis()->SetTitleOffset(1.);
