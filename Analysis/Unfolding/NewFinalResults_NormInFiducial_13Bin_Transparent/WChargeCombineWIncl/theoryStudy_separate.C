@@ -698,7 +698,7 @@ int theoryStudy_separate(const TString BaseName)
   TLegend *rL1 =new TLegend(0.18,0.05,0.60,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
   rL1-> SetNColumns(2);
   //rL1->AddEntry(RatioResbosErrBand,"ResBos syst","F");
-  rL1->AddEntry(RatioResbosErrBand,"ResBos syst","FP");
+  rL1->AddEntry(RatioResbosErrBand,"ResBos scales","FP");
   //rL1->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   hRatioDataStatErr->SetTitle("");
   rL1->AddEntry(DataRatio,"Data stat+syst","F");
