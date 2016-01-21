@@ -410,8 +410,8 @@ int diffXSecNewFigure()
     DataRatioBand[i] = Data[i] / Data[i] ;
     DataStatSystRatioBand[i] = DataStatSyst[i] / Data[i] ;
     ResbosRatioBand[i] = Resbos[i] / Data[i] ;
-    ResbosPDFRatioBand[i] = ResbosPDF[i] / Data[i] ;
-    ResbosScaleRatioBand[i] = (ResbosPDF[i] + ResbosScale[i]) / Data[i] ;
+    ResbosScaleRatioBand[i] = ResbosScale[i] / Data[i] ;
+    ResbosPDFRatioBand[i] = (ResbosPDF[i] + ResbosScale[i]) / Data[i] ;
     PowhegRatioBand[i] = Powheg[i] / Data[i];
     PowhegStatRatioBand[i] = PowhegStat[i] / Data[i] ;
     PowhegPDFRatioBand[i] = (PowhegStat[i] + PowhegPDFNum[i]) / Data[i] ;
@@ -457,8 +457,8 @@ int diffXSecNewFigure()
   Style_t MarkerStyle_FEWZ = 21;
 
   // Band Color Transparent
-  TColor *colBlue = gROOT->GetColor(kBlue);		// Used ResBos distribution and PDF ratio band
-  TColor *colViolet = gROOT->GetColor(kViolet);		// Used ResBos scale ratio band
+  TColor *colBlue = gROOT->GetColor(kBlue);		// Used ResBos distribution and scale ratio band
+  TColor *colViolet = gROOT->GetColor(kViolet);		// Used ResBos PDF ratio band
   TColor *colRed = gROOT->GetColor(kRed);		// Used Powheg distribution
   TColor *colRedp2 = gROOT->GetColor(kRed+2);		// used Powheg ratio band
   TColor *colYellow = gROOT->GetColor(kYellow);		// used Powheg ratio band
@@ -466,8 +466,8 @@ int diffXSecNewFigure()
   TColor *colGreenp1 = gROOT->GetColor(kGreen+1);	// used FEWZ stat ratio band
   TColor *colGreenp3 = gROOT->GetColor(kGreen+3);	// used FEWZ PDF ratio band
   TColor *colCyanm9 = gROOT->GetColor(kCyan-9);		// used FEWZ scale ratio band
-  colBlue->SetAlpha(0.5);
-  colViolet->SetAlpha(0.2);
+  colBlue->SetAlpha(0.3);
+  colViolet->SetAlpha(0.7);
   colRedp2->SetAlpha(0.6);
   colRed->SetAlpha(0.2);
   colYellow->SetAlpha(0.6);
@@ -476,8 +476,8 @@ int diffXSecNewFigure()
   colGreenp3->SetAlpha(0.7); 
   colCyanm9->SetAlpha(0.7); 
 
-  Color_t BandColor_ResBos_PDF = kBlue;
-  Color_t BandColor_ResBos_scale = kViolet;
+  Color_t BandColor_ResBos_scale = kBlue;
+  Color_t BandColor_ResBos_PDF = kViolet;
   Color_t BandColor_POWHEG_stat = kRed+2;
   Color_t BandColor_POWHEG_PDF = kYellow;
   Color_t BandColor_FEWZ_stat = kGreen+3;
@@ -612,9 +612,9 @@ int diffXSecNewFigure()
   
   TLegend *rL1 =new TLegend(0.18,0.04,0.60,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
   rL1-> SetNColumns(2);
-  rL1->AddEntry(tgResbosPDFRatioBand,"ResBos PDF","FP");
-  rL1->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
   rL1->AddEntry(tgResbosScaleRatioBand,"ResBos scales","FP");
+  rL1->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
+  rL1->AddEntry(tgResbosPDFRatioBand,"ResBos PDF","F");
   rL1->SetTextSize(0.08);
 
   TLegend *tL1 =new TLegend(0.18,0.82,0.34,0.92); tL1->SetFillColor(0); tL1->SetBorderSize(0);
@@ -660,7 +660,7 @@ int diffXSecNewFigure()
   rL2-> SetNColumns(2);
   rL2->AddEntry(tgPowhegStatRatioBand,"POWHEG stat","FP");
   rL2->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
-  rL2->AddEntry(tgPowhegPDFRatioBand,"POWHEG PDF    ","FP");
+  rL2->AddEntry(tgPowhegPDFRatioBand,"POWHEG PDF    ","F");
   //rL2->AddEntry(hRatioDataStatErr,"","");
   rL2->SetTextSize(0.09);
 
@@ -687,8 +687,8 @@ int diffXSecNewFigure()
   rL3-> SetNColumns(2);
   rL3->AddEntry(tgFEWZStatRatioBand,"FEWZ stat","FP");
   rL3->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
-  rL3->AddEntry(tgFEWZPDFRatioBand,"FEWZ PDF","FP");
-  rL3->AddEntry(tgFEWZScaleRatioBand,"FEWZ scales","FP");
+  rL3->AddEntry(tgFEWZPDFRatioBand,"FEWZ PDF","F");
+  rL3->AddEntry(tgFEWZScaleRatioBand,"FEWZ scales","F");
   rL3->SetTextSize(0.06);
 
   TLegend *tL3 =new TLegend(0.18,0.82,0.34,0.92); tL3->SetFillColor(0); tL3->SetBorderSize(0);
