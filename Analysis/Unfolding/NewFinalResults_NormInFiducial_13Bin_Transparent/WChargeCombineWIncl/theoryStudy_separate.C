@@ -753,8 +753,7 @@ int theoryStudy_separate(const TString BaseName)
   //rL2->AddEntry(RatioPowhegStatErrBand,"POWHEG stat","F");
   rL2->AddEntry(RatioPowhegStatErrBand,"POWHEG stat","FP");
   rL2->AddEntry(DataRatio,"Data stat+syst","F");
-  //rL2->AddEntry(RatioPowhegStatPDFErrBand,"POWHEG PDF    ","F");
-  rL2->AddEntry(RatioPowhegStatPDFErrBand,"POWHEG PDF    ","FP");
+  rL2->AddEntry(RatioPowhegStatPDFErrBand,"POWHEG PDF    ","F");
   //rL2->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   rL2->AddEntry(hRatioDataStatErr,"","");
   rL2->SetTextSize(0.09);
@@ -798,10 +797,8 @@ int theoryStudy_separate(const TString BaseName)
   rL3->AddEntry(RatioFEWZStatErrBand,"FEWZ stat","FP");
   //rL3->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   rL3->AddEntry(DataRatio,"Data stat+syst","F");
-  //rL3->AddEntry(RatioFEWZStatPDFErrBand,"FEWZ PDF","F");
-  //rL3->AddEntry(RatioFEWZStatPDFScaleErrBand,"FEWZ scales","F");
-  rL3->AddEntry(RatioFEWZStatPDFErrBand,"FEWZ PDF","FP");
-  rL3->AddEntry(RatioFEWZStatPDFScaleErrBand,"FEWZ scales","FP");
+  rL3->AddEntry(RatioFEWZStatPDFErrBand,"FEWZ PDF","F");
+  rL3->AddEntry(RatioFEWZStatPDFScaleErrBand,"FEWZ scales","F");
   rL3->SetTextSize(0.06);
 
   TLegend *tL3 =new TLegend(0.17,0.85,0.37,0.95); tL3->SetFillColor(0); tL3->SetBorderSize(0);
