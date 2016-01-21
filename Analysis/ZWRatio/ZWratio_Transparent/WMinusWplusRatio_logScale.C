@@ -852,13 +852,28 @@ int WMinusWplusRatio_logScale()
     hRatioFEWZTotalErr->SetBinError(i+1,WmWpratioTotalErr_FEWZ[i] / WmWpratio_RD[i]);
   }
 
+  // Marker Color
+  Color_t MarkerColor_Resbos = kBlue+2;
+  Color_t MarkerColor_Powheg = kRed+3;
+  Color_t MarkerColor_FEWZ = kGreen+4;
+
+  // Marker Style
+  Style_t MarkerStyle_Resbos =21;
+  Style_t MarkerStyle_Powheg =21;
+  Style_t MarkerStyle_FEWZ =21;
+
+  // Band Color
+  Color_t BandColor_Resbos = kBlue;
+  Color_t BandColor_Powheg = kRed;
+  Color_t BandColor_FEWZ = kGreen;
+
   //Color Transparent
-  TColor *colRed = gROOT->GetColor(kRed);
-  TColor *colBlue = gROOT->GetColor(kBlue);
-  TColor *colGreen = gROOT->GetColor(kGreen);
-  colRed->SetAlpha(0.2);
-  colBlue->SetAlpha(0.2);
-  colGreen->SetAlpha(0.2);
+  TColor *colResbos = gROOT->GetColor(BandColor_Resbos);
+  TColor *colPowheg = gROOT->GetColor(BandColor_Powheg);
+  TColor *colFEWZ = gROOT->GetColor(BandColor_FEWZ);
+  colResbos->SetAlpha(0.2);
+  colPowheg->SetAlpha(0.2);
+  colFEWZ->SetAlpha(0.2);
   //gStyle->SetOptStat(0); 
 
   // Draw 
@@ -976,12 +991,22 @@ int WMinusWplusRatio_logScale()
   C1->cd(2)->SetTicky(1);
   C1->cd(2)->SetLogx(1);
 
-  TH1D *hRatioDummy = new TH1D("hRatioDummy","",nBins-1,WptBins);
   
   TGraphErrors* tgRatioData = new TGraphErrors(hRatioDataTotalErr);
   TGraphErrors* tgRatioPowheg = new TGraphErrors(hRatioPowhegTotalErr);
   TGraphErrors* tgRatioResbos = new TGraphErrors(hRatioResbosTotalErr);
   TGraphErrors* tgRatioFEWZ = new TGraphErrors(hRatioFEWZTotalErr);
+  
+  TLegend *L2 = new TLegend(0.25,0.80,0.64,0.95);
+  L2->SetFillColor(0);
+  L2->SetBorderSize(0);
+  L2->SetNColumns(2);
+  L2->AddEntry(tgRatioData,"Data unc.","F");
+  L2->AddEntry(tgRatioResbos,"ResBos","fp");
+  L2->AddEntry(tgRatioPowheg,"POWHEG","fp");
+  L2->AddEntry(tgRatioFEWZ,"FEWZ","fp");
+  
+  TH1D *hRatioDummy = new TH1D("hRatioDummy","",nBins-1,WptBins);
   
   // set canvas range and Y axis title
   hRatioDummy->GetYaxis()->SetRangeUser(0.5,1.5);
@@ -1004,18 +1029,18 @@ int WMinusWplusRatio_logScale()
 
   tgRatioPowheg->SetFillColor(kRed);
   tgRatioPowheg->SetLineColor(kRed+2);
-  tgRatioPowheg->SetMarkerStyle(21);
-  tgRatioPowheg->SetMarkerColor(kRed+2);
+  tgRatioPowheg->SetMarkerStyle(MarkerStyle_Powheg);
+  tgRatioPowheg->SetMarkerColor(MarkerColor_Powheg);
   
   tgRatioResbos->SetFillColor(kBlue);
   tgRatioResbos->SetLineColor(kBlue+2);
-  tgRatioResbos->SetMarkerStyle(21);
-  tgRatioResbos->SetMarkerColor(kBlue+2);
+  tgRatioResbos->SetMarkerStyle(MarkerStyle_Resbos);
+  tgRatioResbos->SetMarkerColor(MarkerColor_Resbos);
   
   tgRatioFEWZ->SetFillColor(kGreen);
   tgRatioFEWZ->SetLineColor(kGreen+2);
-  tgRatioFEWZ->SetMarkerStyle(21);
-  tgRatioFEWZ->SetMarkerColor(kGreen+2);
+  tgRatioFEWZ->SetMarkerStyle(MarkerStyle_FEWZ);
+  tgRatioFEWZ->SetMarkerColor(MarkerColor_FEWZ);
   
   // Draw canvas
   hRatioDummy->Draw();
@@ -1023,6 +1048,7 @@ int WMinusWplusRatio_logScale()
   tgRatioFEWZ->Draw("5 P");
   tgRatioPowheg->Draw("5 P");
   tgRatioResbos->Draw("5 P");
+  L2->Draw();
   gPad->RedrawAxis();
 
   C1->SaveAs("WmMuWpMuNormFid12Bin."+format);

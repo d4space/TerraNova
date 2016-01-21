@@ -386,7 +386,7 @@ int ZWratio_Zoom_logScale()
   //LeptonCut->Draw();
 
   C1->cd();
-  TPad *pad_zoom = new TPad("","",0.1230,0.52,0.722,0.73);
+  TPad *pad_zoom = new TPad("","",0.12235,0.52,0.722,0.73);
   TH1D* hWZratio_RD_Zoom = (TH1D*)hWZratio_RD->Clone("hWZratio_RD_Zoom");
   pad_zoom->SetTopMargin(0);
   pad_zoom->SetBottomMargin(0);
@@ -415,6 +415,15 @@ int ZWratio_Zoom_logScale()
   C1->cd(2)->SetTicky(1);
   C1->cd(2)->SetLogx(1);
 
+  TLegend *L2 = new TLegend(0.25,0.80,0.64,0.95);
+  L2->SetFillColor(0);
+  L2->SetBorderSize(0);
+  L2->SetNColumns(2);
+  L2->AddEntry(tgRatioData,"Data unc.","F");
+  L2->AddEntry(tgRatioResbos,"ResBos","fp");
+  L2->AddEntry(tgRatioPowheg,"POWHEG","fp");
+  L2->AddEntry(tgRatioFEWZ,"FEWZ","fp");
+  
   TH1D *hRatioDummy = new TH1D("hRatioDummy","",nBins-1,WptBins);
   
   // set canvas range and XY axis title
@@ -458,11 +467,12 @@ int ZWratio_Zoom_logScale()
   tgRatioFEWZ->Draw("5 P");  
   tgRatioPowheg->Draw("5 P");
   tgRatioResbos->Draw("5 P");
+  L2->Draw();
   gPad->RedrawAxis();
 
   //Ratio zoom pad
   C1->cd();
-  TPad *padratio_zoom = new TPad("","",0.123,0.1,0.722,0.38);
+  TPad *padratio_zoom = new TPad("","",0.12235,0.1,0.722,0.38);
   TH1D* hWZratio_RD_Zoom = (TH1D*)hWZratio_RD->Clone("hWZratio_RD_Zoom");
   padratio_zoom->SetTopMargin(0);
   padratio_zoom->SetBottomMargin(0);
@@ -498,36 +508,6 @@ int ZWratio_Zoom_logScale()
   tgRatioResbos->Draw("5 P");
   gPad->RedrawAxis();
   
-  
-  
-  
-//  // Set Zoomed Ratio plot
-//  //C1->cd(4)->SetPad(0.028,0.056,0.76,0.405);
-//  //C1->cd(4)->SetPad(0.060,0.115,0.722,0.364);
-//  C1->cd(4)->SetPad(0.060,0.042,0.722,0.364);
-//  C1->cd(4)->SetBottomMargin(0.18);
-//  
-//  C1->cd(4)->SetLogx(1);
-//  
-//  TH1D *hRatioDummy_Zoom = (TH1D*)hRatioDummy->Clone("hRatioDummy_Zoom");
-//  hRatioDummy_Zoom->GetYaxis()->SetRangeUser(0.5,1.5); // Y axis range
-//  hRatioDummy_Zoom->GetXaxis()->SetRangeUser(1,150); // X axis range
-//  hRatioDummy_Zoom->GetYaxis()->SetTitle("Theory / Data");
-//  hRatioDummy_Zoom->GetYaxis()->SetTitleOffset(0.63);
-//  hRatioDummy_Zoom->GetYaxis()->SetTitleSize(0.13);
-//  hRatioDummy_Zoom->GetYaxis()->SetLabelSize(0.12);
-//  
-//  //hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.10);
-//  hRatioDummy_Zoom->GetXaxis()->SetLabelSize(0.14);
-//  hRatioDummy_Zoom->GetXaxis()->SetTitle("");
-//  
-//  hRatioDummy_Zoom->Draw();
-//  tgRatioData->Draw("2");
-//  tgRatioFEWZ->Draw("5 P");  
-//  tgRatioPowheg->Draw("5 P");
-//  tgRatioResbos->Draw("5 P");
-//  gPad->RedrawAxis();
-
   C1->SaveAs("RatioNormZW_Fid_Zoom."+format);
 
   return 0;
