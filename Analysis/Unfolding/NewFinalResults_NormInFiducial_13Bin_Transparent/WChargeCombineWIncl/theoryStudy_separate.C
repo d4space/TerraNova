@@ -534,31 +534,36 @@ int theoryStudy_separate(const TString BaseName)
   Style_t MarkerStyle_POWHEG = 21;
   Style_t MarkerStyle_FEWZ = 21;
 
-  // Band Color Transparent
-  TColor *colBlue = gROOT->GetColor(kBlue);		// Used ResBos distribution and ratio band
-  TColor *colRed = gROOT->GetColor(kRed);		// Used Powheg distribution
-  TColor *colRedp2 = gROOT->GetColor(kRed+2);		// used Powheg ratio band
-  TColor *colYellow = gROOT->GetColor(kYellow);		// used Powheg ratio band
-  TColor *colGreen = gROOT->GetColor(kGreen);		// used FEWZ distribution
-  TColor *colGreenp1 = gROOT->GetColor(kGreen+1);	// used FEWZ stat ratio band
-  TColor *colGreenp3 = gROOT->GetColor(kGreen+3);	// used FEWZ PDF ratio band
-  TColor *colCyanm9 = gROOT->GetColor(kCyan-9);		// used FEWZ scale ratio band
-  colRedp2->SetAlpha(0.6);
-  colRed->SetAlpha(0.2);
-  colBlue->SetAlpha(0.3);
-  colYellow->SetAlpha(0.6);
-  colGreen->SetAlpha(0.5); 
-  colGreenp1->SetAlpha(0.6); 
-  colGreenp3->SetAlpha(0.7); 
-  colCyanm9->SetAlpha(0.7); 
-
   Color_t BandColor_ResBos = kBlue;
+  Color_t BandColor_ResBos_scale = kBlue;
+  Color_t BandColor_POWHEG = kRed;
   Color_t BandColor_POWHEG_stat = kRed+2;
   Color_t BandColor_POWHEG_PDF = kYellow;
+  Color_t BandColor_FEWZ = kGreen;
   Color_t BandColor_FEWZ_stat = kGreen+3;
   Color_t BandColor_FEWZ_PDF = kGreen+1;
   Color_t BandColor_FEWZ_scale = kCyan-9;
   
+  // Band Color Transparent
+  TColor *colResbos = gROOT->GetColor(kBlue);		// Used ResBos distribution and ratio band
+  TColor *colResbosScale = gROOT->GetColor(BandColor_ResBos_scale);		// Used ResBos distribution and ratio band
+  TColor *colPowheg = gROOT->GetColor(kRed);		// Used Powheg distribution
+  TColor *colPowhegStat = gROOT->GetColor(BandColor_POWHEG_stat);		// used Powheg ratio band
+  TColor *colPowhegPDF = gROOT->GetColor(BandColor_POWHEG_PDF);		// used Powheg ratio band
+  TColor *colFEWZ = gROOT->GetColor(kGreen);		// used FEWZ distribution
+  TColor *colFEWZStat = gROOT->GetColor(BandColor_FEWZ_stat);	// used FEWZ stat ratio band
+  TColor *colFEWZPDF = gROOT->GetColor(BandColor_FEWZ_PDF);	// used FEWZ PDF ratio band
+  TColor *colFEWZScale = gROOT->GetColor(BandColor_FEWZ_scale);		// used FEWZ scale ratio band
+  
+  colResbosScale->SetAlpha(0.4);
+  colPowheg->SetAlpha(0.2);
+  colPowhegStat->SetAlpha(0.6);
+  colPowhegPDF->SetAlpha(0.6);
+  colFEWZ->SetAlpha(0.5); 
+  colFEWZStat->SetAlpha(0.7); 
+  colFEWZPDF->SetAlpha(0.6); 
+  colFEWZScale->SetAlpha(0.7); 
+
 
   //TLegend *lL =new TLegend(0.2,0.17,0.52,0.40); lL->SetFillColor(0); lL->SetBorderSize(0);
   TLegend *lL =new TLegend(0.25,0.17,0.65,0.45); lL->SetFillColor(0); lL->SetBorderSize(0);
@@ -614,9 +619,9 @@ int theoryStudy_separate(const TString BaseName)
   //Data
 
   //Powheg
-  Powheg_Xsec_Born->SetFillColor(kRed);
-  FEWZ_Xsec->SetFillColor(kGreen);
-  Resb30_NormDiffXsec->SetFillColor(kBlue);
+  Powheg_Xsec_Born->SetFillColor(BandColor_POWHEG);
+  FEWZ_Xsec->SetFillColor(BandColor_FEWZ);
+  Resb30_NormDiffXsec->SetFillColor(BandColor_ResBos);
 
   //Draw Original Diff-Xsec Distribution
   Powheg_Xsec_Born->Draw("A2");
