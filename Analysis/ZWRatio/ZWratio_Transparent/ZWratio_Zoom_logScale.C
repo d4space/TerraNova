@@ -420,7 +420,8 @@ int ZWratio_Zoom_logScale()
   TH1D *hRatioDummy = new TH1D("hRatioDummy","",nBins-1,WptBins);
   
   // set canvas range and XY axis title
-  hRatioDummy->GetYaxis()->SetRangeUser(0.1,2.8);
+  //hRatioDummy->GetYaxis()->SetRangeUser(0.1,2.8);
+  hRatioDummy->GetYaxis()->SetRangeUser(0.1,2.6);
   hRatioDummy->GetYaxis()->SetTitleSize(0.07);
   hRatioDummy->GetYaxis()->SetTitleOffset(0.58);
   hRatioDummy->GetYaxis()->SetLabelSize(0.09);
