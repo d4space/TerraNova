@@ -568,7 +568,7 @@ int theoryStudy_separate(const TString BaseName)
   //TLegend *lL =new TLegend(0.2,0.17,0.52,0.40); lL->SetFillColor(0); lL->SetBorderSize(0);
   TLegend *lL =new TLegend(0.25,0.17,0.65,0.45); lL->SetFillColor(0); lL->SetBorderSize(0);
   lL->AddEntry(Data_Xsec_Born,"Data","PLE1");
-  lL->AddEntry(Resb30_NormDiffXsec,"RESBOS CT10 NNLL","f");
+  lL->AddEntry(Resb30_NormDiffXsec,"ResBos CT10 NNLL","f");
   lL->AddEntry(Powheg_Xsec_Born,"POWHEG CT10 NLO","f");
   lL->AddEntry(FEWZ_Xsec,"FEWZ CT10 NNLO","f");
 
@@ -702,7 +702,7 @@ int theoryStudy_separate(const TString BaseName)
 
   TLegend *rL1 =new TLegend(0.18,0.05,0.60,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
   rL1-> SetNColumns(2);
-  rL1->AddEntry(RatioResbosErrBand,"RESBOS scales","FP");
+  rL1->AddEntry(RatioResbosErrBand,"ResBos scales","FP");
   //rL1->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   hRatioDataStatErr->SetTitle("");
   rL1->AddEntry(DataRatio,"Data stat+syst","F");
@@ -711,7 +711,7 @@ int theoryStudy_separate(const TString BaseName)
 
   TLegend *tL1 =new TLegend(0.18,0.82,0.37,0.92); tL1->SetFillColor(0); tL1->SetBorderSize(0);
   //tL1->AddEntry(RatioResbosErrBand,"ResBos","F");
-  tL1->AddEntry(RatioResbosErrBand,"RESBOS","");
+  tL1->AddEntry(RatioResbosErrBand,"ResBos","");
   tL1->SetTextSize(0.12);
   tL1->SetTextFont(2);
 
