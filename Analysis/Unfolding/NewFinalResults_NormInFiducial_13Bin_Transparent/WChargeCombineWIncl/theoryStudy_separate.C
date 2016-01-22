@@ -700,31 +700,29 @@ int theoryStudy_separate(const TString BaseName)
   lC2->cd(1)->SetTicky(1);
   lC2->cd(1)->SetLogx(1);
 
-  TLegend *rL1 =new TLegend(0.18,0.05,0.60,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
-  rL1-> SetNColumns(2);
-  rL1->AddEntry(RatioResbosErrBand,"ResBos scales","FP");
-  //rL1->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
+  TLegend *lResBos =new TLegend(0.18,0.05,0.60,0.30); lResBos->SetFillColor(0); lResBos->SetBorderSize(0);
+  lResBos-> SetNColumns(2);
+  lResBos->AddEntry(RatioResbosErrBand,"ResBos scales","FP");
+  //lResBos->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
   hRatioDataStatErr->SetTitle("");
-  rL1->AddEntry(DataRatio,"Data stat+syst","F");
-  rL1->AddEntry(hRatioDataStatErr,"","");
-  rL1->SetTextSize(0.08);
+  lResBos->AddEntry(DataRatio,"Data stat+syst","F");
+  lResBos->AddEntry(hRatioDataStatErr,"","");
+  lResBos->SetTextSize(0.08);
 
-  TLegend *tL1 =new TLegend(0.18,0.82,0.37,0.92); tL1->SetFillColor(0); tL1->SetBorderSize(0);
-  //tL1->AddEntry(RatioResbosErrBand,"ResBos","F");
-  tL1->AddEntry(RatioResbosErrBand,"ResBos","");
-  tL1->SetTextSize(0.12);
-  tL1->SetTextFont(2);
+  TPaveText *tResBos = new TPaveText(0.18,0.82,0.37,0.92,"NDC");
+  tResBos->SetBorderSize(0);
+  tResBos->SetFillStyle(0);
+  tResBos->SetTextSize(0.12);
+  tResBos->AddText("#font[42]{ResBos}");
 
-  TPaveText *tb4 = new TPaveText(0.35,0.82,0.67,0.93,"NDC");
-  tb4->SetBorderSize(0);
-  tb4->SetFillStyle(0);
-  tb4->SetTextSize(0.12);
+  TPaveText *tChannel = new TPaveText(0.35,0.82,0.67,0.93,"NDC");
+  tChannel->SetBorderSize(0);
+  tChannel->SetFillStyle(0);
+  tChannel->SetTextSize(0.12);
   if (BaseName=="WInclToMuNu")
-    tb4->AddText("W #rightarrow #mu#nu");
-    //tb4->AddText("#font[42]{W#rightarrow #mu#nu}");
+    tChannel->AddText("W #rightarrow #mu#nu");
   if (BaseName=="WInclToEleNu")
-    tb4->AddText("W #rightarrow e#nu");
-    //tb4->AddText("#font[42]{W#rightarrow e#nu}");
+    tChannel->AddText("W #rightarrow e#nu");
 
   TH1D* hRatioResbosDummy = new TH1D("","",nBins-1,WptLogBins);
   hRatioResbosDummy->GetYaxis()->SetRangeUser(0.5,1.5);
@@ -741,9 +739,9 @@ int theoryStudy_separate(const TString BaseName)
   DataRatio->Draw("2");
   //RatioDataStatErrBand->Draw("P E");
   RatioResbosErrBand->Draw("2 P");
-  rL1->Draw();
-  tL1->Draw();
-  tb4->Draw();
+  lResBos->Draw();
+  tResBos->Draw();
+  tChannel->Draw();
 
   //Powheg Ratio plot
   lC2->cd(2)->SetPad(0,0.39,0.96,0.64);
@@ -752,21 +750,21 @@ int theoryStudy_separate(const TString BaseName)
   lC2->cd(2)->SetTicky(1);
   lC2->cd(2)->SetLogx(1);
 
-  TLegend *rL2 =new TLegend(0.18,0.04,0.60,0.34); rL2->SetFillColor(0); rL2->SetBorderSize(0);
-  rL2-> SetNColumns(2);
-  //rL2->AddEntry(RatioPowhegStatErrBand,"POWHEG stat","F");
-  rL2->AddEntry(RatioPowhegStatErrBand,"POWHEG stat","FP");
-  rL2->AddEntry(DataRatio,"Data stat+syst","F");
-  rL2->AddEntry(RatioPowhegStatPDFErrBand,"POWHEG PDF    ","F");
-  //rL2->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
-  rL2->AddEntry(hRatioDataStatErr,"","");
-  rL2->SetTextSize(0.09);
+  TLegend *lPowheg =new TLegend(0.18,0.04,0.60,0.34); lPowheg->SetFillColor(0); lPowheg->SetBorderSize(0);
+  lPowheg-> SetNColumns(2);
+  //lPowheg->AddEntry(RatioPowhegStatErrBand,"POWHEG stat","F");
+  lPowheg->AddEntry(RatioPowhegStatErrBand,"POWHEG stat","FP");
+  lPowheg->AddEntry(DataRatio,"Data stat+syst","F");
+  lPowheg->AddEntry(RatioPowhegStatPDFErrBand,"POWHEG PDF    ","F");
+  //lPowheg->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
+  lPowheg->AddEntry(hRatioDataStatErr,"","");
+  lPowheg->SetTextSize(0.09);
 
-  TLegend *tL2 =new TLegend(0.18,0.82,0.37,0.92); tL2->SetFillColor(0); tL2->SetBorderSize(0);
-  //tL2->AddEntry(RatioPowhegStatErrBand,"POWHEG","F");
-  tL2->AddEntry(RatioPowhegStatErrBand,"POWHEG","");
-  tL2->SetTextSize(0.12);
-  tL2->SetTextFont(2);
+  TPaveText *tPowheg =new TPaveText(0.18,0.82,0.37,0.92,"NDC");
+  tPowheg->SetFillColor(0);
+  tPowheg->SetBorderSize(0);
+  tPowheg->SetTextSize(0.12);
+  tPowheg->AddText("#font[42]{POWHEG}");
 
   TH1D* hRatioPowhegDummy = new TH1D("","",nBins-1,WptLogBins);
   hRatioPowhegDummy->GetYaxis()->SetRangeUser(0.5,1.5);
@@ -784,8 +782,8 @@ int theoryStudy_separate(const TString BaseName)
   //RatioDataStatErrBand->Draw("P E");
   RatioPowhegStatPDFErrBand->Draw("2");
   RatioPowhegStatErrBand->Draw("2 P");
-  rL2->Draw();
-  tL2->Draw();
+  lPowheg->Draw();
+  tPowheg->Draw();
 
   // FEWZ Ratio Plot
   lC2->cd(3)->SetPad(0,0,0.96,0.37);
@@ -795,21 +793,21 @@ int theoryStudy_separate(const TString BaseName)
   lC2->cd(3)->SetTicky(1);
   lC2->cd(3)->SetLogx(1);
 
-  TLegend *rL3 =new TLegend(0.18,0.28,0.58,0.52); rL3->SetFillColor(0); rL3->SetBorderSize(0);
-  rL3-> SetNColumns(2);
-  //rL3->AddEntry(RatioFEWZStatErrBand,"FEWZ stat","F");
-  rL3->AddEntry(RatioFEWZStatErrBand,"FEWZ stat","FP");
-  //rL3->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
-  rL3->AddEntry(DataRatio,"Data stat+syst","F");
-  rL3->AddEntry(RatioFEWZStatPDFErrBand,"FEWZ PDF","F");
-  rL3->AddEntry(RatioFEWZStatPDFScaleErrBand,"FEWZ scales","F");
-  rL3->SetTextSize(0.06);
+  TLegend *lFewz =new TLegend(0.18,0.28,0.58,0.52); lFewz->SetFillColor(0); lFewz->SetBorderSize(0);
+  lFewz-> SetNColumns(2);
+  //lFewz->AddEntry(RatioFEWZStatErrBand,"FEWZ stat","F");
+  lFewz->AddEntry(RatioFEWZStatErrBand,"FEWZ stat","FP");
+  //lFewz->AddEntry(hRatioDataStatErr,"Data stat","PLE1");
+  lFewz->AddEntry(DataRatio,"Data stat+syst","F");
+  lFewz->AddEntry(RatioFEWZStatPDFErrBand,"FEWZ PDF","F");
+  lFewz->AddEntry(RatioFEWZStatPDFScaleErrBand,"FEWZ scales","F");
+  lFewz->SetTextSize(0.06);
 
-  TLegend *tL3 =new TLegend(0.17,0.85,0.37,0.95); tL3->SetFillColor(0); tL3->SetBorderSize(0);
-  //tL3->AddEntry(RatioFEWZStatErrBand,"FEWZ","F");
-  tL3->AddEntry(RatioFEWZStatErrBand,"FEWZ","");
-  tL3->SetTextSize(0.09);
-  tL3->SetTextFont(2);
+  TPaveText *tFewz = new TPaveText(0.17,0.85,0.37,0.95,"NDC");
+  tFewz->SetBorderSize(0);
+  tFewz->SetFillStyle(0);
+  tFewz->SetTextSize(0.09);
+  tFewz->AddText("#font[42]{FEWZ}");
 
   TH1D* hRatioFEWZDummy = new TH1D("","",nBins-1,WptLogBins);
   hRatioFEWZDummy->GetYaxis()->SetRangeUser(0.5,1.5);
@@ -829,8 +827,8 @@ int theoryStudy_separate(const TString BaseName)
   RatioFEWZStatPDFScaleErrBand->Draw("2");
   RatioFEWZStatPDFErrBand->Draw("2");
   RatioFEWZStatErrBand->Draw("2 P");
-  rL3->Draw();
-  tL3->Draw();
+  lFewz->Draw();
+  tFewz->Draw();
 
   if(BaseName=="WInclToMuNu")
     sprintf(tmpName,"winclmnRatioTheoData.");
