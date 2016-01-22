@@ -99,7 +99,8 @@ void CPlot::AddHist1D(TH1D *h, TString label, TString drawopt, int color, int li
  
   if(drawopt.CompareTo("E",TString::kIgnoreCase)==0) {
     //fLeg->AddEntry(h,label,"P");
-    fLeg->AddEntry(h,label,"PL");
+    //fLeg->AddEntry(h,label,"PL");
+    fLeg->AddEntry(h,label,"PLE");
     h->SetMarkerSize(0.9);
   } else {
     if(fillsty>0) fLeg->AddEntry(h,label,"F");
