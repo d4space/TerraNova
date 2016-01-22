@@ -447,17 +447,17 @@ int diffXSecNewFigure()
   gStyle->SetHatchesLineWidth(2);
 
   // Marker Color
-  Color_t MarkerColor_RESBOS = kBlue+2;
+  Color_t MarkerColor_ResBos = kBlue+2;
   Color_t MarkerColor_POWHEG = kRed+3;
   Color_t MarkerColor_FEWZ = kGreen+4;
 
   // Marker Style (circle:20  square:21  triangle:22)
-  Style_t MarkerStyle_RESBOS = 21;
+  Style_t MarkerStyle_ResBos = 21;
   Style_t MarkerStyle_POWHEG = 21;
   Style_t MarkerStyle_FEWZ = 21;
 
-  Color_t BandColor_RESBOS_scale = kBlue;
-  Color_t BandColor_RESBOS_PDF = kMagenta-9;
+  Color_t BandColor_ResBos_scale = kBlue;
+  Color_t BandColor_ResBos_PDF = kMagenta-9;
   Color_t BandColor_POWHEG_stat = kRed+2;
   Color_t BandColor_POWHEG_PDF = kYellow;
   Color_t BandColor_FEWZ_stat = kGreen+3;
@@ -465,9 +465,9 @@ int diffXSecNewFigure()
   Color_t BandColor_FEWZ_scale = kCyan-9;
   
   // Band Color Transparent
-  TColor *colResbos = gROOT->GetColor(kBlue);				// Used RESBOS distribution and scale ratio band
-  TColor *colResbosScale = gROOT->GetColor(BandColor_RESBOS_scale);	// Used RESBOS distribution and scale ratio band
-  TColor *colResbosPDF = gROOT->GetColor(BandColor_RESBOS_PDF);		// Used RESBOS PDF ratio band
+  TColor *colResbos = gROOT->GetColor(kBlue);				// Used ResBos distribution and scale ratio band
+  TColor *colResbosScale = gROOT->GetColor(BandColor_ResBos_scale);	// Used ResBos distribution and scale ratio band
+  TColor *colResbosPDF = gROOT->GetColor(BandColor_ResBos_PDF);		// Used ResBos PDF ratio band
   TColor *colPowheg = gROOT->GetColor(kRed);				// Used Powheg distribution
   TColor *colPowhegStat = gROOT->GetColor(BandColor_POWHEG_stat);	// used Powheg ratio band
   TColor *colPowhegPDF = gROOT->GetColor(BandColor_POWHEG_PDF);		// used Powheg ratio band
@@ -488,7 +488,7 @@ int diffXSecNewFigure()
 
   TLegend *lL =new TLegend(0.25,0.17,0.65,0.45); lL->SetFillColor(0); lL->SetBorderSize(0);
   lL->AddEntry(tgData,"Data","PLE1");
-  lL->AddEntry(tgResbos,"RESBOS CT10 NNLL","f");
+  lL->AddEntry(tgResbos,"ResBos CT10 NNLL","f");
   lL->AddEntry(tgPowheg,"POWHEG CT10 NLO","f");
   lL->AddEntry(tgFEWZ,"FEWZ CT10 NNLO","f");
 
@@ -563,13 +563,13 @@ int diffXSecNewFigure()
   tgDataStatSystRatioBand->SetFillColor(kGray+1);
 
   // Resbos Ratio plot style
-  tgResbosPDFRatioBand->SetMarkerColor(MarkerColor_RESBOS);
-  tgResbosPDFRatioBand->SetMarkerStyle(MarkerStyle_RESBOS);
-  tgResbosPDFRatioBand->SetFillColor(BandColor_RESBOS_PDF);
+  tgResbosPDFRatioBand->SetMarkerColor(MarkerColor_ResBos);
+  tgResbosPDFRatioBand->SetMarkerStyle(MarkerStyle_ResBos);
+  tgResbosPDFRatioBand->SetFillColor(BandColor_ResBos_PDF);
 
-  tgResbosScaleRatioBand->SetMarkerColor(MarkerColor_RESBOS);
-  tgResbosScaleRatioBand->SetMarkerStyle(MarkerStyle_RESBOS);
-  tgResbosScaleRatioBand->SetFillColor(BandColor_RESBOS_scale);
+  tgResbosScaleRatioBand->SetMarkerColor(MarkerColor_ResBos);
+  tgResbosScaleRatioBand->SetMarkerStyle(MarkerStyle_ResBos);
+  tgResbosScaleRatioBand->SetFillColor(BandColor_ResBos_scale);
 
   // Powheg Ratio plot style
   tgPowhegStatRatioBand->SetMarkerColor(MarkerColor_POWHEG);
@@ -614,13 +614,13 @@ int diffXSecNewFigure()
   
   TLegend *rL1 =new TLegend(0.18,0.04,0.60,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
   rL1-> SetNColumns(2);
-  rL1->AddEntry(tgResbosScaleRatioBand,"RESBOS scales","FP");
+  rL1->AddEntry(tgResbosScaleRatioBand,"ResBos scales","FP");
   rL1->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
-  rL1->AddEntry(tgResbosPDFRatioBand,"RESBOS PDF","F");
+  rL1->AddEntry(tgResbosPDFRatioBand,"ResBos PDF","F");
   rL1->SetTextSize(0.08);
 
   TLegend *tL1 =new TLegend(0.18,0.82,0.34,0.92); tL1->SetFillColor(0); tL1->SetBorderSize(0);
-  tL1->AddEntry(tgResbosPDFRatioBand,"RESBOS","");
+  tL1->AddEntry(tgResbosPDFRatioBand,"ResBos","");
   tL1->SetTextSize(0.12);
   tL1->SetTextFont(2);
 
