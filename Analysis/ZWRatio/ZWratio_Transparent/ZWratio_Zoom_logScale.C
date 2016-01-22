@@ -315,7 +315,7 @@ int ZWratio_Zoom_logScale()
   L1->SetFillColor(0);
   L1->SetBorderSize(0);
   L1->AddEntry(hWZratio_RD,"Data","PLE");
-  L1->AddEntry(tgWZratio_Resbos,"RESBOS","f");
+  L1->AddEntry(tgWZratio_Resbos,"ResBos","f");
   L1->AddEntry(tgWZratio_Powheg,"POWHEG","f");
   L1->AddEntry(tgWZratio_FEWZ,"FEWZ","f");
 
@@ -420,7 +420,7 @@ int ZWratio_Zoom_logScale()
   L2->SetBorderSize(0);
   L2->SetNColumns(2);
   L2->AddEntry(tgRatioData,"Data unc.","F");
-  L2->AddEntry(tgRatioResbos,"RESBOS","fp");
+  L2->AddEntry(tgRatioResbos,"ResBos","fp");
   L2->AddEntry(tgRatioPowheg,"POWHEG","fp");
   L2->AddEntry(tgRatioFEWZ,"FEWZ","fp");
   
