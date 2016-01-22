@@ -612,23 +612,24 @@ int diffXSecNewFigure()
   lC2->cd(1)->SetTicky(1);
   lC2->cd(1)->SetLogx(1);
   
-  TLegend *rL1 =new TLegend(0.18,0.04,0.60,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
-  rL1-> SetNColumns(2);
-  rL1->AddEntry(tgResbosScaleRatioBand,"ResBos scales","FP");
-  rL1->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
-  rL1->AddEntry(tgResbosPDFRatioBand,"ResBos PDF","F");
-  rL1->SetTextSize(0.08);
+  TLegend *lResbos =new TLegend(0.18,0.04,0.60,0.30); lResbos->SetFillColor(0); lResbos->SetBorderSize(0);
+  lResbos-> SetNColumns(2);
+  lResbos->AddEntry(tgResbosScaleRatioBand,"ResBos scales","FP");
+  lResbos->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
+  lResbos->AddEntry(tgResbosPDFRatioBand,"ResBos PDF","F");
+  lResbos->SetTextSize(0.08);
 
-  TLegend *tL1 =new TLegend(0.18,0.82,0.34,0.92); tL1->SetFillColor(0); tL1->SetBorderSize(0);
-  tL1->AddEntry(tgResbosPDFRatioBand,"ResBos","");
-  tL1->SetTextSize(0.12);
-  tL1->SetTextFont(2);
-
-  TPaveText *tb4 = new TPaveText(0.35,0.82,0.67,0.93,"NDC");
-  tb4->SetBorderSize(0);
-  tb4->SetFillStyle(0);
-  tb4->SetTextSize(0.12);
-  tb4->AddText("Z #rightarrow #mu^{+}#mu^{#font[122]{-}}");
+  TPaveText *tResBos = new TPaveText(0.18,0.82,0.34,0.92,"NDC");
+  tResBos->SetBorderSize(0);
+  tResBos->SetFillStyle(0);
+  tResBos->SetTextSize(0.12);
+  tResBos->AddText("#font[42]{ResBos}");
+ 
+  TPaveText *tChannel = new TPaveText(0.35,0.82,0.67,0.93,"NDC");
+  tChannel->SetBorderSize(0);
+  tChannel->SetFillStyle(0);
+  tChannel->SetTextSize(0.12);
+  tChannel->AddText("Z #rightarrow #mu^{+}#mu^{#font[122]{-}}");
 
   tgDataStatSystRatioBand->GetYaxis()->SetRangeUser(-0.8,3.2);
   tgDataStatSystRatioBand->GetYaxis()->SetTitle("Theory/Data");
@@ -647,9 +648,9 @@ int diffXSecNewFigure()
   tgDataStatSystRatioBand->Draw("2 A");
   tgResbosPDFRatioBand->Draw("2 P");
   tgResbosScaleRatioBand->Draw("2 P");
-  rL1->Draw();
-  tL1->Draw();
-  tb4->Draw();
+  lResbos->Draw();
+  tResBos->Draw();
+  tChannel->Draw();
 
   //Powheg Ratio plot
   lC2->cd(2)->SetPad(0,0.39,0.96,0.64);
@@ -658,24 +659,25 @@ int diffXSecNewFigure()
   lC2->cd(2)->SetTicky(1);
   lC2->cd(2)->SetLogx(1);
 
-  TLegend *rL2 =new TLegend(0.18,0.04,0.60,0.34); rL2->SetFillColor(0); rL2->SetBorderSize(0);
-  rL2-> SetNColumns(2);
-  rL2->AddEntry(tgPowhegStatRatioBand,"POWHEG stat","FP");
-  rL2->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
-  rL2->AddEntry(tgPowhegPDFRatioBand,"POWHEG PDF    ","F");
-  //rL2->AddEntry(hRatioDataStatErr,"","");
-  rL2->SetTextSize(0.09);
+  TLegend *lPowheg =new TLegend(0.18,0.04,0.60,0.34); lPowheg->SetFillColor(0); lPowheg->SetBorderSize(0);
+  lPowheg-> SetNColumns(2);
+  lPowheg->AddEntry(tgPowhegStatRatioBand,"POWHEG stat","FP");
+  lPowheg->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
+  lPowheg->AddEntry(tgPowhegPDFRatioBand,"POWHEG PDF    ","F");
+  //lPowheg->AddEntry(hRatioDataStatErr,"","");
+  lPowheg->SetTextSize(0.09);
 
-  TLegend *tL2 =new TLegend(0.18,0.82,0.34,0.92); tL2->SetFillColor(0); tL2->SetBorderSize(0);
-  tL2->AddEntry(tgPowhegStatRatioBand,"POWHEG","");
-  tL2->SetTextSize(0.12);
-  tL2->SetTextFont(2);
-
+  TPaveText *tPowheg = new TPaveText(0.18,0.82,0.34,0.92,"NDC");
+  tPowheg->SetBorderSize(0);
+  tPowheg->SetFillStyle(0);
+  tPowheg->SetTextSize(0.12);
+  tPowheg->AddText("#font[42]{POWHEG}");
+  
   tgDataStatSystRatioBand->Draw("2 A");
   tgPowhegPDFRatioBand->Draw("2 P");
   tgPowhegStatRatioBand->Draw("2 P");
-  rL2->Draw();
-  tL2->Draw();
+  lPowheg->Draw();
+  tPowheg->Draw();
 
   // FEWZ Ratio Plot
   lC2->cd(3)->SetPad(0,0,0.96,0.37);
@@ -685,29 +687,30 @@ int diffXSecNewFigure()
   lC2->cd(3)->SetTicky(1);
   lC2->cd(3)->SetLogx(1);
 
-  TLegend *rL3 =new TLegend(0.18,0.28,0.60,0.52); rL3->SetFillColor(0); rL3->SetBorderSize(0);
-  rL3-> SetNColumns(2);
-  rL3->AddEntry(tgFEWZStatRatioBand,"FEWZ stat","FP");
-  rL3->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
-  rL3->AddEntry(tgFEWZPDFRatioBand,"FEWZ PDF","F");
-  rL3->AddEntry(tgFEWZScaleRatioBand,"FEWZ scales","F");
-  rL3->SetTextSize(0.06);
+  TLegend *lFewz =new TLegend(0.18,0.28,0.60,0.52); lFewz->SetFillColor(0); lFewz->SetBorderSize(0);
+  lFewz-> SetNColumns(2);
+  lFewz->AddEntry(tgFEWZStatRatioBand,"FEWZ stat","FP");
+  lFewz->AddEntry(tgDataStatSystRatioBand,"Data stat+syst","F");
+  lFewz->AddEntry(tgFEWZPDFRatioBand,"FEWZ PDF","F");
+  lFewz->AddEntry(tgFEWZScaleRatioBand,"FEWZ scales","F");
+  lFewz->SetTextSize(0.06);
 
-  TLegend *tL3 =new TLegend(0.18,0.82,0.34,0.92); tL3->SetFillColor(0); tL3->SetBorderSize(0);
-  tL3->AddEntry(tgFEWZStatRatioBand,"FEWZ","");
-  tL3->SetTextSize(0.09);
-  tL3->SetTextFont(2);
-
+  TPaveText *tFewz = new TPaveText(0.18,0.82,0.34,0.92,"NDC");
+  tFewz->SetBorderSize(0);
+  tFewz->SetFillStyle(0);
+  tFewz->SetTextSize(0.09);
+  tFewz->AddText("#font[42]{FEWZ}");
+ 
   tgDataStatSystRatioBand->GetXaxis()->SetTitle("p_{T}^{Z} [GeV]");
   tgDataStatSystRatioBand->GetXaxis()->SetTitleOffset(1.5);
   tgDataStatSystRatioBand->GetXaxis()->SetTitleFont(43);
   tgDataStatSystRatioBand->GetXaxis()->SetTitleSize(33);
   tgDataStatSystRatioBand->Draw("2 A");
-  tgFEWZScaleRatioBand->Draw("2 P");
+  tgFEWZScaleRatioBand->Draw("2");
   tgFEWZPDFRatioBand->Draw("2");
-  tgFEWZStatRatioBand->Draw("2");
-  rL3->Draw();
-  tL3->Draw();
+  tgFEWZStatRatioBand->Draw("2P");
+  lFewz->Draw();
+  tFewz->Draw();
 
   sprintf(tmpName,"ZptNormDiffXsecRatio.");
   lC2->SaveAs(tmpName+format);
