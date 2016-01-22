@@ -86,8 +86,8 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
 
   //double xbins_pt[nptBins+1] = {0.001, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 30, 40, 50, 70, 90, 110, 150, 190, 250, 600};
 
-     double xbins_pt[nptBins+1] = {0.001, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 30}; // From bin1
-     //double xbins_pt[nptBins+1] = {30, 40, 50, 70, 90, 110, 150, 190, 250, 600}; // After bin9
+     //double xbins_pt[nptBins+1] = {0.001, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 30}; // From bin1
+     double xbins_pt[nptBins+1] = {30, 40, 50, 70, 90, 110, 150, 190, 250, 600}; // After bin9
   
   
  TFile *Hist_out = new TFile("histo_withecalreprocessing.root","RECREATE");
@@ -570,7 +570,7 @@ void dataMC_ratio(int    mBins  =   30, // Z mass
   TLegend* tl = new TLegend(0.60, 0.47, 0.86, 0.76);
   tl->SetFillColor(0);
   tl->SetLineColor(0);
-  tl->AddEntry(hPtData ," Data","lpe");
+  tl->AddEntry(hPtData ,"Data","lpe");
   //tl->AddEntry(hPtMC_dymumu,"DYToMuMu","f");
   tl->AddEntry(hPtMC_dymumu,"DY#rightarrow #mu^{+}#mu^{-}","f");
   //tl->AddEntry(hPtMC_QCD," QCD","f");

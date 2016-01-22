@@ -180,8 +180,8 @@ void axis1F(TH1F  *histo,
 
 void DrawWithRes(TCanvas* canvas, char* title, char* title2, 
                  TH1F *hData, TH1F *hMC, THStack *sMC, 
-                 TLegend *tl=NULL, bool isLogScaleY=false, bool isLogScaleX=false) // From bin1
-                 //TLegend *tl=NULL, bool isLogScaleY=true, bool isLogScaleX=false) // After bin9
+                 //TLegend *tl=NULL, bool isLogScaleY=false, bool isLogScaleX=false) // From bin1
+                 TLegend *tl=NULL, bool isLogScaleY=true, bool isLogScaleX=false) // After bin9
 {
 
   // sanity check
@@ -275,8 +275,8 @@ void DrawWithRes(TCanvas* canvas, char* title, char* title2,
 
   PrintIt(pad1, title);
   PrintIt2(pad1, title2);
-  PrintIt3(pad1, "p_{T}^{Z} < 30 GeV"); // From bin1
-  //PrintIt3(pad1, "p_{T}^{Z} #geq 30 GeV"); // After bin9
+  //PrintIt3(pad1, "p_{T}^{Z} < 30 GeV"); // From bin1
+  PrintIt3(pad1, "p_{T}^{Z} #geq 30 GeV"); // After bin9
 
   if (tl) tl ->Draw("same");
 
