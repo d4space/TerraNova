@@ -568,7 +568,7 @@ int theoryStudy_separate(const TString BaseName)
   //TLegend *lL =new TLegend(0.2,0.17,0.52,0.40); lL->SetFillColor(0); lL->SetBorderSize(0);
   TLegend *lL =new TLegend(0.25,0.17,0.65,0.45); lL->SetFillColor(0); lL->SetBorderSize(0);
   lL->AddEntry(Data_Xsec_Born,"Data","PLE1");
-  lL->AddEntry(Resb30_NormDiffXsec,"ResBos CT10 NNLL","f");
+  lL->AddEntry(Resb30_NormDiffXsec,"ResBos-P CT10 NNLL","f");
   lL->AddEntry(Powheg_Xsec_Born,"POWHEG CT10 NLO","f");
   lL->AddEntry(FEWZ_Xsec,"FEWZ CT10 NNLO","f");
 
@@ -713,7 +713,7 @@ int theoryStudy_separate(const TString BaseName)
   tResBos->SetBorderSize(0);
   tResBos->SetFillStyle(0);
   tResBos->SetTextSize(0.12);
-  tResBos->AddText("#font[42]{ResBos}");
+  tResBos->AddText("#font[42]{ResBos-P}");
 
   TPaveText *tChannel = new TPaveText(0.35,0.82,0.67,0.93,"NDC");
   tChannel->SetBorderSize(0);
