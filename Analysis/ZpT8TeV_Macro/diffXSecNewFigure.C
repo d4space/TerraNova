@@ -488,7 +488,7 @@ int diffXSecNewFigure()
 
   TLegend *lL =new TLegend(0.25,0.17,0.65,0.45); lL->SetFillColor(0); lL->SetBorderSize(0);
   lL->AddEntry(tgData,"Data","PLE1");
-  lL->AddEntry(tgResbos,"ResBos CT10 NNLL","f");
+  lL->AddEntry(tgResbos,"ResBos-CP CT10 NNLL","f");
   lL->AddEntry(tgPowheg,"POWHEG CT10 NLO","f");
   lL->AddEntry(tgFEWZ,"FEWZ CT10 NNLO","f");
 
@@ -623,7 +623,7 @@ int diffXSecNewFigure()
   tResBos->SetBorderSize(0);
   tResBos->SetFillStyle(0);
   tResBos->SetTextSize(0.12);
-  tResBos->AddText("#font[42]{ResBos}");
+  tResBos->AddText("#font[42]{ResBos-CP}");
  
   TPaveText *tChannel = new TPaveText(0.35,0.82,0.67,0.93,"NDC");
   tChannel->SetBorderSize(0);
