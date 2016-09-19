@@ -16,8 +16,11 @@ const int n = 18;
 double bin[n+1] = {0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 30, 40, 50, 70, 90, 110, 150, 190, 250, 600};
 //double point[18] = {1.25, 3.75, 6.25, 8.75, 11.75, 13.75, 16.25, 18.75, 24.25, 33.75, 44.75, 59.00, 79.00, 99.00, 126.00, 168.00, 214.00, 337.50};
 double point[18] = {1.25, 3.75, 6.25, 8.75, 11.25, 13.75, 16.25, 18.75, 25, 35, 45, 60, 80, 100, 130, 170, 220, 425};
+double bin_0to10GeVMerge[16] = {0, 10, 12.5, 15, 17.5, 20, 30, 40, 50, 70, 90, 110, 150, 190, 250, 600};
+//double point_0to10GeVMerge[15] = {5, 11.75, 13.75, 16.25, 18.75, 24.25, 33.75, 44.75, 59.00, 79.00, 99.00, 126.00, 168.00, 214.00, 337.50};
+double point_0to10GeVMerge[15] = {5, 11.25, 13.75, 16.25, 18.75, 25, 35, 45, 60, 80, 100, 130, 170, 220, 425};
 
-int diffXSecNewFigure()
+int diffXSecNewFigure_0to10GeVMerge()
 {
   gROOT->LoadMacro("../Utils/tdrstyle.C");
   setTDRStyle();
@@ -85,6 +88,23 @@ int diffXSecNewFigure()
   Data[16]	=       8.91327e-06 ; 	
   Data[17]	=       4.43314e-06 ;
 
+  double Data_0to10GeVMerge[15];
+  Data_0to10GeVMerge[0]		=	0.04503   ;
+  Data_0to10GeVMerge[1]		=       0.0354796   ; 	
+  Data_0to10GeVMerge[2]		=       0.0240797   ; 	
+  Data_0to10GeVMerge[3]		=       0.0225014   ; 	
+  Data_0to10GeVMerge[4]		=       0.0171383   ; 	
+  Data_0to10GeVMerge[5]		=       0.0117612   ; 	
+  Data_0to10GeVMerge[6]		=       0.00650165  ; 	
+  Data_0to10GeVMerge[7]		=       0.00401844  ; 	
+  Data_0to10GeVMerge[8]		=       0.00216843  ; 	
+  Data_0to10GeVMerge[9]		=       0.000886498 ; 	
+  Data_0to10GeVMerge[10]	=       0.000409235 ; 	
+  Data_0to10GeVMerge[11]	=       0.000164556 ; 	
+  Data_0to10GeVMerge[12]	=       8.04607e-05 ; 	
+  Data_0to10GeVMerge[13]	=       8.91327e-06 ; 	
+  Data_0to10GeVMerge[14]	=       4.43314e-06 ;
+
   double DataStatSyst[18];
   DataStatSyst[0]	=	0.00205861  ;
   DataStatSyst[1]	=       0.00265076  ; 	
@@ -104,6 +124,23 @@ int diffXSecNewFigure()
   DataStatSyst[15]	=       1.93958e-05 ; 	
   DataStatSyst[16]	=       6.26627e-06 ; 	
   DataStatSyst[17]	=       1.95776e-06 ;
+
+  double DataStatSyst_0to10GeVMerge[15];
+  DataStatSyst_0to10GeVMerge[0]		=	0.00119263  ;
+  DataStatSyst_0to10GeVMerge[1]		=       0.00215988  ; 	
+  DataStatSyst_0to10GeVMerge[2]		=       0.00189679  ; 	
+  DataStatSyst_0to10GeVMerge[3]		=       0.00173219  ; 	
+  DataStatSyst_0to10GeVMerge[4]		=       0.00154885  ; 	
+  DataStatSyst_0to10GeVMerge[5]		=       0.000482165 ; 	
+  DataStatSyst_0to10GeVMerge[6]		=       0.000359578 ; 	
+  DataStatSyst_0to10GeVMerge[7]		=       0.000289945 ; 	
+  DataStatSyst_0to10GeVMerge[8]		=       0.000144729 ; 	
+  DataStatSyst_0to10GeVMerge[9]		=       9.5768e-05  ; 	
+  DataStatSyst_0to10GeVMerge[10]	=       6.58497e-05 ; 	
+  DataStatSyst_0to10GeVMerge[11]	=       2.83107e-05 ; 	
+  DataStatSyst_0to10GeVMerge[12]	=       1.93958e-05 ; 	
+  DataStatSyst_0to10GeVMerge[13]	=       6.26627e-06 ; 	
+  DataStatSyst_0to10GeVMerge[14]	=       1.95776e-06 ;
 
 
   double Resbos[18];
@@ -261,6 +298,23 @@ int diffXSecNewFigure()
   FEWZ[16]	=        0.00001959 ; 	
   FEWZ[17]	=        0.00000179 ;
 
+  double FEWZ_0to10GeVMerge[15];
+  FEWZ_0to10GeVMerge[0]		=	 0.044881393;//-0.08005877;
+  FEWZ_0to10GeVMerge[1]		=        0.03845661 ; 	
+  FEWZ_0to10GeVMerge[2]		=        0.02904814 ; 	
+  FEWZ_0to10GeVMerge[3]		=        0.02265475 ; 	
+  FEWZ_0to10GeVMerge[4]		=        0.01805065 ; 	
+  FEWZ_0to10GeVMerge[5]		=        0.01135670 ; 	
+  FEWZ_0to10GeVMerge[6]		=        0.00594296 ; 	
+  FEWZ_0to10GeVMerge[7]		=        0.00353301 ; 	
+  FEWZ_0to10GeVMerge[8]		=        0.00185758 ; 	
+  FEWZ_0to10GeVMerge[9]		=        0.00082569 ; 	
+  FEWZ_0to10GeVMerge[10]	=        0.00039315 ; 	
+  FEWZ_0to10GeVMerge[11]	=        0.00016611 ; 	
+  FEWZ_0to10GeVMerge[12]	=        0.00005898 ; 	
+  FEWZ_0to10GeVMerge[13]	=        0.00001959 ; 	
+  FEWZ_0to10GeVMerge[14]	=        0.00000179 ;
+
   double FEWZStat[18];
   FEWZStat[0]	=	 0.0 	    ; //0.00094095;
   FEWZStat[1]	=        0.00039520 ; 	
@@ -280,6 +334,23 @@ int diffXSecNewFigure()
   FEWZStat[15]	=        0.00000082 ; 	
   FEWZStat[16]	=        0.00000031 ; 	
   FEWZStat[17]	=        0.00000004 ;
+
+  double FEWZStat_0to10GeVMerge[15];
+  FEWZStat_0to10GeVMerge[0]	=	 0.00023052 ; //0.00094095;
+  FEWZStat_0to10GeVMerge[1]	=        0.00012112 ; 	
+  FEWZStat_0to10GeVMerge[2]	=        0.00009292 ; 	
+  FEWZStat_0to10GeVMerge[3]	=        0.00007464 ; 	
+  FEWZStat_0to10GeVMerge[4]	=        0.00006809 ; 	
+  FEWZStat_0to10GeVMerge[5]	=        0.00003028 ; 	
+  FEWZStat_0to10GeVMerge[6]	=        0.00001669 ; 	
+  FEWZStat_0to10GeVMerge[7]	=        0.00001118 ; 	
+  FEWZStat_0to10GeVMerge[8]	=        0.00000535 ; 	
+  FEWZStat_0to10GeVMerge[9]	=        0.00000286 ; 	
+  FEWZStat_0to10GeVMerge[10]	=        0.00000170 ; 	
+  FEWZStat_0to10GeVMerge[11]	=        0.00000067 ; 	
+  FEWZStat_0to10GeVMerge[12]	=        0.00000082 ; 	
+  FEWZStat_0to10GeVMerge[13]	=        0.00000031 ; 	
+  FEWZStat_0to10GeVMerge[14]	=        0.00000004 ;
 
   double FEWZPDFlow[18];
   FEWZPDFlow[0]		=	 0.0     ; //-6.7678;
@@ -301,6 +372,23 @@ int diffXSecNewFigure()
   FEWZPDFlow[16]	=        9.3764  ; 	
   FEWZPDFlow[17]	=        11.4845 ;
 
+  double FEWZPDFlow_0to10GeVMerge[15];
+  FEWZPDFlow_0to10GeVMerge[0]	=	 7.3596  ; //-6.7678;
+  FEWZPDFlow_0to10GeVMerge[1]	=        1.2630  ; 	
+  FEWZPDFlow_0to10GeVMerge[2]	=        1.4623  ; 	
+  FEWZPDFlow_0to10GeVMerge[3]	=        1.6461  ; 	
+  FEWZPDFlow_0to10GeVMerge[4]	=        1.8262  ; 	
+  FEWZPDFlow_0to10GeVMerge[5]	=        2.1995  ; 	
+  FEWZPDFlow_0to10GeVMerge[6]	=        2.7651  ; 	
+  FEWZPDFlow_0to10GeVMerge[7]	=        3.2279  ; 	
+  FEWZPDFlow_0to10GeVMerge[8]	=        3.8587  ; 	
+  FEWZPDFlow_0to10GeVMerge[9]	=        4.6700  ; 	
+  FEWZPDFlow_0to10GeVMerge[10]	=        5.4480  ; 	
+  FEWZPDFlow_0to10GeVMerge[11]	=        6.4558  ; 	
+  FEWZPDFlow_0to10GeVMerge[12]	=        7.8312  ; 	
+  FEWZPDFlow_0to10GeVMerge[13]	=        9.3764  ; 	
+  FEWZPDFlow_0to10GeVMerge[14]	=        11.4845 ;
+
   double FEWZPDFhigh[18];
   FEWZPDFhigh[0]	=	 0.0    ; //-6.4288;
   FEWZPDFhigh[1]	=        1.8289 ; 	
@@ -320,6 +408,23 @@ int diffXSecNewFigure()
   FEWZPDFhigh[15]	=        5.1299 ; 	
   FEWZPDFhigh[16]	=        5.7526 ; 	
   FEWZPDFhigh[17]	=        6.6129 ;
+
+  double FEWZPDFhigh_0to10GeVMerge[15];
+  FEWZPDFhigh_0to10GeVMerge[0]	=	 7.3596 ; //-6.4288;
+  FEWZPDFhigh_0to10GeVMerge[1]	=        1.3277 ; 	
+  FEWZPDFhigh_0to10GeVMerge[2]	=        1.4084 ; 	
+  FEWZPDFhigh_0to10GeVMerge[3]	=        1.5036 ; 	
+  FEWZPDFhigh_0to10GeVMerge[4]	=        1.6060 ; 	
+  FEWZPDFhigh_0to10GeVMerge[5]	=        1.8347 ; 	
+  FEWZPDFhigh_0to10GeVMerge[6]	=        2.2177 ; 	
+  FEWZPDFhigh_0to10GeVMerge[7]	=        2.5401 ; 	
+  FEWZPDFhigh_0to10GeVMerge[8]	=        2.9723 ; 	
+  FEWZPDFhigh_0to10GeVMerge[9]	=        3.4925 ; 	
+  FEWZPDFhigh_0to10GeVMerge[10]	=        3.9540 ; 	
+  FEWZPDFhigh_0to10GeVMerge[11]	=        4.4901 ; 	
+  FEWZPDFhigh_0to10GeVMerge[12]	=        5.1299 ; 	
+  FEWZPDFhigh_0to10GeVMerge[13]	=        5.7526 ; 	
+  FEWZPDFhigh_0to10GeVMerge[14]	=        6.6129 ;
 
   double FEWZScale[18];
   FEWZScale[0]	=	 0.0	     ; //0.00842947;
@@ -341,6 +446,23 @@ int diffXSecNewFigure()
   FEWZScale[16]	=        1.45553e-06 ; 	
   FEWZScale[17]	=        1.5117e-07  ;
 
+  double FEWZScale_0to10GeVMerge[15];
+  FEWZScale_0to10GeVMerge[0]	=	 0.003638    ; //0.00842947;
+  FEWZScale_0to10GeVMerge[1]	=        0.000114661 ; 	
+  FEWZScale_0to10GeVMerge[2]	=        0.000205532 ; 	
+  FEWZScale_0to10GeVMerge[3]	=        0.000345275 ; 	
+  FEWZScale_0to10GeVMerge[4]	=        0.000297941 ; 	
+  FEWZScale_0to10GeVMerge[5]	=        0.000323374 ; 	
+  FEWZScale_0to10GeVMerge[6]	=        0.000210461 ; 	
+  FEWZScale_0to10GeVMerge[7]	=        0.000147318 ; 	
+  FEWZScale_0to10GeVMerge[8]	=        9.51447e-05 ; 	
+  FEWZScale_0to10GeVMerge[9]	=        4.73258e-05 ; 	
+  FEWZScale_0to10GeVMerge[10]	=        2.47657e-05 ; 	
+  FEWZScale_0to10GeVMerge[11]	=        1.03102e-05 ; 	
+  FEWZScale_0to10GeVMerge[12]	=        4.30353e-06 ; 	
+  FEWZScale_0to10GeVMerge[13]	=        1.45553e-06 ; 	
+  FEWZScale_0to10GeVMerge[14]	=        1.5117e-07  ;
+
   // Convert % to Num
   double FEWZPDFlowNum[18];
   double FEWZPDFhighNum[18];
@@ -352,6 +474,18 @@ int diffXSecNewFigure()
     FEWZPDFhighNum[i] = 0.01*FEWZPDFhigh[i]*FEWZ[i];
     FEWZTotalUnclow[i] = sqrt(FEWZStat[i]*FEWZStat[i] + FEWZPDFlowNum[i]*FEWZPDFlowNum[i] + FEWZScale[i]*FEWZScale[i]);
     FEWZTotalUnchigh[i] = sqrt(FEWZStat[i]*FEWZStat[i] + FEWZPDFhighNum[i]*FEWZPDFhighNum[i] + FEWZScale[i]*FEWZScale[i]);
+  }
+
+  double FEWZPDFlowNum_0to10GeVMerge[15];
+  double FEWZPDFhighNum_0to10GeVMerge[15];
+  double FEWZTotalUnclow_0to10GeVMerge[15];
+  double FEWZTotalUnchigh_0to10GeVMerge[15];
+  for(int i=0;i<15;i++)
+  {
+    FEWZPDFlowNum_0to10GeVMerge[i] = 0.01*FEWZPDFlow_0to10GeVMerge[i]*FEWZ_0to10GeVMerge[i];
+    FEWZPDFhighNum_0to10GeVMerge[i] = 0.01*FEWZPDFhigh_0to10GeVMerge[i]*FEWZ_0to10GeVMerge[i];
+    FEWZTotalUnclow_0to10GeVMerge[i] = sqrt(FEWZStat_0to10GeVMerge[i]*FEWZStat_0to10GeVMerge[i] + FEWZPDFlowNum_0to10GeVMerge[i]*FEWZPDFlowNum_0to10GeVMerge[i] + FEWZScale_0to10GeVMerge[i]*FEWZScale_0to10GeVMerge[i]);
+    FEWZTotalUnchigh_0to10GeVMerge[i] = sqrt(FEWZStat_0to10GeVMerge[i]*FEWZStat_0to10GeVMerge[i] + FEWZPDFhighNum_0to10GeVMerge[i]*FEWZPDFhighNum_0to10GeVMerge[i] + FEWZScale_0to10GeVMerge[i]*FEWZScale_0to10GeVMerge[i]);
   }
 
   for(int i=0;i<18;i++)
@@ -383,6 +517,15 @@ int diffXSecNewFigure()
     error_xlow[i] = (point[i] - bin[i]);
     error_xhigh[i] = (bin[i+1]-point[i]);
     cout << "xlow : " << error_xlow[i] << "\t xhigh : " << error_xhigh[i] << endl;
+  }
+
+  double error_xlow_0to10GeVMerge[15];
+  double error_xhigh_0to10GeVMerge[15];
+  for (int i=0;i<15;i++) 
+  {
+    error_xlow_0to10GeVMerge[i] = (point_0to10GeVMerge[i] - bin_0to10GeVMerge[i]);
+    error_xhigh_0to10GeVMerge[i] = (bin_0to10GeVMerge[i+1]-point_0to10GeVMerge[i]);
+    cout << "xlow_0to10GeVMerge : " << error_xlow_0to10GeVMerge[i] << "\t xhigh_0to10GeVMerge : " << error_xhigh_0to10GeVMerge[i] << endl;
   }
 
   TH1D* hPowheg = new TH1D("","",18,1,18);
@@ -424,6 +567,26 @@ int diffXSecNewFigure()
     FEWZScalehighRatioBand[i] = (FEWZStat[i] + FEWZPDFhighNum[i] + FEWZScale[i]) / Data[i];
   }
 
+  double DataRatioBand_0to10GeVMerge[15];
+  double DataStatSystRatioBand_0to10GeVMerge[15];
+  double FEWZRatioBand_0to10GeVMerge[15];
+  double FEWZStatRatioBand_0to10GeVMerge[15];
+  double FEWZPDFlowRatioBand_0to10GeVMerge[15];
+  double FEWZPDFhighRatioBand_0to10GeVMerge[15];
+  double FEWZScalelowRatioBand_0to10GeVMerge[15];
+  double FEWZScalehighRatioBand_0to10GeVMerge[15];
+  for(int i=0; i<15; i++)
+  {
+    DataRatioBand_0to10GeVMerge[i] = Data_0to10GeVMerge[i] / Data_0to10GeVMerge[i] ;
+    DataStatSystRatioBand_0to10GeVMerge[i] = DataStatSyst_0to10GeVMerge[i] / Data_0to10GeVMerge[i] ;
+    FEWZRatioBand_0to10GeVMerge[i] = FEWZ_0to10GeVMerge[i] / Data_0to10GeVMerge[i] ;
+    FEWZStatRatioBand_0to10GeVMerge[i] = FEWZStat_0to10GeVMerge[i] / Data_0to10GeVMerge[i] ;
+    FEWZPDFlowRatioBand_0to10GeVMerge[i] = (FEWZStat_0to10GeVMerge[i] + FEWZPDFlowNum_0to10GeVMerge[i]) / Data_0to10GeVMerge[i];
+    FEWZPDFhighRatioBand_0to10GeVMerge[i] = (FEWZStat_0to10GeVMerge[i] + FEWZPDFhighNum_0to10GeVMerge[i]) / Data_0to10GeVMerge[i];
+    FEWZScalelowRatioBand_0to10GeVMerge[i] = (FEWZStat_0to10GeVMerge[i] + FEWZPDFlowNum_0to10GeVMerge[i] + FEWZScale_0to10GeVMerge[i]) / Data_0to10GeVMerge[i];
+    FEWZScalehighRatioBand_0to10GeVMerge[i] = (FEWZStat_0to10GeVMerge[i] + FEWZPDFhighNum_0to10GeVMerge[i] + FEWZScale_0to10GeVMerge[i]) / Data_0to10GeVMerge[i];
+  }
+
   //Define TGraph
   TGraphAsymmErrors *tgData = new TGraphAsymmErrors(n,point,Data,error_xlow,error_xhigh,DataStatSyst,DataStatSyst);
   TGraphAsymmErrors *tgDataStatSystRatioBand = new TGraphAsymmErrors(n,point,DataRatioBand,error_xlow,error_xhigh,DataStatSystRatioBand,DataStatSystRatioBand);
@@ -441,6 +604,14 @@ int diffXSecNewFigure()
   TGraphAsymmErrors *tgFEWZPDFRatioBand = new TGraphAsymmErrors(n,point,FEWZRatioBand,error_xlow,error_xhigh,FEWZPDFlowRatioBand,FEWZPDFhighRatioBand);
   TGraphAsymmErrors *tgFEWZScaleRatioBand = new TGraphAsymmErrors(n,point,FEWZRatioBand,error_xlow,error_xhigh,FEWZScalelowRatioBand,FEWZScalehighRatioBand);
 
+  // 0 to 10 GeV Merge
+  TGraphAsymmErrors *tgData_0to10GeVMerge = new TGraphAsymmErrors(15,point_0to10GeVMerge,Data_0to10GeVMerge,error_xlow_0to10GeVMerge,error_xhigh_0to10GeVMerge,DataStatSyst_0to10GeVMerge,DataStatSyst_0to10GeVMerge);
+  TGraphAsymmErrors *tgDataStatSystRatioBand_0to10GeVMerge = new TGraphAsymmErrors(15,point_0to10GeVMerge,DataRatioBand_0to10GeVMerge,error_xlow_0to10GeVMerge,error_xhigh_0to10GeVMerge,DataStatSystRatioBand_0to10GeVMerge,DataStatSystRatioBand_0to10GeVMerge);
+  
+  TGraphAsymmErrors *tgFEWZStatRatioBand_0to10GeVMerge = new TGraphAsymmErrors(15,point_0to10GeVMerge,FEWZRatioBand_0to10GeVMerge,error_xlow_0to10GeVMerge,error_xhigh_0to10GeVMerge,FEWZStatRatioBand_0to10GeVMerge,FEWZStatRatioBand_0to10GeVMerge);
+  TGraphAsymmErrors *tgFEWZPDFRatioBand_0to10GeVMerge = new TGraphAsymmErrors(15,point_0to10GeVMerge,FEWZRatioBand_0to10GeVMerge,error_xlow_0to10GeVMerge,error_xhigh_0to10GeVMerge,FEWZPDFlowRatioBand_0to10GeVMerge,FEWZPDFhighRatioBand_0to10GeVMerge);
+  TGraphAsymmErrors *tgFEWZScaleRatioBand_0to10GeVMerge = new TGraphAsymmErrors(15,point_0to10GeVMerge,FEWZRatioBand_0to10GeVMerge,error_xlow_0to10GeVMerge,error_xhigh_0to10GeVMerge,FEWZScalelowRatioBand_0to10GeVMerge,FEWZScalehighRatioBand_0to10GeVMerge);
+  
   //// Now design and Draw 
   gStyle->SetLineWidth(2.);
   gStyle->SetOptStat(0);
@@ -563,6 +734,15 @@ int diffXSecNewFigure()
   tgDataStatSystRatioBand->SetFillStyle(3354);
   tgDataStatSystRatioBand->SetFillColor(kGray+1);
 
+  tgDataStatSystRatioBand_0to10GeVMerge->SetMarkerStyle(20);
+  tgDataStatSystRatioBand_0to10GeVMerge->SetMarkerColor(kBlack);
+  tgDataStatSystRatioBand_0to10GeVMerge->SetMarkerSize(0.7);
+  tgDataStatSystRatioBand_0to10GeVMerge->SetLineWidth(2.0);
+  tgDataStatSystRatioBand_0to10GeVMerge->SetLineColor(kBlack);
+
+  tgDataStatSystRatioBand_0to10GeVMerge->SetFillStyle(3354);
+  tgDataStatSystRatioBand_0to10GeVMerge->SetFillColor(kGray+1);
+
   // Resbos Ratio plot style
   tgResbosPDFRatioBand->SetMarkerColor(MarkerColor_ResBos);
   tgResbosPDFRatioBand->SetMarkerStyle(MarkerStyle_ResBos);
@@ -593,6 +773,18 @@ int diffXSecNewFigure()
   tgFEWZScaleRatioBand->SetMarkerColor(MarkerColor_FEWZ);
   tgFEWZScaleRatioBand->SetMarkerStyle(MarkerStyle_FEWZ);
   tgFEWZScaleRatioBand->SetFillColor(BandColor_FEWZ_scale);
+
+  tgFEWZStatRatioBand_0to10GeVMerge->SetMarkerColor(MarkerColor_FEWZ);
+  tgFEWZStatRatioBand_0to10GeVMerge->SetMarkerStyle(MarkerStyle_FEWZ);
+  tgFEWZStatRatioBand_0to10GeVMerge->SetFillColor(BandColor_FEWZ_stat);
+
+  tgFEWZPDFRatioBand_0to10GeVMerge->SetMarkerColor(MarkerColor_FEWZ);
+  tgFEWZPDFRatioBand_0to10GeVMerge->SetMarkerStyle(MarkerStyle_FEWZ);
+  tgFEWZPDFRatioBand_0to10GeVMerge->SetFillColor(BandColor_FEWZ_PDF);
+
+  tgFEWZScaleRatioBand_0to10GeVMerge->SetMarkerColor(MarkerColor_FEWZ);
+  tgFEWZScaleRatioBand_0to10GeVMerge->SetMarkerStyle(MarkerStyle_FEWZ);
+  tgFEWZScaleRatioBand_0to10GeVMerge->SetFillColor(BandColor_FEWZ_scale);
 
   // Canvas for Theory/data Ratio
   TCanvas *lC2 = new TCanvas("Can","Can",50,50,W,H); 
@@ -706,10 +898,34 @@ int diffXSecNewFigure()
   tgDataStatSystRatioBand->GetXaxis()->SetTitleOffset(1.5);
   tgDataStatSystRatioBand->GetXaxis()->SetTitleFont(43);
   tgDataStatSystRatioBand->GetXaxis()->SetTitleSize(33);
-  tgDataStatSystRatioBand->Draw("2 A");
-  tgFEWZScaleRatioBand->Draw("2");
-  tgFEWZPDFRatioBand->Draw("2");
-  tgFEWZStatRatioBand->Draw("2P");
+  //tgDataStatSystRatioBand->Draw("2 A");
+  //tgFEWZScaleRatioBand->Draw("2");
+  //tgFEWZPDFRatioBand->Draw("2");
+  //tgFEWZStatRatioBand->Draw("2P");
+  
+  tgDataStatSystRatioBand_0to10GeVMerge->GetYaxis()->SetRangeUser(-0.8,3.2);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetYaxis()->SetTitle("Theory/Data");
+  tgDataStatSystRatioBand_0to10GeVMerge->GetYaxis()->CenterTitle();
+  tgDataStatSystRatioBand_0to10GeVMerge->GetYaxis()->SetTitleOffset(1.1);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetYaxis()->SetTitleFont(43);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetYaxis()->SetTitleSize(33);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetYaxis()->SetLabelFont(43);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetYaxis()->SetLabelSize(29);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetYaxis()->SetNdivisions(405);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetXaxis()->SetRangeUser(0,600);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetXaxis()->SetTitleOffset(0.6);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetXaxis()->SetTitleFont(43);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetXaxis()->SetTitleSize(20);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetXaxis()->SetLabelSize(0.11);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetXaxis()->SetTitle("p_{T}^{Z} [GeV]");
+  tgDataStatSystRatioBand_0to10GeVMerge->GetXaxis()->SetTitleOffset(1.5);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetXaxis()->SetTitleFont(43);
+  tgDataStatSystRatioBand_0to10GeVMerge->GetXaxis()->SetTitleSize(33);
+  tgDataStatSystRatioBand_0to10GeVMerge->Draw("2 A");
+  tgFEWZScaleRatioBand_0to10GeVMerge->Draw("2");
+  tgFEWZPDFRatioBand_0to10GeVMerge->Draw("2");
+  tgFEWZStatRatioBand_0to10GeVMerge->Draw("2P");
+  
   lFewz->Draw();
   tFewz->Draw();
 
