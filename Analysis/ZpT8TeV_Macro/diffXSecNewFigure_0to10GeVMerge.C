@@ -696,6 +696,7 @@ int diffXSecNewFigure_0to10GeVMerge()
   tgPowheg->GetYaxis()->SetTitleSize(0.05);
   tgPowheg->GetYaxis()->SetLabelSize(0.04);
 
+  tgPowheg->GetXaxis()->SetRangeUser(0,600);
   tgPowheg->GetXaxis()->SetTitle("p_{T}^{Z} [GeV]");
   tgPowheg->GetXaxis()->SetTitleSize(0.04);
   tgPowheg->GetXaxis()->SetTitleOffset(0.55);
