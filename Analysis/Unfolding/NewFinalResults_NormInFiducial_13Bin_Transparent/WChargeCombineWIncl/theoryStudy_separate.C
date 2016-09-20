@@ -13,12 +13,13 @@
 const TString format("pdf");
 
 const int nBins = 14;
-double WptLogBins[nBins] = {1.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+//double WptLogBins[nBins] = {0.42,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+double WptLogBins[nBins] = {0.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
 double WptBins[nBins] = {0.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
 double BinWidth[14] ={0.0, 7.5-0, 12.5-7.5,17.5-12.5, 24.0-17.5, 30.0-24.0, 40.0-30.0, 50.0-40.0, 70.0-50.0, 110.0-70.0, 150.0-110.0, 190.0-150.0, 250.0-190.0, 600.0-250.0};
 
-double ax[13]  = {4.25,10,15,20.75,27,35,45,60,90,130,170,220,425};
-double aex[13] = {3.25,2.5,2.5,3.25,3,5,5,10,20,20,20,30,175};
+double ax[13]  = {3.75,10,15,20.75,27,35,45,60,90,130,170,220,425};
+double aex[13] = {3.75,2.5,2.5,3.25,3,5,5,10,20,20,20,30,175};
 
 void Powheg_NormDiffStatErr(const TString BaseName, double *Err);
 void Powheg_NormPDFUncer(const TString BaseName, double *Xsec, double *Err);
@@ -312,7 +313,8 @@ int theoryStudy_separate(const TString BaseName)
   }
   
   /// TGraph
-  TGraphErrors *Powheg_Xsec_Born = new TGraphErrors(hPowheg_NormDiffXsec);
+  //TGraphErrors *Powheg_Xsec_Born = new TGraphErrors(hPowheg_NormDiffXsec);
+  TGraphAsymmErrors *Powheg_Xsec_Born = new TGraphAsymmErrors(hPowheg_NormDiffXsec);
   TGraphErrors *RatioPowhegStatErrBand = new TGraphErrors(hRatioPowhegStatErrBand);
   TGraphErrors *RatioPowhegStatPDFErrBand = new TGraphErrors(hRatioPowhegStatPDFErrBand);
 
@@ -610,6 +612,7 @@ int theoryStudy_separate(const TString BaseName)
   //Powheg_Xsec_Born->GetYaxis()->SetLabelSize(0.03);
   Powheg_Xsec_Born->GetYaxis()->SetLabelSize(0.04);
 
+  Powheg_Xsec_Born->GetXaxis()->SetRangeUser(0,600);
   Powheg_Xsec_Born->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
   Powheg_Xsec_Born->GetXaxis()->SetTitleSize(0.04);
   Powheg_Xsec_Born->GetXaxis()->SetTitleOffset(0.55);
