@@ -52,8 +52,8 @@ int WMinusWplusRatio_New()
 
   double BinWidth[14] ={0.0, 7.5-0, 12.5-7.5,17.5-12.5, 24.0-17.5, 30.0-24.0, 40.0-30.0, 50.0-40.0, 70.0-50.0, 110.0-70.0, 150.0-110.0     , 190.0-150.0, 250.0-190.0, 600.0-250.0};
   const int nBins = 13;
-  //double WptBins[nBins] = {0.0,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
-  double WptBins[nBins] = {1.,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
+  double WptBins[nBins] = {0.0,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
+  //double WptBins[nBins] = {1.,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
 
   //Data
   TFile *f_WmToMu = new TFile("../WptCharge_NormDiffXsec_InFid/Wpt_WmToMuNuNormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
@@ -969,6 +969,7 @@ int WMinusWplusRatio_New()
   tgPowheg->GetYaxis()->SetTitleSize(0.04);
   tgPowheg->GetYaxis()->SetLabelSize(0.04);
 
+  tgPowheg->GetXaxis()->SetRangeUser(0.,600);
   tgPowheg->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
   tgPowheg->GetXaxis()->SetTitleSize(0.04);
   tgPowheg->GetXaxis()->SetTitleOffset(0.55);

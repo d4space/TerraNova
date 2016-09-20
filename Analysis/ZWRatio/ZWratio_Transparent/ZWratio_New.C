@@ -48,8 +48,8 @@ int ZWratio_New()
   float R = 0.04*W_ref;
 
   const int nBins = 13;
-  //double WptBins[nBins] = {0.0,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
-  double WptBins[nBins] = {1.0,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
+  double WptBins[nBins] = {0.0,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
+  //double WptBins[nBins] = {1.0,7.5,12.5,17.5,30,40,50,70,110,150,190,250,600};
 
   ///Data
   TFile *f_WinclMu_RD = new TFile("../WptIncl_NormDiffXsec_InFid/Wpt_NormDiffXsec_InFid_RDResBosPowhegFEWZ.root");
@@ -401,6 +401,7 @@ int ZWratio_New()
   tgPowheg->GetYaxis()->SetTitleSize(0.04);
   tgPowheg->GetYaxis()->SetLabelSize(0.04);
 
+  tgPowheg->GetXaxis()->SetRangeUser(0.,600);
   tgPowheg->GetXaxis()->SetTitle("p_{T}^{V} [GeV]");
   tgPowheg->GetXaxis()->SetTitleSize(0.04);
   tgPowheg->GetXaxis()->SetTitleOffset(0.55);
