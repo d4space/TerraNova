@@ -4097,6 +4097,18 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   hWMptMCLog->Add(hDYToMuMuLogM);
   hWMptMCLog->Add(hQCDWptLogM);
   hWMptMCLog->Add(hSigWptLogM);
+    cout<<
+      "fitN\t"      <<
+      "\tsqrt(fitN)\t"<<
+      "\tnxSigm\t"    <<
+      "\tnxSigm err\t"<<
+      "\tnxQCDm\t"    <<
+      "\tnxQCDm err\t"<<
+      "\tnxEWKm\t"    <<
+      "\tnxEWKm err\t"<<
+      "\tsumerr^2\t"  <<
+      "\tsumerr\t"    <<
+      endl;
   for (int i=1; i<=hSigWPpt->GetNbinsX(); i++)
   {
     double xEWKm=0,xQCDm=0,xSigm=0;
@@ -4107,25 +4119,34 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     nxEWKm=  nEWKm[i]->getVal() ;
     nxQCDm=  nQCDm[i]->getVal() ;
     nxSigm=  nSigm[i]->getVal() ;
-    
-    ////hWMptMCLog->SetBinError(i, sqrt( TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2) ));
-    hWMptMCLog->SetBinError(i, 
-	fabs(
-	  sqrt(TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2) )
-	   - sqrt(nxEWKm + nxQCDm + nxSigm)     
-	    )
-	);
+
+    double xSmallestm=99999;
+    if( xSigm <xSmallestm)
+      xSmallestm =xSigm;
+    if( xQCDm <xSmallestm)
+      xSmallestm =xQCDm;
+    if( xEWKm <xSmallestm)
+      xSmallestm =xEWKm;
+
     cout<<i<<
-      "\tnxEWKm\t"<<nxEWKm<<
-      "\tnxEWKm err\t"<<xEWKm<<
-      "\tnxQCDm\t"<<nxQCDm<<
-      "\tnxQCDm err\t"<<xQCDm<<
-      "\tnxSigm\t"<<nxSigm<<
-      "\tnxSigm err\t"<<xSigm<<
-      "\tsumerr^2\t"<< (TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2))<<
-      "\tsumerr\t"<< sqrt(TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2))<<
-      "\tsqrt(N)\t"<< sqrt(nxSigm + nxQCDm + nxEWKm)<<
+      "\txSmallest\t"<<xSmallestm<<
       endl;
+
+    hWMptMCLog->SetBinError(i,xSmallestm);
+    cout<<i<<
+      "\t"<< nxSigm + nxQCDm + nxEWKm<<
+      "\t\t"<< sqrt(nxSigm + nxQCDm + nxEWKm)<<
+      "\t\t"<<nxSigm<<
+      "\t\t"<<xSigm<<
+      "\t\t"<<nxQCDm<<
+      "\t\t"<<xQCDm<<
+      "\t\t\t"<<nxEWKm<<
+      "\t\t"<<xEWKm<<
+      "\t\t\t"<< (TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2))<<
+      "\t\t\t"<< sqrt(TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2))<<
+      endl; 
+    ////hWMptMCLog->SetBinError(i, sqrt( TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2) ));
+  
   }
   hWMptDiffLog = makeDiffHistWptLog(hdataWptLogM,hWMptMCLog,"hWMptDiffLog");
   hWMptDiffLog->SetMarkerStyle(kFullCircle);

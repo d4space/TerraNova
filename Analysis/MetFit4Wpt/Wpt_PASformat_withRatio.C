@@ -33,7 +33,8 @@
 //From WMuNeu.h
 #include "../Utils/const.h"
 
-TH1D* makeDiffHistWptLog(TH1D* hData, TH1D* hFit, const TString name);
+//TH1D* makeDiffHistWptLog(TH1D* hData, TH1D* hFit, const TString name);
+TH1D* makeDiffHistWptLog(TH1D* hData, TH1D* hFit, TH1D* hFit_error, const TString name); // added histogram for fit error
 
 //=== MAIN MACRO ================================================ 
 
@@ -86,7 +87,12 @@ void Wpt_PASformat_withRatio(const TString  outputDir,   // output directory
   TH1D *hTTJetsM;
   TH1D *hDYToTauTauP;
   TH1D *hDYToTauTauM;
-  
+
+  // To get error from fit
+  TH1D *hFitErrorP;
+  TH1D *hFitErrorM;
+
+
   char histName[30],histName_org[30];
 
   cout << "check 2" << endl; 
@@ -105,7 +111,12 @@ void Wpt_PASformat_withRatio(const TString  outputDir,   // output directory
   hTTJetsM     = (TH1D*)infile->Get("hTTJetsM")     -> Clone("hTTJetsM");
   hDYToTauTauP = (TH1D*)infile->Get("hDYToTauTauP") -> Clone("hDYToTauTauP");
   hDYToTauTauM = (TH1D*)infile->Get("hDYToTauTauM") -> Clone("hDYToTauTauM");
-  
+
+  //To get error from fit
+  hFitErrorP      = (TH1D*)infile->Get("hWPptMCLog")   -> Clone("hFitErrorP");
+  hFitErrorM      = (TH1D*)infile->Get("hWMptMCLog")   -> Clone("hFitErrorM");
+
+
   TCanvas *c;
   c = MakeCanvas("c","c",800,800);
   c->Divide(1,2,0,0);
@@ -194,7 +205,8 @@ void Wpt_PASformat_withRatio(const TString  outputDir,   // output directory
   TH1D* hWPptDiffLog;
   TH1D* hWMptDiffLog;
 
-  double WptBinsLog[14]={1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+  //double WptBinsLog[14]={1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+  double WptBinsLog[14]={0.68,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
   double x1,x2,x3,x4,x5,x6,x7,err;
   TH1D *hDYToTauTauLogP = new TH1D("hDYToTauTauLogP","",13,WptBinsLog);
   TH1D *hTTJetsLogP     = new TH1D("hTTJetsLogP","",13,WptBinsLog);
@@ -255,15 +267,18 @@ void Wpt_PASformat_withRatio(const TString  outputDir,   // output directory
   hWPptMCLog->Add(hQCDWptLogP);
   hWPptMCLog->Add(hSigWptLogP);
 
-  hWPptDiffLog = makeDiffHistWptLog(hdataWptLogP,hWPptMCLog,"hWPptDiffLog");
+  //hWPptDiffLog = makeDiffHistWptLog(hdataWptLogP,hWPptMCLog,"hWPptDiffLog");
+  hWPptDiffLog = makeDiffHistWptLog(hdataWptLogP,hWPptMCLog,hFitErrorP,"hWPptDiffLog"); // added histogram for fit error
   hWPptDiffLog->SetMarkerStyle(kFullCircle);
   hWPptDiffLog->SetMarkerSize(0.9);
 
-  plotWPptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
+  //plotWPptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
+  plotWPptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-sum)/#sigma_{sum}");
   plotWPptDiffLog->setOutDir(CPlot::sOutDir);
   plotWPptDiffLog->AddHist1D(hWPptDiffLog,"",kAzure+1,1,1001);
-  plotWPptDiffLog->SetYRange(-0.3,0.3);
-  plotWPptDiffLog->AddLine(1, 0,600, 0,kBlack,1);
+  //plotWPptDiffLog->SetYRange(-0.15,0.15);
+  plotWPptDiffLog->SetYRange(-1.3,1.3);
+  plotWPptDiffLog->AddLine(0.68, 0,600, 0,kBlack,1);
   plotWPptDiffLog->SetLogx();
   plotWPptDiffLog->Draw(c,kFALSE,format,2);
   gPad->RedrawAxis();
@@ -343,15 +358,18 @@ void Wpt_PASformat_withRatio(const TString  outputDir,   // output directory
   hWMptMCLog->Add(hQCDWptLogM);
   hWMptMCLog->Add(hSigWptLogM);
 
-  hWMptDiffLog = makeDiffHistWptLog(hdataWptLogM,hWMptMCLog,"hWMptDiffLog");
+  //hWMptDiffLog = makeDiffHistWptLog(hdataWptLogM,hWMptMCLog,"hWMptDiffLog");
+  hWMptDiffLog = makeDiffHistWptLog(hdataWptLogM,hWMptMCLog,hFitErrorM,"hWMptDiffLog"); // added histogram for fit error
   hWMptDiffLog->SetMarkerStyle(kFullCircle);
   hWMptDiffLog->SetMarkerSize(0.9);
 
-  plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
+  //plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-mc)/#sigma_{data}");
+  plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [GeV]","(data-sum)/#sigma_{sum}");
   plotWMptDiffLog->setOutDir(CPlot::sOutDir);
   plotWMptDiffLog->AddHist1D(hWMptDiffLog,"",kAzure+1,1,1001);
-  plotWMptDiffLog->SetYRange(-0.3,0.3);
-  plotWMptDiffLog->AddLine(1, 0,600, 0,kBlack,1);
+  //plotWMptDiffLog->SetYRange(-0.15,0.15);
+  plotWMptDiffLog->SetYRange(-1.3,1.3);
+  plotWMptDiffLog->AddLine(0.68, 0,600, 0,kBlack,1);
   plotWMptDiffLog->SetLogx();
   plotWMptDiffLog->Draw(c,kFALSE,format,2);
   gPad->RedrawAxis();
@@ -366,18 +384,31 @@ void Wpt_PASformat_withRatio(const TString  outputDir,   // output directory
 }
 
 
-TH1D *makeDiffHistWptLog(TH1D* hData, TH1D* hFit, const TString name)
+//TH1D *makeDiffHistWptLog(TH1D* hData, TH1D* hFit, const TString name)
+TH1D *makeDiffHistWptLog(TH1D* hData, TH1D* hFit, TH1D* hFitError, const TString name)
 {
-  double WptBins[14]={1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+  //double WptBins[14]={1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+  double WptBins[14]={0.68,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
   TH1D *hDiff = new TH1D(name,"",13,WptBins);
   TAxis *xaxis = hData->GetXaxis();
   for(int ibin=1; ibin<=hData->GetNbinsX(); ibin++) {
-    cout << "Data: " << hData->GetBinContent(ibin) << " MC: " << hFit->GetBinContent(ibin) << endl;
+    //cout << "Wpt Data: " << hData->GetBinContent(ibin) << "\t sqrt(data): " << sqrt(hData->GetBinContent(ibin)) << "\t Wpt Fit: " << hFit->GetBinContent(ibin) << "\t fit error : " << hFitError->GetBinError(ibin) << endl;
     Double_t diff = (hData->GetBinContent(ibin)-hFit->GetBinContent(ibin)); // data-mc
-    Double_t err = sqrt(hData->GetBinContent(ibin));
+    //Double_t err = sqrt(hData->GetBinContent(ibin));
+    Double_t err = hFitError->GetBinError(ibin); // error from fit
     if(err==0) err= sqrt(hFit->GetBinContent(ibin));
     if(err>0) hDiff->Fill(xaxis->GetBinCenter(ibin),diff/err);
     else      hDiff->Fill(xaxis->GetBinCenter(ibin),0);
+    cout << 
+      "Wpt Data:\t " <<   hData->GetBinContent(ibin) << 
+      "\t sqrt(data):\t " << sqrt(hData->GetBinContent(ibin)) << 
+      "\t Wpt Fit:\t " << hFit->GetBinContent(ibin) << 
+      "\t error:\t " << hFitError->GetBinError(ibin) <<
+      "\t Wpt Data - Wpt Fit:\t " <<   hData->GetBinContent(ibin)-hFit->GetBinContent(ibin) << 
+      "\tdiff/err: " << diff/err  <<
+      endl;
+    //cout << ibin <<  "\tdiff:   " << diff  <<  "\tfab(diff):   " << fab(diff)  << endl;
+    //cout << ibin<< "\tdiff/err: " << diff/err  << endl;
   }
 
   //hDiff->GetYaxis()->SetTitleOffset(0.42);
