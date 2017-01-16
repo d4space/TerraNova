@@ -1,0 +1,16 @@
+Passed W evts: 0
+selected converted: 140407 +- 374.709
+selected events for each bin
+0   15516
+1   16680
+2   14958
+3   18072
+4   16383
+5   23818
+6   15578
+7   12412
+8   5323
+9   1115
+10   319
+11   145
+12   87
