@@ -87,8 +87,8 @@ void fitWMuMetMtModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // 
   const Double_t ETA_CUT = 2.1;
 
   // file format for output plots
-  //const TString format("png"); 
-  const TString format("pdf"); 
+  const TString format("png"); 
+  //const TString format("pdf"); 
    /************************** 
   // recoil correction
   RecoilCorrector recoilCorr("../Recoil/ZmmData/fits.root");//, (!) uncomment to perform corrections to recoil from W-MC/Z-MC
@@ -801,13 +801,13 @@ void fitWMuMetMtModRayleighSimult_NNLO_PASformat(const TString  outputDir,   // 
   allyieldsp.open(allyieldsfnamep);
   assert(allyieldsp.is_open());
   allyieldsp<<"********************** W^{+} Yields **********************"<<endl;
-  allyieldsp<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)"<<endl;
+  allyieldsp<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)\t\t sqrt(expected(N)\t\t RD(cnt)-RD(fit)"<<endl;
 
   sprintf(allyieldsfnamem,"%s/AllYields_M.txt",CPlot::sOutDir.Data());
   allyieldsm.open(allyieldsfnamem);
   assert(allyieldsm.is_open());
   allyieldsm<<"********************** W^{-} Yields **********************"<<endl;
-  allyieldsm<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)"<<endl;
+  allyieldsm<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)\t\t sqrt(expected(N)\t\t RD(cnt)-RD(fit)"<<endl;
 
 //Create MET Fit Plots --> HTML file
   ofstream metplotsfile;
@@ -3009,12 +3009,12 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     flags = allyieldsp.flags();
     allyieldsp<<fixed<<setprecision(2);
     //allyieldsp<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigp[ipt]->getVal()<<"\t Error\t"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<" EWK(Fit&Cnt): "<<nEWKp[ipt]->getVal()<<" +/- "<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<hEWKMetp[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetp[ipt]->Integral())<<endl;
-    allyieldsp<<ipt<<"\t"<<hDataMetp[ipt]->Integral()<<"+/-"<<sqrt(hDataMetp[ipt]->Integral())<<"\t"<<nSigp[ipt]->getVal()+nEWKp[ipt]->getVal()+nQCDp[ipt]->getVal()<<"+/-"<<sqrt(nSigp[ipt]->getPropagatedError(*fitResp[ipt])*nSigp[ipt]->getPropagatedError(*fitResp[ipt])+nQCDp[ipt]->getPropagatedError(*fitResp[ipt])*nQCDp[ipt]->getPropagatedError(*fitResp[ipt])+nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEWKp[ipt]->getPropagatedError(*fitResp[ipt]))<<"\t"<<hWmunuMetp[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMetp[ipt]->Integral())<<"\t"<<nSigp[ipt]->getVal()<<"+/-"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<hEWKMetp[ipt]->Integral()<<"+/-"<<sqrt(hEWKMetp[ipt]->Integral())<<"\t"<<nEWKp[ipt]->getVal()<<"+/-"<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<nQCDp[ipt]->getVal()<<"+/-"<<nQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
+    allyieldsp<<ipt<<"\t"<<hDataMetp[ipt]->Integral()<<"+/-"<<sqrt(hDataMetp[ipt]->Integral())<<"\t"<<nSigp[ipt]->getVal()+nEWKp[ipt]->getVal()+nQCDp[ipt]->getVal()<<"+/-"<<sqrt(nSigp[ipt]->getPropagatedError(*fitResp[ipt])*nSigp[ipt]->getPropagatedError(*fitResp[ipt])+nQCDp[ipt]->getPropagatedError(*fitResp[ipt])*nQCDp[ipt]->getPropagatedError(*fitResp[ipt])+nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEWKp[ipt]->getPropagatedError(*fitResp[ipt]))<<"\t"<<hWmunuMetp[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMetp[ipt]->Integral())<<"\t"<<nSigp[ipt]->getVal()<<"+/-"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<hEWKMetp[ipt]->Integral()<<"+/-"<<sqrt(hEWKMetp[ipt]->Integral())<<"\t"<<nEWKp[ipt]->getVal()<<"+/-"<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<nQCDp[ipt]->getVal()<<"+/-"<<nQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<sqrt(nSigp[ipt]->getVal()+nEWKp[ipt]->getVal()+nQCDp[ipt]->getVal()) << "\t" << hDataMetp[ipt]->Integral() - (nSigp[ipt]->getVal()+nEWKp[ipt]->getVal()+nQCDp[ipt]->getVal()) << endl;
 
     flags = allyieldsm.flags();
     allyieldsm<<fixed<<setprecision(2);
     //allyieldsm<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigm[ipt]->getVal()<<"\t Error\t"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<" EWK(Fit&Cnt): "<<nEWKm[ipt]->getVal()<<" +/- "<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<hEWKMetm[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetm[ipt]->Integral())<<endl;
-    allyieldsm<<ipt<<"\t"<<hDataMetm[ipt]->Integral()<<"+/-"<<sqrt(hDataMetm[ipt]->Integral())<<"\t"<<nSigm[ipt]->getVal()+nEWKm[ipt]->getVal()+nQCDm[ipt]->getVal()<<"+/-"<<sqrt(nSigm[ipt]->getPropagatedError(*fitResm[ipt])*nSigm[ipt]->getPropagatedError(*fitResm[ipt])+nQCDm[ipt]->getPropagatedError(*fitResm[ipt])*nQCDm[ipt]->getPropagatedError(*fitResm[ipt])+nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEWKm[ipt]->getPropagatedError(*fitResm[ipt]))<<"\t"<<hWmunuMetm[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMetm[ipt]->Integral())<<"\t"<<nSigm[ipt]->getVal()<<"+/-"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<hEWKMetm[ipt]->Integral()<<"+/-"<<sqrt(hEWKMetm[ipt]->Integral())<<"\t"<<nEWKm[ipt]->getVal()<<"+/-"<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<nQCDm[ipt]->getVal()<<"+/-"<<nQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
+    allyieldsm<<ipt<<"\t"<<hDataMetm[ipt]->Integral()<<"+/-"<<sqrt(hDataMetm[ipt]->Integral())<<"\t"<<nSigm[ipt]->getVal()+nEWKm[ipt]->getVal()+nQCDm[ipt]->getVal()<<"+/-"<<sqrt(nSigm[ipt]->getPropagatedError(*fitResm[ipt])*nSigm[ipt]->getPropagatedError(*fitResm[ipt])+nQCDm[ipt]->getPropagatedError(*fitResm[ipt])*nQCDm[ipt]->getPropagatedError(*fitResm[ipt])+nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEWKm[ipt]->getPropagatedError(*fitResm[ipt]))<<"\t"<<hWmunuMetm[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMetm[ipt]->Integral())<<"\t"<<nSigm[ipt]->getVal()<<"+/-"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<hEWKMetm[ipt]->Integral()<<"+/-"<<sqrt(hEWKMetm[ipt]->Integral())<<"\t"<<nEWKm[ipt]->getVal()<<"+/-"<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<nQCDm[ipt]->getVal()<<"+/-"<<nQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<sqrt(nSigm[ipt]->getVal()+nEWKm[ipt]->getVal()+nQCDm[ipt]->getVal())<<"\t"<<hDataMetm[ipt]->Integral()-(nSigm[ipt]->getVal()+nEWKm[ipt]->getVal()+nQCDm[ipt]->getVal()) << endl;
 
     chi2prob = hDataMet[ipt]->Chi2Test(hPdfMet,"PUW");
     chi2ndf  = hDataMet[ipt]->Chi2Test(hPdfMet,"CHI2/NDFUW");
@@ -3598,39 +3598,6 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   allyields.close();
   allyieldsp.close();
   allyieldsm.close();
-//Write Signal numbers to file
-  gSystem->mkdir(outputDir+"/RstMuon",kTRUE);
-  TString Yields = outputDir+"/RstMuon/SigYields_"+filetype+".root";
-  //gSystem->mkdir("RstMuon",kTRUE);
-  //TString Yields = "RstMuon/SigYields_"+filetype+".root";
-  TFile *nsigfile = new TFile(Yields,"RECREATE");
-  hSigWpt -> Write();
-  hSigWPpt-> Write();
-  hSigWMpt-> Write();
-  
-  hQCDWpt -> Write();
-  hQCDWPpt-> Write();
-  hQCDWMpt-> Write();
-  
-  hQCD_Sig-> Write();
-  hQCD_SigPlus-> Write();
-  hQCD_SigMinus-> Write();
-
-  hdataWPpt   ->Write();
-  hdataWMpt   ->Write();
-  hDYToMuMu   ->Write();
-  hWToTauNu   ->Write();
-  hTTJets     ->Write();
-  hDYToTauTau ->Write();
-  hDYToMuMuP  ->Write();
-  hWToTauNuP  ->Write();
-  hTTJetsP    ->Write();
-  hDYToTauTauP->Write();
-  hDYToMuMuM  ->Write();
-  hWToTauNuM  ->Write();
-  hTTJetsM    ->Write();
-  hDYToTauTauM->Write();
-
   //hAntiQCD_Sig-> Write();
   //hAntiQCD_SigPlus-> Write();
   //hAntiQCD_SigMinus-> Write();
@@ -3664,7 +3631,6 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   //hQCD_SigQCDMinusFit->Fit("f111","L","",40,90);
   //hQCD_SigQCDMinusFit-> Write();
   
-  nsigfile->Close();
 
 // Wpt distribution=========================
   TH1D* hWptDiff;
@@ -3737,7 +3703,8 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   //gPad->RedrawAxis();
   //plotWptDiff->Draw(c,kTRUE,format,2);
   
-  double WptBinsLog[14]={1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+  //double WptBinsLog[14]={1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+  double WptBinsLog[14]={0.5,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
   double x1,x2,x3,x4,x5,x6,x7,err;
   TH1D *hDYToTauTauLog = new TH1D("hDYToTauTauLog","",13,WptBinsLog);
   TH1D *hTTJetsLog = new TH1D("hTTJetsLog","",13,WptBinsLog);
@@ -3907,7 +3874,19 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   hWPptMCLog->Add(hDYToMuMuLogP);
   hWPptMCLog->Add(hQCDWptLogP);
   hWPptMCLog->Add(hSigWptLogP);
-  
+     cout<<
+      "fitN\t"      <<
+      "\tsqrt(fitN)\t"<<
+      "\tnxSigp\t"    <<
+      "\tnxSigp err\t"<<
+      "\tnxQCDp\t"    <<
+      "\tnxQCDp err\t"<<
+      "\tnxEWKp\t"    <<
+      "\tnxEWKp err\t"<<
+      "\tsumerr^2\t"  <<
+      "\tsumerr\t"    <<
+      endl;
+ 
   for (int i=1; i<=hSigWPpt->GetNbinsX(); i++)
   {
     double xEWKp=0,xQCDp=0,xSigp=0;
@@ -3915,7 +3894,80 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     xQCDp=  nQCDp[i]->getPropagatedError(*fitResp[i]) ;
     xSigp=  nSigp[i]->getPropagatedError(*fitResp[i])   ;
     
-    hWPptMCLog->SetBinError(i, sqrt( TMath::Power(xEWKp,2) + TMath::Power(xQCDp,2)  + TMath::Power(xSigp,2) ));
+    double nxEWKp=0,nxQCDp=0,nxSigp=0;
+    nxEWKp=  nEWKp[i]->getVal() ;
+    nxQCDp=  nQCDp[i]->getVal() ;
+    nxSigp=  nSigp[i]->getVal() ;
+   // hWPptMCLog->SetBinError(i, sqrt( TMath::Power(xEWKp,2) + TMath::Power(xQCDp,2)  + TMath::Power(xSigp,2) ));
+
+   
+//    hWPptMCLog->SetBinError(i, 
+//	sqrt( 
+//	    fabs(TMath::Power(xEWKp,2)- TMath::Power(nxEWKp,2))
+//	  + fabs(TMath::Power(xQCDp,2)- TMath::Power(nxQCDp,2)) 
+//	  + fabs(TMath::Power(xSigp,2)- TMath::Power(nxSigp,2))
+//	  )
+//	);
+    
+  //  cout<<i<<
+  //    "\tYusupov"<<
+  //    "\tnxEWKp\t"<<nxEWKp<<
+  //    "\tnxEWKp error\t"<<xEWKp<<
+  //    "\txEWKp^2 -nxEWKp^2 \t"<< fabs(TMath::Power(xEWKp,2)- TMath::Power(nxEWKp,2))<<
+  //    "\tnxQCDp\t"<<nxQCDp<<
+  //    "\tnxQCDp error\t"<<xQCDp<<
+  //    "\txQCDp^2 -nxQCDp^2 \t"<< fabs(TMath::Power(xQCDp,2)- TMath::Power(nxQCDp,2))<<
+  //    "\tnxSigp\t"<<nxSigp<<
+  //    "\tnxSigp error\t"<<xSigp<<
+  //    "\txSigp^2 -nxSigp^2 \t"<< fabs(TMath::Power(xSigp,2)- TMath::Power(nxSigp,2))<<
+  //    
+  //    endl;
+  //  hWPptMCLog->SetBinError(i, 
+  //      sqrt( 
+  //          fabs( 
+  //            TMath::Power(xEWKp,2) + TMath::Power(xQCDp,2)  + TMath::Power(xSigp,2)
+  //            - (nxEWKp + nxQCDp + nxSigp)
+  //            )
+  //          )
+  //      );
+  //  cout<<i<<
+  //    "\tYusupov"<<
+  //    "\tnxEWKp\t"<<nxEWKp<<
+  //    "\tnxEWKp error\t"<<xEWKp<<
+  //    "\tnxQCDp\t"<<nxQCDp<<
+  //    "\tnxQCDp error\t"<<xQCDp<<
+  //    "\tnxSigp\t"<<nxSigp<<
+  //    "\tnxSigp error\t"<<xSigp<<
+  //    "\ttot error\t"<< TMath::Power(xEWKp,2) + TMath::Power(xQCDp,2)  + TMath::Power(xSigp,2)<<
+  //    "\texpectedNfits\t"<< nxSigp + nxQCDp + nxEWKp<<
+  //    endl;
+    double xSmallestp=99999;
+    if( xSigp <xSmallestp)
+      xSmallestp =xSigp;
+    if( xQCDp <xSmallestp)
+      xSmallestp =xQCDp;
+    if( xEWKp <xSmallestp)
+      xSmallestp =xEWKp;
+
+    cout<<i<<
+      "\txSmallest\t"<<xSmallestp<<
+      endl;
+
+    hWPptMCLog->SetBinError(i,xSmallestp);
+
+
+    cout<<i<<
+      "\t"<< nxSigp + nxQCDp + nxEWKp<<
+      "\t\t"<< sqrt(nxSigp + nxQCDp + nxEWKp)<<
+      "\t\t"<<nxSigp<<
+      "\t\t"<<xSigp<<
+      "\t\t"<<nxQCDp<<
+      "\t\t"<<xQCDp<<
+      "\t\t\t"<<nxEWKp<<
+      "\t\t"<<xEWKp<<
+      "\t\t\t"<< (TMath::Power(xEWKp,2) + TMath::Power(xQCDp,2)  + TMath::Power(xSigp,2))<<
+      "\t\t\t"<< sqrt(TMath::Power(xEWKp,2) + TMath::Power(xQCDp,2)  + TMath::Power(xSigp,2))<<
+      endl;    
   }
   hWPptDiffLog = makeDiffHistWptLog(hdataWptLogP,hWPptMCLog,"hWPptDiffLog");
   hWPptDiffLog->SetMarkerStyle(kFullCircle);
@@ -4051,8 +4103,29 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     xEWKm=  nEWKm[i]->getPropagatedError(*fitResm[i]) ;
     xQCDm=  nQCDm[i]->getPropagatedError(*fitResm[i]) ;
     xSigm=  nSigm[i]->getPropagatedError(*fitResm[i])   ;
+    double nxEWKm=0,nxQCDm=0,nxSigm=0;
+    nxEWKm=  nEWKm[i]->getVal() ;
+    nxQCDm=  nQCDm[i]->getVal() ;
+    nxSigm=  nSigm[i]->getVal() ;
     
-    hWMptMCLog->SetBinError(i, sqrt( TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2) ));
+    ////hWMptMCLog->SetBinError(i, sqrt( TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2) ));
+    hWMptMCLog->SetBinError(i, 
+	fabs(
+	  sqrt(TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2) )
+	   - sqrt(nxEWKm + nxQCDm + nxSigm)     
+	    )
+	);
+    cout<<i<<
+      "\tnxEWKm\t"<<nxEWKm<<
+      "\tnxEWKm err\t"<<xEWKm<<
+      "\tnxQCDm\t"<<nxQCDm<<
+      "\tnxQCDm err\t"<<xQCDm<<
+      "\tnxSigm\t"<<nxSigm<<
+      "\tnxSigm err\t"<<xSigm<<
+      "\tsumerr^2\t"<< (TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2))<<
+      "\tsumerr\t"<< sqrt(TMath::Power(xEWKm,2) + TMath::Power(xQCDm,2)  + TMath::Power(xSigm,2))<<
+      "\tsqrt(N)\t"<< sqrt(nxSigm + nxQCDm + nxEWKm)<<
+      endl;
   }
   hWMptDiffLog = makeDiffHistWptLog(hdataWptLogM,hWMptMCLog,"hWMptDiffLog");
   hWMptDiffLog->SetMarkerStyle(kFullCircle);
@@ -4100,6 +4173,45 @@ aqcdMsigma2[ipt]->setVal(2.69409);
 		    
   makeHTML(outputDir);
 
+//Write Signal numbers to file
+  gSystem->mkdir(outputDir+"/RstMuon",kTRUE);
+  TString Yields = outputDir+"/RstMuon/SigYields_"+filetype+".root";
+  //gSystem->mkdir("RstMuon",kTRUE);
+  //TString Yields = "RstMuon/SigYields_"+filetype+".root";
+  TFile *nsigfile = new TFile(Yields,"RECREATE");
+  hSigWpt -> Write();
+  hSigWPpt-> Write();
+  hSigWMpt-> Write();
+  
+  hQCDWpt -> Write();
+  hQCDWPpt-> Write();
+  hQCDWMpt-> Write();
+  
+  hQCD_Sig-> Write();
+  hQCD_SigPlus-> Write();
+  hQCD_SigMinus-> Write();
+
+  hdataWPpt   ->Write();
+  hdataWMpt   ->Write();
+  hDYToMuMu   ->Write();
+  hWToTauNu   ->Write();
+  hTTJets     ->Write();
+  hDYToTauTau ->Write();
+  hDYToMuMuP  ->Write();
+  hWToTauNuP  ->Write();
+  hTTJetsP    ->Write();
+  hDYToTauTauP->Write();
+  hDYToMuMuM  ->Write();
+  hWToTauNuM  ->Write();
+  hTTJetsM    ->Write();
+  hDYToTauTauM->Write();
+
+  // To save Fit error
+  hWPptMCLog->Write();
+  hWMptMCLog->Write();
+
+  nsigfile->Close();
+  
   gBenchmark->Show("fitWMuMetMtModRayleighSimult_NNLO_PASformat");
 }
 
